@@ -5,10 +5,13 @@ window.PUPPYS_CONFIG = {
   ogImageUrl: "https://pompuppys-kasukabe.github.io/assets/ogp.jpg",
   ogImageUrlProject: "https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg",
 
-  // Media（取材導線）
+  // Media（取材導線）※Mediaにはクラファン導線を出さない設計
   mediaKitUrl: "https://drive.google.com/drive/folders/1jfploQJhKcJWmGzHVKrY2VnJykLoE-d0?usp=sharing",
   pressEmail: "moccy0306@gmail.com",
   pressContactName: "POM PUPPYS bright 保護者代表　飯田 絵里",
+
+  // PROJECT（クラファン特設）※公式ページ側にはリンクを置かない（URL直打ちで到達）
+  projectPageUrl: "./project-world-challenge.html",
 
   // NEWS（dateは "YYYY-MM-DD" 推奨。空なら日付表示なし）
   news: [
@@ -32,8 +35,8 @@ window.PUPPYS_CONFIG = {
   copy: {
     hero: {
       headline: "悔しさを転機に、「楽しむ」へ。",
-      lead: "演技が変わった瞬間から、世界への道が始まりました。",
-      sub: "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。 “表情・一体感・空気づくり”まで含めて演技を磨き、The Dance Summit 2026 に挑戦します。"
+      lead: "胸がいっぱいになるほど悔しかった日を越えて、笑顔が戻った瞬間がありました。",
+      sub: "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。勝ち負けだけではなく、“踊ることを楽しむ”原点に立ち返り、表情・一体感・空気づくりまで磨き直して The Dance Summit 2026 に挑戦します。"
     },
     facts: [
       { label: "拠点", value: "埼玉・春日部" },
@@ -41,22 +44,23 @@ window.PUPPYS_CONFIG = {
       { label: "挑戦", value: "The Dance Summit 2026" },
       { label: "主な実績", value: "JAMfest JAPAN vol.23 in TOKYO / Junior編成 Pom部門 Small B：1位" }
     ],
+    summitNote: "米国Varsity社が主催する、世界最高峰のチアダンス・ダンスの世界選手権大会。",
     about: {
       title: "POM PUPPYS bright について",
       body: [
-        "POM PUPPYSは埼玉県・ふじみ野で生まれたチアダンスチームです。",
-        "その流れを受けて2016年、春日部で活動が始まりました。",
-        "現在は大会クラスが独立した形で活動し、少人数ならではの結束力で日々練習を重ねています。"
+        "POM PUPPYS brightは、埼玉・春日部を拠点に活動するチアダンスチームです。",
+        "2016年に活動をスタートし、2020年から大会への挑戦を本格化しました。",
+        "一人ひとりの表情とチームの一体感を大切に、日々練習を重ねています。"
       ],
-      // 必要なときだけ残し、不要なら空文字にしてください
       note: ""
     },
     story: {
       title: "STORY",
       body: [
         "直前の大会で悔しい結果を経験し、私たちは一度立ち止まりました。",
-        "そこで勝ち負けだけではなく、“踊ることを楽しむ”原点へ立ち返ることを選びました。",
-        "表情、声、チームの空気づくりまで見直し、演技を再構築。",
+        "悔しさを抱えたままでは、踊る姿も硬くなってしまう——そう気づいたとき、原点の“楽しむ”に戻る決断をしました。",
+        "表情、声、チームの空気づくりまで見直し、演技を一から再構築。",
+        "気持ちが揃った瞬間、踊りが変わり、会場の空気も変わった感覚がありました。",
         "そのプロセスが結果につながり、JAMfestで1位を獲得。いま、次の舞台に向けて準備を進めています。"
       ],
       interviewPoints: [
@@ -67,14 +71,14 @@ window.PUPPYS_CONFIG = {
       ]
     },
     timeline: [
-      { year: "2016", text: "春日部で活動開始（埼玉・ふじみ野発祥の流れを受ける）" },
+      { year: "2016", text: "春日部で活動開始" },
       { year: "2020", text: "大会への挑戦を本格化" },
-      { year: "2025", text: "挑戦5年目、演技を立て直し大きく躍進／JAMfestで1位" },
+      { year: "2025", text: "演技を立て直し大きく躍進／JAMfestで1位" },
       { year: "2026", text: "The Dance Summit 2026 へ挑戦" }
     ]
   },
 
-  // プロジェクト（特設ページ用：目標/現在/締切を入れるだけで自動計算）
+  // クラファン特設ページ用（設定値から自動計算）
   project: {
     title: "World Challenge Project",
     crowdfundingUrl: "", // 外部クラファンURLが決まったら入れる

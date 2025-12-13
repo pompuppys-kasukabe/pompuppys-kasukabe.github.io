@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <title>POM PUPPYS bright（埼玉・春日部）｜The Dance Summit 2026 Challenge</title>
-  <meta name="description" content="悔しさを転機に、「楽しむ」へ。演技が変わった瞬間から、世界への道が始まりました。小学6年生〜中学3年生のチアダンスチーム「POM PUPPYS bright」がThe Dance Summit 2026へ挑戦します。" />
+  <meta name="description" content="悔しさを転機に、「楽しむ」へ。埼玉・春日部のチアダンスチーム「POM PUPPYS bright」がThe Dance Summit 2026へ挑戦します。" />
 
   <!-- Canonical / OGP（絶対URL推奨） -->
   <link rel="canonical" href="https://pompuppys-kasukabe.github.io/" />
@@ -31,7 +31,7 @@
     "@context": "https://schema.org",
     "@type": "SportsTeam",
     "name": "POM PUPPYS bright",
-    "areaServed": "埼玉県（春日部）",
+    "areaServed": "埼玉・春日部",
     "email": "moccy0306@gmail.com",
     "url": "https://pompuppys-kasukabe.github.io/"
   }
@@ -46,13 +46,13 @@
         <span>POM PUPPYS <span style="font-weight:900;color:var(--pink)">bright</span></span>
       </div>
 
+      <!-- 3部構成：チーム紹介（1ページ内）／メディア対応（同ページ内）／クラファン特設（別ページ・リンクは置かない） -->
       <nav class="nav" aria-label="primary">
         <a href="#news">NEWS</a>
         <a href="#about">ABOUT</a>
         <a href="#story">STORY</a>
         <a href="#timeline">年表</a>
         <a href="#media">MEDIA</a>
-        <a href="./project-world-challenge.html">PROJECT</a>
         <button id="shareBtn" class="btn btn-small" type="button" style="display:none;">共有</button>
       </nav>
     </div>
@@ -63,12 +63,15 @@
       <div class="container hero__grid">
         <div class="heroCard">
           <h1 class="heroTitle" id="heroHeadline"></h1>
+          <p class="heroLead" id="heroLead"></p>
           <p class="heroSub muted" id="heroSub"></p>
+
+          <div class="summitNote" id="summitNote" style="display:none;"></div>
+
           <div class="chips" id="factsChips"></div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
-            <a class="btn btn-primary" href="./project-world-challenge.html">特設ページを見る</a>
-            <a class="btn btn-ghost" href="#media">取材の方へ</a>
+            <a class="btn btn-primary" href="#media">取材の方へ（Media）</a>
           </div>
         </div>
 
@@ -78,10 +81,14 @@
             <p class="muted" style="font-size:.95rem;">30秒で把握</p>
           </div>
           <p class="muted" style="margin:0;line-height:1.7;">
-            ・JAMfest JAPAN vol.23 in TOKYO<br/>
-            ・Junior編成 Pom部門 Small B：1位<br/>
-            ・“楽しむ”へ切り替え、表情・一体感まで再構築<br/>
-            ・The Dance Summit 2026へ挑戦
+            ・拠点：埼玉・春日部<br/>
+            ・メンバー：小学6年生〜中学3年生<br/>
+            ・主な実績：JAMfest JAPAN vol.23 in TOKYO / Junior編成 Pom部門 Small B：1位<br/>
+            ・挑戦：The Dance Summit 2026
+          </p>
+          <!-- ※クラファンリンクはこのページでは配置しない -->
+          <p class="note" style="margin:10px 0 0;">
+            ※支援のご案内は「クラファン特設サイト」でお知らせします。
           </p>
         </div>
       </div>
@@ -111,10 +118,10 @@
             <p class="note" id="aboutNote" style="margin-top:10px;"></p>
           </div>
           <div class="card">
-            <h3 style="margin:0 0 10px;color:var(--navy)">Challenge</h3>
-            <p class="muted" style="margin:0;line-height:1.7;">
-              The Dance Summit 2026 へ挑戦。<br/>
-              勝ち負けだけではなく“踊ることを楽しむ”原点へ立ち返り、演技を磨き続けています。
+            <h3 style="margin:0 0 10px;color:var(--navy)">The Dance Summit 2026 とは</h3>
+            <p class="muted" style="margin:0;line-height:1.8;">
+              米国Varsity社が主催する、世界最高峰のチアダンス・ダンスの世界選手権大会です。<br/>
+              私たちはこの舞台に向けて準備を進めています。
             </p>
           </div>
         </div>
@@ -163,6 +170,9 @@
               1ページ資料／写真素材／紹介文（100・200・400字）／クレジット・利用条件
             </p>
             <p class="note">※未成年のため、取材・撮影・掲載範囲は事前に調整します。</p>
+            <p class="note" style="margin-top:10px;">
+              ※本ページ（Media）にはクラファン導線を置いていません。支援のご案内は別の特設サイトで行います。
+            </p>
           </div>
 
           <div class="media-card__right">
@@ -185,6 +195,7 @@
       <div class="muted" style="margin-top:6px;">
         取材窓口：moccy0306@gmail.com（保護者代表 飯田 絵里）
       </div>
+      <!-- ※クラファン特設サイトは本ページからリンクしない（必要時に案内） -->
     </div>
   </footer>
 </body>

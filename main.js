@@ -49,13 +49,11 @@ function renderCopy(){
 
   // HERO
   const h1 = document.getElementById("heroHeadline");
+  const lead = document.getElementById("heroLead");
   const sub = document.getElementById("heroSub");
   if(h1) h1.textContent = c.hero?.headline || "";
-  if(sub){
-    const lead = escapeHtml(c.hero?.lead || "");
-    const s = escapeHtml(c.hero?.sub || "");
-    sub.innerHTML = `${lead}<br/>${s}`;
-  }
+  if(lead) lead.textContent = c.hero?.lead || "";
+  if(sub) sub.textContent = c.hero?.sub || "";
 
   // FACTS chips
   const chips = document.getElementById("factsChips");
@@ -64,6 +62,14 @@ function renderCopy(){
     chips.innerHTML = facts.map(f => `
       <span class="chip"><strong>${escapeHtml(f.label)}</strong> ${escapeHtml(f.value)}</span>
     `).join("");
+  }
+
+  // SUMMIT note
+  const sn = document.getElementById("summitNote");
+  if(sn){
+    const note = c.summitNote || "";
+    sn.textContent = note;
+    sn.style.display = note ? "block" : "none";
   }
 
   // ABOUT
