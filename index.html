@@ -7,22 +7,23 @@
   <title>POM PUPPYS bright（埼玉・春日部）｜The Dance Summit 2026 Challenge</title>
   <meta name="description" content="悔しさを転機に、「楽しむ」へ。演技が変わった瞬間から、世界への道が始まりました。小学6年生〜中学3年生のチアダンスチーム「POM PUPPYS bright」がThe Dance Summit 2026へ挑戦します。" />
 
-  <!-- OGP（siteUrl/ogImageUrlは後で差し替えOK） -->
+  <!-- Canonical / OGP（絶対URL推奨） -->
+  <link rel="canonical" href="https://pompuppys-kasukabe.github.io/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="POM PUPPYS bright" />
   <meta property="og:title" content="POM PUPPYS bright（埼玉・春日部）｜The Dance Summit 2026 Challenge" />
   <meta property="og:description" content="悔しさを転機に、「楽しむ」へ。演技が変わった瞬間から、世界への道が始まりました。" />
-  <meta property="og:url" content="" />
-  <meta property="og:image" content="./assets/ogp.jpg" />
+  <meta property="og:url" content="https://pompuppys-kasukabe.github.io/" />
+  <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="ja_JP" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="./assets/ogp.jpg" />
+  <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
 
-  <link rel="stylesheet" href="./style.css?v=20251213-1" />
-  <script src="./config.js?v=20251213-1"></script>
-  <script src="./main.js?v=20251213-1" defer></script>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="./config.js"></script>
+  <script src="./main.js" defer></script>
 
   <!-- JSON-LD（最低限） -->
   <script type="application/ld+json">
@@ -31,7 +32,8 @@
     "@type": "SportsTeam",
     "name": "POM PUPPYS bright",
     "areaServed": "埼玉県（春日部）",
-    "email": "moccy0306@gmail.com"
+    "email": "moccy0306@gmail.com",
+    "url": "https://pompuppys-kasukabe.github.io/"
   }
   </script>
 </head>
@@ -48,6 +50,7 @@
         <a href="#news">NEWS</a>
         <a href="#about">ABOUT</a>
         <a href="#story">STORY</a>
+        <a href="#timeline">年表</a>
         <a href="#media">MEDIA</a>
         <a href="./project-world-challenge.html">PROJECT</a>
         <button id="shareBtn" class="btn btn-small" type="button" style="display:none;">共有</button>
@@ -59,17 +62,9 @@
     <section class="hero">
       <div class="container hero__grid">
         <div class="heroCard">
-          <h1 class="heroTitle">悔しさを転機に、「楽しむ」へ。</h1>
-          <p class="heroSub muted">
-            演技が変わった瞬間から、世界への道が始まりました。<br/>
-            <strong style="color:var(--navy)">The Dance Summit 2026</strong> に挑戦する、埼玉・春日部のチアダンスチーム。
-          </p>
-
-          <div class="chips">
-            <span class="chip"><strong>拠点</strong> 埼玉・春日部</span>
-            <span class="chip"><strong>メンバー</strong> 小6〜中3</span>
-            <span class="chip"><strong>実績</strong> JAMfest 1位</span>
-          </div>
+          <h1 class="heroTitle" id="heroHeadline"></h1>
+          <p class="heroSub muted" id="heroSub"></p>
+          <div class="chips" id="factsChips"></div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
             <a class="btn btn-primary" href="./project-world-challenge.html">特設ページを見る</a>
@@ -111,11 +106,9 @@
 
         <div class="grid2">
           <div class="card">
-            <h3 style="margin:0 0 10px;color:var(--navy)">POM PUPPYS bright</h3>
-            <p class="muted" style="margin:0;line-height:1.7;">
-              埼玉・春日部を拠点に活動するチアダンスチーム。<br/>
-              小学6年生〜中学3年生が“家族のような絆”で、日々練習に向き合っています。
-            </p>
+            <h3 style="margin:0 0 10px;color:var(--navy)" id="aboutTitle"></h3>
+            <div class="muted" id="aboutBody" style="line-height:1.7;"></div>
+            <p class="note" id="aboutNote" style="margin-top:10px;"></p>
           </div>
           <div class="card">
             <h3 style="margin:0 0 10px;color:var(--navy)">Challenge</h3>
@@ -131,16 +124,27 @@
     <section id="story" class="section">
       <div class="container">
         <div class="section-head">
-          <h2>STORY</h2>
+          <h2 id="storyTitle">STORY</h2>
           <p class="muted">どん底からのV字回復</p>
         </div>
 
         <div class="card">
-          <p class="muted" style="margin:0;line-height:1.85;">
-            直前の大会で悔しい結果を経験し、どん底を味わいました。<br/>
-            そこで「勝つため」だけではなく「楽しむ」へ切り替え、表情・声・空気づくりまで含めて演技を立て直しました。<br/>
-            その積み重ねが、JAMfestでの1位という結果につながり、世界への挑戦が現実になっています。
-          </p>
+          <div class="muted" id="storyBody" style="line-height:1.85;"></div>
+          <div style="height:14px;"></div>
+          <h3 style="margin:0 0 10px;color:var(--navy);font-size:1.05rem;">取材ポイント（切り口）</h3>
+          <ul class="muted" id="interviewPoints" style="margin:0;line-height:1.8;"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="timeline" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>沿革（年表）</h2>
+          <p class="muted">活動の流れ</p>
+        </div>
+        <div class="card">
+          <ul class="muted" id="timelineList" style="margin:0;line-height:1.9;"></ul>
         </div>
       </div>
     </section>

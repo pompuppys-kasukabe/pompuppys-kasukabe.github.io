@@ -7,19 +7,22 @@
   <title>World Challenge Project｜POM PUPPYS bright</title>
   <meta name="description" content="POM PUPPYS bright の挑戦を応援する特設ページ。活動報告・進捗・支援のご案内。" />
 
+  <link rel="canonical" href="https://pompuppys-kasukabe.github.io/project-world-challenge.html" />
+
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="POM PUPPYS bright" />
   <meta property="og:title" content="World Challenge Project｜POM PUPPYS bright" />
   <meta property="og:description" content="活動報告・進捗・支援のご案内。" />
-  <meta property="og:url" content="" />
-  <meta property="og:image" content="./assets/ogp.jpg" />
+  <meta property="og:url" content="https://pompuppys-kasukabe.github.io/project-world-challenge.html" />
+  <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:locale" content="ja_JP" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg" />
 
-  <link rel="stylesheet" href="./style.css?v=20251213-1" />
-  <script src="./config.js?v=20251213-1"></script>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="./config.js"></script>
 </head>
 
 <body>
@@ -47,20 +50,16 @@
 
       <div style="height:14px;"></div>
 
-      <div class="progressCard" id="progressCard">
-        <div class="progressRow">
-          <div class="muted">目標</div>
-          <div class="kpi" id="goalYen">—</div>
-          <div class="muted">現在</div>
-          <div class="kpi" id="raisedYen">—</div>
-          <div class="muted">達成率</div>
-          <div class="kpi" id="pct">—</div>
-          <div class="muted">残り日数</div>
-          <div class="kpi" id="daysLeft">—</div>
+      <div class="card" id="progressCard">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+          <div class="muted">目標</div><div style="font-weight:900;color:var(--navy)" id="goalYen">—</div>
+          <div class="muted">現在</div><div style="font-weight:900;color:var(--navy)" id="raisedYen">—</div>
+          <div class="muted">達成率</div><div style="font-weight:900;color:var(--navy)" id="pct">—</div>
+          <div class="muted">残り日数</div><div style="font-weight:900;color:var(--navy)" id="daysLeft">—</div>
         </div>
 
-        <div class="bar" aria-label="progress">
-          <div id="barFill"></div>
+        <div style="height:12px;border-radius:999px;background:rgba(11,27,58,.08);overflow:hidden;border:1px solid rgba(211,215,227,.8);margin-top:10px;">
+          <div id="barFill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--pink),var(--gold));"></div>
         </div>
 
         <div class="muted" style="margin-top:10px;font-size:.92rem;">
@@ -116,8 +115,7 @@
       document.getElementById("daysLeft").textContent = isNaN(daysLeft) ? "—" : (daysLeft < 0 ? "終了" : daysLeft + "日");
       document.getElementById("updatedAt").textContent = cfg.updatedAt || "—";
 
-      const fill = document.getElementById("barFill");
-      fill.style.width = clamp(pct, 0, 100).toFixed(1) + "%";
+      document.getElementById("barFill").style.width = clamp(pct, 0, 100).toFixed(1) + "%";
 
       const cUrl = cfg.crowdfundingUrl || "";
       const cBtn = document.getElementById("crowdfundingBtn");
