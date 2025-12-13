@@ -1,9 +1,9 @@
 /* config.js
   ✅運用は基本このファイルだけ編集
-  - 日付は "YYYY-MM-DD" / "YYYY-MM" / "YYYY" 推奨
-  - 未確定は ""（空文字）推奨（表示しません）
-  - "_" を含む場合も未確定扱いで非表示になります（安全側）
-  - NEWS pin: true でピン留め（常に上に表示）
+  - 確定日: "YYYY-MM-DD"（表示は自動で YYYY.MM.DD）
+  - 月のみ: "YYYY-MM"（表示は YYYY.MM）
+  - 未確定: ""（空文字）←これが最も綺麗で安全
+  - pin:true を付けるとNEWSの先頭に固定表示
 */
 
 window.PUPPYS_CONFIG = {
@@ -20,25 +20,25 @@ window.PUPPYS_CONFIG = {
   },
 
   contact: {
-    email: "example@example.com" // ←本番は専用メールに差し替え推奨
+    email: "example@example.com"
   },
 
-  // 追加：SNS（任意／空でもOK）
+  // SNS（未設定なら空でOK。空は自動非表示）
   social: {
-    x: "https://x.com/XXXX",
-    instagram: "https://instagram.com/XXXX",
-    youtube: "https://youtube.com/@XXXX"
+    x: "",
+    instagram: "",
+    youtube: ""
   },
 
-  // 追加：メディアキット（任意／未準備なら "" にしてOK）
+  // メディアキット（未設定なら空でOK。空は自動非表示/準備中表示）
   mediaKit: {
-    kitUrl: "",     // 例: "https://drive.google.com/...."
-    photosUrl: "",  // 例: "https://drive.google.com/...."
-    logoUrl: ""     // 例: "https://drive.google.com/...."
+    kitUrl: "",
+    photosUrl: "",
+    logoUrl: ""
   },
 
   // =========================================================
-  // HOME: NEWS（公式サイト）  pin:true でピン留め
+  // HOME: NEWS
   // =========================================================
   news: [
     {
@@ -55,10 +55,17 @@ window.PUPPYS_CONFIG = {
       body: "3/15は PUPPYS 発表会に出演予定です。ふじみ野合同でのステージを通して、日頃の感謝と成長の姿をお届けします。"
     },
     {
+      // 未確定は空文字にする（表示されません）
       date: "",
       tag: "HIGHLIGHT",
-      title: "直前の大失敗から、“楽しむ”へ切り替え大躍進",
-      body: "結果に届かなかった悔しさを転機に、原点の「楽しむ」へ。表情や空気づくりまで含めて立て直し、演技が変わり、結果も変わりました。"
+      title: "JAMfestで大きく躍進。次の舞台へ",
+      body: "挑戦5年目。演技の向き合い方を整え直し、JAMfestで大きく躍進しました。支えてくださる皆さまへの感謝を胸に、次の舞台へ向けて準備を進めます。"
+    },
+    {
+      date: "",
+      tag: "REPORT",
+      title: "JCDA 関東大会を振り返って（転機）",
+      body: "思うような結果に届かなかった経験を、次へつなげる転機にしました。原点の「楽しむ」に立ち返り、表情やチームの空気づくりまで含めて立て直しを進めています。"
     },
     {
       date: "",
@@ -72,21 +79,17 @@ window.PUPPYS_CONFIG = {
   // PROJECT: 進捗表示＋活動報告（特設）
   // =========================================================
   project: {
-    // 進捗（ここだけ更新で自動表示）
-    goalYen: 1000000,      // 目標：100万円
-    currentYen: 0,         // ←運用で更新
-    endDate: "2026-03-31", // 残日数の計算に使用（必要になったら更新）
+    goalYen: 1000000,
+    currentYen: 0,
+    endDate: "2026-03-31",
 
-    // 外部導線（クラファンURLなど）
     crowdfundingUrl: "https://example.com",
 
-    // 共有文言（WebShare / X共有のテキスト）
     share: {
       title: "POM PUPPYS ★bright",
       text: "The Dance Summit 2026 への挑戦｜応援・取材はこちら"
     },
 
-    // 活動報告（精算ではなく活動中心）
     updates: [
       {
         date: "",
@@ -97,7 +100,7 @@ window.PUPPYS_CONFIG = {
       {
         date: "",
         tag: "TRAINING",
-        title: "12/28に向けた仕上げ（準備中）",
+        title: "USA Regionalsに向けた仕上げ（準備中）",
         body: "ルーティンの精度と一体感を高めています。"
       },
       {
