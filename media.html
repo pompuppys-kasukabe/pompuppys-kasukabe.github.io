@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Media｜POM PUPPYS bright</title>
+  <meta name="description" content="取材・掲載用の素材（メディアキット、写真、紹介文、クレジット）をまとめています。クラファン導線は置いていません。" />
+
+  <link rel="canonical" href="https://pompuppys-kasukabe.github.io/media.html" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="POM PUPPYS bright" />
+  <meta property="og:title" content="Media｜POM PUPPYS bright" />
+  <meta property="og:description" content="取材・掲載用の素材（メディアキット、写真、紹介文、クレジット）をまとめています。クラファン導線は置いていません。" />
+  <meta property="og:url" content="https://pompuppys-kasukabe.github.io/media.html" />
+  <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
+
+  <link rel="stylesheet" href="./style.css" />
+  <script src="./config.js"></script>
+  <script src="./main.js" defer></script>
+</head>
+
+<body data-page="media">
+  <header class="header">
+    <div class="container header__inner">
+      <div class="brand">
+        <span class="brand__dot"></span>
+        <span>MEDIA</span>
+      </div>
+
+      <nav class="nav" aria-label="primary">
+        <a href="./index.html">← 公式サイトへ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <div class="heroCard">
+        <h1 class="heroTitle" style="margin-bottom:6px;">取材の方へ（Media）</h1>
+        <p class="heroSub muted" style="margin-bottom:0;line-height:1.8;">
+          記事制作に必要な素材（PDF・写真・紹介文・クレジット）をまとめています。<br/>
+          ※本ページにはクラファン導線は置いていません。
+        </p>
+      </div>
+
+      <div style="height:14px;"></div>
+
+      <div class="media-card">
+        <div class="media-card__left">
+          <h3>Media Kit（Google Drive）</h3>
+          <p class="muted">
+            1ページ資料／写真素材／紹介文（100・200・400字）／クレジット・利用条件
+          </p>
+          <p class="note">※未成年のため、取材・撮影・掲載範囲は事前に調整します。</p>
+        </div>
+
+        <div class="media-card__right">
+          <a id="mediaKitBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer">
+            Media Kit を開く
+          </a>
+          <a id="pressMailBtn" class="btn btn-ghost" href="#">
+            メールで問い合わせ
+          </a>
+        </div>
+      </div>
+
+      <div style="height:14px;"></div>
+
+      <div class="card">
+        <div class="section-head" style="margin-bottom:10px;">
+          <h2>記事用テキスト（コピペ用）</h2>
+          <p class="muted">100字 / 200字 / 400字</p>
+        </div>
+
+        <div class="copyBlock" style="margin-bottom:12px;">
+          <div class="copyTop">
+            <h3>100字</h3>
+            <button class="btn btn-small" type="button" data-copy-target="text100">コピー</button>
+          </div>
+          <p id="text100" class="copyText"></p>
+        </div>
+
+        <div class="copyBlock" style="margin-bottom:12px;">
+          <div class="copyTop">
+            <h3>200字</h3>
+            <button class="btn btn-small" type="button" data-copy-target="text200">コピー</button>
+          </div>
+          <p id="text200" class="copyText"></p>
+        </div>
+
+        <div class="copyBlock">
+          <div class="copyTop">
+            <h3>400字</h3>
+            <button class="btn btn-small" type="button" data-copy-target="text400">コピー</button>
+          </div>
+          <p id="text400" class="copyText"></p>
+        </div>
+
+        <div style="height:12px;"></div>
+
+        <div class="copyBlock">
+          <div class="copyTop">
+            <h3>クレジット</h3>
+            <button class="btn btn-small" type="button" data-copy-target="mediaCredit">コピー</button>
+          </div>
+          <p id="mediaCredit" class="copyText"></p>
+        </div>
+
+        <p class="note" style="margin-top:12px;">
+          ※紹介文はDrive内のテキストと整合を取る運用がおすすめです。差し替えは <code>config.js</code> の <code>mediaTexts</code> を編集してください。
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div>© POM PUPPYS bright</div>
+      <div class="muted" style="margin-top:6px;">
+        取材窓口：moccy0306@gmail.com（保護者代表 飯田 絵里）
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

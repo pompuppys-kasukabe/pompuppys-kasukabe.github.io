@@ -5,13 +5,28 @@ window.PUPPYS_CONFIG = {
   ogImageUrl: "https://pompuppys-kasukabe.github.io/assets/ogp.jpg",
   ogImageUrlProject: "https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg",
 
+  // Pages（3部構成）
+  pages: {
+    media: "./media.html",
+    project: "./project-world-challenge.html" // 公式/Mediaからはリンクしない（URL直打ちで案内）
+  },
+
   // Media（取材導線）※Mediaにはクラファン導線を出さない設計
   mediaKitUrl: "https://drive.google.com/drive/folders/1jfploQJhKcJWmGzHVKrY2VnJykLoE-d0?usp=sharing",
   pressEmail: "moccy0306@gmail.com",
   pressContactName: "POM PUPPYS bright 保護者代表　飯田 絵里",
 
-  // PROJECT（クラファン特設）※公式ページ側にはリンクを置かない（URL直打ちで到達）
-  projectPageUrl: "./project-world-challenge.html",
+  // 記事用テキスト（サイト側にも同梱：コピペ1クリック用）
+  mediaTexts: {
+    credit: "写真クレジット：POM PUPPYS bright 提供",
+    // 目安です。Drive側の03_TEXTと同じ内容に後で置き換えてOK（ここだけ編集）
+    short100:
+      "埼玉・春日部のチアダンスチーム「POM PUPPYS bright」。悔しさを転機に“楽しむ”へ立ち返り、演技を立て直してJAMfestで1位。The Dance Summit 2026に挑戦。",
+    mid200:
+      "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。直前の大会で悔しい結果を経験し、勝ち負けだけではなく“踊ることを楽しむ”原点へ。表情・一体感・空気づくりまで磨き直し、JAMfestで1位を獲得。The Dance Summit 2026に向け準備を進めている。",
+    long400:
+      "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。直前の大会で悔しい結果を経験したことをきっかけに、勝ち負けだけではなく“踊ることを楽しむ”原点へ立ち返った。表情、声、チームの空気づくりまで含めて演技を一から再構築し、気持ちが揃った瞬間に踊りが変わった。プロセスが結果につながり、JAMfest JAPAN vol.23 in TOKYO（Junior編成 Pom部門 Small B）で1位を獲得。現在は米国Varsity社主催の世界最高峰の舞台「The Dance Summit 2026」へ挑戦する。"
+  },
 
   // NEWS（dateは "YYYY-MM-DD" 推奨。空なら日付表示なし）
   news: [

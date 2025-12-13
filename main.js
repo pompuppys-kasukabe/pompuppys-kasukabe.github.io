@@ -16,6 +16,46 @@ function formatDateLabel(dateStr){
   return `${m[1]}.${m[2]}.${m[3]}`;
 }
 
+async function copyText(text){
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  }catch(e){}
+  // fallback
+  try{
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    ta.style.top = "0";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){
+    return false;
+  }
+}
+
+function wireCopyButtons(){
+  document.querySelectorAll("[data-copy-target]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const id = btn.getAttribute("data-copy-target");
+      const el = document.getElementById(id);
+      if(!el) return;
+      const text = el.textContent || "";
+      const ok = await copyText(text.trim());
+      const prev = btn.textContent;
+      btn.textContent = ok ? "コピーしました" : "コピー失敗";
+      setTimeout(()=>btn.textContent = prev, 1300);
+    });
+  });
+}
+
 function renderNews(){
   const wrap = document.getElementById("newsGrid");
   if(!wrap) return;
@@ -158,12 +198,47 @@ function wireWebShare(){
   });
 }
 
+function wireMediaLink(){
+  const a = document.getElementById("mediaPageLink");
+  if(!a) return;
+  const url = window.PUPPYS_CONFIG?.pages?.media || "./media.html";
+  a.href = url;
+}
+
+function renderMediaTexts(){
+  const m = window.PUPPYS_CONFIG?.mediaTexts;
+  if(!m) return;
+
+  const credit = document.getElementById("mediaCredit");
+  const t100 = document.getElementById("text100");
+  const t200 = document.getElementById("text200");
+  const t400 = document.getElementById("text400");
+
+  if(credit) credit.textContent = m.credit || "";
+  if(t100) t100.textContent = m.short100 || "";
+  if(t200) t200.textContent = m.mid200 || "";
+  if(t400) t400.textContent = m.long400 || "";
+}
+
 function initSite(){
   renderNews();
   renderCopy();
-  wireMediaKit();
-  wirePressMail();
+  wireMediaLink();
   wireWebShare();
 }
 
-document.addEventListener("DOMContentLoaded", initSite);
+function initMedia(){
+  wireMediaKit();
+  wirePressMail();
+  renderMediaTexts();
+  wireCopyButtons();
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  // page routing
+  if(document.body.dataset.page === "media"){
+    initMedia();
+  }else{
+    initSite();
+  }
+});

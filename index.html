@@ -7,7 +7,6 @@
   <title>POM PUPPYS bright（埼玉・春日部）｜The Dance Summit 2026 Challenge</title>
   <meta name="description" content="悔しさを転機に、「楽しむ」へ。埼玉・春日部のチアダンスチーム「POM PUPPYS bright」がThe Dance Summit 2026へ挑戦します。" />
 
-  <!-- Canonical / OGP（絶対URL推奨） -->
   <link rel="canonical" href="https://pompuppys-kasukabe.github.io/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="POM PUPPYS bright" />
@@ -25,7 +24,6 @@
   <script src="./config.js"></script>
   <script src="./main.js" defer></script>
 
-  <!-- JSON-LD（最低限） -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -46,13 +44,12 @@
         <span>POM PUPPYS <span style="font-weight:900;color:var(--pink)">bright</span></span>
       </div>
 
-      <!-- 3部構成：チーム紹介（1ページ内）／メディア対応（同ページ内）／クラファン特設（別ページ・リンクは置かない） -->
       <nav class="nav" aria-label="primary">
         <a href="#news">NEWS</a>
         <a href="#about">ABOUT</a>
         <a href="#story">STORY</a>
         <a href="#timeline">年表</a>
-        <a href="#media">MEDIA</a>
+        <a id="mediaPageLink" href="./media.html">MEDIA</a>
         <button id="shareBtn" class="btn btn-small" type="button" style="display:none;">共有</button>
       </nav>
     </div>
@@ -71,7 +68,7 @@
           <div class="chips" id="factsChips"></div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
-            <a class="btn btn-primary" href="#media">取材の方へ（Media）</a>
+            <a class="btn btn-primary" id="mediaCtaBtn" href="./media.html">取材の方へ（Media）</a>
           </div>
         </div>
 
@@ -86,9 +83,8 @@
             ・主な実績：JAMfest JAPAN vol.23 in TOKYO / Junior編成 Pom部門 Small B：1位<br/>
             ・挑戦：The Dance Summit 2026
           </p>
-          <!-- ※クラファンリンクはこのページでは配置しない -->
           <p class="note" style="margin:10px 0 0;">
-            ※支援のご案内は「クラファン特設サイト」でお知らせします。
+            ※支援のご案内は別の「クラファン特設サイト」で行います（本ページには導線を置いていません）。
           </p>
         </div>
       </div>
@@ -156,32 +152,19 @@
       </div>
     </section>
 
-    <section id="media" class="section">
+    <!-- Mediaは別ページへ（クラファン導線の混在を避ける） -->
+    <section class="section">
       <div class="container">
-        <div class="section-head">
-          <h2>取材の方へ（Media）</h2>
-          <p class="muted">記事制作に必要な素材（PDF・写真・文章）をまとめています。</p>
-        </div>
-
         <div class="media-card">
           <div class="media-card__left">
-            <h3>Media Kit</h3>
+            <h3>取材の方へ（Media）</h3>
             <p class="muted">
-              1ページ資料／写真素材／紹介文（100・200・400字）／クレジット・利用条件
-            </p>
-            <p class="note">※未成年のため、取材・撮影・掲載範囲は事前に調整します。</p>
-            <p class="note" style="margin-top:10px;">
-              ※本ページ（Media）にはクラファン導線を置いていません。支援のご案内は別の特設サイトで行います。
+              記事制作に必要な素材（PDF・写真・紹介文）をまとめています。<br/>
+              ※Mediaページにはクラファン導線は置いていません。
             </p>
           </div>
-
           <div class="media-card__right">
-            <a id="mediaKitBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer">
-              Media Kit を開く
-            </a>
-            <a id="pressMailBtn" class="btn btn-ghost" href="#">
-              メールで問い合わせ
-            </a>
+            <a class="btn btn-primary" href="./media.html">Mediaページを開く</a>
           </div>
         </div>
       </div>
@@ -195,7 +178,6 @@
       <div class="muted" style="margin-top:6px;">
         取材窓口：moccy0306@gmail.com（保護者代表 飯田 絵里）
       </div>
-      <!-- ※クラファン特設サイトは本ページからリンクしない（必要時に案内） -->
     </div>
   </footer>
 </body>

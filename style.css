@@ -198,4 +198,30 @@ a{ color:inherit; }
   font-size: .92rem;
 }
 
+.copyBlock{
+  border: 1px solid rgba(211,215,227,.9);
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(11,27,58,.02);
+}
+.copyTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+.copyTop h3{
+  margin:0;
+  font-size:1.0rem;
+  color: var(--navy);
+  font-weight: 900;
+}
+.copyText{
+  margin:0;
+  line-height:1.8;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+
 ul{ padding-left: 1.1em; }
