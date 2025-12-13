@@ -716,6 +716,9 @@
     }
 
     renderNews();
+    console.log("NEWS_ITEMS", (window.PUPPYS_CONFIG?.news || []).map(x => x.date));
+console.log("DATE_FMT", formatDateLabel("2025-12-28"), formatDateLabel(""));
+
     wireConfigLinks();
     setupReveal();
     setupHeader();
