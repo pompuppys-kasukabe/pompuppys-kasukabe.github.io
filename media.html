@@ -116,7 +116,64 @@
         <p class="note" style="margin-top:12px;">
           ※紹介文はDrive内のテキストと整合を取る運用がおすすめです。差し替えは <code>config.js</code> の <code>mediaTexts</code> を編集してください。
         </p>
+      
+      <div style="height:14px;"></div>
+
+      <div class="card">
+        <div class="section-head" style="margin-bottom:10px;">
+          <h2>素材の配置（Drive推奨構成）</h2>
+          <p class="muted">記者が迷わない並び</p>
+        </div>
+        <p class="muted" style="margin:0;line-height:1.9;">
+          Driveフォルダ内は、下記の順・命名にすると取材側のストレスが減ります。<br/>
+          <strong>00_README</strong>（利用条件） → <strong>01_メディアキット_1page</strong> → <strong>02_PHOTO</strong> → <strong>03_TEXT</strong>
+        </p>
+        <div style="height:10px;"></div>
+        <div class="grid2">
+          <div class="copyBlock">
+            <div class="copyTop">
+              <h3>推奨フォルダ/ファイル名</h3>
+              <button class="btn btn-small" type="button" data-copy-target="driveStructure">コピー</button>
+            </div>
+            <p id="driveStructure" class="copyText">00_README_ご利用条件.pdf
+01_メディアキット_1page.pdf
+02_PHOTO/
+  ├─ 01_公式写真_横.jpg
+  ├─ 02_練習風景_横.jpg
+  └─ 03_大会当日_縦.jpg
+03_TEXT/
+  ├─ 100字.txt
+  ├─ 200字.txt
+  └─ 400字.txt</p>
+          </div>
+          <div class="copyBlock">
+            <div class="copyTop">
+              <h3>写真の推奨仕様</h3>
+              <button class="btn btn-small" type="button" data-copy-target="photoSpec">コピー</button>
+            </div>
+            <p id="photoSpec" class="copyText">・推奨：長辺 2400px以上（できれば3000px以上）
+・形式：JPG（高画質）/ PNG
+・色：sRGB
+・NG：過度な美肌加工、誤解を招く合成
+・クレジット：POM PUPPYS bright 提供</p>
+          </div>
+        </div>
+
+        <div style="height:12px;"></div>
+
+        <div class="media-card" style="margin:0;">
+          <div class="media-card__left">
+            <h3>ダウンロード（サイト内）</h3>
+            <p class="muted">Driveが見られない環境向けに、最低限のPDFを同梱しています。</p>
+          </div>
+          <div class="media-card__right">
+            <a class="btn btn-ghost" href="./assets/00_README_ご利用条件.pdf" target="_blank" rel="noopener noreferrer">利用条件PDF</a>
+            <a class="btn btn-ghost" href="./assets/03_TEXT_紹介文テンプレ.pdf" target="_blank" rel="noopener noreferrer">紹介文テンプレPDF</a>
+          </div>
+        </div>
       </div>
+
+</div>
     </div>
   </main>
 
