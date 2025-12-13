@@ -75,12 +75,9 @@
 
           <div class="flex items-center gap-2">
             <a id="backToHome" href="./index.html#about" class="hidden sm:inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-extrabold hover:bg-white/10">
-              公式サイトへ
-              <span class="text-white/70">→</span>
+              公式サイトへ <span class="text-white/70">→</span>
             </a>
-            <button id="menuBtn" class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 hover:bg-white/10" aria-label="メニュー">
-              ☰
-            </button>
+            <button id="menuBtn" class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 hover:bg-white/10" aria-label="メニュー">☰</button>
           </div>
         </div>
 
@@ -115,22 +112,16 @@
               <span class="text-white/80">The Dance Summit 2026</span>
             </div>
 
-            <h1 class="mt-5 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">
-              “挑戦”を、つないでいく
-            </h1>
+            <h1 class="mt-5 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">“挑戦”を、つないでいく</h1>
 
             <p class="mt-4 max-w-xl text-base sm:text-lg text-white/80 leading-relaxed">
               <span class="font-semibold text-white">POM PUPPYS bright</span> の The Dance Summit 2026 への挑戦に向けた特設ページです。
-              <span class="font-semibold text-white">公式サイト（チーム紹介）を主役</span>にしたまま、必要な方へだけ分かりやすく情報をまとめています。
+              公式サイト（チーム紹介）を主役にしたまま、必要な方へだけ分かりやすく情報をまとめています。
             </p>
 
             <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-              <a href="#progress" class="inline-flex items-center justify-center rounded-2xl bg-pink px-6 py-3 font-extrabold shadow-soft hover:bg-pink/90">
-                進捗を見る
-              </a>
-              <a id="toAbout" href="./index.html#about" class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-extrabold hover:bg-white/10">
-                チーム紹介へ戻る
-              </a>
+              <a href="#progress" class="inline-flex items-center justify-center rounded-2xl bg-pink px-6 py-3 font-extrabold shadow-soft hover:bg-pink/90">進捗を見る</a>
+              <a id="toAbout" href="./index.html#about" class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-extrabold hover:bg-white/10">チーム紹介へ戻る</a>
             </div>
 
             <div class="mt-6 rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white/80">
@@ -319,9 +310,7 @@
 
         <div class="mt-6 grid gap-4 lg:grid-cols-3" id="updatesGrid"></div>
 
-        <div class="mt-5 text-xs text-white/55">
-          ※更新は config.js の project.updates[] を編集するだけ
-        </div>
+        <div class="mt-5 text-xs text-white/55">※更新は config.js の project.updates[] を編集するだけ</div>
       </div>
 
       <div class="h-16 sm:h-24"></div>
@@ -390,10 +379,28 @@
                  class="inline-flex items-center justify-center rounded-2xl bg-pink px-6 py-3 font-extrabold hover:bg-pink/90">
                 外部ページへ（クラウドファンディング）
               </a>
+
+              <button id="shareBtn" type="button"
+                class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-extrabold hover:bg-white/10">
+                共有する（スマホ推奨）
+              </button>
+
+              <div class="grid grid-cols-2 gap-3">
+                <a id="shareX" href="#" target="_blank" rel="noopener"
+                  class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-extrabold hover:bg-white/10">
+                  Xで共有
+                </a>
+                <a id="shareLINE" href="#" target="_blank" rel="noopener"
+                  class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-extrabold hover:bg-white/10">
+                  LINEで共有
+                </a>
+              </div>
+
               <button id="copyLinkBtn" type="button"
                  class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-extrabold hover:bg-white/10">
                 このページのURLをコピー
               </button>
+
               <a id="mediaBack" href="./index.html#media"
                  class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-extrabold hover:bg-white/10">
                 取材・協賛の相談（公式サイト）
@@ -564,8 +571,6 @@
       if (!CFG) return;
 
       const home = CFG.pages?.home || "./index.html";
-      const project = CFG.pages?.project || "./project-world-challenge.html";
-
       document.getElementById("homeLink").href = home + "#top";
       document.getElementById("backToHome").href = home + "#about";
       document.getElementById("toAbout").href = home + "#about";
@@ -600,6 +605,32 @@
       });
     }
 
+    // ★A案：WebShare + X/LINEフォールバック
+    function setupShare(){
+      const btn = document.getElementById("shareBtn");
+      const url = location.href;
+
+      const shareTitle = CFG?.project?.share?.title || "POM PUPPYS ★bright";
+      const shareText  = CFG?.project?.share?.text  || "The Dance Summit 2026 への挑戦｜応援・取材はこちら";
+
+      const x = document.getElementById("shareX");
+      const line = document.getElementById("shareLINE");
+      if (x) x.href = "https://x.com/intent/tweet?text=" + encodeURIComponent(shareText) + "&url=" + encodeURIComponent(url);
+      if (line) line.href = "https://social-plugins.line.me/lineit/share?url=" + encodeURIComponent(url);
+
+      if (!btn) return;
+      btn.addEventListener("click", async ()=>{
+        if (navigator.share) {
+          try { await navigator.share({ title: shareTitle, text: shareText, url }); }
+          catch(e) { /* キャンセル等は無視 */ }
+        } else {
+          // 非対応環境：コピーへ
+          try { await navigator.clipboard.writeText(url); alert("URLをコピーしました"); }
+          catch(e) { alert("このURLをコピーして共有してください:\n" + url); }
+        }
+      });
+    }
+
     renderProgress();
     renderUpdates();
     wireConfigLinks();
@@ -607,6 +638,7 @@
     setupHeader();
     setupMenu();
     setupCopy();
+    setupShare();
   </script>
 </body>
 </html>
