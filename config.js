@@ -31,11 +31,10 @@ window.PUPPYS_CONFIG = {
   },
 
   // メディアキット（未設定なら空でOK。空は自動非表示/準備中表示）
-  mediaKit: {
-    kitUrl: "",
-    photosUrl: "",
-    logoUrl: ""
-  },
+  mediaKitUrl: "https://drive.google.com/drive/folders/1jfploQJhKcJWmGzHVKrY2VnJykLoE-d0?usp=sharing",
+　pressEmail: "moccy0306@gmail.com",
+　pressContactName: "POM PUPPYS bright 保護者代表　飯田 絵里",
+
 
   // =========================================================
   // HOME: NEWS
