@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>POM PUPPYS ★bright | Official Site</title>
+  <meta name="description" content="POM PUPPYS bright 公式サイト。チーム紹介、活動履歴、ニュース、メディア向け情報、The Dance Summit 2026 への挑戦。">
+  <meta property="og:title" content="POM PUPPYS ★bright | Official Site">
+  <meta property="og:description" content="チーム紹介・活動履歴・ニュース。The Dance Summit 2026 への挑戦。">
+  <meta property="og:type" content="website">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    .bg-glow {
+      position: absolute; inset: -22%;
+      filter: blur(70px); opacity: .55;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(255, 56, 160, 0.55), transparent 45%),
+        radial-gradient(circle at 72% 26%, rgba(255, 214, 102, 0.42), transparent 50%),
+        radial-gradient(circle at 58% 78%, rgba(35, 62, 125, 0.75), transparent 55%);
+      animation: floatGlow 12s ease-in-out infinite;
+      will-change: transform;
+    }
+    @keyframes floatGlow {
+      0%,100% { transform: translate3d(0,0,0) scale(1); }
+      50% { transform: translate3d(2%, -2%, 0) scale(1.06); }
+    }
+    .diag-lines {
+      background-image:
+        linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.10) 12%, transparent 12%, transparent 20%),
+        linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.06) 8%, transparent 8%, transparent 16%);
+      background-size: 56px 56px, 86px 86px;
+      mask-image: radial-gradient(circle at 30% 30%, rgba(0,0,0,1), rgba(0,0,0,.25) 55%, rgba(0,0,0,0) 78%);
+    }
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.is-in { opacity: 1; transform: translateY(0); }
+    .shrink { padding-top: .55rem; padding-bottom: .55rem; backdrop-filter: blur(10px); }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { navy: "#0B1B3A", pink: "#FF38A0", gold: "#FFD666" },
+          boxShadow: { soft: "0 14px 50px rgba(0,0,0,0.25)" }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-navy text-white selection:bg-pink/30 selection:text-white">
+  <!-- Header -->
+  <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="mt-4 rounded-2xl border border-white/10 bg-navy/70 px-4 py-3 shadow-soft">
+        <div class="flex items-center justify-between gap-3">
+          <a href="#top" class="flex items-center gap-2">
+            <div class="h-9 w-9 rounded-xl bg-white/10 border border-white/10 grid place-items-center">
+              <span class="text-gold font-black">★</span>
+            </div>
+            <div class="leading-tight">
+              <div class="font-extrabold tracking-wide">POM PUPPYS <span class="text-gold">★</span>bright</div>
+              <div class="text-xs text-white/70">Official Site</div>
+            </div>
+          </a>
+
+          <nav class="hidden md:flex items-center gap-5 text-sm text-white/80">
+            <a class="hover:text-white" href="#about">ABOUT</a>
+            <a class="hover:text-white" href="#news">NEWS</a>
+            <a class="hover:text-white" href="#story">STORY</a>
+            <a class="hover:text-white" href="#gallery">GALLERY</a>
+            <a class="hover:text-white" href="#media">MEDIA</a>
+            <a class="hover:text-white" href="#project">PROJECT</a>
+            <a class="hover:text-white" href="#contact">CONTACT</a>
+          </nav>
+
+          <div class="flex items-center gap-2">
+            <a href="#project" class="hidden sm:inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-extrabold hover:bg-white/10">
+              Project
+              <span class="text-white/70">→</span>
+            </a>
+            <button id="menuBtn" class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 hover:bg-white/10" aria-label="メニュー">
+              ☰
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="md:hidden hidden pt-3">
+          <div class="grid gap-2 text-sm text-white/85">
+            <a class="rounded-xl px-3 py-2 hover:bg-white/10" href="#about">ABOUT</a>
+            <a class="rounded-xl px-3 py-2 hover:bg-white/10" href="#news">NEWS</a>
+            <a class="rounded-xl px-3 py-2 hover:bg-white/10" href="#story">STORY</a>
+            <a class="rounded-xl px-3 py-2 hover:bg-white/10" href="#gallery">GALLERY</a>
+            <a class="rounded-xl px-3 py-2 hover:bg-white/10" href="#media">MEDIA</a>
+            <a class="rounded-xl px-3 py-2 hover:bg-white/10" href="#project">PROJECT</a>
+            <a class="rounded-xl px-3 py-2 hover:bg-white/10" href="#contact">CONTACT</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="pt-28 md:pt-32">
+    <!-- HERO -->
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0">
+        <div class="bg-glow"></div>
+        <div class="absolute inset-0 diag-lines opacity-60"></div>
+      </div>
+
+      <div class="relative mx-auto max-w-6xl px-4 sm:px-6">
+        <div class="grid gap-10 md:grid-cols-12 items-center">
+          <div class="md:col-span-7 reveal">
+            <div class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white/85">
+              <span class="text-gold">●</span> Official Team Page
+              <span class="mx-1 text-white/30">/</span>
+              <span class="text-white/80">The Dance Summit 2026</span>
+            </div>
+
+            <h1 class="mt-5 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">
+              青春の輝き × <span class="text-pink">世界基準</span>
+            </h1>
+
+            <p class="mt-4 max-w-xl text-base sm:text-lg text-white/80 leading-relaxed">
+              <span class="font-semibold text-white">POM PUPPYS bright</span> は、小学6年生〜中学3年生で構成されるチームです。
+              技術と表現力、そして“楽しむ”を軸に、次の舞台へ挑み続けています。
+            </p>
+
+            <!-- Credibility badges (控えめに信頼感) -->
+            <div class="mt-5 flex flex-wrap gap-2">
+              <span class="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-white/80">
+                2016 春日部で活動開始
+              </span>
+              <span class="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-white/80">
+                2020 大会挑戦を本格化
+              </span>
+              <span class="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold text-white/80">
+                The Dance Summit 2026
+              </span>
+            </div>
+
+            <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+              <a href="#about" class="inline-flex items-center justify-center rounded-2xl bg-pink px-6 py-3 font-extrabold shadow-soft hover:bg-pink/90">
+                チーム紹介を見る
+              </a>
+              <a href="#news" class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-extrabold hover:bg-white/10">
+                最新ニュース
+              </a>
+              <a href="#media" class="inline-flex items-center justify-center rounded-2xl px-2 py-3 font-semibold text-white/80 hover:text-white">
+                メディアの方へ →
+              </a>
+            </div>
+
+            <!-- Character placeholder -->
+            <div class="mt-8 flex items-start gap-3">
+              <div class="h-12 w-12 flex-shrink-0 rounded-2xl border border-white/15 bg-white/10 grid place-items-center">
+                <span class="text-gold text-xl">★</span>
+              </div>
+              <div class="rounded-2xl border border-white/15 bg-white/5 px-4 py-3 text-sm text-white/80">
+                <div class="font-extrabold text-white">オリジナルキャラ枠（差し替えOK）</div>
+                ここにキャラを登場させて、NEWSやSTORYの案内役にできます。
+              </div>
+            </div>
+          </div>
+
+          <div class="md:col-span-5 reveal">
+            <div class="rounded-3xl border border-white/10 bg-white/5 p-3 shadow-soft">
+              <div class="aspect-[4/5] w-full overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/10 to-white/0">
+                <div class="h-full w-full grid place-items-center text-center px-6">
+                  <div>
+                    <div class="text-sm text-white/70">Hero Visual Placeholder</div>
+                    <div class="mt-2 text-lg font-extrabold">演技写真 / 集合写真 / 受賞シーン</div>
+                    <div class="mt-3 text-xs text-white/60">（後で差し替え）</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-3 grid grid-cols-3 gap-3">
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-3">
+                  <div class="text-xs text-white/60">Keyword</div>
+                  <div class="mt-1 font-bold">Trust</div>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-3">
+                  <div class="text-xs text-white/60">Keyword</div>
+                  <div class="mt-1 font-bold">Energy</div>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-3">
+                  <div class="text-xs text-white/60">Keyword</div>
+                  <div class="mt-1 font-bold">Craft</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="h-16 sm:h-24"></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="reveal">
+        <div class="flex items-end justify-between gap-4">
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight">ABOUT</h2>
+          <div class="text-sm text-white/70">チームの基本情報</div>
+        </div>
+
+        <div class="mt-6 grid gap-5 lg:grid-cols-12">
+          <div class="lg:col-span-7 rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8 shadow-soft">
+            <div class="text-sm text-white/70">POM PUPPYS ★bright</div>
+            <p class="mt-3 text-sm sm:text-base text-white/80 leading-relaxed">
+              <span class="font-semibold text-white">POM PUPPYS bright</span> は、埼玉県ふじみ野発祥のチームの流れを受け、
+              <span class="font-semibold text-white">2016年に春日部で活動を開始</span>しました。
+              <span class="font-semibold text-white">2020年から大会への挑戦を本格化</span>し、試行錯誤を重ねた<span class="font-semibold text-white">5年目</span>に大きく躍進。
+              <span class="font-semibold text-white">The Dance Summit 2026</span> への出場権獲得につながりました。
+              小学6年生〜中学3年生のメンバーが、日々の練習を積み重ねながら挑戦を続けています。
+            </p>
+
+            <!-- Timeline -->
+            <div class="mt-6 rounded-3xl border border-white/10 bg-navy/40 p-5">
+              <div class="text-sm font-extrabold">挑戦の軌跡</div>
+              <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <div class="text-xs text-white/60">2016</div>
+                  <div class="mt-1 font-extrabold">春日部で活動開始</div>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <div class="text-xs text-white/60">2020</div>
+                  <div class="mt-1 font-extrabold">大会への挑戦を本格化</div>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <div class="text-xs text-white/60">2025</div>
+                  <div class="mt-1 font-extrabold">挑戦5年目で大躍進</div>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <div class="text-xs text-white/60">2026</div>
+                  <div class="mt-1 font-extrabold">The Dance Summit 2026</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div class="rounded-3xl border border-white/10 bg-navy/40 p-5">
+                <div class="text-xs text-white/60">Feature 01</div>
+                <div class="mt-2 font-extrabold">“楽しむ”を軸に、伸びる</div>
+                <div class="mt-2 text-sm text-white/70">表情・空気・一体感まで整え、演技を磨きます。</div>
+              </div>
+              <div class="rounded-3xl border border-white/10 bg-navy/40 p-5">
+                <div class="text-xs text-white/60">Feature 02</div>
+                <div class="mt-2 font-extrabold">春日部から世界へ</div>
+                <div class="mt-2 text-sm text-white/70">地域の支えに感謝しながら、次の舞台へ挑みます。</div>
+              </div>
+            </div>
+
+            <div class="mt-5 text-xs text-white/55">
+              ※未成年保護の観点から、個人情報や詳細な手配内容は必要最小限の掲載としています。
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 space-y-5">
+            <div class="reveal rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8">
+              <div class="text-sm text-white/70">Quick Facts</div>
+              <dl class="mt-4 space-y-3 text-sm text-white/80">
+                <div class="flex items-start justify-between gap-4">
+                  <dt class="text-white/60">カテゴリー</dt><dd class="font-semibold text-white">Dance / Cheer Dance</dd>
+                </div>
+                <div class="flex items-start justify-between gap-4">
+                  <dt class="text-white/60">メンバー構成</dt><dd class="font-semibold text-white">小6〜中学3年生</dd>
+                </div>
+                <div class="flex items-start justify-between gap-4">
+                  <dt class="text-white/60">拠点</dt><dd class="font-semibold text-white">埼玉（春日部）</dd>
+                </div>
+                <div class="flex items-start justify-between gap-4">
+                  <dt class="text-white/60">トーン</dt><dd class="font-semibold text-white">Pink / Navy / Gold</dd>
+                </div>
+              </dl>
+
+              <div class="mt-6 rounded-3xl border border-white/10 bg-navy/40 p-5">
+                <div class="text-sm font-extrabold">メッセージ（差し替え）</div>
+                <p class="mt-2 text-sm text-white/75 leading-relaxed">
+                  「最初は参加も難しかった。でも支えがあり、今ここまで来ました。次は世界へ。」
+                </p>
+              </div>
+            </div>
+
+            <div class="reveal rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8">
+              <div class="text-sm text-white/70">Highlights</div>
+              <div class="mt-4 grid gap-3">
+                <div class="rounded-2xl border border-white/10 bg-navy/40 p-4">
+                  <div class="text-xs text-white/60">Turning Point</div>
+                  <div class="mt-1 font-extrabold">悔しさからの立て直し</div>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-navy/40 p-4">
+                  <div class="text-xs text-white/60">Next</div>
+                  <div class="mt-1 font-extrabold">The Dance Summit 2026</div>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-navy/40 p-4">
+                  <div class="text-xs text-white/60">Media</div>
+                  <div class="mt-1 font-extrabold">取材歓迎（教育・地域・挑戦）</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-16 sm:h-24"></div>
+    </section>
+
+    <!-- NEWS -->
+    <section id="news" class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="reveal">
+        <div class="flex items-end justify-between gap-4">
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight">NEWS</h2>
+          <div class="text-sm text-white/70">最新の活動状況</div>
+        </div>
+
+        <div class="mt-6 grid gap-4 lg:grid-cols-3" id="newsGrid"></div>
+
+        <div class="mt-5 text-xs text-white/55">
+          ※ここは運用で随時更新（JS配列を書き換えるだけ）
+        </div>
+      </div>
+
+      <div class="h-16 sm:h-24"></div>
+    </section>
+
+    <!-- STORY -->
+    <section id="story" class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="reveal">
+        <div class="flex items-end justify-between gap-4">
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight">STORY</h2>
+          <a href="#media" class="text-sm text-white/70 hover:text-white">メディア向け要点 →</a>
+        </div>
+
+        <div class="mt-6 grid gap-5 lg:grid-cols-12">
+          <div class="lg:col-span-7 rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8 shadow-soft">
+            <div class="text-sm text-white/70">物語の軸</div>
+            <h3 class="mt-2 text-xl sm:text-2xl font-extrabold">悔しさを“転機”に変えた、切り替えの物語</h3>
+
+            <p class="mt-4 text-sm sm:text-base text-white/80 leading-relaxed">
+              直前の大会では、私たちは思うような結果に届きませんでした。
+              そこで一度立ち止まり、「勝つため」だけではなく、踊ることそのものを楽しむ――原点に立ち返る決断をしました。
+              表情、声、チームの空気。ひとつずつ整えていくうちに、演技が変わり、結果も変わりました。
+            </p>
+
+            <div class="mt-6 rounded-3xl border border-white/10 bg-navy/40 p-5">
+              <div class="text-sm font-extrabold">姉妹チームと共に、世界へ</div>
+              <p class="mt-2 text-sm text-white/75 leading-relaxed">
+                JAMfestでは <span class="font-semibold text-white">春日部が1位、ふじみ野が2位</span>。
+                姉妹チームが並んで表彰台に立ち、互いの努力が証明された瞬間でした。
+                そして両チームとも出場権を獲得し、<span class="font-semibold text-white">The Dance Summit 2026</span> で同じ舞台に立ちます。
+              </p>
+            </div>
+
+            <div class="mt-6 grid gap-3 sm:grid-cols-3">
+              <div class="rounded-3xl border border-white/10 bg-navy/40 p-5">
+                <div class="text-xs text-white/60">Phase 01</div>
+                <div class="mt-2 font-extrabold">転機</div>
+                <div class="mt-2 text-sm text-white/70">悔しさを受け止める</div>
+              </div>
+              <div class="rounded-3xl border border-white/10 bg-navy/40 p-5">
+                <div class="text-xs text-white/60">Phase 02</div>
+                <div class="mt-2 font-extrabold">立て直し</div>
+                <div class="mt-2 text-sm text-white/70">楽しむに戻す</div>
+              </div>
+              <div class="rounded-3xl border border-white/10 bg-navy/40 p-5">
+                <div class="text-xs text-white/60">Phase 03</div>
+                <div class="mt-2 font-extrabold">挑戦</div>
+                <div class="mt-2 text-sm text-white/70">The Dance Summit 2026</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8">
+            <div class="text-sm text-white/70">キャラで見せる（差し替え）</div>
+            <div class="mt-4 rounded-3xl border border-white/10 bg-navy/40 p-5">
+              <div class="text-sm font-extrabold">案内役：オリジナルキャラ</div>
+              <p class="mt-2 text-sm text-white/75 leading-relaxed">
+                セクション見出しにキャラの小さなセリフを差し込み、読みやすさと世界観を強化できます。
+              </p>
+            </div>
+
+            <div class="mt-4 rounded-3xl border border-white/10 bg-navy/40 p-5">
+              <div class="text-sm font-extrabold">メディアが拾いやすい文脈</div>
+              <ul class="mt-3 space-y-2 text-sm text-white/75 list-disc pl-5">
+                <li>未成年の挑戦（教育的価値）</li>
+                <li>地域・周囲の支え</li>
+                <li>努力のプロセスと成長</li>
+              </ul>
+            </div>
+
+            <div class="mt-4 text-xs text-white/55">
+              ※安全面に配慮し、写真・氏名・学校名などは必要最小限の運用としています。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-16 sm:h-24"></div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="reveal">
+        <div class="flex items-end justify-between gap-4">
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight">GALLERY</h2>
+          <div class="text-sm text-white/70">写真・動画（差し替え）</div>
+        </div>
+
+        <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="rounded-3xl border border-white/10 bg-white/5 overflow-hidden">
+            <div class="aspect-video grid place-items-center bg-gradient-to-b from-white/10 to-white/0">
+              <div class="text-center px-6">
+                <div class="text-sm text-white/70">Photo / Video</div>
+                <div class="mt-1 font-extrabold">大会ハイライト</div>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-3xl border border-white/10 bg-white/5 overflow-hidden">
+            <div class="aspect-video grid place-items-center bg-gradient-to-b from-white/10 to-white/0">
+              <div class="text-center px-6">
+                <div class="text-sm text-white/70">Photo / Video</div>
+                <div class="mt-1 font-extrabold">練習の様子</div>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-3xl border border-white/10 bg-white/5 overflow-hidden">
+            <div class="aspect-video grid place-items-center bg-gradient-to-b from-white/10 to-white/0">
+              <div class="text-center px-6">
+                <div class="text-sm text-white/70">Photo / Video</div>
+                <div class="mt-1 font-extrabold">集合・オフショット</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 text-xs text-white/55">
+          ※YouTube埋め込みやショート動画導線に差し替え可能
+        </div>
+      </div>
+
+      <div class="h-16 sm:h-24"></div>
+    </section>
+
+    <!-- MEDIA -->
+    <section id="media" class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="reveal">
+        <div class="flex items-end justify-between gap-4">
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight">MEDIA</h2>
+          <div class="text-sm text-white/70">取材の方へ</div>
+        </div>
+
+        <div class="mt-6 grid gap-5 lg:grid-cols-12">
+          <div class="lg:col-span-7 rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8 shadow-soft">
+            <h3 class="text-xl font-extrabold">取材しやすい“要点”をまとめました</h3>
+            <ul class="mt-4 space-y-2 text-sm text-white/80 list-disc pl-5">
+              <li>小学6年生〜中学3年生のチームが <span class="font-semibold text-white">The Dance Summit 2026</span> に挑戦</li>
+              <li>“楽しむ”を軸に、演技の完成度と一体感を高めてきた</li>
+              <li>努力のプロセスに価値（教育・地域文脈で紹介可能）</li>
+              <li>未成年保護を優先し、掲載素材は事前確認のうえ提供</li>
+            </ul>
+
+            <div class="mt-6 grid gap-3 sm:grid-cols-2">
+              <div class="rounded-3xl border border-white/10 bg-navy/40 p-5">
+                <div class="text-xs text-white/60">提供可能素材</div>
+                <div class="mt-2 font-extrabold">写真 / ロゴ / 動画 / プロフィール</div>
+                <div class="mt-2 text-sm text-white/70">（後日メディアキット化）</div>
+              </div>
+              <div class="rounded-3xl border border-white/10 bg-navy/40 p-5">
+                <div class="text-xs text-white/60">ご相談</div>
+                <div class="mt-2 font-extrabold">取材・撮影・掲載</div>
+                <div class="mt-2 text-sm text-white/70">下部のCONTACTから</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8">
+            <div class="text-sm text-white/70">メディアキット（準備中）</div>
+            <div class="mt-4 rounded-3xl border border-white/10 bg-navy/40 p-5">
+              <div class="text-sm font-extrabold">ダウンロード導線（差し替え）</div>
+              <p class="mt-2 text-sm text-white/75 leading-relaxed">
+                ロゴ・写真・簡易プロフィールをまとめたzip/Driveリンクに差し替えできます。
+              </p>
+              <button class="mt-4 w-full rounded-2xl border border-white/20 bg-white/5 px-5 py-3 font-extrabold hover:bg-white/10" type="button">
+                Media Kit（準備中）
+              </button>
+            </div>
+
+            <div class="mt-4 text-xs text-white/55">
+              ※未成年保護のため、素材提供は窓口経由で行う運用を推奨します。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-16 sm:h-24"></div>
+    </section>
+
+    <!-- PROJECT (控えめ / ここだけ特設へ誘導) -->
+    <section id="project" class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="reveal">
+        <div class="flex items-end justify-between gap-4">
+          <h2 class="text-2xl sm:text-3xl font-black tracking-tight">PROJECT</h2>
+          <div class="text-sm text-white/70">挑戦に関する特設ページ</div>
+        </div>
+
+        <div class="mt-6 grid gap-5 lg:grid-cols-12">
+          <div class="lg:col-span-8 rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8 shadow-soft">
+            <div class="text-sm text-white/70">World Challenge Project</div>
+            <h3 class="mt-2 text-xl sm:text-2xl font-extrabold">The Dance Summit 2026 への挑戦</h3>
+            <p class="mt-4 text-sm sm:text-base text-white/80 leading-relaxed">
+              挑戦の背景、募集の考え方、進捗を整理した特設ページです。
+              公式サイトとしての恒久情報（チーム紹介）を主軸にしつつ、必要な方が迷わず辿り着ける導線として配置しています。
+            </p>
+
+            <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+              <a id="projectLink" href="./project-world-challenge.html"
+                 class="inline-flex items-center justify-center rounded-2xl bg-pink px-6 py-3 font-extrabold hover:bg-pink/90">
+                特設ページを見る
+              </a>
+              <a href="#contact"
+                 class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-extrabold hover:bg-white/10">
+                協賛・取材の相談
+              </a>
+            </div>
+
+            <div class="mt-5 text-xs text-white/55">
+              ※トップでは“支援”を強調しすぎない構成にしています（メディア配慮）。
+            </div>
+          </div>
+
+          <div class="lg:col-span-4 rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8">
+            <div class="text-sm text-white/70">Quick Link</div>
+            <div class="mt-4 grid gap-3">
+              <a href="./project-world-challenge.html#progress" class="rounded-2xl border border-white/15 bg-white/5 px-5 py-4 hover:bg-white/10">
+                <div class="text-xs text-white/60">特設</div>
+                <div class="mt-1 font-extrabold">進捗を見る</div>
+              </a>
+              <a href="./project-world-challenge.html#plan" class="rounded-2xl border border-white/15 bg-white/5 px-5 py-4 hover:bg-white/10">
+                <div class="text-xs text-white/60">特設</div>
+                <div class="mt-1 font-extrabold">募集の考え方</div>
+              </a>
+              <a href="./project-world-challenge.html#cta" class="rounded-2xl border border-white/15 bg-white/5 px-5 py-4 hover:bg-white/10">
+                <div class="text-xs text-white/60">特設</div>
+                <div class="mt-1 font-extrabold">外部導線</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-16 sm:h-24"></div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="reveal">
+        <div class="rounded-[2rem] border border-white/10 bg-white/5 p-6 sm:p-8 shadow-soft">
+          <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div class="lg:max-w-2xl">
+              <h2 class="text-2xl sm:text-3xl font-black tracking-tight">CONTACT</h2>
+              <p class="mt-3 text-sm sm:text-base text-white/75 leading-relaxed">
+                取材・協賛・イベント連携などのご相談はこちらへ。
+                未成年保護の観点で、公開範囲や撮影条件などは事前に調整いたします。
+              </p>
+            </div>
+
+            <div class="w-full lg:max-w-md grid gap-3">
+              <a id="mailLink" href="mailto:example@example.com"
+                 class="inline-flex items-center justify-center rounded-2xl bg-pink px-6 py-3 font-extrabold hover:bg-pink/90">
+                メールで問い合わせ（差し替え）
+              </a>
+              <button type="button"
+                 class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-6 py-3 font-extrabold hover:bg-white/10">
+                フォーム導線（準備中）
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-6 grid gap-3 sm:grid-cols-3">
+            <div class="rounded-3xl border border-white/10 bg-navy/40 p-5">
+              <div class="text-xs text-white/60">For Media</div>
+              <div class="mt-2 font-extrabold">取材・掲載のご相談</div>
+              <div class="mt-2 text-sm text-white/70">素材提供は窓口経由</div>
+            </div>
+            <div class="rounded-3xl border border-white/10 bg-navy/40 p-5">
+              <div class="text-xs text-white/60">For Business</div>
+              <div class="mt-2 font-extrabold">協賛・連携企画</div>
+              <div class="mt-2 text-sm text-white/70">ロゴ掲載など応相談</div>
+            </div>
+            <div class="rounded-3xl border border-white/10 bg-navy/40 p-5">
+              <div class="text-xs text-white/60">For Community</div>
+              <div class="mt-2 font-extrabold">地域イベント</div>
+              <div class="mt-2 text-sm text-white/70">出演・体験会など</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="h-16 sm:h-24"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-navy/80">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 py-10">
+        <div class="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <div class="font-extrabold">POM PUPPYS ★bright</div>
+            <div class="mt-1 text-sm text-white/60">Official Site</div>
+          </div>
+          <div class="grid gap-2 text-sm text-white/70">
+            <a class="hover:text-white" href="#about">ABOUT</a>
+            <a class="hover:text-white" href="#news">NEWS</a>
+            <a class="hover:text-white" href="#project">PROJECT</a>
+            <a class="hover:text-white" href="#contact">CONTACT</a>
+          </div>
+        </div>
+        <div class="mt-8 text-xs text-white/45">© POM PUPPYS ★bright. All rights reserved.</div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // =========================================================
+    // 設定値（ここだけ更新で運用OK）
+    // =========================================================
+    const SITE_CONFIG = {
+      projectPageUrl: "./project-world-challenge.html",
+      contactEmail: "example@example.com",
+      news: [
+        {
+          date: "2025-12-28",
+          title: "USA Regionals 埼玉大会に出場します",
+          tag: "SCHEDULE",
+          body: "POM PUPPYS bright は、12/28開催の USA Regionals 埼玉大会に出場予定です。日々の練習の成果を出せるよう、チーム一丸で準備を進めています。"
+        },
+        {
+          date: "2026-03-15",
+          title: "PUPPYS 発表会（ふじみ野合同）に出演します",
+          tag: "EVENT",
+          body: "3/15は PUPPYS 発表会に出演予定です。ふじみ野合同でのステージを通して、日頃の感謝と成長の姿をお届けします。"
+        },
+        {
+          date: "2025-11-__",
+          title: "JAMfestで大きく躍進。次の舞台へ",
+          tag: "HIGHLIGHT",
+          body: "挑戦5年目。演技の向き合い方を整え直し、JAMfestで大きく躍進しました。支えてくださる皆さまへの感謝を胸に、次の舞台へ向けて準備を進めます。"
+        },
+        {
+          date: "2025-10-__",
+          title: "JCDA 関東大会を振り返って（転機）",
+          tag: "REPORT",
+          body: "関東大会では思うような結果に届かず、私たちにとって大きな転機になりました。そこから原点の「楽しむ」に立ち返り、表情やチームの空気づくりまで含めて立て直しを進めています。"
+        },
+        {
+          date: "2025-__-__",
+          title: "The Dance Summit 2026 に向けて始動",
+          tag: "UPDATE",
+          body: "POM PUPPYS bright は The Dance Summit 2026 に向けて本格始動しました。練習の様子や活動の進捗は、このNEWSで定期的にお知らせします。"
+        }
+      ]
+    };
+
+    // ===== render NEWS =====
+    function renderNews() {
+      const grid = document.getElementById("newsGrid");
+      grid.innerHTML = "";
+      SITE_CONFIG.news.forEach(n => {
+        const card = document.createElement("article");
+        card.className = "rounded-3xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 transition";
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-3">
+            <div class="text-xs text-white/60">${escapeHtml(n.date)}</div>
+            <div class="text-[11px] font-extrabold px-2.5 py-1 rounded-full border border-white/15 bg-white/5 text-white/80">${escapeHtml(n.tag)}</div>
+          </div>
+          <div class="mt-3 text-lg font-extrabold">${escapeHtml(n.title)}</div>
+          <p class="mt-2 text-sm text-white/70 leading-relaxed">${escapeHtml(n.body)}</p>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    // ===== UI behaviors =====
+    function setupReveal() {
+      const els = document.querySelectorAll(".reveal");
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) e.target.classList.add("is-in");
+      }, { threshold: 0.12 });
+      els.forEach(el => io.observe(el));
+    }
+
+    function setupHeader() {
+      const header = document.getElementById("header");
+      const onScroll = () => {
+        const box = header.querySelector(".rounded-2xl");
+        if (window.scrollY > 30) box.classList.add("shrink");
+        else box.classList.remove("shrink");
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    }
+
+    function setupMenu() {
+      const btn = document.getElementById("menuBtn");
+      const menu = document.getElementById("mobileMenu");
+      btn.addEventListener("click", () => menu.classList.toggle("hidden"));
+      menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => menu.classList.add("hidden")));
+    }
+
+    function wireLinks() {
+      const p = document.getElementById("projectLink");
+      if (p) p.href = SITE_CONFIG.projectPageUrl;
+
+      const mail = document.getElementById("mailLink");
+      if (mail) mail.href = "mailto:" + SITE_CONFIG.contactEmail;
+    }
+
+    renderNews();
+    setupReveal();
+    setupHeader();
+    setupMenu();
+    wireLinks();
+  </script>
+</body>
+</html>
