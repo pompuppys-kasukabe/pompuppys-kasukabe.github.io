@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>企業・団体の方へ（協賛 / 応援出演）｜POM PUPPYS bright</title>
+  <meta name="description" content="POM PUPPYS bright への協賛（ロゴ掲載）や応援出演（有料・演技のみ）のご相談窓口です。" />
+
+  <link rel="canonical" href="https://pompuppys-kasukabe.github.io/sponsor.html" />
+  <meta name="robots" content="index,follow" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="POM PUPPYS bright" />
+  <meta property="og:title" content="企業・団体の方へ（協賛 / 応援出演）｜POM PUPPYS bright" />
+  <meta property="og:description" content="協賛（ロゴ掲載）や応援出演（有料・演技のみ）のご相談窓口です。" />
+  <meta property="og:url" content="https://pompuppys-kasukabe.github.io/sponsor.html" />
+  <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./style.css" />
+  <script src="./config.js"></script>
+  <script src="./sponsor.js" defer></script>
+
+  <style>
+    /* sponsor.html 専用の追加スタイル */
+    .menuItem {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(211,215,227,.62);
+      background: rgba(255,255,255,.78);
+      margin-bottom: 12px;
+    }
+    .menuItem:last-child {
+      margin-bottom: 0;
+    }
+    .menuItem__title {
+      font-weight: 900;
+      color: var(--navy);
+      font-size: 1.05rem;
+    }
+    .infoRow {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(11,27,58,.04);
+      border: 1px solid rgba(211,215,227,.60);
+      margin-bottom: 10px;
+    }
+    .infoRow:last-child {
+      margin-bottom: 0;
+    }
+    .infoRow__label {
+      font-weight: 900;
+      color: var(--navy);
+      min-width: 100px;
+    }
+    .infoRow__value {
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body data-page="sponsor">
+  <header class="header">
+    <div class="container header__inner">
+      <div class="brand">
+        <span class="brand__dot" aria-hidden="true"></span>
+        <span>SPONSOR</span>
+      </div>
+
+      <nav class="nav" aria-label="primary">
+        <a href="./index.html">← 公式サイトへ</a>
+        <a href="./project-world-challenge.html">支援特設ページ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" style="padding-top:76px;">
+      <div class="container">
+
+        <!-- Hero Card -->
+        <div class="heroCard">
+          <h1 class="heroTitle" id="spPageTitle" style="margin-bottom:8px;">企業・団体の方へ（協賛 / 応援出演）</h1>
+          <p class="heroSub muted" id="spLead" style="margin-bottom:0;line-height:1.9;">
+            協賛（ロゴ掲載）や、応援出演（有料・演技のみ）のご相談窓口です。まずはお気軽にご連絡ください。
+          </p>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+            <a id="spMailBtn" class="btn btn-primary" href="#">メールで相談する</a>
+            <a id="spFormBtn" class="btn btn-ghost" href="#" style="display:none;">フォームで相談する</a>
+          </div>
+        </div>
+
+        <div style="height:16px;"></div>
+
+        <!-- 基本情報 -->
+        <div class="card">
+          <div class="section-head" style="margin-bottom:12px;">
+            <h2>基本情報</h2>
+            <p class="muted">お問い合わせ先</p>
+          </div>
+
+          <div class="infoRow">
+            <div class="infoRow__label">メール</div>
+            <div class="infoRow__value" id="spEmailText">—</div>
+          </div>
+          <div class="infoRow">
+            <div class="infoRow__label">対応エリア</div>
+            <div class="infoRow__value" id="spAreaNote">—</div>
+          </div>
+          <div class="infoRow">
+            <div class="infoRow__label">費用目安</div>
+            <div class="infoRow__value" id="spFeeNote">—</div>
+          </div>
+        </div>
+
+        <div style="height:16px;"></div>
+
+        <!-- 協賛メニュー -->
+        <div class="card">
+          <div class="section-head" style="margin-bottom:12px;">
+            <h2>協賛・応援出演メニュー</h2>
+            <p class="muted">ご検討内容に応じて</p>
+          </div>
+
+          <div id="spMenus">
+            <!-- JS で挿入 -->
+          </div>
+        </div>
+
+        <div style="height:16px;"></div>
+
+        <!-- 必要事項 -->
+        <div class="grid2">
+          <div class="card">
+            <div class="section-head" style="margin-bottom:12px;">
+              <h2>ご連絡時にお伝えいただきたいこと</h2>
+            </div>
+            <ul class="muted" id="spRequired" style="line-height:1.9;margin:0;">
+              <!-- JS で挿入 -->
+            </ul>
+          </div>
+
+          <div class="card">
+            <div class="section-head" style="margin-bottom:12px;">
+              <h2>掲載ポリシー</h2>
+            </div>
+            <ul class="muted" id="spPolicy" style="line-height:1.9;margin:0;">
+              <!-- JS で挿入 -->
+            </ul>
+          </div>
+        </div>
+
+        <div style="height:16px;"></div>
+
+        <!-- CTA -->
+        <div class="media-card">
+          <div class="media-card__left">
+            <h3>まずはお気軽にご相談ください</h3>
+            <p class="muted" style="line-height:1.85;">
+              協賛・応援出演のご検討、ありがとうございます。<br/>
+              内容やご予算に応じて柔軟に対応いたします。
+            </p>
+          </div>
+          <div class="media-card__right">
+            <a id="spMailBtn2" class="btn btn-primary" href="#">メールで相談する</a>
+            <a class="btn btn-ghost" href="./project-world-challenge.html">支援特設ページを見る</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div>© POM PUPPYS bright</div>
+      <div class="muted" style="margin-top:6px;">
+        取材窓口：<a href="mailto:moccy0306@gmail.com">moccy0306@gmail.com</a>（保護者代表 飯田 絵里）
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 2つ目のメールボタンも同じリンクにする
+    document.addEventListener("DOMContentLoaded", function(){
+      var btn1 = document.getElementById("spMailBtn");
+      var btn2 = document.getElementById("spMailBtn2");
+      if(btn1 && btn2){
+        btn2.href = btn1.href;
+        // btn1のhrefが変わったら追従
+        var observer = new MutationObserver(function(){
+          btn2.href = btn1.href;
+        });
+        observer.observe(btn1, { attributes: true, attributeFilter: ["href"] });
+      }
+    });
+  </script>
+</body>
+</html>
