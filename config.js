@@ -107,7 +107,7 @@ window.PUPPYS_CONFIG = {
     ],
     // オリジナルキャラ（任意）
     mascot: {
-      enabled: false,
+      enabled: true,
       src: "./assets/mascot.png",
       alt: "オリジナルキャラクター"
     }
