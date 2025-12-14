@@ -22,7 +22,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg" />
 
-  <!-- Fonts (no @import in CSS) -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
@@ -47,13 +47,18 @@
   </header>
 
   <main>
-    <!-- HERO -->
     <section class="hero hero--project">
       <div class="container hero__grid">
         <div class="heroCard heroCard--project">
           <div class="kicker" id="pKicker"></div>
           <h1 class="heroTitle" id="pHeadline"></h1>
           <p class="heroSub muted" id="pLead" style="margin-top:10px;"></p>
+
+          <!-- Project hero media (auto) -->
+          <div class="heroMediaWrap heroMediaWrap--project" id="pHeroMediaWrap" style="display:none;">
+            <video class="heroVideo" id="pHeroVideo" playsinline muted loop preload="metadata" style="display:none;"></video>
+            <img class="heroPhoto" id="pHeroImg" src="" alt="" loading="eager" decoding="async" style="display:none;"/>
+          </div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center;">
             <a id="crowdfundingBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">
@@ -67,30 +72,17 @@
           </p>
         </div>
 
-        <!-- Progress / KPI -->
-        <div class="card">
+        <div class="card" id="progressCard">
           <div class="section-head" style="margin-bottom:10px;">
             <h2 style="font-size:1.05rem;">進捗</h2>
             <p class="muted" style="font-size:.95rem;">透明性を大切に</p>
           </div>
 
           <div class="kpiGrid">
-            <div class="kpi">
-              <div class="muted">目標</div>
-              <div class="kpi__v" id="goalYen">—</div>
-            </div>
-            <div class="kpi">
-              <div class="muted">現在</div>
-              <div class="kpi__v" id="raisedYen">—</div>
-            </div>
-            <div class="kpi">
-              <div class="muted">達成率</div>
-              <div class="kpi__v" id="pct">—</div>
-            </div>
-            <div class="kpi">
-              <div class="muted">残り</div>
-              <div class="kpi__v" id="daysLeft">—</div>
-            </div>
+            <div class="kpi"><div class="muted">目標</div><div class="kpi__v" id="goalYen">—</div></div>
+            <div class="kpi"><div class="muted">現在</div><div class="kpi__v" id="raisedYen">—</div></div>
+            <div class="kpi"><div class="muted">達成率</div><div class="kpi__v" id="pct">—</div></div>
+            <div class="kpi"><div class="muted">残り</div><div class="kpi__v" id="daysLeft">—</div></div>
           </div>
 
           <div class="bar" aria-hidden="true">
@@ -106,7 +98,6 @@
       </div>
     </section>
 
-    <!-- WHY -->
     <section class="section">
       <div class="container">
         <div class="grid2">
@@ -114,7 +105,6 @@
             <h2 class="secTitle" id="whyTitle">なぜ支援が必要か</h2>
             <ul class="muted" id="whyBody" style="line-height:1.9;margin:0;"></ul>
           </div>
-
           <div class="card">
             <h2 class="secTitle" id="usageTitle">資金の使い道</h2>
             <ul class="muted" id="usageBody" style="line-height:1.9;margin:0;"></ul>
@@ -123,7 +113,6 @@
       </div>
     </section>
 
-    <!-- COST SUMMARY -->
     <section class="section">
       <div class="container">
         <div class="section-head">
@@ -134,22 +123,10 @@
         <div class="grid2">
           <div class="card">
             <div class="kpiGrid" style="grid-template-columns:repeat(2,1fr);">
-              <div class="kpi">
-                <div class="muted">パッケージ費（1人）</div>
-                <div class="kpi__v" id="perPerson">—</div>
-              </div>
-              <div class="kpi">
-                <div class="muted">別途費用（1人）</div>
-                <div class="kpi__v" id="extrasPerPerson">—</div>
-              </div>
-              <div class="kpi">
-                <div class="muted">合計（1人）</div>
-                <div class="kpi__v" id="totalPerPerson">—</div>
-              </div>
-              <div class="kpi">
-                <div class="muted">人数</div>
-                <div class="kpi__v" id="headcount">—</div>
-              </div>
+              <div class="kpi"><div class="muted">パッケージ費（1人）</div><div class="kpi__v" id="perPerson">—</div></div>
+              <div class="kpi"><div class="muted">別途費用（1人）</div><div class="kpi__v" id="extrasPerPerson">—</div></div>
+              <div class="kpi"><div class="muted">合計（1人）</div><div class="kpi__v" id="totalPerPerson">—</div></div>
+              <div class="kpi"><div class="muted">人数</div><div class="kpi__v" id="headcount">—</div></div>
             </div>
 
             <div style="height:10px;"></div>
@@ -168,8 +145,7 @@
               <table class="priceTbl">
                 <thead>
                   <tr>
-                    <th>部屋</th>
-                    <th>食事</th>
+                    <th>部屋</th><th>食事</th>
                     <th style="text-align:right;">選手/コーチ/大人</th>
                     <th style="text-align:right;">子ども</th>
                   </tr>
@@ -187,7 +163,6 @@
       </div>
     </section>
 
-    <!-- FUND FLOW -->
     <section class="section">
       <div class="container">
         <div class="section-head">
@@ -200,7 +175,6 @@
       </div>
     </section>
 
-    <!-- SCHEDULE -->
     <section class="section">
       <div class="container">
         <div class="section-head">
@@ -214,7 +188,6 @@
       </div>
     </section>
 
-    <!-- SUPPORT -->
     <section class="section">
       <div class="container">
         <div class="section-head">
@@ -259,7 +232,6 @@
       </div>
     </section>
 
-    <!-- FAQ -->
     <section class="section">
       <div class="container">
         <div class="section-head">
@@ -273,7 +245,6 @@
     </section>
   </main>
 
-  <!-- Sticky CTA (shows only if crowdfundingUrl exists) -->
   <div class="stickyCta" id="stickyCta" style="display:none;">
     <div class="stickyCta__inner">
       <div class="stickyCta__text">World Challenge Project</div>
@@ -287,7 +258,7 @@
     <div class="container">
       <div>© POM PUPPYS bright</div>
       <div class="muted" style="margin-top:6px;">
-        取材窓口：<a href="./media.html">Mediaページ</a>（素材・紹介文・クレジット）
+        取材素材：<a href="./media.html">Mediaページ</a>
       </div>
     </div>
   </footer>
