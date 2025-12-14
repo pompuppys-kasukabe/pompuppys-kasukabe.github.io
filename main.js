@@ -1,4 +1,112 @@
-/* main.js - 公式サイト・Mediaページ用 */
+/* main.js - 公式サイト・Mediaページ用（単体完結版） */
+
+// ===== 共通ユーティリティ（utils相当） =====
+
+function escapeHtml(str){
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function formatDateLabel(dateStr){
+  if(!dateStr) return "";
+  var m = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m) return String(dateStr);
+  return m[1] + "." + m[2] + "." + m[3];
+}
+
+function setText(id, text){
+  var el = document.getElementById(id);
+  if(el) el.textContent = text || "";
+}
+
+function getConfig(){
+  return window.PUPPYS_CONFIG || {};
+}
+
+function getConfigValue(path, defaultValue){
+  var cfg = getConfig();
+  var keys = path.split(".");
+  var value = cfg;
+  for(var i = 0; i < keys.length; i++){
+    if(value == null) return defaultValue;
+    value = value[keys[i]];
+  }
+  return value != null ? value : defaultValue;
+}
+
+async function copyText(text){
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  }catch(e){}
+  try{
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    ta.style.top = "0";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    var ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){
+    return false;
+  }
+}
+
+async function fetchJsonWithNoCache(url){
+  var u = url + (url.indexOf("?") >= 0 ? "&" : "?") + "v=" + Date.now();
+  var r = await fetch(u, { cache: "no-store" });
+  if(!r.ok) throw new Error("fetch failed: " + r.status);
+  return await r.json();
+}
+
+function normalizeMessages(list){
+  var arr = Array.isArray(list) ? list : [];
+  var result = [];
+  for(var i = 0; i < arr.length; i++){
+    var x = arr[i];
+    if(!x) continue;
+    if(x.approved === false) continue;
+    var msg = String(x.message || "").trim();
+    if(!msg) continue;
+    result.push({
+      date: String(x.date || ""),
+      name: String(x.name || "匿名"),
+      message: msg
+    });
+  }
+  result.sort(function(a, b){
+    return String(b.date).localeCompare(String(a.date));
+  });
+  return result;
+}
+
+function prefersReducedMotion(){
+  try{
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }catch(e){
+    return false;
+  }
+}
+
+function saveDataOn(){
+  try{
+    return !!(navigator.connection && navigator.connection.saveData);
+  }catch(e){
+    return false;
+  }
+}
+
+// ===== メイン機能 =====
 
 function wireCopyButtons(){
   var buttons = document.querySelectorAll("[data-copy-target]");
@@ -54,6 +162,7 @@ function renderNews(){
 
 function renderCopy(){
   var c = getConfigValue("copy", {});
+  if(!c) return;
 
   // Hero
   var hero = c.hero || {};
@@ -221,7 +330,6 @@ function renderHeroMedia(){
   var v = document.getElementById("heroVideo");
 
   var legacyWrap = document.getElementById("heroPhotoWrap");
-  var legacyImg = document.getElementById("heroPhoto");
 
   var heroImgSrc = imgs.heroImage || imgs.heroPhoto || "";
   var heroImgAlt = imgs.heroImageAlt || imgs.heroPhotoAlt || "POM PUPPYS bright";
@@ -229,7 +337,7 @@ function renderHeroMedia(){
 
   function showImage(){
     var w = wrap || legacyWrap;
-    var imageEl = img || legacyImg;
+    var imageEl = img;
     if(!w || !imageEl) return;
 
     if(v){
@@ -249,7 +357,7 @@ function renderHeroMedia(){
   }
 
   if(!wrap || !img){
-    if(legacyWrap && legacyImg) showImage();
+    if(legacyWrap) showImage();
     return;
   }
 
@@ -493,7 +601,6 @@ async function renderSupportMessagesOfficial(){
     }
   }
 
-  // Loading state
   grid.innerHTML = '<div class="muted">読み込み中...</div>';
 
   var data = [];
