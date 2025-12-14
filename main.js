@@ -1,4 +1,3 @@
-/* main.js */
 function escapeHtml(str){
   return String(str ?? "")
     .replaceAll("&","&amp;")
@@ -255,13 +254,18 @@ function renderPhotos(){
     return;
   }
 
-  // HERO
+  // HERO (supports portrait gracefully via blurred background)
   if(heroWrap && heroImg){
     const src = imgs.heroPhoto || "";
     if(src){
       heroImg.src = src;
       heroImg.alt = imgs.heroPhotoAlt || "POM PUPPYS bright";
       heroWrap.style.display = "block";
+
+      // pass background image to CSS (for blur layer)
+      try{
+        heroWrap.style.setProperty("--hero-bg", `url("${src}")`);
+      }catch(e){}
     }else{
       heroWrap.style.display = "none";
     }
