@@ -109,7 +109,7 @@ window.PUPPYS_CONFIG = {
     },
 
     gallery: [
-      { title: "表彰のあと", src: "./assets/photos/award_flag.jpg", alt: "表彰後の様子" },
+      { title: "大会当日", src: "./assets/photos/jam.jpg", alt: "マスコットと" },
       { title: "練習風景", src: "./assets/photos/practice_01.JPG", alt: "練習風景" },
       { title: "チーム集合", src: "./assets/photos/team_01.jpg", alt: "チーム集合写真" }
     ],
