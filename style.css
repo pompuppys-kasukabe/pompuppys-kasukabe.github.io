@@ -354,3 +354,29 @@ ul{ padding-left: 1.1em; }
 @media (max-width:900px){
   .lightbox__panel{ inset:16px; }
 }
+
+
+/* Floating mascot (bottom-right) */
+.mascotFloat{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  width:120px;
+  height:120px;
+  border-radius:28px;
+  overflow:hidden;
+  border:1px solid rgba(211,215,227,.9);
+  background:linear-gradient(135deg, rgba(255,56,160,.10), rgba(215,182,94,.12));
+  box-shadow: 0 18px 60px rgba(0,0,0,.18);
+  z-index:999;
+  display:none;
+}
+.mascotFloat img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+@media (max-width:900px){
+  .mascotFloat{ right:12px; bottom:12px; width:96px; height:96px; border-radius:24px; }
+}

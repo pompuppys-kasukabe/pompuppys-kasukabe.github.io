@@ -228,6 +228,8 @@ function renderPhotos(){
   const grid = document.getElementById("photoGrid");
   const mWrap = document.getElementById("mascotWrap");
   const mImg = document.getElementById("mascotImg");
+  const mf = document.getElementById("mascotFloat");
+  const mfImg = document.getElementById("mascotFloatImg");
 
   const imgs = window.PUPPYS_CONFIG?.siteImages;
   const section = document.getElementById("photosSection");
@@ -253,14 +255,18 @@ function renderPhotos(){
   }
 
   // Mascot
-  if(mWrap && mImg){
+  if(mWrap) mWrap.style.display = "none"; // inline mascot is not used
+  if(mImg) mImg.src = "";
+  if(mf && mfImg){
     const m = imgs.mascot || {};
     if(m.enabled && m.src){
-      mImg.src = m.src;
-      mImg.alt = m.alt || "Mascot";
-      mWrap.style.display = "block";
+      mfImg.src = m.src;
+      mfImg.alt = m.alt || "Mascot";
+      mf.style.display = "block";
+      mf.setAttribute("aria-hidden","false");
     }else{
-      mWrap.style.display = "none";
+      mf.style.display = "none";
+      mf.setAttribute("aria-hidden","true");
     }
   }
 
@@ -365,10 +371,26 @@ function setupLightbox(){
 }
 
 
+
+
+function wireInstagram(){
+  const a = document.getElementById("instaLink");
+  if(!a) return;
+  const url = window.PUPPYS_CONFIG?.instagramUrl || "";
+  if(url){
+    a.href = url;
+    a.style.display = "";
+  }else{
+    a.style.display = "none";
+  }
+}
+
+
 function initSite(){
   applyUiFlags();
   renderNews();
   renderCopy();
+  wireInstagram();
   renderPhotos();
   setupLightbox();
   wireMediaLink();

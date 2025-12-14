@@ -13,6 +13,7 @@ window.PUPPYS_CONFIG = {
 
   // Media（取材導線）※Mediaにはクラファン導線を出さない設計
   mediaKitUrl: "https://drive.google.com/drive/folders/1jfploQJhKcJWmGzHVKrY2VnJykLoE-d0?usp=sharing",
+  instagramUrl: "",
   pressEmail: "moccy0306@gmail.com",
   pressContactName: "POM PUPPYS bright 保護者代表　飯田 絵里",
 
