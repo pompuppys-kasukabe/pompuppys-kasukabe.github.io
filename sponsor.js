@@ -1,31 +1,36 @@
+/* sponsor.js (BROWSER COMPATIBLE VERSION) */
+
+// 共通ユーティリティ
 function escapeHtml(str){
-  return String(str ?? "")
-    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;").replaceAll("'","&#39;");
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function initSponsorPage(){
-  const s = window.PUPPYS_CONFIG?.sponsor;
+  var cfg = window.PUPPYS_CONFIG;
+  var s = cfg && cfg.sponsor;
   if(!s) return;
 
-  const email = window.PUPPYS_CONFIG?.pressEmail || "";
-  const name = window.PUPPYS_CONFIG?.pressContactName || "";
+  var email = (cfg && cfg.pressEmail) || "";
+  var name = (cfg && cfg.pressContactName) || "";
 
-  const setText = (id, text)=>{
-    const el = document.getElementById(id);
+  function setText(id, text){
+    var el = document.getElementById(id);
     if(el) el.textContent = text || "";
-  };
+  }
 
   setText("spPageTitle", s.pageTitle || "企業・団体の方へ（協賛 / 応援出演）");
-  setText("spLead",
-    "協賛（ロゴ掲載）や、応援出演（有料・演技のみ）のご相談窓口です。まずはお気軽にご連絡ください。"
-  );
+  setText("spLead", "協賛（ロゴ掲載）や、応援出演（有料・演技のみ）のご相談窓口です。まずはお気軽にご連絡ください。");
   setText("spFeeNote", s.feeNote || "");
   setText("spAreaNote", s.areaNote || "");
   setText("spEmailText", email || "—");
 
   // Form button (optional)
-  const formBtn = document.getElementById("spFormBtn");
+  var formBtn = document.getElementById("spFormBtn");
   if(formBtn){
     if(s.formUrl){
       formBtn.href = s.formUrl;
@@ -36,42 +41,55 @@ function initSponsorPage(){
   }
 
   // Mail button
-  const mailBtn = document.getElementById("spMailBtn");
+  var mailBtn = document.getElementById("spMailBtn");
   if(mailBtn){
     if(email){
-      const subject = encodeURIComponent(s.mail?.subject || "【協賛/応援出演のご相談】POM PUPPYS bright");
-      const bodyBase = s.mail?.body || "";
-      const body = encodeURIComponent(bodyBase + (name ? `\n\n（署名）\n${name}` : ""));
-      mailBtn.href = `mailto:${email}?subject=${subject}&body=${body}`;
+      var mail = s.mail || {};
+      var subject = encodeURIComponent(mail.subject || "【協賛/応援出演のご相談】POM PUPPYS bright");
+      var bodyBase = mail.body || "";
+      var bodyText = bodyBase + (name ? "\n\n（署名）\n" + name : "");
+      var body = encodeURIComponent(bodyText);
+      mailBtn.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
     }else{
       mailBtn.href = "#";
     }
   }
 
   // Menus
-  const menus = document.getElementById("spMenus");
+  var menus = document.getElementById("spMenus");
   if(menus){
-    const list = Array.isArray(s.menus) ? s.menus : [];
-    menus.innerHTML = list.map(m=>`
-      <div class="menuItem">
-        <div class="menuItem__title">${escapeHtml(m.title || "")}</div>
-        <div class="muted" style="line-height:1.8;margin-top:6px;">${escapeHtml(m.body || "")}</div>
-      </div>
-    `).join("");
+    var list = Array.isArray(s.menus) ? s.menus : [];
+    var menusHtml = "";
+    for(var i = 0; i < list.length; i++){
+      var m = list[i];
+      menusHtml += '<div class="menuItem">' +
+        '<div class="menuItem__title">' + escapeHtml(m.title || "") + '</div>' +
+        '<div class="muted" style="line-height:1.8;margin-top:6px;">' + escapeHtml(m.body || "") + '</div>' +
+      '</div>';
+    }
+    menus.innerHTML = menusHtml;
   }
 
   // Required
-  const req = document.getElementById("spRequired");
+  var req = document.getElementById("spRequired");
   if(req){
-    const items = Array.isArray(s.required) ? s.required : [];
-    req.innerHTML = items.map(t=>`<li>${escapeHtml(t)}</li>`).join("");
+    var reqItems = Array.isArray(s.required) ? s.required : [];
+    var reqHtml = "";
+    for(var j = 0; j < reqItems.length; j++){
+      reqHtml += "<li>" + escapeHtml(reqItems[j]) + "</li>";
+    }
+    req.innerHTML = reqHtml;
   }
 
   // Policy
-  const pol = document.getElementById("spPolicy");
+  var pol = document.getElementById("spPolicy");
   if(pol){
-    const items = Array.isArray(s.policy) ? s.policy : [];
-    pol.innerHTML = items.map(t=>`<li>${escapeHtml(t)}</li>`).join("");
+    var polItems = Array.isArray(s.policy) ? s.policy : [];
+    var polHtml = "";
+    for(var k = 0; k < polItems.length; k++){
+      polHtml += "<li>" + escapeHtml(polItems[k]) + "</li>";
+    }
+    pol.innerHTML = polHtml;
   }
 }
 
