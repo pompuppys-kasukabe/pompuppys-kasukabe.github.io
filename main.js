@@ -7,7 +7,6 @@ function escapeHtml(str){
     .replaceAll("'","&#39;");
 }
 
-// "2025-12-28" -> "2025.12.28"（空なら空）
 function formatDateLabel(dateStr){
   if(!dateStr) return "";
   const m = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})$/);
@@ -22,7 +21,6 @@ async function copyText(text){
       return true;
     }
   }catch(e){}
-  // fallback
   try{
     const ta = document.createElement("textarea");
     ta.value = text;
@@ -86,7 +84,6 @@ function renderCopy(){
   const c = window.PUPPYS_CONFIG?.copy;
   if(!c) return;
 
-  // HERO
   const h1 = document.getElementById("heroHeadline");
   const lead = document.getElementById("heroLead");
   const sub = document.getElementById("heroSub");
@@ -94,7 +91,6 @@ function renderCopy(){
   if(lead) lead.textContent = c.hero?.lead || "";
   if(sub) sub.textContent = c.hero?.sub || "";
 
-  // FACTS chips
   const chips = document.getElementById("factsChips");
   if(chips){
     const facts = c.facts || [];
@@ -103,7 +99,6 @@ function renderCopy(){
     `).join("");
   }
 
-  // KEY FACTS list (right card)
   const kf = document.getElementById("keyFactsList");
   if(kf){
     const facts = c.facts || [];
@@ -112,7 +107,6 @@ function renderCopy(){
     ).join("");
   }
 
-  // SUMMIT note
   const sn = document.getElementById("summitNote");
   if(sn){
     const note = c.summitNote || "";
@@ -120,7 +114,6 @@ function renderCopy(){
     sn.style.display = note ? "block" : "none";
   }
 
-  // ABOUT
   const at = document.getElementById("aboutTitle");
   const ab = document.getElementById("aboutBody");
   const an = document.getElementById("aboutNote");
@@ -135,7 +128,6 @@ function renderCopy(){
     an.textContent = note;
   }
 
-  // STORY
   const st = document.getElementById("storyTitle");
   if(st) st.textContent = c.story?.title || "STORY";
 
@@ -151,7 +143,6 @@ function renderCopy(){
     ip.innerHTML = pts.map(t => `<li>${escapeHtml(t)}</li>`).join("");
   }
 
-  // TIMELINE
   const tl = document.getElementById("timelineList");
   if(tl){
     const rows = c.timeline || [];
@@ -206,9 +197,7 @@ function wireWebShare(){
         btn.textContent = "URLをコピーしました";
         setTimeout(()=>btn.textContent = prev || "共有", 1400);
       }
-    }catch(e){
-      // ignore cancel
-    }
+    }catch(e){}
   });
 }
 
@@ -234,46 +223,128 @@ function renderMediaTexts(){
   if(t400) t400.textContent = m.long400 || "";
 }
 
+/** Hero: video/image auto (supports both legacy ids) */
+function renderHeroMedia(){
+  const imgs = window.PUPPYS_CONFIG?.siteImages;
+  if(!imgs) return;
+
+  const wrap = document.getElementById("heroMediaWrap");   // new
+  const v = document.getElementById("heroVideo");          // new
+  const img = document.getElementById("heroPhoto");        // reused id
+
+  // legacy fallback
+  const legacyWrap = document.getElementById("heroPhotoWrap");
+  const legacyImg = document.getElementById("heroPhoto");
+
+  const heroImgSrc = imgs.heroImage || imgs.heroPhoto || "";
+  const heroImgAlt = imgs.heroImageAlt || imgs.heroPhotoAlt || "POM PUPPYS bright";
+  const heroVid = imgs.heroVideo || {};
+
+  const showImage = (w, imageEl)=>{
+    if(!w || !imageEl) return;
+    if(heroImgSrc){
+      imageEl.src = heroImgSrc;
+      imageEl.alt = heroImgAlt;
+      imageEl.style.display = "block";
+      w.style.display = "block";
+      try{ w.style.setProperty("--hero-bg", `url("${heroImgSrc}")`); }catch(e){}
+    }else{
+      w.style.display = "none";
+    }
+  };
+
+  // New markup available
+  if(wrap && v && img){
+    const useVideo = !!heroVid.enabled && (!!heroVid.mp4 || !!heroVid.webm);
+    if(useVideo){
+      wrap.style.display = "block";
+      img.style.display = "none";
+      v.style.display = "block";
+      v.muted = true;
+      v.playsInline = true;
+      v.loop = heroVid.loop !== false;
+      v.preload = "metadata";
+      if(heroVid.poster) v.setAttribute("poster", heroVid.poster);
+
+      v.innerHTML = "";
+      if(heroVid.webm){
+        const s = document.createElement("source");
+        s.src = heroVid.webm;
+        s.type = "video/webm";
+        v.appendChild(s);
+      }
+      if(heroVid.mp4){
+        const s = document.createElement("source");
+        s.src = heroVid.mp4;
+        s.type = "video/mp4";
+        v.appendChild(s);
+      }
+
+      const bg = heroVid.poster || heroImgSrc;
+      if(bg){
+        try{ wrap.style.setProperty("--hero-bg", `url("${bg}")`); }catch(e){}
+      }
+
+      v.play().catch(()=>{ /* poster only */ });
+    }else{
+      v.style.display = "none";
+      showImage(wrap, img);
+    }
+    return;
+  }
+
+  // Legacy markup
+  if(legacyWrap && legacyImg){
+    showImage(legacyWrap, legacyImg);
+  }
+}
+
 function renderPhotos(){
-  const heroWrap = document.getElementById("heroPhotoWrap");
-  const heroImg = document.getElementById("heroPhoto");
   const grid = document.getElementById("photoGrid");
-  const mWrap = document.getElementById("mascotWrap");
-  const mImg = document.getElementById("mascotImg");
+  const section = document.getElementById("photosSection");
   const mf = document.getElementById("mascotFloat");
   const mfImg = document.getElementById("mascotFloatImg");
 
   const imgs = window.PUPPYS_CONFIG?.siteImages;
-  const section = document.getElementById("photosSection");
 
-  // No config -> hide section & hero image
   if(!imgs){
     if(section) section.style.display = "none";
-    if(heroWrap) heroWrap.style.display = "none";
-    if(mWrap) mWrap.style.display = "none";
     return;
   }
 
-  // HERO (supports portrait gracefully via blurred background)
-  if(heroWrap && heroImg){
-    const src = imgs.heroPhoto || "";
-    if(src){
-      heroImg.src = src;
-      heroImg.alt = imgs.heroPhotoAlt || "POM PUPPYS bright";
-      heroWrap.style.display = "block";
-
-      // pass background image to CSS (for blur layer)
-      try{
-        heroWrap.style.setProperty("--hero-bg", `url("${src}")`);
-      }catch(e){}
+  // gallery
+  if(grid && section){
+    const list = Array.isArray(imgs.gallery) ? imgs.gallery : [];
+    if(list.length === 0){
+      section.style.display = "none";
     }else{
-      heroWrap.style.display = "none";
+      section.style.display = "";
+      grid.innerHTML = list.map(item=>{
+        const title = escapeHtml(item.title || "Photo");
+        const src = item.src || "";
+        const alt = escapeHtml(item.alt || item.title || "Photo");
+        if(src){
+          return `
+            <figure class="photoCard">
+              <img class="photoImg" src="${escapeHtml(src)}" alt="${alt}" loading="lazy" decoding="async"/>
+              <figcaption class="photoCap">${title}</figcaption>
+            </figure>
+          `;
+        }
+        return `
+          <figure class="photoCard photoPlaceholder">
+            <div class="photoPhInner">
+              <div class="photoPhTitle">${title}</div>
+              <div class="photoPhHint muted">assets/photos に画像を追加してください</div>
+            </div>
+            <figcaption class="photoCap">${title}</figcaption>
+          </figure>
+        `;
+      }).join("");
     }
   }
 
-  // Mascot (floating only)
-  if(mWrap) mWrap.style.display = "none";
-  if(mImg) mImg.src = "";
+  // mascot floating
   if(mf && mfImg){
     const m = imgs.mascot || {};
     if(m.enabled && m.src){
@@ -286,43 +357,11 @@ function renderPhotos(){
       mf.setAttribute("aria-hidden","true");
     }
   }
-
-  // Gallery
-  if(!grid || !section) return;
-  const list = Array.isArray(imgs.gallery) ? imgs.gallery : [];
-  if(list.length === 0){
-    section.style.display = "none";
-    return;
-  }
-  section.style.display = "";
-
-  grid.innerHTML = list.map(item=>{
-    const title = escapeHtml(item.title || "Photo");
-    const src = item.src || "";
-    const alt = escapeHtml(item.alt || item.title || "Photo");
-    if(src){
-      return `
-        <figure class="photoCard">
-          <img class="photoImg" src="${escapeHtml(src)}" alt="${alt}" loading="lazy" decoding="async"/>
-          <figcaption class="photoCap">${title}</figcaption>
-        </figure>
-      `;
-    }
-    return `
-      <figure class="photoCard photoPlaceholder">
-        <div class="photoPhInner">
-          <div class="photoPhTitle">${title}</div>
-          <div class="photoPhHint muted">assets/photos に画像を追加してください</div>
-        </div>
-        <figcaption class="photoCap">${title}</figcaption>
-      </figure>
-    `;
-  }).join("");
 }
 
 function setupLightbox(){
   const ui = window.PUPPYS_CONFIG?.ui || {};
-  if(ui.enableLightbox === false) return; // only explicit false disables
+  if(ui.enableLightbox === false) return;
 
   const lb = document.getElementById("lightbox");
   const img = document.getElementById("lightboxImg");
@@ -350,7 +389,6 @@ function setupLightbox(){
   close.addEventListener("click", shut);
   document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") shut(); });
 
-  // delegate clicks from photo cards
   document.addEventListener("click", (e)=>{
     const t = e.target;
     if(!(t instanceof HTMLElement)) return;
@@ -361,18 +399,6 @@ function setupLightbox(){
       open(imgEl.getAttribute("src"), caption, imgEl.getAttribute("alt")||caption);
     }
   });
-}
-
-function wireInstagram(){
-  const a = document.getElementById("instaLink");
-  if(!a) return;
-  const url = window.PUPPYS_CONFIG?.instagramUrl || "";
-  if(url){
-    a.href = url;
-    a.style.display = "";
-  }else{
-    a.style.display = "none";
-  }
 }
 
 function renderSponsors(){
@@ -425,15 +451,93 @@ function renderSponsors(){
   }).join("");
 }
 
+function wireProjectBadge(){
+  const a = document.getElementById("projectBadgeLink");
+  if(!a) return;
+  a.href = window.PUPPYS_CONFIG?.pages?.project || "./project-world-challenge.html";
+}
+
+async function fetchJsonWithNoCache(url){
+  const u = url + (url.includes("?") ? "&" : "?") + "v=" + Date.now();
+  const r = await fetch(u, { cache: "no-store" });
+  if(!r.ok) throw new Error("fetch failed: " + r.status);
+  return await r.json();
+}
+
+function normalizeMessages(list){
+  const arr = Array.isArray(list) ? list : [];
+  return arr
+    .filter(x => x && x.approved !== false && String(x.message || "").trim())
+    .map(x => ({
+      date: String(x.date || ""),
+      name: String(x.name || "匿名"),
+      message: String(x.message || "").trim()
+    }))
+    .sort((a,b)=> String(b.date).localeCompare(String(a.date)));
+}
+
+async function renderSupportMessagesOfficial(){
+  const cfg = window.PUPPYS_CONFIG?.supportMessages;
+  if(!cfg || cfg.enabled === false) return;
+
+  const grid = document.getElementById("supportMessagesGrid");
+  if(!grid) return;
+
+  const note = document.getElementById("supportMessagesNote");
+  if(note){
+    note.textContent = cfg.note || "";
+    note.style.display = note.textContent ? "block" : "none";
+  }
+
+  const formBtn = document.getElementById("supportMessageFormBtn");
+  if(formBtn){
+    if(cfg.formUrl){
+      formBtn.href = cfg.formUrl;
+      formBtn.style.display = "inline-flex";
+    }else{
+      formBtn.style.display = "none";
+    }
+  }
+
+  let data = [];
+  try{
+    if(cfg.dataUrl){
+      data = await fetchJsonWithNoCache(cfg.dataUrl);
+    }
+  }catch(e){
+    data = [];
+  }
+
+  const items = normalizeMessages(data).slice(0, Number(cfg.maxOnOfficial || 3));
+  if(!items.length){
+    grid.innerHTML = `<div class="muted">応援メッセージを募集中です。</div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map(m => `
+    <div class="msgCard">
+      <div class="msgTop">
+        <div class="msgName">${escapeHtml(m.name)}</div>
+        <div class="msgDate">${escapeHtml(formatDateLabel(m.date))}</div>
+      </div>
+      <p class="msgBody">${escapeHtml(m.message)}</p>
+    </div>
+  `).join("");
+}
+
 function initSite(){
   renderNews();
   renderCopy();
-  wireInstagram();
-  renderPhotos();
-  setupLightbox();
   wireMediaLink();
   wireWebShare();
+  wireProjectBadge();
+
+  renderHeroMedia();
+  renderPhotos();
+  setupLightbox();
   renderSponsors();
+
+  renderSupportMessagesOfficial();
 }
 
 function initMedia(){
