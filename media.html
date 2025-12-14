@@ -1,3 +1,4 @@
+<!-- media.html（丸ごと置換） -->
 <!doctype html>
 <html lang="ja">
 <head>
@@ -21,6 +22,11 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
 
+  <!-- Fonts (no @import in CSS) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="./style.css" />
   <script src="./config.js"></script>
   <script src="./main.js" defer></script>
@@ -30,7 +36,7 @@
   <header class="header">
     <div class="container header__inner">
       <div class="brand">
-        <span class="brand__dot"></span>
+        <span class="brand__dot" aria-hidden="true"></span>
         <span>MEDIA</span>
       </div>
 
@@ -40,89 +46,91 @@
     </div>
   </header>
 
-  <main class="section">
-    <div class="container">
-      <div class="heroCard">
-        <h1 class="heroTitle" style="margin-bottom:6px;">取材の方へ（Media）</h1>
-        <p class="heroSub muted" style="margin-bottom:0;line-height:1.8;">
-          記事制作に必要な素材（PDF・写真・紹介文・クレジット）をまとめています。<br/>
-          ※本ページにはクラファン導線は置いていません。
-        </p>
+  <main>
+    <section class="section" style="padding-top:76px;">
+      <div class="container">
+        <div class="heroCard">
+          <h1 class="heroTitle" style="margin-bottom:6px;">取材の方へ（Media）</h1>
+          <p class="heroSub muted" style="margin-bottom:0;line-height:1.9;">
+            記事制作に必要な素材（PDF・写真・紹介文・クレジット）をまとめています。<br/>
+            ※本ページにはクラファン導線は置いていません。
+          </p>
 
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
-          <a id="mediaKitBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer">メディアキット（Drive）</a>
-          <a id="pressMailBtn" class="btn btn-ghost" href="#">取材の相談（メール）</a>
-        </div>
-      </div>
-
-      <div style="height:14px;"></div>
-
-      <div class="card">
-        <div class="section-head" style="margin-bottom:10px;">
-          <h2>記事用テキスト（コピペ用）</h2>
-          <p class="muted">100字 / 200字 / 400字</p>
-        </div>
-
-        <div class="copyBlock" style="margin-bottom:12px;">
-          <div class="copyTop">
-            <h3>100字</h3>
-            <button class="btn btn-small" type="button" data-copy-target="text100">コピー</button>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
+            <a id="mediaKitBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer">メディアキット（Drive）</a>
+            <a id="pressMailBtn" class="btn btn-ghost" href="#">取材の相談（メール）</a>
           </div>
-          <p id="text100" class="copyText"></p>
         </div>
 
-        <div class="copyBlock" style="margin-bottom:12px;">
-          <div class="copyTop">
-            <h3>200字</h3>
-            <button class="btn btn-small" type="button" data-copy-target="text200">コピー</button>
+        <div style="height:16px;"></div>
+
+        <div class="card">
+          <div class="section-head" style="margin-bottom:10px;">
+            <h2>記事用テキスト（コピペ用）</h2>
+            <p class="muted">100字 / 200字 / 400字</p>
           </div>
-          <p id="text200" class="copyText"></p>
-        </div>
 
-        <div class="copyBlock">
-          <div class="copyTop">
-            <h3>400字</h3>
-            <button class="btn btn-small" type="button" data-copy-target="text400">コピー</button>
+          <div class="copyBlock" style="margin-bottom:12px;">
+            <div class="copyTop">
+              <h3>100字</h3>
+              <button class="btn btn-small" type="button" data-copy-target="text100">コピー</button>
+            </div>
+            <p id="text100" class="copyText"></p>
           </div>
-          <p id="text400" class="copyText"></p>
-        </div>
 
-        <div style="height:12px;"></div>
-
-        <div class="copyBlock">
-          <div class="copyTop">
-            <h3>クレジット</h3>
-            <button class="btn btn-small" type="button" data-copy-target="mediaCredit">コピー</button>
+          <div class="copyBlock" style="margin-bottom:12px;">
+            <div class="copyTop">
+              <h3>200字</h3>
+              <button class="btn btn-small" type="button" data-copy-target="text200">コピー</button>
+            </div>
+            <p id="text200" class="copyText"></p>
           </div>
-          <p id="mediaCredit" class="copyText"></p>
-        </div>
 
-        <p class="note" style="margin-top:12px;">
-          ※紹介文の差し替えは <code>config.js</code> の <code>mediaTexts</code> を編集してください。
-        </p>
-      </div>
-
-      <div style="height:14px;"></div>
-
-      <div class="card">
-        <div class="section-head" style="margin-bottom:10px;">
-          <h2>素材の配置（Drive推奨構成）</h2>
-          <p class="muted">記者が迷わない並び</p>
-        </div>
-        <p class="muted" style="margin:0;line-height:1.9;">
-          Driveフォルダ内は、下記の順・命名にすると取材側のストレスが減ります。<br/>
-          <strong>00_README</strong>（利用条件） → <strong>01_メディアキット_1page</strong> → <strong>02_PHOTO</strong> → <strong>03_TEXT</strong>
-        </p>
-
-        <div style="height:10px;"></div>
-
-        <div class="grid2">
           <div class="copyBlock">
             <div class="copyTop">
-              <h3>推奨フォルダ/ファイル名</h3>
-              <button class="btn btn-small" type="button" data-copy-target="driveStructure">コピー</button>
+              <h3>400字</h3>
+              <button class="btn btn-small" type="button" data-copy-target="text400">コピー</button>
             </div>
-            <p id="driveStructure" class="copyText">00_README_ご利用条件.pdf
+            <p id="text400" class="copyText"></p>
+          </div>
+
+          <div style="height:12px;"></div>
+
+          <div class="copyBlock">
+            <div class="copyTop">
+              <h3>クレジット</h3>
+              <button class="btn btn-small" type="button" data-copy-target="mediaCredit">コピー</button>
+            </div>
+            <p id="mediaCredit" class="copyText"></p>
+          </div>
+
+          <p class="note" style="margin-top:12px;">
+            ※紹介文の差し替えは <code>config.js</code> の <code>mediaTexts</code> を編集してください。
+          </p>
+        </div>
+
+        <div style="height:14px;"></div>
+
+        <div class="card">
+          <div class="section-head" style="margin-bottom:10px;">
+            <h2>素材の配置（Drive推奨構成）</h2>
+            <p class="muted">記者が迷わない並び</p>
+          </div>
+
+          <p class="muted" style="margin:0;line-height:1.95;">
+            Driveフォルダ内は、下記の順・命名にすると取材側のストレスが減ります。<br/>
+            <strong>00_README</strong>（利用条件） → <strong>01_メディアキット_1page</strong> → <strong>02_PHOTO</strong> → <strong>03_TEXT</strong>
+          </p>
+
+          <div style="height:10px;"></div>
+
+          <div class="grid2">
+            <div class="copyBlock">
+              <div class="copyTop">
+                <h3>推奨フォルダ/ファイル名</h3>
+                <button class="btn btn-small" type="button" data-copy-target="driveStructure">コピー</button>
+              </div>
+              <p id="driveStructure" class="copyText">00_README_ご利用条件.pdf
 01_メディアキット_1page.pdf
 02_PHOTO/
   ├─ 01_公式写真_横.jpg
@@ -132,43 +140,48 @@
   ├─ 100字.txt
   ├─ 200字.txt
   └─ 400字.txt</p>
-          </div>
-
-          <div class="copyBlock">
-            <div class="copyTop">
-              <h3>写真の推奨仕様</h3>
-              <button class="btn btn-small" type="button" data-copy-target="photoSpec">コピー</button>
             </div>
-            <p id="photoSpec" class="copyText">・推奨：長辺 2400px以上（できれば3000px以上）
+
+            <div class="copyBlock">
+              <div class="copyTop">
+                <h3>写真の推奨仕様</h3>
+                <button class="btn btn-small" type="button" data-copy-target="photoSpec">コピー</button>
+              </div>
+              <p id="photoSpec" class="copyText">・推奨：長辺 2400px以上（できれば3000px以上）
 ・形式：JPG（高画質）/ PNG
 ・色：sRGB
 ・NG：過度な美肌加工、誤解を招く合成
 ・クレジット：POM PUPPYS bright 提供</p>
+            </div>
           </div>
+
+          <div style="height:12px;"></div>
+
+          <div class="media-card" style="margin:0;">
+            <div class="media-card__left">
+              <h3>ダウンロード（サイト内）</h3>
+              <p class="muted" style="line-height:1.85;">Driveが見られない環境向けに、最低限のPDFを同梱しています。</p>
+            </div>
+            <div class="media-card__right">
+              <a class="btn btn-ghost" href="./assets/00_README_ご利用条件.pdf" target="_blank" rel="noopener noreferrer">利用条件PDF</a>
+              <a class="btn btn-ghost" href="./assets/03_TEXT_紹介文テンプレ.pdf" target="_blank" rel="noopener noreferrer">紹介文テンプレPDF</a>
+            </div>
+          </div>
+
+          <p class="note" style="margin-top:12px;">
+            ※本ページにはクラファン導線を置いていません。支援案内は特設URLのみで行う運用が可能です。
+          </p>
         </div>
 
-        <div style="height:12px;"></div>
-
-        <div class="media-card" style="margin:0;">
-          <div class="media-card__left">
-            <h3>ダウンロード（サイト内）</h3>
-            <p class="muted">Driveが見られない環境向けに、最低限のPDFを同梱しています。</p>
-          </div>
-          <div class="media-card__right">
-            <a class="btn btn-ghost" href="./assets/00_README_ご利用条件.pdf" target="_blank" rel="noopener noreferrer">利用条件PDF</a>
-            <a class="btn btn-ghost" href="./assets/03_TEXT_紹介文テンプレ.pdf" target="_blank" rel="noopener noreferrer">紹介文テンプレPDF</a>
-          </div>
-        </div>
       </div>
-
-    </div>
+    </section>
   </main>
 
   <footer class="footer">
     <div class="container">
       <div>© POM PUPPYS bright</div>
       <div class="muted" style="margin-top:6px;">
-        取材窓口：moccy0306@gmail.com（保護者代表 飯田 絵里）
+        取材窓口：<a href="mailto:moccy0306@gmail.com">moccy0306@gmail.com</a>（保護者代表 飯田 絵里）
       </div>
     </div>
   </footer>
