@@ -1,27 +1,11 @@
-/* sponsor.js (BROWSER COMPATIBLE VERSION) */
-
-// 共通ユーティリティ
-function escapeHtml(str){
-  return String(str == null ? "" : str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
+/* sponsor.js - 協賛ページ用 */
 
 function initSponsorPage(){
-  var cfg = window.PUPPYS_CONFIG;
-  var s = cfg && cfg.sponsor;
+  var s = getConfigValue("sponsor", null);
   if(!s) return;
 
-  var email = (cfg && cfg.pressEmail) || "";
-  var name = (cfg && cfg.pressContactName) || "";
-
-  function setText(id, text){
-    var el = document.getElementById(id);
-    if(el) el.textContent = text || "";
-  }
+  var email = getConfigValue("pressEmail", "");
+  var name = getConfigValue("pressContactName", "");
 
   setText("spPageTitle", s.pageTitle || "企業・団体の方へ（協賛 / 応援出演）");
   setText("spLead", "協賛（ロゴ掲載）や、応援出演（有料・演技のみ）のご相談窓口です。まずはお気軽にご連絡ください。");
