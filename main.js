@@ -104,6 +104,15 @@ function renderCopy(){
     `).join("");
   }
 
+  // KEY FACTS list (right card)
+  const kf = document.getElementById("keyFactsList");
+  if(kf){
+    const facts = c.facts || [];
+    kf.innerHTML = facts.map(f =>
+      `<li><span class="keyFacts__label">${escapeHtml(f.label)}</span><span class="keyFacts__value">${escapeHtml(f.value)}</span></li>`
+    ).join("");
+  }
+
   // SUMMIT note
   const sn = document.getElementById("summitNote");
   if(sn){
@@ -173,8 +182,14 @@ function wirePressMail(){
 }
 
 function wireWebShare(){
+  const ui = window.PUPPYS_CONFIG?.ui || {};
   const btn = document.getElementById("shareBtn");
   if(!btn) return;
+
+  if(ui.showShareButton === false){
+    btn.style.display = "none";
+    return;
+  }
 
   const title = document.title;
   const text = "POM PUPPYS bright 公式サイト";
@@ -193,7 +208,7 @@ function wireWebShare(){
         setTimeout(()=>btn.textContent = prev || "共有", 1400);
       }
     }catch(e){
-      // user cancel -> ignore
+      // ignore cancel
     }
   });
 }
@@ -219,8 +234,6 @@ function renderMediaTexts(){
   if(t200) t200.textContent = m.mid200 || "";
   if(t400) t400.textContent = m.long400 || "";
 }
-
-
 
 function renderPhotos(){
   const heroWrap = document.getElementById("heroPhotoWrap");
@@ -254,8 +267,8 @@ function renderPhotos(){
     }
   }
 
-  // Mascot
-  if(mWrap) mWrap.style.display = "none"; // inline mascot is not used
+  // Mascot (floating only)
+  if(mWrap) mWrap.style.display = "none";
   if(mImg) mImg.src = "";
   if(mf && mfImg){
     const m = imgs.mascot || {};
@@ -303,33 +316,9 @@ function renderPhotos(){
   }).join("");
 }
 
-
-
-
-function applyUiFlags(){
-  const ui = window.PUPPYS_CONFIG?.ui || {};
-  const teamReview = !!ui.teamReviewMode;
-
-  // Dev hints
-  const devNotes = document.querySelectorAll(".devOnly");
-  devNotes.forEach(el => {
-    el.style.display = ui.showDevHints ? "" : "none";
-  });
-
-  // Hide Media nav + CTA on official page while team is reviewing
-  if(teamReview){
-    const navMedia = document.getElementById("navMedia");
-    if(navMedia) navMedia.style.display = "none";
-
-    const mediaSection = document.getElementById("mediaCtaSection") || document.getElementById("media");
-    // hide only the CTA section at bottom (leave footer contact text)
-    if(mediaSection) mediaSection.style.display = "none";
-  }
-}
-
 function setupLightbox(){
   const ui = window.PUPPYS_CONFIG?.ui || {};
-  if(!ui.enableLightbox) return;
+  if(ui.enableLightbox === false) return; // only explicit false disables
 
   const lb = document.getElementById("lightbox");
   const img = document.getElementById("lightboxImg");
@@ -370,9 +359,6 @@ function setupLightbox(){
   });
 }
 
-
-
-
 function wireInstagram(){
   const a = document.getElementById("instaLink");
   if(!a) return;
@@ -385,9 +371,57 @@ function wireInstagram(){
   }
 }
 
+function renderSponsors(){
+  const grid = document.getElementById("sponsorsGrid");
+  if(!grid) return;
+
+  const s = window.PUPPYS_CONFIG?.sponsors;
+  const sec = document.getElementById("sponsors");
+  if(!s || !s.enabled){
+    if(sec) sec.style.display = "none";
+    return;
+  }
+
+  const title = document.getElementById("sponsorsTitle");
+  if(title) title.textContent = s.title || "スポンサー / 協賛";
+
+  const note = document.getElementById("sponsorsNote");
+  if(note){
+    note.textContent = s.note || "";
+    note.style.display = note.textContent ? "block" : "none";
+  }
+
+  const today = new Date();
+  const items = (Array.isArray(s.items) ? s.items : []).filter(it=>{
+    if(it.approved === false) return false;
+    if(it.showOnOfficial === false) return false;
+    const exp = new Date(String(it.expiresAt || ""));
+    if(isFinite(exp.getTime()) && exp.getTime() < today.getTime()) return false;
+    return true;
+  });
+
+  if(!items.length){
+    grid.innerHTML = `<div class="muted">協賛企業を募集しています。</div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map(it=>{
+    const inner = `
+      <div class="sponsorCard">
+        ${
+          it.logo
+            ? `<img src="${escapeHtml(it.logo)}" alt="${escapeHtml(it.name || "Sponsor")}" loading="lazy" decoding="async">`
+            : `<div class="sponsorName">${escapeHtml(it.name || "")}</div>`
+        }
+      </div>
+    `;
+    return it.url
+      ? `<a class="sponsorLink" href="${escapeHtml(it.url)}" target="_blank" rel="nofollow sponsored noopener noreferrer">${inner}</a>`
+      : inner;
+  }).join("");
+}
 
 function initSite(){
-  applyUiFlags();
   renderNews();
   renderCopy();
   wireInstagram();
@@ -395,6 +429,7 @@ function initSite(){
   setupLightbox();
   wireMediaLink();
   wireWebShare();
+  renderSponsors();
 }
 
 function initMedia(){
@@ -405,7 +440,6 @@ function initMedia(){
 }
 
 document.addEventListener("DOMContentLoaded", ()=>{
-  // page routing
   if(document.body.dataset.page === "media"){
     initMedia();
   }else{
