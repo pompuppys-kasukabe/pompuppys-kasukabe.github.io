@@ -65,6 +65,19 @@
 
           <div class="summitNote" id="summitNote" style="display:none;"></div>
 
+
+          <div class="heroPhotoWrap" id="heroPhotoWrap" style="display:none;">
+            <img class="heroPhoto" id="heroPhoto" src="" alt="" loading="eager" decoding="async"/>
+          </div>
+
+          <div id="mascotWrap" style="display:none;margin-top:12px;">
+            <div class="chip" style="background:rgba(255,56,160,.10);border-color:rgba(255,56,160,.22);">キャラクター</div>
+            <div style="margin-top:10px;border:1px solid rgba(211,215,227,.9);border-radius:18px;overflow:hidden;background:#fff;box-shadow:var(--shadow);">
+              <img id="mascotImg" src="" alt="" style="display:block;width:100%;max-height:240px;object-fit:contain;background:linear-gradient(135deg, rgba(255,56,160,.06), rgba(215,182,94,.08));" loading="lazy" decoding="async"/>
+            </div>
+          </div>
+
+
           <div class="chips" id="factsChips"></div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
@@ -84,7 +97,7 @@
             ・挑戦：The Dance Summit 2026
           </p>
           <p class="note" style="margin:10px 0 0;">
-            ※支援のご案内は別の「クラファン特設サイト」で行います（本ページには導線を置いていません）。
+            ※本ページはチーム紹介を目的とした公式ページです。
           </p>
         </div>
       </div>
@@ -124,7 +137,21 @@
       </div>
     </section>
 
-    <section id="story" class="section">
+    
+    <section id="photosSection" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>PHOTOS</h2>
+          <p class="muted">写真で雰囲気が伝わる（あとで差し替えOK）</p>
+        </div>
+        <div id="photoGrid" class="photoGrid"></div>
+        <p class="note" style="margin-top:12px;">
+          ※画像は <code>assets/photos/</code> に置き、<code>config.js</code> の <code>siteImages.gallery</code> を差し替えてください。
+        </p>
+      </div>
+    </section>
+
+<section id="story" class="section">
       <div class="container">
         <div class="section-head">
           <h2 id="storyTitle">STORY</h2>

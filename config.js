@@ -93,6 +93,26 @@ window.PUPPYS_CONFIG = {
     ]
   },
 
+
+  // サイト見た目用（写真・差し替え用）
+  siteImages: {
+    // HEROに入れる写真（任意）。入れない場合は非表示。
+    heroPhoto: "./assets/photos/hero.jpg",
+    heroPhotoAlt: "POM PUPPYS bright（埼玉・春日部）",
+    // ギャラリー（任意）
+    gallery: [
+      { title: "大会当日", src: "./assets/photos/event_01.jpg", alt: "大会当日の様子" },
+      { title: "練習風景", src: "./assets/photos/practice_01.jpg", alt: "練習風景" },
+      { title: "チーム集合", src: "./assets/photos/team_01.jpg", alt: "チーム集合写真" }
+    ],
+    // オリジナルキャラ（任意）
+    mascot: {
+      enabled: false,
+      src: "./assets/mascot.png",
+      alt: "オリジナルキャラクター"
+    }
+  },
+
   // クラファン特設ページ用（設定値から自動計算）
   project: {
     title: "World Challenge Project",

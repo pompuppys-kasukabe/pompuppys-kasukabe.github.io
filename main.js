@@ -220,9 +220,88 @@ function renderMediaTexts(){
   if(t400) t400.textContent = m.long400 || "";
 }
 
+
+
+function renderPhotos(){
+  const heroWrap = document.getElementById("heroPhotoWrap");
+  const heroImg = document.getElementById("heroPhoto");
+  const grid = document.getElementById("photoGrid");
+  const mWrap = document.getElementById("mascotWrap");
+  const mImg = document.getElementById("mascotImg");
+
+  const imgs = window.PUPPYS_CONFIG?.siteImages;
+  const section = document.getElementById("photosSection");
+
+  // No config -> hide section & hero image
+  if(!imgs){
+    if(section) section.style.display = "none";
+    if(heroWrap) heroWrap.style.display = "none";
+    if(mWrap) mWrap.style.display = "none";
+    return;
+  }
+
+  // HERO
+  if(heroWrap && heroImg){
+    const src = imgs.heroPhoto || "";
+    if(src){
+      heroImg.src = src;
+      heroImg.alt = imgs.heroPhotoAlt || "POM PUPPYS bright";
+      heroWrap.style.display = "block";
+    }else{
+      heroWrap.style.display = "none";
+    }
+  }
+
+  // Mascot
+  if(mWrap && mImg){
+    const m = imgs.mascot || {};
+    if(m.enabled && m.src){
+      mImg.src = m.src;
+      mImg.alt = m.alt || "Mascot";
+      mWrap.style.display = "block";
+    }else{
+      mWrap.style.display = "none";
+    }
+  }
+
+  // Gallery
+  if(!grid || !section) return;
+  const list = Array.isArray(imgs.gallery) ? imgs.gallery : [];
+  if(list.length === 0){
+    section.style.display = "none";
+    return;
+  }
+  section.style.display = "";
+
+  grid.innerHTML = list.map(item=>{
+    const title = escapeHtml(item.title || "Photo");
+    const src = item.src || "";
+    const alt = escapeHtml(item.alt || item.title || "Photo");
+    if(src){
+      return `
+        <figure class="photoCard">
+          <img class="photoImg" src="${escapeHtml(src)}" alt="${alt}" loading="lazy" decoding="async"/>
+          <figcaption class="photoCap">${title}</figcaption>
+        </figure>
+      `;
+    }
+    return `
+      <figure class="photoCard photoPlaceholder">
+        <div class="photoPhInner">
+          <div class="photoPhTitle">${title}</div>
+          <div class="photoPhHint muted">assets/photos に画像を追加してください</div>
+        </div>
+        <figcaption class="photoCap">${title}</figcaption>
+      </figure>
+    `;
+  }).join("");
+}
+
+
 function initSite(){
   renderNews();
   renderCopy();
+  renderPhotos();
   wireMediaLink();
   wireWebShare();
 }
