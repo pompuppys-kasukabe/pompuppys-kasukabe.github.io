@@ -68,7 +68,7 @@ window.PUPPYS_CONFIG = {
   // ===== サイト画像 =====
   siteImages: {
     // Heroメイン画像
-    heroImage: "./assets/photos/team_main.jpg",
+    heroImage: "./assets/photos/team_main.JPG",
     heroImageAlt: "POM PUPPYS bright チーム写真",
 
     // Hero動画（使用する場合）
