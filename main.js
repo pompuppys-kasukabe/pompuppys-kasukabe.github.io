@@ -1,45 +1,4 @@
-/* main.js (BROWSER COMPATIBLE VERSION) */
-
-// 共通ユーティリティ
-function escapeHtml(str){
-  return String(str == null ? "" : str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function formatDateLabel(dateStr){
-  if(!dateStr) return "";
-  var m = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if(!m) return String(dateStr);
-  return m[1] + "." + m[2] + "." + m[3];
-}
-
-async function copyText(text){
-  try{
-    if(navigator.clipboard && window.isSecureContext){
-      await navigator.clipboard.writeText(text);
-      return true;
-    }
-  }catch(e){}
-  try{
-    var ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.left = "-9999px";
-    ta.style.top = "0";
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    var ok = document.execCommand("copy");
-    document.body.removeChild(ta);
-    return ok;
-  }catch(e){
-    return false;
-  }
-}
+/* main.js - 公式サイト・Mediaページ用 */
 
 function wireCopyButtons(){
   var buttons = document.querySelectorAll("[data-copy-target]");
@@ -63,8 +22,7 @@ function renderNews(){
   var wrap = document.getElementById("newsGrid");
   if(!wrap) return;
 
-  var cfg = window.PUPPYS_CONFIG;
-  var itemsRaw = (cfg && cfg.news) ? cfg.news : [];
+  var itemsRaw = getConfigValue("news", []);
   var items = itemsRaw.slice().sort(function(a, b){
     return String(b.date).localeCompare(String(a.date));
   });
@@ -95,21 +53,18 @@ function renderNews(){
 }
 
 function renderCopy(){
-  var cfg = window.PUPPYS_CONFIG;
-  var c = cfg && cfg.copy;
-  if(!c) return;
+  var c = getConfigValue("copy", {});
 
-  var h1 = document.getElementById("heroHeadline");
-  var lead = document.getElementById("heroLead");
-  var sub = document.getElementById("heroSub");
-  if(h1) h1.textContent = (c.hero && c.hero.headline) || "";
-  if(lead) lead.textContent = (c.hero && c.hero.lead) || "";
-  if(sub) sub.textContent = (c.hero && c.hero.sub) || "";
+  // Hero
+  var hero = c.hero || {};
+  setText("heroHeadline", hero.headline);
+  setText("heroLead", hero.lead);
+  setText("heroSub", hero.sub);
 
   // Facts chips
+  var facts = c.facts || [];
   var chips = document.getElementById("factsChips");
   if(chips){
-    var facts = c.facts || [];
     var chipsHtml = "";
     for(var i = 0; i < facts.length; i++){
       var f = facts[i];
@@ -121,10 +76,9 @@ function renderCopy(){
   // Key facts list
   var kf = document.getElementById("keyFactsList");
   if(kf){
-    var facts2 = c.facts || [];
     var kfHtml = "";
-    for(var j = 0; j < facts2.length; j++){
-      var f2 = facts2[j];
+    for(var j = 0; j < facts.length; j++){
+      var f2 = facts[j];
       kfHtml += '<li><span class="keyFacts__label">' + escapeHtml(f2.label) + '</span><span class="keyFacts__value">' + escapeHtml(f2.value) + '</span></li>';
     }
     kf.innerHTML = kfHtml;
@@ -139,41 +93,39 @@ function renderCopy(){
   }
 
   // About
-  var at = document.getElementById("aboutTitle");
+  var about = c.about || {};
+  setText("aboutTitle", about.title);
   var ab = document.getElementById("aboutBody");
-  var an = document.getElementById("aboutNote");
-  if(at) at.textContent = (c.about && c.about.title) || "";
   if(ab){
-    var lines = (c.about && c.about.body) || [];
+    var lines = about.body || [];
     var abHtml = "";
     for(var k = 0; k < lines.length; k++){
       abHtml += escapeHtml(lines[k]) + "<br/>";
     }
     ab.innerHTML = abHtml;
   }
+  var an = document.getElementById("aboutNote");
   if(an){
-    var aboutNote = (c.about && c.about.note) || "";
+    var aboutNote = about.note || "";
     an.style.display = aboutNote ? "block" : "none";
     an.textContent = aboutNote;
   }
 
   // Story
-  var st = document.getElementById("storyTitle");
-  if(st) st.textContent = (c.story && c.story.title) || "STORY";
-
+  var story = c.story || {};
+  setText("storyTitle", story.title || "STORY");
   var sb = document.getElementById("storyBody");
   if(sb){
-    var storyLines = (c.story && c.story.body) || [];
+    var storyLines = story.body || [];
     var sbHtml = "";
     for(var m = 0; m < storyLines.length; m++){
       sbHtml += escapeHtml(storyLines[m]) + "<br/>";
     }
     sb.innerHTML = sbHtml;
   }
-
   var ip = document.getElementById("interviewPoints");
   if(ip){
-    var pts = (c.story && c.story.interviewPoints) || [];
+    var pts = story.interviewPoints || [];
     var ipHtml = "";
     for(var n = 0; n < pts.length; n++){
       ipHtml += "<li>" + escapeHtml(pts[n]) + "</li>";
@@ -195,8 +147,7 @@ function renderCopy(){
 }
 
 function wireMediaKit(){
-  var cfg = window.PUPPYS_CONFIG;
-  var url = cfg && cfg.mediaKitUrl;
+  var url = getConfigValue("mediaKitUrl", "");
   var btn = document.getElementById("mediaKitBtn");
   if(!btn) return;
   if(!url){
@@ -207,9 +158,8 @@ function wireMediaKit(){
 }
 
 function wirePressMail(){
-  var cfg = window.PUPPYS_CONFIG;
-  var email = cfg && cfg.pressEmail;
-  var name = (cfg && cfg.pressContactName) || "";
+  var email = getConfigValue("pressEmail", "");
+  var name = getConfigValue("pressContactName", "");
   var btn = document.getElementById("pressMailBtn");
   if(!btn || !email) return;
   var subject = encodeURIComponent("POM PUPPYS bright 取材のご相談");
@@ -218,12 +168,11 @@ function wirePressMail(){
 }
 
 function wireWebShare(){
-  var cfg = window.PUPPYS_CONFIG;
-  var ui = (cfg && cfg.ui) || {};
+  var showBtn = getConfigValue("ui.showShareButton", true);
   var btn = document.getElementById("shareBtn");
   if(!btn) return;
 
-  if(ui.showShareButton === false){
+  if(showBtn === false){
     btn.style.display = "none";
     return;
   }
@@ -251,30 +200,20 @@ function wireWebShare(){
 function wireMediaLink(){
   var a = document.getElementById("mediaPageLink");
   if(!a) return;
-  var cfg = window.PUPPYS_CONFIG;
-  var url = (cfg && cfg.pages && cfg.pages.media) || "./media.html";
+  var url = getConfigValue("pages.media", "./media.html");
   a.href = url;
 }
 
 function renderMediaTexts(){
-  var cfg = window.PUPPYS_CONFIG;
-  var m = cfg && cfg.mediaTexts;
-  if(!m) return;
-
-  var credit = document.getElementById("mediaCredit");
-  var t100 = document.getElementById("text100");
-  var t200 = document.getElementById("text200");
-  var t400 = document.getElementById("text400");
-
-  if(credit) credit.textContent = m.credit || "";
-  if(t100) t100.textContent = m.short100 || "";
-  if(t200) t200.textContent = m.mid200 || "";
-  if(t400) t400.textContent = m.long400 || "";
+  var m = getConfigValue("mediaTexts", {});
+  setText("mediaCredit", m.credit);
+  setText("text100", m.short100);
+  setText("text200", m.mid200);
+  setText("text400", m.long400);
 }
 
 function renderHeroMedia(){
-  var cfg = window.PUPPYS_CONFIG;
-  var imgs = cfg && cfg.siteImages;
+  var imgs = getConfigValue("siteImages", null);
   if(!imgs) return;
 
   var wrap = document.getElementById("heroMediaWrap");
@@ -365,8 +304,7 @@ function renderPhotos(){
   var mf = document.getElementById("mascotFloat");
   var mfImg = document.getElementById("mascotFloatImg");
 
-  var cfg = window.PUPPYS_CONFIG;
-  var imgs = cfg && cfg.siteImages;
+  var imgs = getConfigValue("siteImages", null);
 
   if(!imgs){
     if(section) section.style.display = "none";
@@ -405,10 +343,10 @@ function renderPhotos(){
   }
 
   if(mf && mfImg){
-    var m = imgs.mascot || {};
-    if(m.enabled && m.src){
-      mfImg.src = m.src;
-      mfImg.alt = m.alt || "Mascot";
+    var mascot = imgs.mascot || {};
+    if(mascot.enabled && mascot.src){
+      mfImg.src = mascot.src;
+      mfImg.alt = mascot.alt || "Mascot";
       mf.style.display = "block";
       mf.setAttribute("aria-hidden", "false");
     }else{
@@ -419,9 +357,8 @@ function renderPhotos(){
 }
 
 function setupLightbox(){
-  var cfg = window.PUPPYS_CONFIG;
-  var ui = (cfg && cfg.ui) || {};
-  if(ui.enableLightbox === false) return;
+  var enableLightbox = getConfigValue("ui.enableLightbox", true);
+  if(enableLightbox === false) return;
 
   var lb = document.getElementById("lightbox");
   var lbImg = document.getElementById("lightboxImg");
@@ -474,8 +411,7 @@ function renderSponsors(){
   var grid = document.getElementById("sponsorsGrid");
   if(!grid) return;
 
-  var cfg = window.PUPPYS_CONFIG;
-  var s = cfg && cfg.sponsors;
+  var s = getConfigValue("sponsors", {});
   var sec = document.getElementById("sponsors");
 
   if(!s || !s.enabled){
@@ -483,8 +419,7 @@ function renderSponsors(){
     return;
   }
 
-  var titleEl = document.getElementById("sponsorsTitle");
-  if(titleEl) titleEl.textContent = s.title || "スポンサー / 協賛";
+  setText("sponsorsTitle", s.title || "スポンサー / 協賛");
 
   var noteEl = document.getElementById("sponsorsNote");
   if(noteEl){
@@ -532,41 +467,11 @@ function renderSponsors(){
 function wireProjectBadge(){
   var a = document.getElementById("projectBadgeLink") || document.querySelector("a.projectBadge");
   if(!a) return;
-  var cfg = window.PUPPYS_CONFIG;
-  a.href = (cfg && cfg.pages && cfg.pages.project) || "./project-world-challenge.html";
-}
-
-async function fetchJsonWithNoCache(url){
-  var u = url + (url.indexOf("?") >= 0 ? "&" : "?") + "v=" + Date.now();
-  var r = await fetch(u, { cache: "no-store" });
-  if(!r.ok) throw new Error("fetch failed: " + r.status);
-  return await r.json();
-}
-
-function normalizeMessages(list){
-  var arr = Array.isArray(list) ? list : [];
-  var result = [];
-  for(var i = 0; i < arr.length; i++){
-    var x = arr[i];
-    if(!x) continue;
-    if(x.approved === false) continue;
-    var msg = String(x.message || "").trim();
-    if(!msg) continue;
-    result.push({
-      date: String(x.date || ""),
-      name: String(x.name || "匿名"),
-      message: msg
-    });
-  }
-  result.sort(function(a, b){
-    return String(b.date).localeCompare(String(a.date));
-  });
-  return result;
+  a.href = getConfigValue("pages.project", "./project-world-challenge.html");
 }
 
 async function renderSupportMessagesOfficial(){
-  var cfg = window.PUPPYS_CONFIG;
-  var msgCfg = cfg && cfg.supportMessages;
+  var msgCfg = getConfigValue("supportMessages", {});
   if(!msgCfg || msgCfg.enabled === false) return;
 
   var grid = document.getElementById("supportMessagesGrid");
