@@ -1,4 +1,4 @@
-/* config.js - サイト設定 */
+/* config.js - サイト設定（完全版） */
 window.PUPPYS_CONFIG = {
   
   // ===== 基本情報 =====
@@ -35,8 +35,8 @@ window.PUPPYS_CONFIG = {
   // ===== メディア用テキスト =====
   mediaTexts: {
     credit: "写真クレジット：POM PUPPYS bright 提供",
-    short100: "埼玉・春日部のチアダンスチーム「POM PUPPYS bright」。悔しさを転機に"楽しむ"へ立ち返り、演技を立て直してJAMfestで1位。The Dance Summit 2026に挑戦。",
-    mid200: "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。直前の大会で悔しい結果を経験し、勝ち負けだけではなく"踊ることを楽しむ"原点へ。表情・一体感・空気づくりまで磨き直し、JAMfestで1位を獲得。The Dance Summit 2026に向け準備を進めている。",
+    short100: "埼玉・春日部のチアダンスチーム「POM PUPPYS bright」。悔しさを転機に"楽しむ"へ立ち返り、演技を立て直してJAMfest JAPAN 2025で1位。世界最高峰の舞台、米国「The Dance Summit 2026」に挑戦。",
+    mid200: "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。直前の大会で悔しい結果を経験し、勝ち負けだけではなく"踊ることを楽しむ"原点へ。表情・一体感・空気づくりまで磨き直し、JAMfest JAPAN 2025で1位を獲得。世界最高峰の舞台、米国「The Dance Summit 2026」に向け準備を進めている。",
     long400: "「勝つため」ではなく「踊ることを楽しむ」原点へ。その劇的な意識改革が、強豪ひしめく「JAMfest JAPAN」第1位という快挙を手繰り寄せました。埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」（小6〜中3）は、この優勝を弾みに、世界最高峰の舞台、米国「The Dance Summit 2026」への切符を掴みました。直前の大会での敗北という試練。どん底の中で技術だけでなく、表情やチームの空気感まで全てを見つめ直し、彼女たちは生まれ変わりました。「原点回帰」でチアの楽しさを再発見した彼女たちは、最高の笑顔を春日部から世界へ届けようとしています。"
   },
 
@@ -60,7 +60,7 @@ window.PUPPYS_CONFIG = {
       date: "2025-11-23",
       tag: "RESULT",
       title: "JAMfest JAPAN vol.23 in TOKYO 優勝！",
-      body: "Junior編成 Pom部門 Small Bで1位を獲得し、The Dance Summit 2026への出場権を獲得しました。",
+      body: "Junior編成 Pom部門 Small Bで1位を獲得し、世界最高峰の舞台、米国「The Dance Summit 2026」への出場権を獲得しました。",
       url: ""
     }
   ],
@@ -68,7 +68,7 @@ window.PUPPYS_CONFIG = {
   // ===== サイト画像 =====
   siteImages: {
     // Heroメイン画像
-    heroImage: "./assets/photos/team_main.JPG",
+    heroImage: "./assets/photos/team_main.jpg",
     heroImageAlt: "POM PUPPYS bright チーム写真",
 
     // Hero動画（使用する場合）
@@ -80,37 +80,49 @@ window.PUPPYS_CONFIG = {
       loop: true
     },
 
-    // フォトギャラリー
+    // フォトギャラリー（2-3-2構成 = 7枚）
     gallery: [
       { 
         title: "JAMfest JAPAN 2025 優勝 🏆", 
         src: "./assets/photos/award_flag.jpg", 
-        alt: "表彰式でフラッグを掲げるチーム" 
-      },
-      { 
-        title: "練習風景", 
-        src: "./assets/photos/practice_01.jpg", 
-        alt: "練習中の様子" 
+        alt: "表彰式でフラッグを掲げるチーム",
+        size: "half"
       },
       { 
         title: "チーム集合写真", 
         src: "./assets/photos/team_01.jpg", 
-        alt: "チーム全員での集合写真" 
+        alt: "チーム全員での集合写真",
+        size: "half"
+      },
+      { 
+        title: "練習風景", 
+        src: "./assets/photos/practice_01.jpg", 
+        alt: "練習中の様子",
+        size: "third"
       },
       { 
         title: "演技中", 
         src: "./assets/photos/performance_01.jpg", 
-        alt: "大会での演技" 
-      },
-      { 
-        title: "オフショット 😊", 
-        src: "./assets/photos/offshot_01.jpg", 
-        alt: "練習後のオフショット" 
+        alt: "大会での演技",
+        size: "third"
       },
       { 
         title: "大会会場にて", 
         src: "./assets/photos/jam.jpg", 
-        alt: "大会会場での一枚" 
+        alt: "大会会場での一枚",
+        size: "third"
+      },
+      { 
+        title: "オフショット 😊", 
+        src: "./assets/photos/offshot_01.jpg", 
+        alt: "練習後のオフショット",
+        size: "half"
+      },
+      { 
+        title: "みんなで記念撮影", 
+        src: "./assets/photos/offshot_02.jpg", 
+        alt: "みんなで記念撮影",
+        size: "half"
       }
     ],
 
@@ -140,10 +152,10 @@ window.PUPPYS_CONFIG = {
       kicker: "Saitama • Kasukabe",
       headline: "笑顔で踊る、世界へ挑む。",
       lead: "悔しさを転機に、「楽しむ」を取り戻した私たち。",
-      sub: "埼玉・春日部で活動するチアダンスチーム「POM PUPPYS bright」。JAMfest JAPAN 2025 で1位を獲得し、The Dance Summit 2026 への切符を掴みました。"
+      sub: "埼玉・春日部で活動するチアダンスチーム「POM PUPPYS bright」。JAMfest JAPAN 2025 で1位を獲得し、世界最高峰の舞台、米国「The Dance Summit 2026」への切符を掴みました。"
     },
 
-    // Key Facts（旧）
+    // Key Facts
     facts: [
       { label: "拠点", value: "埼玉・春日部" },
       { label: "メンバー", value: "小学6年生〜中学3年生" },
@@ -167,9 +179,10 @@ window.PUPPYS_CONFIG = {
       title: "Our Story",
       body: [
         "直前の大会で悔しい結果を経験し、私たちは一度立ち止まりました。",
-        "悔しさを抱えたままでは、踊る姿も硬くなってしまう——そう気づいたとき、原点の"楽しむ"に戻る決断をしました。",
+        "悔しさを抱えたままでは、踊る姿も硬くなってしまう——そう気づいたとき、原点の「楽しむ」に戻る決断をしました。",
         "表情、声、チームの空気づくりまで見直し、演技を一から再構築。",
-        "気持ちが揃った瞬間、踊りが変わり、会場の空気も変わりました。"
+        "気持ちが揃った瞬間、踊りが変わり、会場の空気も変わりました。",
+        "そして私たちは、世界最高峰の舞台、米国「The Dance Summit 2026」への挑戦権を手にしました。"
       ],
       interviewPoints: [
         "教育：悔しさを経験し、"楽しむ"へ切り替えて伸びたプロセス",
@@ -184,8 +197,11 @@ window.PUPPYS_CONFIG = {
       { year: "2016", text: "春日部で活動開始" },
       { year: "2020", text: "大会への挑戦を本格化" },
       { year: "2025", text: "JAMfest JAPAN vol.23 で1位獲得" },
-      { year: "2026", text: "The Dance Summit へ挑戦予定" }
-    ]
+      { year: "2026", text: "The Dance Summit へ挑戦予定", highlight: true }
+    ],
+
+    // The Dance Summit について
+    summitNote: "The Dance Summit は、米国Varsity社が主催する世界最高峰のチアダンス・ダンスの世界選手権大会です。"
   },
 
   // ===== スポンサー =====
@@ -314,7 +330,7 @@ window.PUPPYS_CONFIG = {
     copy: {
       heroKicker: "Road to the World - Special Project",
       heroHeadline: "子どもたち全員が、同じ舞台に立てるように。",
-      heroLead: "POM PUPPYS bright は「The Dance Summit 2026」へ出場します。円安と物価高で渡航費が高騰し、挑戦を"プロジェクト"として記録しながら、世界への一歩を進めます。",
+      heroLead: "POM PUPPYS bright は世界最高峰の舞台、米国「The Dance Summit 2026」へ出場します。円安と物価高で渡航費が高騰する中、挑戦を"プロジェクト"として記録しながら、世界への一歩を進めます。",
 
       sections: {
         whyTitle: "なぜ支援が必要か",
