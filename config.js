@@ -102,13 +102,26 @@ window.PUPPYS_CONFIG = {
 
   // サイト見た目用（写真・差し替え用）
   siteImages: {
-    heroPhoto: "./assets/photos/hero.jpg",
-    heroPhotoAlt: "POM PUPPYS bright（埼玉・春日部）",
+    // 公式トップ：縦長の表彰写真をヒーローに（CSS/JSで「ぼかし背景 + contain」でリッチに表示）
+    heroImage: "./assets/photos/award_flag.jpg",
+    heroImageAlt: "表彰後、フラッグを掲げるPOM PUPPYS bright",
+
+    // 公式トップ：動画ヒーロー（必要なら enabled=true に）
+    heroVideo: {
+      enabled: false,
+      mp4: "./assets/video/official_hero.mp4",
+      webm: "./assets/video/official_hero.webm", // 任意（無ければ空文字でもOK）
+      poster: "./assets/photos/award_flag.jpg",
+      alt: "POM PUPPYS bright 公式映像",
+      loop: true
+    },
+
     gallery: [
-      { title: "大会当日", src: "./assets/photos/event_01.jpg", alt: "大会当日の様子" },
+      { title: "表彰のあと", src: "./assets/photos/award_flag.jpg", alt: "表彰後の様子" },
       { title: "練習風景", src: "./assets/photos/practice_01.jpg", alt: "練習風景" },
       { title: "チーム集合", src: "./assets/photos/team_01.jpg", alt: "チーム集合写真" }
     ],
+
     mascot: {
       enabled: true,
       src: "./assets/mascot.png",
@@ -121,22 +134,13 @@ window.PUPPYS_CONFIG = {
     enabled: true,
     title: "スポンサー / 協賛",
     note: "掲載は活動支援への謝意として行っています（原則1年更新・審査あり）。",
-    items: [
-      // {
-      //   name: "〇〇株式会社",
-      //   logo: "./assets/sponsors/example.png",
-      //   url: "https://example.com",
-      //   approved: true,
-      //   expiresAt: "2027-12-31",
-      //   showOnOfficial: true
-      // }
-    ]
+    items: []
   },
 
   // 企業・団体向け（フォームは一旦なし、メール導線のみ）
   sponsor: {
     pageTitle: "企業・団体の方へ（協賛 / 応援出演）",
-    formUrl: "", // 一旦なし（空ならボタン非表示）
+    formUrl: "",
 
     areaNote: "埼玉県を中心に、関東は要相談です。",
     feeNote:
@@ -158,10 +162,7 @@ window.PUPPYS_CONFIG = {
         body:
           "イベント等での演技披露（体験会は原則行っていません）。距離・拘束時間・内容によりお見積りします。企業様との記念写真（集合写真）をNEWS素材として掲載する場合があります。※実施可否はチーム判断となります。"
       },
-      {
-        title: "物品提供・告知協力",
-        body: "備品提供、告知協力など。内容はご相談ください。"
-      }
+      { title: "物品提供・告知協力", body: "備品提供、告知協力など。内容はご相談ください。" }
     ],
 
     required: [
@@ -210,9 +211,22 @@ window.PUPPYS_CONFIG = {
     endDate: "2026-03-31",
     updatedAt: "2025-12-13",
 
+    // 特設：ヒーロー動画（こちらはON推奨）
+    heroVideo: {
+      enabled: true,
+      mp4: "./assets/video/project_hero.mp4",
+      webm: "./assets/video/project_hero.webm", // 任意
+      poster: "./assets/photos/award_flag.jpg",
+      alt: "World Challenge Project 映像",
+      loop: true
+    },
+    // 特設：動画が出ない環境向けの静止画フォールバック
+    heroImage: "./assets/photos/award_flag.jpg",
+    heroImageAlt: "表彰後、フラッグを掲げるPOM PUPPYS bright",
+
     // cost assumptions
-    costPerPersonYen: 580000,            // 食事付想定（目安）
-    extrasPerPersonEstimateYen: 100000,  // 別途費用（目安・変動あり）
+    costPerPersonYen: 580000,
+    extrasPerPersonEstimateYen: 100000,
     nights: 6,
     mealPlanNote:
       "現地は物価高の影響もあり、6泊の滞在で3食を外食等で賄うと総額が膨らみやすいため、費用が読みやすく結果的に総額を抑えやすい食事付プランを選択しています。",
@@ -222,7 +236,6 @@ window.PUPPYS_CONFIG = {
       { role: "コーチ", count: 1 }
     ],
 
-    // 料金表（ホテル名は出さない）
     priceTable: [
       { room: "4名1室", meal: "食事付", athleteCoachAdult: 580000, child: 479000 },
       { room: "3名1室", meal: "食事付", athleteCoachAdult: 597000, child: 479000 },
@@ -292,7 +305,6 @@ window.PUPPYS_CONFIG = {
       ]
     },
 
-    // 支援の優先順位フロー（“固定配分”ではなく優先順位）
     fundFlow: {
       title: "ご支援の使い道（優先順位）",
       note:
@@ -316,7 +328,6 @@ window.PUPPYS_CONFIG = {
       ]
     },
 
-    // 応援の方法（特設LP内）
     support: {
       title: "応援の方法",
       individual: {
@@ -339,7 +350,6 @@ window.PUPPYS_CONFIG = {
       }
     },
 
-    // 旅程（Day6は非表示）
     itinerary: [
       { label: "Day 1（4/28）", title: "日本出発〜現地到着", body: "移動・入国手続き・ホテルへ", meals: "朝— / 昼 機内 / 夜 機内", hidden: false },
       { label: "Day 2（4/29）", title: "調整日", body: "コンディション調整・準備", meals: "朝 ○ / 昼 弁当 / 夜 ○", hidden: false },
