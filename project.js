@@ -1,266 +1,315 @@
-<!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+/* project.js */
+function escapeHtml(str){
+  return String(str ?? "")
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#39;");
+}
+function yen(n){
+  const v = Number(n || 0);
+  try{ return new Intl.NumberFormat("ja-JP").format(v) + "円"; }
+  catch(e){ return v + "円"; }
+}
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+function daysLeft(endDateStr){
+  const end = new Date(String(endDateStr || ""));
+  if(!isFinite(end.getTime())) return null;
+  const today = new Date();
+  const ms = end.getTime() - today.getTime();
+  return Math.ceil(ms / (1000*60*60*24));
+}
+function sumPeople(people){
+  return (Array.isArray(people) ? people : []).reduce((a,p)=> a + Number(p.count||0), 0);
+}
 
-  <title>クラファン特設｜POM PUPPYS bright</title>
-  <meta name="description" content="POM PUPPYS bright の挑戦を応援する特設ページ。進捗・費用の透明性・支援方法をまとめています。" />
+function prefersReducedMotion(){
+  try{ return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+  catch(e){ return false; }
+}
+function saveDataOn(){
+  try{ return !!navigator.connection?.saveData; }
+  catch(e){ return false; }
+}
 
-  <link rel="canonical" href="https://pompuppys-kasukabe.github.io/project-world-challenge.html" />
-  <meta name="robots" content="index,follow" />
+function mountHeroMediaProject(p){
+  const wrap = document.getElementById("pHeroMediaWrap");
+  const v = document.getElementById("pHeroVideo");
+  const img = document.getElementById("pHeroImg");
+  if(!wrap || !v || !img) return;
 
-  <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="POM PUPPYS bright" />
-  <meta property="og:title" content="クラファン特設｜POM PUPPYS bright" />
-  <meta property="og:description" content="進捗・費用の透明性・支援方法（公式サイト/Mediaとは分離）。" />
-  <meta property="og:url" content="https://pompuppys-kasukabe.github.io/project-world-challenge.html" />
-  <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale" content="ja_JP" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg" />
+  const videoCfg = p.heroVideo || {};
+  const imgSrc = p.heroImage || "";
+  const imgAlt = p.heroImageAlt || "";
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+  const showImage = ()=>{
+    // clear video
+    try{
+      v.pause();
+      v.removeAttribute("src");
+      v.querySelectorAll("source").forEach(s=>s.remove());
+    }catch(e){}
+    v.style.display = "none";
 
-  <link rel="stylesheet" href="./style.css" />
-  <script src="./config.js"></script>
-  <script src="./project.js" defer></script>
-</head>
+    if(imgSrc){
+      img.src = imgSrc;
+      img.alt = imgAlt || "";
+      img.style.display = "block";
+      wrap.style.display = "block";
+      wrap.style.setProperty("--hero-bg", `url("${imgSrc}")`);
+    }else{
+      wrap.style.display = "none";
+    }
+  };
 
-<body data-page="project">
-  <header class="header">
-    <div class="container header__inner">
-      <div class="brand">
-        <span class="brand__dot"></span>
-        <span>World Challenge</span>
+  const showVideo = ()=>{
+    const mp4 = videoCfg.mp4 || "";
+    const webm = videoCfg.webm || "";
+    if(!mp4 && !webm) return showImage();
+
+    // poster (fallback to award image)
+    const poster = videoCfg.poster || imgSrc || "";
+    if(poster){
+      v.setAttribute("poster", poster);
+      wrap.style.setProperty("--hero-bg", `url("${poster}")`);
+    }
+
+    // build sources
+    v.innerHTML = "";
+    if(webm){
+      const s = document.createElement("source");
+      s.src = webm;
+      s.type = "video/webm";
+      v.appendChild(s);
+    }
+    if(mp4){
+      const s = document.createElement("source");
+      s.src = mp4;
+      s.type = "video/mp4";
+      v.appendChild(s);
+    }
+
+    // playback policy
+    const allowAuto = !prefersReducedMotion() && !saveDataOn();
+    v.muted = true;
+    v.playsInline = true;
+    v.loop = videoCfg.loop !== false;
+
+    v.style.display = "block";
+    img.style.display = "none";
+    wrap.style.display = "block";
+
+    // if video fails -> image
+    v.onerror = showImage;
+
+    // try play (may be blocked; poster still looks good)
+    if(allowAuto){
+      v.play().catch(()=>{ /* keep poster */ });
+    }
+  };
+
+  if(videoCfg.enabled){
+    showVideo();
+  }else{
+    showImage();
+  }
+}
+
+function renderProject(){
+  const p = window.PUPPYS_CONFIG?.project;
+  if(!p) return;
+
+  const c = p.copy || {};
+  const set = (id, text) => { const el=document.getElementById(id); if(el) el.textContent = text || ""; };
+
+  // HERO
+  set("pKicker", c.heroKicker);
+  set("pHeadline", c.heroHeadline);
+  set("pLead", c.heroLead);
+
+  // HERO media
+  mountHeroMediaProject(p);
+
+  // Progress
+  const goal = Number(p.goalYen || 0);
+  const raised = Number(p.raisedYen || 0);
+  const pct = goal > 0 ? (raised / goal) * 100 : 0;
+
+  set("goalYen", yen(goal));
+  set("raisedYen", yen(raised));
+  set("pct", Math.round(pct) + "%");
+  const dl = daysLeft(p.endDate);
+  set("daysLeft", dl === null ? "—" : (dl < 0 ? "終了" : `${dl}日`));
+  set("updatedAt", p.updatedAt || "—");
+
+  const bar = document.getElementById("barFill");
+  if(bar) bar.style.width = clamp(pct,0,100).toFixed(1) + "%";
+
+  // Cost summary
+  const ppl = sumPeople(p.people);
+  const perPackage = Number(p.costPerPersonYen || 0);
+  const perExtras = Number(p.extrasPerPersonEstimateYen || 0);
+  const perTotal = perPackage + perExtras;
+  const totalCost = perPackage * ppl; // package total (for display)
+  set("perPerson", yen(perPackage));
+  set("extrasPerPerson", yen(perExtras) + "（目安）");
+  set("totalPerPerson", yen(perTotal) + "（目安）");
+  set("headcount", `${ppl}名（選手・コーチ合計）`);
+  set("totalCost", yen(totalCost));
+
+  const mp = document.getElementById("mealPlanNote");
+  if(mp){
+    mp.textContent = p.mealPlanNote || "";
+    mp.style.display = mp.textContent ? "block" : "none";
+  }
+
+  // Support meaning line
+  const supportEl = document.getElementById("supportMeaning");
+  if(supportEl){
+    const eq = perTotal > 0 ? (goal / perTotal) : 0;
+    const rounded = Math.round(eq * 10) / 10;
+    if(perTotal > 0 && eq > 0){
+      supportEl.innerHTML =
+        `目標${yen(goal)}は、1人あたりの費用目安（${yen(perTotal)}）の <strong>約${rounded}人分</strong> に相当します。` +
+        ` <small>※あくまで目安（燃油等は変動）</small>`;
+      supportEl.style.display = "block";
+    }else{
+      supportEl.style.display = "none";
+    }
+  }
+
+  // CTA button(s)
+  const url = p.crowdfundingUrl || "";
+  const btn = document.getElementById("crowdfundingBtn");
+  const sticky = document.getElementById("stickyCta");
+  const sbtn = document.getElementById("stickyCrowdfundingBtn");
+  if(btn){
+    if(url){
+      btn.href = url;
+      btn.style.display = "inline-flex";
+    }else{
+      btn.style.display = "none";
+    }
+  }
+  if(sticky && sbtn){
+    if(url){
+      sbtn.href = url;
+      sticky.style.display = "block";
+    }else{
+      sticky.style.display = "none";
+    }
+  }
+
+  // Why / Usage
+  const mountList = (id, lines)=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.innerHTML = (Array.isArray(lines)?lines:[]).map(t=>`<li>${escapeHtml(t)}</li>`).join("");
+  };
+  set("whyTitle", c.sections?.whyTitle || "なぜ支援が必要か");
+  mountList("whyBody", c.sections?.whyBody);
+  set("usageTitle", c.sections?.usageTitle || "資金の使い道");
+  mountList("usageBody", c.sections?.usageBody);
+
+  // Price table
+  const pt = document.getElementById("priceTable");
+  if(pt){
+    const rows = Array.isArray(p.priceTable) ? p.priceTable : [];
+    pt.innerHTML = rows.map(r=>`
+      <tr>
+        <td>${escapeHtml(r.room || "")}</td>
+        <td>${escapeHtml(r.meal || "")}</td>
+        <td style="text-align:right;font-weight:900;color:var(--navy)">${escapeHtml(yen(r.athleteCoachAdult))}</td>
+        <td style="text-align:right">${r.child ? escapeHtml(yen(r.child)) : "—"}</td>
+      </tr>
+    `).join("");
+  }
+
+  // Extra costs
+  const ex = document.getElementById("extraCosts");
+  if(ex){
+    const lines = Array.isArray(p.extraCosts) ? p.extraCosts : [];
+    ex.innerHTML = lines.map(t=>`<li>${escapeHtml(t)}</li>`).join("");
+  }
+
+  // Fund flow
+  const ff = p.fundFlow || {};
+  const ffTitle = document.getElementById("fundFlowTitle");
+  const ffNote = document.getElementById("fundFlowNote");
+  const ffWrap = document.getElementById("fundFlow");
+  if(ffTitle) ffTitle.textContent = ff.title || "ご支援の使い道（優先順位）";
+  if(ffNote){
+    ffNote.textContent = ff.note || "";
+    ffNote.style.display = ffNote.textContent ? "block" : "none";
+  }
+  if(ffWrap){
+    const steps = Array.isArray(ff.steps) ? ff.steps : [];
+    ffWrap.innerHTML = steps.map((s, i)=>`
+      <div class="flowStep">
+        <div class="flowStep__top">
+          <div class="flowStep__index">${i+1}</div>
+          <div class="flowStep__title">${escapeHtml(s.title || "")}</div>
+        </div>
+        ${s.body ? `<div class="muted" style="line-height:1.8;margin-top:8px;">${escapeHtml(s.body)}</div>` : ""}
+        ${
+          Array.isArray(s.examples) && s.examples.length
+            ? `<ul class="muted flowStep__list">${s.examples.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>`
+            : ""
+        }
       </div>
-      <nav class="nav" aria-label="primary">
-        <a href="./index.html">← 公式サイトへ</a>
-        <button id="projectShareBtn" class="btn btn-small" type="button">共有</button>
-      </nav>
-    </div>
-  </header>
+    `).join("");
+  }
 
-  <main>
-    <section class="hero hero--project">
-      <div class="container hero__grid">
-        <div class="heroCard heroCard--project">
-          <div class="kicker" id="pKicker"></div>
-          <h1 class="heroTitle" id="pHeadline"></h1>
-          <p class="heroSub muted" id="pLead" style="margin-top:10px;"></p>
-
-          <!-- Project hero media (auto) -->
-          <div class="heroMediaWrap heroMediaWrap--project" id="pHeroMediaWrap" style="display:none;">
-            <video class="heroVideo" id="pHeroVideo" playsinline muted loop preload="metadata" style="display:none;"></video>
-            <img class="heroPhoto" id="pHeroImg" src="" alt="" loading="eager" decoding="async" style="display:none;"/>
-          </div>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center;">
-            <a id="crowdfundingBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">
-              支援ページへ
-            </a>
-            <a class="btn btn-ghost" id="toSponsorPage" href="./sponsor.html">企業・団体として応援（協賛）</a>
-          </div>
-
-          <p class="note" style="margin-top:12px;">
-            ※本ページは支援のための特設です。取材素材は <a href="./media.html">Mediaページ</a> にまとめています。
-          </p>
-        </div>
-
-        <div class="card" id="progressCard">
-          <div class="section-head" style="margin-bottom:10px;">
-            <h2 style="font-size:1.05rem;">進捗</h2>
-            <p class="muted" style="font-size:.95rem;">透明性を大切に</p>
-          </div>
-
-          <div class="kpiGrid">
-            <div class="kpi"><div class="muted">目標</div><div class="kpi__v" id="goalYen">—</div></div>
-            <div class="kpi"><div class="muted">現在</div><div class="kpi__v" id="raisedYen">—</div></div>
-            <div class="kpi"><div class="muted">達成率</div><div class="kpi__v" id="pct">—</div></div>
-            <div class="kpi"><div class="muted">残り</div><div class="kpi__v" id="daysLeft">—</div></div>
-          </div>
-
-          <div class="bar" aria-hidden="true">
-            <div class="bar__fill" id="barFill"></div>
-          </div>
-
-          <div class="muted" style="margin-top:10px;font-size:.92rem;">
-            更新日：<span id="updatedAt">—</span>
-          </div>
-
-          <p class="supportMeaning" id="supportMeaning" style="display:none;"></p>
+  // Itinerary
+  set("itineraryTitle", c.sections?.scheduleTitle || "渡航〜大会までの流れ（抜粋）");
+  const itWrap = document.getElementById("itinerary");
+  if(itWrap){
+    const list = Array.isArray(p.itinerary) ? p.itinerary.filter(x=>!x.hidden) : [];
+    itWrap.innerHTML = list.map(row=>`
+      <div class="step">
+        <div class="step__label">${escapeHtml(row.label || "")}</div>
+        <div class="step__body">
+          <div class="step__title">${escapeHtml(row.title || "")}</div>
+          ${row.body ? `<div class="step__text muted">${escapeHtml(row.body || "")}</div>` : ""}
+          ${row.meals ? `<div class="step__meta muted">食事：${escapeHtml(row.meals)}</div>` : ""}
         </div>
       </div>
-    </section>
+    `).join("");
+  }
 
-    <section class="section">
-      <div class="container">
-        <div class="grid2">
-          <div class="card">
-            <h2 class="secTitle" id="whyTitle">なぜ支援が必要か</h2>
-            <ul class="muted" id="whyBody" style="line-height:1.9;margin:0;"></ul>
-          </div>
-          <div class="card">
-            <h2 class="secTitle" id="usageTitle">資金の使い道</h2>
-            <ul class="muted" id="usageBody" style="line-height:1.9;margin:0;"></ul>
-          </div>
-        </div>
-      </div>
-    </section>
+  // FAQ
+  const faqWrap = document.getElementById("faq");
+  if(faqWrap){
+    const items = Array.isArray(c.faq) ? c.faq : [];
+    faqWrap.innerHTML = items.map(item=>`
+      <details class="faqItem">
+        <summary>${escapeHtml(item.q || "")}</summary>
+        <div class="muted" style="margin-top:8px;line-height:1.8;">${escapeHtml(item.a || "")}</div>
+      </details>
+    `).join("");
+  }
 
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2>費用の目安</h2>
-          <p class="muted">できるだけ分かりやすく</p>
-        </div>
+  // Support section
+  const sup = p.support || {};
+  const email = window.PUPPYS_CONFIG?.pressEmail || "";
+  const contactName = window.PUPPYS_CONFIG?.pressContactName || "";
 
-        <div class="grid2">
-          <div class="card">
-            <div class="kpiGrid" style="grid-template-columns:repeat(2,1fr);">
-              <div class="kpi"><div class="muted">パッケージ費（1人）</div><div class="kpi__v" id="perPerson">—</div></div>
-              <div class="kpi"><div class="muted">別途費用（1人）</div><div class="kpi__v" id="extrasPerPerson">—</div></div>
-              <div class="kpi"><div class="muted">合計（1人）</div><div class="kpi__v" id="totalPerPerson">—</div></div>
-              <div class="kpi"><div class="muted">人数</div><div class="kpi__v" id="headcount">—</div></div>
-            </div>
+  const supTitle = document.getElementById("supportTitle");
+  if(supTitle) supTitle.textContent = sup.title || "応援の方法";
 
-            <div style="height:10px;"></div>
-
-            <div class="kpi" style="background:linear-gradient(135deg, rgba(255,56,160,.08), rgba(215,182,94,.10));">
-              <div class="muted">パッケージ費総額（目安）</div>
-              <div class="kpi__v" id="totalCost">—</div>
-            </div>
-
-            <p class="note" id="mealPlanNote" style="margin-top:12px;display:none;"></p>
-          </div>
-
-          <div class="card">
-            <h3 class="secTitle" style="margin-top:0;">料金表（大会指定旅行会社）</h3>
-            <div style="overflow:auto;">
-              <table class="priceTbl">
-                <thead>
-                  <tr>
-                    <th>部屋</th><th>食事</th>
-                    <th style="text-align:right;">選手/コーチ/大人</th>
-                    <th style="text-align:right;">子ども</th>
-                  </tr>
-                </thead>
-                <tbody id="priceTable"></tbody>
-              </table>
-            </div>
-
-            <div style="height:12px;"></div>
-
-            <h3 class="secTitle" style="margin:0 0 8px;">別途必要になる費用（例）</h3>
-            <ul class="muted" id="extraCosts" style="line-height:1.9;margin:0;"></ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2 id="fundFlowTitle">ご支援の使い道（優先順位）</h2>
-          <p class="muted">固定配分ではなく、必要支払いを優先</p>
-        </div>
-
-        <p class="note" id="fundFlowNote" style="margin:0 0 12px;display:none;"></p>
-        <div class="flow" id="fundFlow"></div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2 id="itineraryTitle">渡航〜大会までの流れ（抜粋）</h2>
-          <p class="muted">予定は変更になる場合があります</p>
-        </div>
-
-        <div class="card">
-          <div class="steps" id="itinerary"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2 id="supportTitle">応援の方法</h2>
-          <p class="muted">個人 / 企業・団体</p>
-        </div>
-
-        <div class="supportGrid">
-          <div class="supportCard">
-            <div class="supportCard__head">
-              <div class="supportCard__icon">INDIVIDUAL</div>
-              <div>
-                <div class="supportCard__title" id="supportIndTitle">個人で応援（CAMPFIRE）</div>
-                <div class="muted" id="supportIndBody" style="margin-top:6px;line-height:1.8;"></div>
-              </div>
-            </div>
-
-            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
-              <a id="supportIndBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">CAMPFIREで支援する</a>
-            </div>
-            <p class="note" id="supportIndNote" style="margin-top:10px;display:none;"></p>
-          </div>
-
-          <div class="supportCard">
-            <div class="supportCard__head">
-              <div class="supportCard__icon">CORPORATE</div>
-              <div>
-                <div class="supportCard__title" id="supportCorpTitle">企業・団体として応援（協賛）</div>
-                <div class="muted" id="supportCorpBody" style="margin-top:6px;line-height:1.8;"></div>
-              </div>
-            </div>
-
-            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
-              <a id="supportCorpBtn" class="btn btn-ghost" href="#">協賛の相談をする（メール）</a>
-              <a class="btn btn-ghost" href="./sponsor.html">協賛メニューを見る</a>
-            </div>
-            <p class="note" id="supportCorpNote" style="margin-top:10px;display:none;"></p>
-
-            <div class="supportMenu" id="supportCorpMenu" style="display:none;"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2>FAQ</h2>
-          <p class="muted">よくあるご質問</p>
-        </div>
-        <div class="card">
-          <div id="faq"></div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div class="stickyCta" id="stickyCta" style="display:none;">
-    <div class="stickyCta__inner">
-      <div class="stickyCta__text">World Challenge Project</div>
-      <a id="stickyCrowdfundingBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer">
-        支援ページへ
-      </a>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <div class="container">
-      <div>© POM PUPPYS bright</div>
-      <div class="muted" style="margin-top:6px;">
-        取材素材：<a href="./media.html">Mediaページ</a>
-      </div>
-    </div>
-  </footer>
-</body>
-</html>
+  const iTitle = document.getElementById("supportIndTitle");
+  const iBody  = document.getElementById("supportIndBody");
+  const iBtn   = document.getElementById("supportIndBtn");
+  const iNote  = document.getElementById("supportIndNote");
+  if(iTitle) iTitle.textContent = sup.individual?.title || "個人で応援（CAMPFIRE）";
+  if(iBody)  iBody.textContent  = sup.individual?.body || "";
+  if(iBtn){
+    if(url){
+      iBtn.href = url;
+      iBtn.textContent = sup.individual?.ctaLabel || "CAMPFIREで支援する";
+      iBtn.style.display = "inline-flex";
+      if(iNote) iNote.style.display = "none";
+    }else{
+      iBtn.style.display = "none";
+      if(iNote){
+        iNote.textContent = "※CAMPFIREページ公開後にリンクが表示されます。";
+        iNote.style.display = "block";
+      }
