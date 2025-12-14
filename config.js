@@ -101,8 +101,8 @@ window.PUPPYS_CONFIG = {
     heroPhotoAlt: "POM PUPPYS bright（埼玉・春日部）",
     // ギャラリー（任意）
     gallery: [
-      { title: "大会当日", src: "./assets/photos/event_01.JPG", alt: "大会当日の様子" },
-      { title: "練習風景", src: "./assets/photos/practice_01.JPG", alt: "練習風景" },
+      { title: "大会当日", src: "./assets/photos/event_01.jpg", alt: "大会当日の様子" },
+      { title: "練習風景", src: "./assets/photos/practice_01.jpg", alt: "練習風景" },
       { title: "チーム集合", src: "./assets/photos/team_01.jpg", alt: "チーム集合写真" }
     ],
     // オリジナルキャラ（任意）

@@ -298,10 +298,79 @@ function renderPhotos(){
 }
 
 
+
+
+function applyUiFlags(){
+  const ui = window.PUPPYS_CONFIG?.ui || {};
+  const teamReview = !!ui.teamReviewMode;
+
+  // Dev hints
+  const devNotes = document.querySelectorAll(".devOnly");
+  devNotes.forEach(el => {
+    el.style.display = ui.showDevHints ? "" : "none";
+  });
+
+  // Hide Media nav + CTA on official page while team is reviewing
+  if(teamReview){
+    const navMedia = document.getElementById("navMedia");
+    if(navMedia) navMedia.style.display = "none";
+
+    const mediaSection = document.getElementById("mediaCtaSection") || document.getElementById("media");
+    // hide only the CTA section at bottom (leave footer contact text)
+    if(mediaSection) mediaSection.style.display = "none";
+  }
+}
+
+function setupLightbox(){
+  const ui = window.PUPPYS_CONFIG?.ui || {};
+  if(!ui.enableLightbox) return;
+
+  const lb = document.getElementById("lightbox");
+  const img = document.getElementById("lightboxImg");
+  const cap = document.getElementById("lightboxCap");
+  const bg = document.getElementById("lightboxBg");
+  const close = document.getElementById("lightboxClose");
+  if(!lb || !img || !cap || !bg || !close) return;
+
+  function open(src, caption, alt){
+    img.src = src;
+    img.alt = alt || caption || "";
+    cap.textContent = caption || "";
+    lb.classList.add("isOpen");
+    lb.setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+  }
+  function shut(){
+    lb.classList.remove("isOpen");
+    lb.setAttribute("aria-hidden","true");
+    img.src = "";
+    document.body.style.overflow = "";
+  }
+
+  bg.addEventListener("click", shut);
+  close.addEventListener("click", shut);
+  document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") shut(); });
+
+  // delegate clicks from photo cards
+  document.addEventListener("click", (e)=>{
+    const t = e.target;
+    if(!(t instanceof HTMLElement)) return;
+    const imgEl = t.closest(".photoCard")?.querySelector("img.photoImg");
+    if(imgEl && imgEl.getAttribute("src")){
+      const fig = t.closest("figure");
+      const caption = fig?.querySelector(".photoCap")?.textContent || "";
+      open(imgEl.getAttribute("src"), caption, imgEl.getAttribute("alt")||caption);
+    }
+  });
+}
+
+
 function initSite(){
+  applyUiFlags();
   renderNews();
   renderCopy();
   renderPhotos();
+  setupLightbox();
   wireMediaLink();
   wireWebShare();
 }

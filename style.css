@@ -290,3 +290,67 @@ ul{ padding-left: 1.1em; }
   font-size:1.05rem;
   margin-bottom:6px;
 }
+
+
+/* Dev-only notes (hidden in teamReviewMode) */
+.devOnly{ display:none; }
+
+
+/* Lightbox */
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+}
+.lightbox.isOpen{ display:block; }
+.lightbox__bg{
+  position:absolute;
+  inset:0;
+  border:0;
+  background:rgba(2,6,23,.68);
+}
+.lightbox__panel{
+  position:absolute;
+  inset:24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  pointer-events:none;
+}
+.lightbox__img{
+  max-width:min(1100px, 92vw);
+  max-height:calc(100vh - 140px);
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow: 0 24px 80px rgba(0,0,0,.35);
+  background:#fff;
+  pointer-events:auto;
+}
+.lightbox__cap{
+  max-width:min(1100px, 92vw);
+  color:rgba(255,255,255,.92);
+  font-weight:800;
+  text-align:center;
+  pointer-events:none;
+}
+.lightbox__close{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:44px;
+  height:44px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  font-size:26px;
+  line-height:1;
+  cursor:pointer;
+  pointer-events:auto;
+}
+@media (max-width:900px){
+  .lightbox__panel{ inset:16px; }
+}

@@ -145,7 +145,7 @@
           <p class="muted">写真で雰囲気が伝わる（あとで差し替えOK）</p>
         </div>
         <div id="photoGrid" class="photoGrid"></div>
-        <p class="note" style="margin-top:12px;">
+        <p class="note devOnly" id="photosDevNote" style="margin-top:12px;">
           ※画像は <code>assets/photos/</code> に置き、<code>config.js</code> の <code>siteImages.gallery</code> を差し替えてください。
         </p>
       </div>
@@ -198,6 +198,16 @@
     </section>
 
   </main>
+
+  <!-- Lightbox (photo zoom) -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox__bg" id="lightboxBg" aria-label="閉じる"></button>
+    <div class="lightbox__panel" role="dialog" aria-modal="true">
+      <button class="lightbox__close" id="lightboxClose" aria-label="閉じる">×</button>
+      <img class="lightbox__img" id="lightboxImg" src="" alt="" />
+      <div class="lightbox__cap" id="lightboxCap"></div>
+    </div>
+  </div>
 
   <footer class="footer">
     <div class="container">
