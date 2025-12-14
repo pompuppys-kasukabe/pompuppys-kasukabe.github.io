@@ -20,6 +20,12 @@ function daysLeft(endDateStr){
 function sumPeople(people){
   return (Array.isArray(people) ? people : []).reduce((a,p)=> a + Number(p.count||0), 0);
 }
+function formatDateLabel(dateStr){
+  if(!dateStr) return "";
+  const m = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if(!m) return String(dateStr);
+  return `${m[1]}.${m[2]}.${m[3]}`;
+}
 
 function prefersReducedMotion(){
   try{ return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
@@ -41,7 +47,6 @@ function mountHeroMediaProject(p){
   const imgAlt = p.heroImageAlt || "";
 
   const showImage = ()=>{
-    // clear video
     try{
       v.pause();
       v.removeAttribute("src");
@@ -65,14 +70,12 @@ function mountHeroMediaProject(p){
     const webm = videoCfg.webm || "";
     if(!mp4 && !webm) return showImage();
 
-    // poster (fallback to award image)
     const poster = videoCfg.poster || imgSrc || "";
     if(poster){
       v.setAttribute("poster", poster);
       wrap.style.setProperty("--hero-bg", `url("${poster}")`);
     }
 
-    // build sources
     v.innerHTML = "";
     if(webm){
       const s = document.createElement("source");
@@ -87,7 +90,6 @@ function mountHeroMediaProject(p){
       v.appendChild(s);
     }
 
-    // playback policy
     const allowAuto = !prefersReducedMotion() && !saveDataOn();
     v.muted = true;
     v.playsInline = true;
@@ -97,20 +99,82 @@ function mountHeroMediaProject(p){
     img.style.display = "none";
     wrap.style.display = "block";
 
-    // if video fails -> image
     v.onerror = showImage;
-
-    // try play (may be blocked; poster still looks good)
     if(allowAuto){
-      v.play().catch(()=>{ /* keep poster */ });
+      v.play().catch(()=>{});
     }
   };
 
-  if(videoCfg.enabled){
-    showVideo();
-  }else{
-    showImage();
+  if(videoCfg.enabled) showVideo();
+  else showImage();
+}
+
+async function fetchJsonWithNoCache(url){
+  const u = url + (url.includes("?") ? "&" : "?") + "v=" + Date.now();
+  const r = await fetch(u, { cache: "no-store" });
+  if(!r.ok) throw new Error("fetch failed: " + r.status);
+  return await r.json();
+}
+
+function normalizeMessages(list){
+  const arr = Array.isArray(list) ? list : [];
+  return arr
+    .filter(x => x && x.approved !== false && String(x.message || "").trim())
+    .map(x => ({
+      date: String(x.date || ""),
+      name: String(x.name || "匿名"),
+      message: String(x.message || "").trim()
+    }))
+    .sort((a,b)=> String(b.date).localeCompare(String(a.date)));
+}
+
+async function renderSupportMessagesProject(){
+  const cfg = window.PUPPYS_CONFIG?.supportMessages;
+  if(!cfg || cfg.enabled === false) return;
+
+  const grid = document.getElementById("projectMessagesGrid");
+  if(!grid) return;
+
+  const note = document.getElementById("projectMessagesNote");
+  if(note){
+    note.textContent = cfg.note || "";
+    note.style.display = note.textContent ? "block" : "none";
   }
+
+  const btn = document.getElementById("projectMessageFormBtn");
+  if(btn){
+    if(cfg.formUrl){
+      btn.href = cfg.formUrl;
+      btn.style.display = "inline-flex";
+    }else{
+      btn.style.display = "none";
+    }
+  }
+
+  let data = [];
+  try{
+    if(cfg.dataUrl){
+      data = await fetchJsonWithNoCache(cfg.dataUrl);
+    }
+  }catch(e){
+    data = [];
+  }
+
+  const items = normalizeMessages(data).slice(0, Number(cfg.maxOnProject || 24));
+  if(!items.length){
+    grid.innerHTML = `<div class="muted">応援メッセージを募集中です。</div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map(m => `
+    <div class="msgCard">
+      <div class="msgTop">
+        <div class="msgName">${escapeHtml(m.name)}</div>
+        <div class="msgDate">${escapeHtml(formatDateLabel(m.date))}</div>
+      </div>
+      <p class="msgBody">${escapeHtml(m.message)}</p>
+    </div>
+  `).join("");
 }
 
 function renderProject(){
@@ -120,15 +184,12 @@ function renderProject(){
   const c = p.copy || {};
   const set = (id, text) => { const el=document.getElementById(id); if(el) el.textContent = text || ""; };
 
-  // HERO
   set("pKicker", c.heroKicker);
   set("pHeadline", c.heroHeadline);
   set("pLead", c.heroLead);
 
-  // HERO media
   mountHeroMediaProject(p);
 
-  // Progress
   const goal = Number(p.goalYen || 0);
   const raised = Number(p.raisedYen || 0);
   const pct = goal > 0 ? (raised / goal) * 100 : 0;
@@ -143,12 +204,12 @@ function renderProject(){
   const bar = document.getElementById("barFill");
   if(bar) bar.style.width = clamp(pct,0,100).toFixed(1) + "%";
 
-  // Cost summary
   const ppl = sumPeople(p.people);
   const perPackage = Number(p.costPerPersonYen || 0);
   const perExtras = Number(p.extrasPerPersonEstimateYen || 0);
   const perTotal = perPackage + perExtras;
-  const totalCost = perPackage * ppl; // package total (for display)
+  const totalCost = perPackage * ppl;
+
   set("perPerson", yen(perPackage));
   set("extrasPerPerson", yen(perExtras) + "（目安）");
   set("totalPerPerson", yen(perTotal) + "（目安）");
@@ -161,7 +222,6 @@ function renderProject(){
     mp.style.display = mp.textContent ? "block" : "none";
   }
 
-  // Support meaning line
   const supportEl = document.getElementById("supportMeaning");
   if(supportEl){
     const eq = perTotal > 0 ? (goal / perTotal) : 0;
@@ -176,7 +236,6 @@ function renderProject(){
     }
   }
 
-  // CTA button(s)
   const url = p.crowdfundingUrl || "";
   const btn = document.getElementById("crowdfundingBtn");
   const sticky = document.getElementById("stickyCta");
@@ -198,7 +257,6 @@ function renderProject(){
     }
   }
 
-  // Why / Usage
   const mountList = (id, lines)=>{
     const el = document.getElementById(id);
     if(!el) return;
@@ -209,7 +267,6 @@ function renderProject(){
   set("usageTitle", c.sections?.usageTitle || "資金の使い道");
   mountList("usageBody", c.sections?.usageBody);
 
-  // Price table
   const pt = document.getElementById("priceTable");
   if(pt){
     const rows = Array.isArray(p.priceTable) ? p.priceTable : [];
@@ -223,14 +280,12 @@ function renderProject(){
     `).join("");
   }
 
-  // Extra costs
   const ex = document.getElementById("extraCosts");
   if(ex){
     const lines = Array.isArray(p.extraCosts) ? p.extraCosts : [];
     ex.innerHTML = lines.map(t=>`<li>${escapeHtml(t)}</li>`).join("");
   }
 
-  // Fund flow
   const ff = p.fundFlow || {};
   const ffTitle = document.getElementById("fundFlowTitle");
   const ffNote = document.getElementById("fundFlowNote");
@@ -258,7 +313,6 @@ function renderProject(){
     `).join("");
   }
 
-  // Itinerary
   set("itineraryTitle", c.sections?.scheduleTitle || "渡航〜大会までの流れ（抜粋）");
   const itWrap = document.getElementById("itinerary");
   if(itWrap){
@@ -275,7 +329,6 @@ function renderProject(){
     `).join("");
   }
 
-  // FAQ
   const faqWrap = document.getElementById("faq");
   if(faqWrap){
     const items = Array.isArray(c.faq) ? c.faq : [];
@@ -287,7 +340,6 @@ function renderProject(){
     `).join("");
   }
 
-  // Support section
   const sup = p.support || {};
   const email = window.PUPPYS_CONFIG?.pressEmail || "";
   const contactName = window.PUPPYS_CONFIG?.pressContactName || "";
@@ -299,17 +351,53 @@ function renderProject(){
   const iBody  = document.getElementById("supportIndBody");
   const iBtn   = document.getElementById("supportIndBtn");
   const iNote  = document.getElementById("supportIndNote");
-  if(iTitle) iTitle.textContent = sup.individual?.title || "個人で応援（CAMPFIRE）";
+  if(iTitle) iTitle.textContent = sup.individual?.title || "個人で応援";
   if(iBody)  iBody.textContent  = sup.individual?.body || "";
   if(iBtn){
     if(url){
       iBtn.href = url;
-      iBtn.textContent = sup.individual?.ctaLabel || "CAMPFIREで支援する";
+      iBtn.textContent = sup.individual?.ctaLabel || "支援ページを見る";
       iBtn.style.display = "inline-flex";
       if(iNote) iNote.style.display = "none";
     }else{
       iBtn.style.display = "none";
       if(iNote){
-        iNote.textContent = "※CAMPFIREページ公開後にリンクが表示されます。";
+        iNote.textContent = "※支援ページ公開後にリンクが表示されます。";
         iNote.style.display = "block";
       }
+    }
+  }
+
+  const cTitle = document.getElementById("supportCorpTitle");
+  const cBody  = document.getElementById("supportCorpBody");
+  const cBtn   = document.getElementById("supportCorpBtn");
+  const cNote  = document.getElementById("supportCorpNote");
+  if(cTitle) cTitle.textContent = sup.corporate?.title || "企業・団体として応援（協賛）";
+  if(cBody)  cBody.textContent  = sup.corporate?.body || "";
+  if(cBtn){
+    cBtn.textContent = sup.corporate?.ctaLabel || "協賛の相談をする（メール）";
+    if(email){
+      const subject = encodeURIComponent(sup.corporate?.mailSubject || "【協賛のご相談】POM PUPPYS bright");
+      const body = encodeURIComponent((sup.corporate?.mailBody || "") + (contactName ? `\n\n（署名）\n${contactName}` : ""));
+      cBtn.href = `mailto:${email}?subject=${subject}&body=${body}`;
+      if(cNote){
+        cNote.textContent = `送信先：${email}`;
+        cNote.style.display = "block";
+      }
+    }else{
+      cBtn.href = "#";
+      if(cNote){
+        cNote.textContent = "メールアドレスが未設定です。";
+        cNote.style.display = "block";
+      }
+    }
+  }
+
+  const menuWrap = document.getElementById("supportCorpMenu");
+  if(menuWrap){
+    const menu = sup.corporate?.menu;
+    if(Array.isArray(menu) && menu.length){
+      menuWrap.innerHTML = menu.map(m=>`
+        <div class="supportMenuItem">
+          <div class="supportMenuItem__title">${escapeHtml(m.title || "")}</div>
+          ${m.body ? `<div
