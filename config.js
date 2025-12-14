@@ -1,34 +1,46 @@
-/* config.js */
+/* config.js - サイト設定 */
 window.PUPPYS_CONFIG = {
+  
+  // ===== 基本情報 =====
   siteUrl: "https://pompuppys-kasukabe.github.io/",
+  siteName: "POM PUPPYS bright",
+  siteDescription: "埼玉・春日部で活動するチアダンスチーム",
+  
+  // OGP画像
   ogImageUrl: "https://pompuppys-kasukabe.github.io/assets/ogp.jpg",
   ogImageUrlProject: "https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg",
 
+  // ===== ページURL =====
   pages: {
+    home: "./index.html",
     media: "./media.html",
     project: "./project-world-challenge.html",
     sponsor: "./sponsor.html"
   },
 
+  // ===== 連絡先 =====
+  pressEmail: "moccy0306@gmail.com",
+  pressContactName: "POM PUPPYS bright 保護者代表 飯田 絵里",
+  
+  // ===== 外部リンク =====
   mediaKitUrl: "https://drive.google.com/drive/folders/1jfploQJhKcJWmGzHVKrY2VnJykLoE-d0?usp=sharing",
   instagramUrl: "",
-  pressEmail: "moccy0306@gmail.com",
-  pressContactName: "POM PUPPYS bright 保護者代表　飯田 絵里",
 
+  // ===== UI設定 =====
   ui: {
     enableLightbox: true,
     showShareButton: true
   },
 
+  // ===== メディア用テキスト =====
   mediaTexts: {
     credit: "写真クレジット：POM PUPPYS bright 提供",
-    short100:
-      "埼玉・春日部のチアダンスチーム「POM PUPPYS bright」。悔しさを転機に“楽しむ”へ立ち返り、演技を立て直してJAMfestで1位。The Dance Summit 2026に挑戦。",
-    mid200:
-      "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。直前の大会で悔しい結果を経験し、勝ち負けだけではなく“踊ることを楽しむ”原点へ。表情・一体感・空気づくりまで磨き直し、JAMfestで1位を獲得。The Dance Summit 2026に向け準備を進めている。",
-    long400: `「勝つため」ではなく「踊ることを楽しむ」原点へ。その劇的な意識改革が、強豪ひしめく「JAMfest JAPAN」第1位という快挙を手繰り寄せました。 埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」（小6〜中3）は、この優勝を弾みに、世界最高峰の舞台、米国「The Dance Summit 2026」への切符を掴みました。 直前の大会での敗北という試練。どん底の中で技術だけでなく、表情やチームの空気感まで全てを見つめ直し、彼女たちは生まれ変わりました。ふじみ野発祥の姉妹チームの系譜を継ぎ、2016年の始動から苦節を乗り越え、ついに世界の扉を開いたのです。 「原点回帰」でチアの楽しさを再発見した彼女たちは、最高の笑顔を春日部から世界へ届けようとしています。困難を笑顔に変えて進む少女たちの挑戦は、見る人々に勇気と感動を与えています。`
+    short100: "埼玉・春日部のチアダンスチーム「POM PUPPYS bright」。悔しさを転機に"楽しむ"へ立ち返り、演技を立て直してJAMfestで1位。The Dance Summit 2026に挑戦。",
+    mid200: "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。直前の大会で悔しい結果を経験し、勝ち負けだけではなく"踊ることを楽しむ"原点へ。表情・一体感・空気づくりまで磨き直し、JAMfestで1位を獲得。The Dance Summit 2026に向け準備を進めている。",
+    long400: "「勝つため」ではなく「踊ることを楽しむ」原点へ。その劇的な意識改革が、強豪ひしめく「JAMfest JAPAN」第1位という快挙を手繰り寄せました。埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」（小6〜中3）は、この優勝を弾みに、世界最高峰の舞台、米国「The Dance Summit 2026」への切符を掴みました。直前の大会での敗北という試練。どん底の中で技術だけでなく、表情やチームの空気感まで全てを見つめ直し、彼女たちは生まれ変わりました。「原点回帰」でチアの楽しさを再発見した彼女たちは、最高の笑顔を春日部から世界へ届けようとしています。"
   },
 
+  // ===== ニュース =====
   news: [
     {
       date: "2025-12-28",
@@ -43,22 +55,103 @@ window.PUPPYS_CONFIG = {
       title: "PUPPYS 発表会（ふじみ野合同）出演予定",
       body: "詳細は決まり次第お知らせします。",
       url: ""
+    },
+    {
+      date: "2025-11-23",
+      tag: "RESULT",
+      title: "JAMfest JAPAN vol.23 in TOKYO 優勝！",
+      body: "Junior編成 Pom部門 Small Bで1位を獲得し、The Dance Summit 2026への出場権を獲得しました。",
+      url: ""
     }
   ],
 
-  copy: {
-    hero: {
-      headline: "悔しさを転機に、「楽しむ」へ。",
-      lead: "胸がいっぱいになるほど悔しかった日を越えて、笑顔が戻った瞬間がありました。",
-      sub: "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。勝ち負けだけではなく、“踊ることを楽しむ”原点に立ち返り、表情・一体感・空気づくりまで磨き直して The Dance Summit 2026 に挑戦します。"
+  // ===== サイト画像 =====
+  siteImages: {
+    // Heroメイン画像
+    heroImage: "./assets/photos/team_main.jpg",
+    heroImageAlt: "POM PUPPYS bright チーム写真",
+
+    // Hero動画（使用する場合）
+    heroVideo: {
+      enabled: false,
+      mp4: "",
+      webm: "",
+      poster: "",
+      loop: true
     },
+
+    // フォトギャラリー
+    gallery: [
+      { 
+        title: "JAMfest JAPAN 2025 優勝 🏆", 
+        src: "./assets/photos/award_flag.jpg", 
+        alt: "表彰式でフラッグを掲げるチーム" 
+      },
+      { 
+        title: "練習風景", 
+        src: "./assets/photos/practice_01.jpg", 
+        alt: "練習中の様子" 
+      },
+      { 
+        title: "チーム集合写真", 
+        src: "./assets/photos/team_01.jpg", 
+        alt: "チーム全員での集合写真" 
+      },
+      { 
+        title: "演技中", 
+        src: "./assets/photos/performance_01.jpg", 
+        alt: "大会での演技" 
+      },
+      { 
+        title: "オフショット 😊", 
+        src: "./assets/photos/offshot_01.jpg", 
+        alt: "練習後のオフショット" 
+      },
+      { 
+        title: "大会会場にて", 
+        src: "./assets/photos/jam.jpg", 
+        alt: "大会会場での一枚" 
+      }
+    ],
+
+    // メンバー写真
+    members: [
+      { name: "Member", src: "./assets/photos/member_01.jpg" },
+      { name: "Member", src: "./assets/photos/member_02.jpg" },
+      { name: "Member", src: "./assets/photos/member_03.jpg" },
+      { name: "Member", src: "./assets/photos/member_04.jpg" },
+      { name: "Member", src: "./assets/photos/member_05.jpg" },
+      { name: "Member", src: "./assets/photos/member_06.jpg" },
+      { name: "Member", src: "./assets/photos/member_07.jpg" }
+    ],
+
+    // マスコット
+    mascot: {
+      enabled: true,
+      src: "./assets/mascot.png",
+      alt: "POM PUPPYS bright マスコット"
+    }
+  },
+
+  // ===== コピー（テキスト） =====
+  copy: {
+    // Hero
+    hero: {
+      kicker: "Saitama • Kasukabe",
+      headline: "笑顔で踊る、世界へ挑む。",
+      lead: "悔しさを転機に、「楽しむ」を取り戻した私たち。",
+      sub: "埼玉・春日部で活動するチアダンスチーム「POM PUPPYS bright」。JAMfest JAPAN 2025 で1位を獲得し、The Dance Summit 2026 への切符を掴みました。"
+    },
+
+    // Key Facts（旧）
     facts: [
       { label: "拠点", value: "埼玉・春日部" },
       { label: "メンバー", value: "小学6年生〜中学3年生" },
       { label: "挑戦", value: "The Dance Summit 2026" },
-      { label: "主な実績", value: "JAMfest JAPAN vol.23 in TOKYO / Junior編成 Pom部門 Small B：1位" }
+      { label: "主な実績", value: "JAMfest JAPAN vol.23 1位" }
     ],
-    summitNote: "米国Varsity社が主催する、世界最高峰のチアダンス・ダンスの世界選手権大会。",
+
+    // About
     about: {
       title: "POM PUPPYS bright について",
       body: [
@@ -68,150 +161,134 @@ window.PUPPYS_CONFIG = {
       ],
       note: ""
     },
+
+    // Story
     story: {
-      title: "STORY",
+      title: "Our Story",
       body: [
         "直前の大会で悔しい結果を経験し、私たちは一度立ち止まりました。",
-        "悔しさを抱えたままでは、踊る姿も硬くなってしまう——そう気づいたとき、原点の“楽しむ”に戻る決断をしました。",
+        "悔しさを抱えたままでは、踊る姿も硬くなってしまう——そう気づいたとき、原点の"楽しむ"に戻る決断をしました。",
         "表情、声、チームの空気づくりまで見直し、演技を一から再構築。",
-        "気持ちが揃った瞬間、踊りが変わり、会場の空気も変わった感覚がありました。",
-        "そのプロセスが結果につながり、JAMfestで1位を獲得。いま、次の舞台に向けて準備を進めています。"
+        "気持ちが揃った瞬間、踊りが変わり、会場の空気も変わりました。"
       ],
       interviewPoints: [
-        "教育：悔しさを経験し、“楽しむ”へ切り替えて伸びたプロセス",
+        "教育：悔しさを経験し、"楽しむ"へ切り替えて伸びたプロセス",
         "地域：春日部の子どもたちが世界へ挑戦する地域のストーリー",
         "競技：表情・一体感・空気づくりまで含むチアの奥深さ",
-        "家族・地域の支え：最初は参加も難しかったが、協力を得て挑戦が現実に"
+        "家族・地域の支え：協力を得て挑戦が現実に"
       ]
     },
+
+    // Timeline
     timeline: [
       { year: "2016", text: "春日部で活動開始" },
       { year: "2020", text: "大会への挑戦を本格化" },
-      { year: "2025", text: "演技を立て直し大きく躍進／JAMfestで1位" },
-      { year: "2026", text: "The Dance Summit 2026 へ挑戦" }
+      { year: "2025", text: "JAMfest JAPAN vol.23 で1位獲得" },
+      { year: "2026", text: "The Dance Summit へ挑戦予定" }
     ]
   },
 
-  // 画像・動画
-  siteImages: {
-    heroImage: "./assets/photos/award_flag.jpg",
-    heroImageAlt: "表彰後、フラッグを掲げるPOM PUPPYS bright",
-
-    heroVideo: {
-      enabled: false,
-      mp4: "./assets/video/official_hero.mp4",
-      webm: "",
-      poster: "./assets/photos/award_flag.jpg",
-      alt: "POM PUPPYS bright 公式映像",
-      loop: true
-    },
-
-    gallery: [
-      { title: "大会当日", src: "./assets/photos/jam.jpg", alt: "マスコットと" },
-      { title: "練習風景", src: "./assets/photos/practice_01.JPG", alt: "練習風景" },
-      { title: "チーム集合", src: "./assets/photos/team_01.jpg", alt: "チーム集合写真" }
-    ],
-
-    mascot: {
-      enabled: true,
-      src: "./assets/mascot.png",
-      alt: "オリジナルキャラクター"
-    }
-  },
-
+  // ===== スポンサー =====
   sponsors: {
     enabled: true,
-    title: "スポンサー / 協賛",
-    note: "掲載は活動支援への謝意として行っています（原則1年更新・審査あり）。",
-    items: []
+    title: "🤝 Sponsors",
+    note: "掲載は活動支援への謝意として行っています（原則1年更新・審査あり）",
+    items: [
+      // 例：
+      // {
+      //   name: "株式会社サンプル",
+      //   logo: "./assets/sponsors/sample.png",
+      //   url: "https://example.com",
+      //   approved: true,
+      //   showOnOfficial: true,
+      //   expiresAt: "2026-12-31"
+      // }
+    ]
   },
 
+  // ===== 協賛ページ設定 =====
   sponsor: {
     pageTitle: "企業・団体の方へ（協賛 / 応援出演）",
     formUrl: "",
     areaNote: "埼玉県を中心に、関東は要相談です。",
-    feeNote:
-      "協賛・応援出演は1万円〜を目安に、移動距離・拘束時間・内容によりお見積りします。交通費等が発生する場合は事前にご案内します。",
+    feeNote: "協賛・応援出演は1万円〜を目安に、移動距離・拘束時間・内容によりお見積りします。交通費等が発生する場合は事前にご案内します。",
     policy: [
-      "掲載は当チームの基準に基づき審査の上で行います。内容により掲載を見合わせる場合があります（例：成人向け、ギャンブル、反社会的勢力に該当する恐れがあるもの等）。",
+      "掲載は当チームの基準に基づき審査の上で行います。内容により掲載を見合わせる場合があります。",
       "掲載期間は原則1年（更新可）です。",
       "写真掲載・訪問レポート掲載は、事前に許諾をいただいた場合のみ行います。"
     ],
     menus: [
-      { title: "広告協賛（ロゴ掲載）", body: "公式サイト／クラファン特設ページへのロゴ掲載（リンク付）、活動報告（NEWS）でのご紹介。" },
-      { title: "応援出演（有料・演技のみ）", body: "イベント等での演技披露（体験会は原則行っていません）。距離・拘束時間・内容によりお見積りします。" },
-      { title: "物品提供・告知協力", body: "備品提供、告知協力など。内容はご相談ください。" }
+      { 
+        title: "広告協賛（ロゴ掲載）", 
+        body: "公式サイト／クラファン特設ページへのロゴ掲載（リンク付）、活動報告（NEWS）でのご紹介。" 
+      },
+      { 
+        title: "応援出演（有料・演技のみ）", 
+        body: "イベント等での演技披露。距離・拘束時間・内容によりお見積りします。" 
+      },
+      { 
+        title: "物品提供・告知協力", 
+        body: "備品提供、告知協力など。内容はご相談ください。" 
+      }
     ],
     required: [
       "企業・団体名／ご担当者名／ご連絡先",
       "ご希望（協賛／応援出演／物品提供等）",
-      "（応援出演の場合）場所・日時候補・拘束時間の目安・音響/床/控室の有無",
-      "ロゴデータ（推奨：透過PNG）・掲載希望URL（ロゴ掲載の場合）",
-      "領収書の宛名（会社名でOK）"
+      "（応援出演の場合）場所・日時候補・拘束時間の目安",
+      "ロゴデータ（推奨：透過PNG）・掲載希望URL",
+      "領収書の宛名"
     ],
     mail: {
       subject: "【協賛/応援出演のご相談】POM PUPPYS bright",
-      body:
-`協賛/応援出演のご相談です。
-
-【企業・団体名】
-【ご担当者名】
-【ご連絡先（メール/電話）】
-
-【ご希望】（協賛 / 応援出演 / その他）
-【開催場所（市区町村・会場名）】
-【候補日時】
-【拘束時間の目安】
-【ご予算感】（任意）
-【領収書の宛名】（会社名でOK）
-
-【備考】
-
-よろしくお願いいたします。`
+      body: "協賛/応援出演のご相談です。\n\n【企業・団体名】\n【ご担当者名】\n【ご連絡先（メール/電話）】\n\n【ご希望】（協賛 / 応援出演 / その他）\n【開催場所】\n【候補日時】\n【拘束時間の目安】\n【ご予算感】（任意）\n【領収書の宛名】\n\n【備考】\n\nよろしくお願いいたします。"
     }
   },
 
-  // 応援メッセージ（審査制）
+  // ===== 応援メッセージ =====
   supportMessages: {
     enabled: true,
-    formUrl: "",                  // Googleフォーム / NotionフォームURL（空ならボタン非表示）
+    formUrl: "",  // Notion Form または Google Form のURL（空ならボタン非表示）
     dataUrl: "./assets/messages.json",
-    maxOnOfficial: 3,
-    maxOnProject: 24,
-    note: "※掲載は内容確認のうえ反映します。個人情報（学校名/住所/電話番号など）は記載しないでください。"
+    maxOnOfficial: 12,  // トップページの表示件数
+    maxOnProject: 24,   // 特設ページの表示件数
+    note: "※ 掲載は内容確認のうえ反映します。個人情報（学校名/住所/電話番号など）は記載しないでください。"
   },
 
-  // クラファン特設
+  // ===== クラファン特設 =====
   project: {
-    title: "World Challenge Project",
-    crowdfundingUrl: "",
+    title: "Road to the World - Special Project",
+    crowdfundingUrl: "",  // CAMPFIREなどのURL（空ならボタン非表示）
+    
+    // 進捗
     goalYen: 1000000,
     raisedYen: 0,
     endDate: "2026-03-31",
-    updatedAt: "2025-12-13",
+    updatedAt: "2025-12-14",
 
+    // Hero動画/画像
     heroVideo: {
-      enabled: true,
-      mp4: "./assets/video/project_hero.mp4",
+      enabled: false,
+      mp4: "",
       webm: "",
       poster: "./assets/photos/award_flag.jpg",
-      alt: "World Challenge Project 映像",
       loop: true
     },
     heroImage: "./assets/photos/award_flag.jpg",
     heroImageAlt: "表彰後、フラッグを掲げるPOM PUPPYS bright",
 
+    // 費用
     costPerPersonYen: 580000,
     extrasPerPersonEstimateYen: 100000,
     nights: 6,
-    mealPlanNote:
-      "現地は物価高の影響もあり、6泊の滞在で3食を外食等で賄うと総額が膨らみやすいため、費用が読みやすく結果的に総額を抑えやすい食事付プランを選択しています。",
+    mealPlanNote: "現地は物価高の影響もあり、費用が読みやすく結果的に総額を抑えやすい食事付プランを選択しています。",
 
+    // 人数
     people: [
       { role: "選手", count: 7 },
       { role: "コーチ", count: 1 }
     ],
 
+    // 料金表
     priceTable: [
       { room: "4名1室", meal: "食事付", athleteCoachAdult: 580000, child: 479000 },
       { room: "3名1室", meal: "食事付", athleteCoachAdult: 597000, child: 479000 },
@@ -223,20 +300,21 @@ window.PUPPYS_CONFIG = {
       { room: "1名1室", meal: "食事無", athleteCoachAdult: 664000, child: null }
     ],
 
+    // 別途費用
     extraCosts: [
       "燃油サーチャージ等 諸費用：目安 73,000円（2025年11月時点）",
-      "ESTA（米国電子渡航認証）：代行手数料 8,800円（税込）/件 + 申請料実費（USD40）",
+      "ESTA（米国電子渡航認証）：代行手数料 8,800円 + 申請料実費",
       "日程内で「—」「各自」と記載の食事",
       "日本国内線（国際線乗継）の航空券",
       "その他個人的費用一式",
-      "海外旅行保険：加入必須（保険会社案内あり）"
+      "海外旅行保険：加入必須"
     ],
 
+    // コピー
     copy: {
-      heroKicker: "Road to the World / Special Project",
+      heroKicker: "Road to the World - Special Project",
       heroHeadline: "子どもたち全員が、同じ舞台に立てるように。",
-      heroLead:
-        "POM PUPPYS bright は「The Dance Summit 2026」へ出場します。円安と物価高で渡航費が高騰し、指定旅行会社のセット料金のため削減が難しい状況です。挑戦を“プロジェクト”として記録しながら、世界への一歩を進めます。",
+      heroLead: "POM PUPPYS bright は「The Dance Summit 2026」へ出場します。円安と物価高で渡航費が高騰し、挑戦を"プロジェクト"として記録しながら、世界への一歩を進めます。",
 
       sections: {
         whyTitle: "なぜ支援が必要か",
@@ -252,55 +330,79 @@ window.PUPPYS_CONFIG = {
           "All-In方式（目標未達でも実施）です。",
           "使途の概要は活動報告等で共有します。"
         ],
-        scheduleTitle: "渡航〜大会までの流れ（抜粋）"
+        scheduleTitle: "渡航〜大会までの流れ"
       },
 
       faq: [
-        { q: "All-In方式ですか？", a: "はい、All-In方式（目標未達でも実施）です。集まったご支援は渡航・大会関連費用の一部に充当します。" },
-        { q: "目標未達の場合は？", a: "All-In方式のためプロジェクトは実施します。不足分は各家庭負担・協賛等で補います。" }
+        { 
+          q: "All-In方式ですか？", 
+          a: "はい、All-In方式（目標未達でも実施）です。集まったご支援は渡航・大会関連費用の一部に充当します。" 
+        },
+        { 
+          q: "目標未達の場合は？", 
+          a: "All-In方式のためプロジェクトは実施します。不足分は各家庭負担・協賛等で補います。" 
+        },
+        { 
+          q: "応援メッセージだけでも送れますか？", 
+          a: "はい！金銭的な支援だけでなく、応援メッセージも大きな力になります。特設サイトからお送りいただけます。" 
+        }
       ]
     },
 
+    // 資金の使い道
     fundFlow: {
       title: "ご支援の使い道（優先順位）",
-      note: "※固定配分ではなく、出場に必要な支払いを優先して充当します。",
+      note: "※ 固定配分ではなく、出場に必要な支払いを優先して充当します。",
       steps: [
-        { title: "① 渡航パッケージ費（最優先）", body: "旅行会社パッケージ費用の支払いを優先します。", examples: ["航空券・宿泊・大会関連の基本費用（パッケージ内）"] },
-        { title: "② 別途必要経費", body: "燃油等の変動も見込み、必要費用へ充当します。", examples: ["燃油サーチャージ等", "ESTA", "海外旅行保険 など"] },
-        { title: "③ 不足分・備品等", body: "状況に応じて不足分へ充当します。", examples: ["現地移動・備品等"] }
+        { 
+          title: "① 渡航パッケージ費（最優先）", 
+          body: "旅行会社パッケージ費用の支払いを優先します。", 
+          examples: ["航空券・宿泊・大会関連の基本費用"] 
+        },
+        { 
+          title: "② 別途必要経費", 
+          body: "燃油等の変動も見込み、必要費用へ充当します。", 
+          examples: ["燃油サーチャージ等", "ESTA", "海外旅行保険"] 
+        },
+        { 
+          title: "③ 不足分・備品等", 
+          body: "状況に応じて不足分へ充当します。", 
+          examples: ["現地移動・備品等"] 
+        }
       ]
     },
 
+    // 応援方法
     support: {
       title: "応援の方法",
       individual: {
-        title: "個人で応援（CAMPFIRE）",
-        body: "プロジェクトページからご支援いただけます（All-In方式）。",
-        ctaLabel: "CAMPFIREで見る"
+        title: "個人で応援",
+        body: "プロジェクトページからご支援いただけます（All-In方式）。応援メッセージだけでもOK！",
+        ctaLabel: "支援ページを見る"
       },
       corporate: {
         title: "企業・団体として応援（協賛）",
         body: "協賛のご相談を承ります。まずはメールでご連絡ください。",
-        ctaLabel: "協賛の相談をする（メール）",
+        ctaLabel: "協賛の相談をする",
         mailSubject: "【協賛のご相談】POM PUPPYS bright World Challenge",
-        mailBody:
-          "協賛のご相談です。\n\n【企業・団体名】\n【ご担当者名】\n【ご連絡先】\n【ご検討内容】（協賛/物品提供/応援出演など）\n【備考】\n\nどうぞよろしくお願いいたします。",
+        mailBody: "協賛のご相談です。\n\n【企業・団体名】\n【ご担当者名】\n【ご連絡先】\n【ご検討内容】\n【備考】\n\nどうぞよろしくお願いいたします。",
         menu: [
-          { title: "ロゴ掲載（公式サイト／特設ページ）", body: "支援企業としてご紹介します（掲載可否・仕様は相談）。" },
-          { title: "応援メッセージ掲載", body: "企業・団体からのメッセージを掲載します（任意）。" }
+          { title: "ロゴ掲載", body: "公式サイト／特設ページへのロゴ掲載" },
+          { title: "応援メッセージ掲載", body: "企業・団体からのメッセージを掲載" }
         ]
       }
     },
 
+    // 日程
     itinerary: [
-      { label: "Day 1（4/28）", title: "日本出発〜現地到着", body: "移動・入国手続き・ホテルへ", meals: "朝— / 昼 機内 / 夜 機内", hidden: false },
-      { label: "Day 2（4/29）", title: "調整日", body: "コンディション調整・準備", meals: "朝 ○ / 昼 弁当 / 夜 ○", hidden: false },
-      { label: "Day 3（4/30）", title: "練習（予定）", body: "ダンススタジオ等で練習", meals: "朝 ○ / 昼 弁当 / 夜 ○", hidden: false },
-      { label: "Day 4（5/1）", title: "The Dance Summit 予選ラウンド", body: "", meals: "朝 ○ / 昼 弁当 / 夜 ○", hidden: false },
-      { label: "Day 5（5/2）", title: "The Dance Summit 決勝ラウンド", body: "", meals: "朝 ○ / 昼 弁当 / 夜 ○", hidden: false },
-      { label: "Day 6（5/3）", title: "（非表示）", body: "", meals: "", hidden: true },
-      { label: "Day 7（5/4）", title: "現地出発〜帰国の途へ", body: "空路移動・乗継", meals: "朝 各自 / 昼 各自 / 夜 機内", hidden: false },
-      { label: "Day 8（5/5）", title: "日本到着・解散", body: "", meals: "朝 機内 / 昼— / 夜—", hidden: false }
+      { label: "Day 1", title: "日本出発〜現地到着", body: "移動・入国手続き・ホテルへ", meals: "機内食", hidden: false },
+      { label: "Day 2", title: "調整日", body: "コンディション調整・準備", meals: "朝○/昼○/夜○", hidden: false },
+      { label: "Day 3", title: "練習", body: "ダンススタジオ等で練習", meals: "朝○/昼○/夜○", hidden: false },
+      { label: "Day 4", title: "The Dance Summit 予選", body: "", meals: "朝○/昼○/夜○", hidden: false },
+      { label: "Day 5", title: "The Dance Summit 決勝", body: "", meals: "朝○/昼○/夜○", hidden: false },
+      { label: "Day 6", title: "予備日", body: "", meals: "", hidden: true },
+      { label: "Day 7", title: "現地出発", body: "空路移動", meals: "機内食", hidden: false },
+      { label: "Day 8", title: "日本到着・解散", body: "", meals: "機内食", hidden: false }
     ]
   }
 };
