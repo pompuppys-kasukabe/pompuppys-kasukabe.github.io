@@ -5,10 +5,11 @@ window.PUPPYS_CONFIG = {
   ogImageUrl: "https://pompuppys-kasukabe.github.io/assets/ogp.jpg",
   ogImageUrlProject: "https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg",
 
-  // Pages（3部構成）
+  // Pages（4ページ）
   pages: {
     media: "./media.html",
-    project: "./project-world-challenge.html" // 公式/Mediaからはリンクしない（URL直打ちで案内）
+    project: "./project-world-challenge.html", // 公式/Mediaからはリンクしない運用も可
+    sponsor: "./sponsor.html"
   },
 
   // Media（取材導線）※Mediaにはクラファン導線を出さない設計
@@ -17,10 +18,15 @@ window.PUPPYS_CONFIG = {
   pressEmail: "moccy0306@gmail.com",
   pressContactName: "POM PUPPYS bright 保護者代表　飯田 絵里",
 
+  // UI flags
+  ui: {
+    enableLightbox: true,
+    showShareButton: true
+  },
+
   // 記事用テキスト（サイト側にも同梱：コピペ1クリック用）
   mediaTexts: {
     credit: "写真クレジット：POM PUPPYS bright 提供",
-    // 目安です。Drive側の03_TEXTと同じ内容に後で置き換えてOK（ここだけ編集）
     short100:
       "埼玉・春日部のチアダンスチーム「POM PUPPYS bright」。悔しさを転機に“楽しむ”へ立ち返り、演技を立て直してJAMfestで1位。The Dance Summit 2026に挑戦。",
     mid200:
@@ -94,19 +100,15 @@ window.PUPPYS_CONFIG = {
     ]
   },
 
-
   // サイト見た目用（写真・差し替え用）
   siteImages: {
-    // HEROに入れる写真（任意）。入れない場合は非表示。
     heroPhoto: "./assets/photos/hero.jpg",
     heroPhotoAlt: "POM PUPPYS bright（埼玉・春日部）",
-    // ギャラリー（任意）
     gallery: [
       { title: "大会当日", src: "./assets/photos/event_01.jpg", alt: "大会当日の様子" },
       { title: "練習風景", src: "./assets/photos/practice_01.jpg", alt: "練習風景" },
       { title: "チーム集合", src: "./assets/photos/team_01.jpg", alt: "チーム集合写真" }
     ],
-    // オリジナルキャラ（任意）
     mascot: {
       enabled: true,
       src: "./assets/mascot.png",
@@ -114,13 +116,239 @@ window.PUPPYS_CONFIG = {
     }
   },
 
-  // クラファン特設ページ用（設定値から自動計算）
+  // スポンサー（公式トップに表示：ロゴ+リンク）
+  sponsors: {
+    enabled: true,
+    title: "スポンサー / 協賛",
+    note: "掲載は活動支援への謝意として行っています（原則1年更新・審査あり）。",
+    items: [
+      // {
+      //   name: "〇〇株式会社",
+      //   logo: "./assets/sponsors/example.png",
+      //   url: "https://example.com",
+      //   approved: true,
+      //   expiresAt: "2027-12-31",
+      //   showOnOfficial: true
+      // }
+    ]
+  },
+
+  // 企業・団体向け（フォームは一旦なし、メール導線のみ）
+  sponsor: {
+    pageTitle: "企業・団体の方へ（協賛 / 応援出演）",
+    formUrl: "", // 一旦なし（空ならボタン非表示）
+
+    areaNote: "埼玉県を中心に、関東は要相談です。",
+    feeNote:
+      "協賛・応援出演は1万円〜を目安に、移動距離・拘束時間・内容によりお見積りします。交通費等が発生する場合は事前にご案内します。",
+
+    policy: [
+      "掲載は当チームの基準に基づき審査の上で行います。内容により掲載を見合わせる場合があります（例：成人向け、ギャンブル、反社会的勢力に該当する恐れがあるもの等）。",
+      "掲載期間は原則1年（更新可）です。",
+      "写真掲載・訪問レポート掲載は、事前に許諾をいただいた場合のみ行います。"
+    ],
+
+    menus: [
+      {
+        title: "広告協賛（ロゴ掲載）",
+        body: "公式サイト／クラファン特設ページへのロゴ掲載（リンク付）、活動報告（NEWS）でのご紹介。"
+      },
+      {
+        title: "応援出演（有料・演技のみ）",
+        body:
+          "イベント等での演技披露（体験会は原則行っていません）。距離・拘束時間・内容によりお見積りします。企業様との記念写真（集合写真）をNEWS素材として掲載する場合があります。※実施可否はチーム判断となります。"
+      },
+      {
+        title: "物品提供・告知協力",
+        body: "備品提供、告知協力など。内容はご相談ください。"
+      }
+    ],
+
+    required: [
+      "企業・団体名／ご担当者名／ご連絡先",
+      "ご希望（協賛／応援出演／物品提供等）",
+      "（応援出演の場合）場所・日時候補・拘束時間の目安・音響/床/控室の有無",
+      "ロゴデータ（推奨：透過PNG）・掲載希望URL（ロゴ掲載の場合）",
+      "領収書の宛名（会社名でOK）"
+    ],
+
+    mail: {
+      subject: "【協賛/応援出演のご相談】POM PUPPYS bright",
+      body:
+`協賛/応援出演のご相談です。
+
+【企業・団体名】
+【ご担当者名】
+【ご連絡先（メール/電話）】
+
+【ご希望】（協賛 / 応援出演 / その他）
+【開催場所（市区町村・会場名）】
+【候補日時】
+【拘束時間の目安】
+【ご予算感】（任意）
+【領収書の宛名】（会社名でOK）
+
+【応援出演をご希望の場合】
+・演技披露のみ（可/不可の希望）
+・音響（音源再生可否、スピーカー有無）
+・床（フロア種類）
+・控室（有/無）
+・撮影（企業様との集合写真：可/不可）
+
+【備考】
+
+よろしくお願いいたします。`
+    }
+  },
+
+  // クラファン特設ページ用（LP仕様）
   project: {
     title: "World Challenge Project",
-    crowdfundingUrl: "", // 外部クラファンURLが決まったら入れる
+    crowdfundingUrl: "", // CAMPFIRE URL が決まったら入れる
     goalYen: 1000000,
     raisedYen: 0,
-    endDate: "2026-03-31", // YYYY-MM-DD
-    updatedAt: "2025-12-13"
+    endDate: "2026-03-31",
+    updatedAt: "2025-12-13",
+
+    // cost assumptions
+    costPerPersonYen: 580000,            // 食事付想定（目安）
+    extrasPerPersonEstimateYen: 100000,  // 別途費用（目安・変動あり）
+    nights: 6,
+    mealPlanNote:
+      "現地は物価高の影響もあり、6泊の滞在で3食を外食等で賄うと総額が膨らみやすいため、費用が読みやすく結果的に総額を抑えやすい食事付プランを選択しています。",
+
+    people: [
+      { role: "選手", count: 7 },
+      { role: "コーチ", count: 1 }
+    ],
+
+    // 料金表（ホテル名は出さない）
+    priceTable: [
+      { room: "4名1室", meal: "食事付", athleteCoachAdult: 580000, child: 479000 },
+      { room: "3名1室", meal: "食事付", athleteCoachAdult: 597000, child: 479000 },
+      { room: "2名1室", meal: "食事付", athleteCoachAdult: 625000, child: 500000 },
+      { room: "1名1室", meal: "食事付", athleteCoachAdult: 707000, child: null },
+
+      { room: "4名1室", meal: "食事無", athleteCoachAdult: 537000, child: 436000 },
+      { room: "3名1室", meal: "食事無", athleteCoachAdult: 554000, child: 436000 },
+      { room: "2名1室", meal: "食事無", athleteCoachAdult: 582000, child: 456000 },
+      { room: "1名1室", meal: "食事無", athleteCoachAdult: 664000, child: null }
+    ],
+
+    extraCosts: [
+      "燃油サーチャージ等 諸費用：目安 73,000円（2025年11月時点）",
+      "ESTA（米国電子渡航認証）：代行手数料 8,800円（税込）/件 + 申請料実費（USD40）",
+      "日程内で「—」「各自」と記載の食事",
+      "日本国内線（国際線乗継）の航空券",
+      "その他個人的費用一式",
+      "海外旅行保険：加入必須（保険会社案内あり）"
+    ],
+
+    copy: {
+      heroKicker: "World Stage / みんなで同じ舞台へ",
+      heroHeadline: "挫折からの返り咲きで掴んだ世界大会。その一歩を、費用の壁で止めたくありません。",
+      heroLead:
+        "POM PUPPYS bright は「The Dance Summit 2026」へ出場します。直前の悔しさを乗り越え、演技を立て直して世界大会出場を勝ち取りました。しかし円安と物価高で渡航費が高騰し、指定旅行会社のセット料金のため削減が難しい状況です。選手全員が同じ舞台に立てるよう、費用の一部として目標100万円のご支援をお願いしています。※本プロジェクトはAll-In方式（目標未達でも実施）です。",
+
+      sections: {
+        whyTitle: "なぜ支援が必要か",
+        whyBody: [
+          "世界大会出場を勝ち取った一方で、渡航・宿泊・大会関連費用が現実の壁になっています。",
+          "近年の円安・物価高の影響で費用が大きく上昇しています。",
+          "大会指定の旅行会社によるセット料金のため、こちら側での削減が難しい状況です。",
+          "親戚・企業協賛などでもお願いしていますが、あと一歩をクラファンでも支えていただきたいです。"
+        ],
+        usageTitle: "資金の使い道（目標100万円）",
+        usageBody: [
+          "ご支援は、世界大会出場に必要な費用の一部（渡航パッケージ費用を中心に、燃油サーチャージ・ESTA・海外旅行保険などの必要経費を含む）に充当します。",
+          "まずは大会指定の旅行パッケージ費用の支払いを優先し、不足や状況に応じて別途必要となる費用へ充当します（All-In方式／目標未達でも実施）。",
+          "旅行パッケージ約58万円/人に加え、別途費用が約10万円/人前後かかる見込みです（燃油等は変動するため目安です）。",
+          "使途の概要は活動報告等で共有します。"
+        ],
+        scheduleTitle: "渡航〜大会までの流れ（抜粋）"
+      },
+
+      faq: [
+        {
+          q: "このプロジェクトはAll-In方式ですか？",
+          a: "はい、All-In方式（目標未達でも実施）です。集まったご支援は渡航・大会関連費用の一部に充当し、出場を最優先に準備します。"
+        },
+        {
+          q: "目標に届かなかった場合はどうなりますか？",
+          a: "All-In方式のためプロジェクトは実施します。不足分は各家庭負担・協賛等で補い、選手全員で出場できるよう準備を進めます。"
+        },
+        {
+          q: "目標を超えた場合はどう使われますか？",
+          a: "追加分も渡航・大会関連費用（現地移動、備品、諸経費等）に充当します。使途は活動報告等で共有します。"
+        },
+        {
+          q: "費用はなぜ削減できないのですか？",
+          a: "大会指定の旅行会社によるパッケージ料金が基本となるため、チーム側で大きく削ることが難しい状況です。"
+        },
+        {
+          q: "企業として協賛したいです。",
+          a: "特設の「企業・団体の方へ」ページからご連絡ください。協賛内容をご案内します。"
+        }
+      ]
+    },
+
+    // 支援の優先順位フロー（“固定配分”ではなく優先順位）
+    fundFlow: {
+      title: "ご支援の使い道（優先順位）",
+      note:
+        "※特定費目への固定配分ではなく、出場に必要な支払いを優先して充当します（All-In方式）。",
+      steps: [
+        {
+          title: "① 渡航パッケージ費（最優先）",
+          body: "大会指定の旅行会社パッケージ費用の支払いを優先します。",
+          examples: ["航空券・宿泊・大会関連の基本費用（パッケージ内）"]
+        },
+        {
+          title: "② 別途必要経費（目安：1人 約10万円前後）",
+          body: "円安・燃油等の変動も見込み、出場に必要な費用へ充当します。",
+          examples: ["燃油サーチャージ等諸費用", "ESTA", "海外旅行保険 など"]
+        },
+        {
+          title: "③ 出場に必要な不足分・備品等（状況に応じて）",
+          body: "不足が出た場合は各家庭負担・協賛等でも補いながら、出場を最優先で準備します。",
+          examples: ["現地移動・備品等"]
+        }
+      ]
+    },
+
+    // 応援の方法（特設LP内）
+    support: {
+      title: "応援の方法",
+      individual: {
+        title: "個人で応援（CAMPFIRE）",
+        body: "CAMPFIREのプロジェクトページからご支援いただけます。All-In方式（目標未達でも実施）です。",
+        ctaLabel: "CAMPFIREで支援する"
+      },
+      corporate: {
+        title: "企業・団体として応援（協賛）",
+        body: "協賛のご相談を承ります（広告協賛／物品提供／応援出演など）。まずはメールでご連絡ください。",
+        ctaLabel: "協賛の相談をする（メール）",
+        mailSubject: "【協賛のご相談】POM PUPPYS bright World Challenge",
+        mailBody:
+          "協賛のご相談です。\n\n【企業・団体名】\n【ご担当者名】\n【ご連絡先】\n【ご検討内容】（協賛/物品提供/応援出演など）\n【備考】\n\nどうぞよろしくお願いいたします。",
+        menu: [
+          { title: "ロゴ掲載（公式サイト／特設ページ）", body: "支援企業としてご紹介します（掲載可否・仕様は相談）。" },
+          { title: "応援メッセージ掲載", body: "企業・団体からのメッセージを掲載します（任意）。" },
+          { title: "物品提供・サービス提供", body: "備品提供、告知協力など（内容は相談）。" }
+        ]
+      }
+    },
+
+    // 旅程（Day6は非表示）
+    itinerary: [
+      { label: "Day 1（4/28）", title: "日本出発〜現地到着", body: "移動・入国手続き・ホテルへ", meals: "朝— / 昼 機内 / 夜 機内", hidden: false },
+      { label: "Day 2（4/29）", title: "調整日", body: "コンディション調整・準備", meals: "朝 ○ / 昼 弁当 / 夜 ○", hidden: false },
+      { label: "Day 3（4/30）", title: "練習（予定）", body: "ダンススタジオ等で練習", meals: "朝 ○ / 昼 弁当 / 夜 ○", hidden: false },
+      { label: "Day 4（5/1）", title: "The Dance Summit 予選ラウンド", body: "", meals: "朝 ○ / 昼 弁当 / 夜 ○", hidden: false },
+      { label: "Day 5（5/2）", title: "The Dance Summit 決勝ラウンド", body: "", meals: "朝 ○ / 昼 弁当 / 夜 ○", hidden: false },
+      { label: "Day 6（5/3）", title: "（非表示）", body: "", meals: "", hidden: true },
+      { label: "Day 7（5/4）", title: "現地出発〜帰国の途へ", body: "空路移動・乗継", meals: "朝 各自 / 昼 各自 / 夜 機内", hidden: false },
+      { label: "Day 8（5/5）", title: "日本到着・解散", body: "", meals: "朝 機内 / 昼— / 夜—", hidden: false }
+    ]
   }
 };
