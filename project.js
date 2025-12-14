@@ -1,8 +1,11 @@
-/* project.js */
+/* project.js (FULL REPLACEMENT) */
 function escapeHtml(str){
   return String(str ?? "")
-    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;").replaceAll("'","&#39;");
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#39;");
 }
 function yen(n){
   const v = Number(n || 0);
@@ -177,12 +180,37 @@ async function renderSupportMessagesProject(){
   `).join("");
 }
 
+function wireProjectShare(){
+  const btn = document.getElementById("projectShareBtn");
+  if(!btn) return;
+
+  const title = document.title;
+  const text = "World Challenge Project｜POM PUPPYS bright";
+  const url = location.href;
+
+  btn.addEventListener("click", async ()=>{
+    try{
+      if(navigator.share){
+        await navigator.share({ title, text, url });
+      }else{
+        if(navigator.clipboard) await navigator.clipboard.writeText(url);
+        const prev = btn.textContent;
+        btn.textContent = "URLをコピーしました";
+        setTimeout(()=> btn.textContent = prev || "共有", 1400);
+      }
+    }catch(e){}
+  });
+}
+
 function renderProject(){
   const p = window.PUPPYS_CONFIG?.project;
   if(!p) return;
 
   const c = p.copy || {};
-  const set = (id, text) => { const el=document.getElementById(id); if(el) el.textContent = text || ""; };
+  const set = (id, text) => {
+    const el = document.getElementById(id);
+    if(el) el.textContent = text || "";
+  };
 
   set("pKicker", c.heroKicker);
   set("pHeadline", c.heroHeadline);
@@ -197,6 +225,7 @@ function renderProject(){
   set("goalYen", yen(goal));
   set("raisedYen", yen(raised));
   set("pct", Math.round(pct) + "%");
+
   const dl = daysLeft(p.endDate);
   set("daysLeft", dl === null ? "—" : (dl < 0 ? "終了" : `${dl}日`));
   set("updatedAt", p.updatedAt || "—");
@@ -236,10 +265,12 @@ function renderProject(){
     }
   }
 
+  // CTA
   const url = p.crowdfundingUrl || "";
   const btn = document.getElementById("crowdfundingBtn");
   const sticky = document.getElementById("stickyCta");
   const sbtn = document.getElementById("stickyCrowdfundingBtn");
+
   if(btn){
     if(url){
       btn.href = url;
@@ -257,16 +288,19 @@ function renderProject(){
     }
   }
 
+  // Lists
   const mountList = (id, lines)=>{
     const el = document.getElementById(id);
     if(!el) return;
     el.innerHTML = (Array.isArray(lines)?lines:[]).map(t=>`<li>${escapeHtml(t)}</li>`).join("");
   };
+
   set("whyTitle", c.sections?.whyTitle || "なぜ支援が必要か");
   mountList("whyBody", c.sections?.whyBody);
   set("usageTitle", c.sections?.usageTitle || "資金の使い道");
   mountList("usageBody", c.sections?.usageBody);
 
+  // Price table
   const pt = document.getElementById("priceTable");
   if(pt){
     const rows = Array.isArray(p.priceTable) ? p.priceTable : [];
@@ -286,10 +320,12 @@ function renderProject(){
     ex.innerHTML = lines.map(t=>`<li>${escapeHtml(t)}</li>`).join("");
   }
 
+  // Fund flow
   const ff = p.fundFlow || {};
   const ffTitle = document.getElementById("fundFlowTitle");
   const ffNote = document.getElementById("fundFlowNote");
   const ffWrap = document.getElementById("fundFlow");
+
   if(ffTitle) ffTitle.textContent = ff.title || "ご支援の使い道（優先順位）";
   if(ffNote){
     ffNote.textContent = ff.note || "";
@@ -313,6 +349,7 @@ function renderProject(){
     `).join("");
   }
 
+  // Itinerary
   set("itineraryTitle", c.sections?.scheduleTitle || "渡航〜大会までの流れ（抜粋）");
   const itWrap = document.getElementById("itinerary");
   if(itWrap){
@@ -329,6 +366,7 @@ function renderProject(){
     `).join("");
   }
 
+  // FAQ
   const faqWrap = document.getElementById("faq");
   if(faqWrap){
     const items = Array.isArray(c.faq) ? c.faq : [];
@@ -340,6 +378,7 @@ function renderProject(){
     `).join("");
   }
 
+  // Support section
   const sup = p.support || {};
   const email = window.PUPPYS_CONFIG?.pressEmail || "";
   const contactName = window.PUPPYS_CONFIG?.pressContactName || "";
@@ -347,12 +386,15 @@ function renderProject(){
   const supTitle = document.getElementById("supportTitle");
   if(supTitle) supTitle.textContent = sup.title || "応援の方法";
 
+  // Individual
   const iTitle = document.getElementById("supportIndTitle");
   const iBody  = document.getElementById("supportIndBody");
   const iBtn   = document.getElementById("supportIndBtn");
   const iNote  = document.getElementById("supportIndNote");
+
   if(iTitle) iTitle.textContent = sup.individual?.title || "個人で応援";
   if(iBody)  iBody.textContent  = sup.individual?.body || "";
+
   if(iBtn){
     if(url){
       iBtn.href = url;
@@ -368,12 +410,15 @@ function renderProject(){
     }
   }
 
+  // Corporate
   const cTitle = document.getElementById("supportCorpTitle");
   const cBody  = document.getElementById("supportCorpBody");
   const cBtn   = document.getElementById("supportCorpBtn");
   const cNote  = document.getElementById("supportCorpNote");
+
   if(cTitle) cTitle.textContent = sup.corporate?.title || "企業・団体として応援（協賛）";
   if(cBody)  cBody.textContent  = sup.corporate?.body || "";
+
   if(cBtn){
     cBtn.textContent = sup.corporate?.ctaLabel || "協賛の相談をする（メール）";
     if(email){
@@ -393,11 +438,32 @@ function renderProject(){
     }
   }
 
+  // Corporate menu（ここが元コードで壊れやすかったので完全に安全化）
   const menuWrap = document.getElementById("supportCorpMenu");
   if(menuWrap){
     const menu = sup.corporate?.menu;
     if(Array.isArray(menu) && menu.length){
-      menuWrap.innerHTML = menu.map(m=>`
+      menuWrap.style.display = "grid";
+      menuWrap.innerHTML = menu.map(m => `
         <div class="supportMenuItem">
           <div class="supportMenuItem__title">${escapeHtml(m.title || "")}</div>
-          ${m.body ? `<div
+          ${m.body ? `<div class="muted" style="line-height:1.8;margin-top:6px;">${escapeHtml(m.body || "")}</div>` : ""}
+        </div>
+      `).join("");
+    }else{
+      menuWrap.style.display = "none";
+      menuWrap.innerHTML = "";
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  try{
+    renderProject();
+    renderSupportMessagesProject();
+    wireProjectShare();
+  }catch(e){
+    console.error(e);
+  }
+});
+
