@@ -1,59 +1,86 @@
-/* project.js (FULL REPLACEMENT) */
+/* project.js (BROWSER COMPATIBLE VERSION) */
+
+// 共通ユーティリティ
 function escapeHtml(str){
-  return String(str ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#39;");
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
+
 function yen(n){
-  const v = Number(n || 0);
-  try{ return new Intl.NumberFormat("ja-JP").format(v) + "円"; }
-  catch(e){ return v + "円"; }
+  var v = Number(n || 0);
+  try{
+    return new Intl.NumberFormat("ja-JP").format(v) + "円";
+  }catch(e){
+    return v + "円";
+  }
 }
-function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+
+function clamp(n, min, max){
+  return Math.max(min, Math.min(max, n));
+}
+
 function daysLeft(endDateStr){
-  const end = new Date(String(endDateStr || ""));
+  var end = new Date(String(endDateStr || ""));
   if(!isFinite(end.getTime())) return null;
-  const today = new Date();
-  const ms = end.getTime() - today.getTime();
-  return Math.ceil(ms / (1000*60*60*24));
+  var today = new Date();
+  var ms = end.getTime() - today.getTime();
+  return Math.ceil(ms / (1000 * 60 * 60 * 24));
 }
+
 function sumPeople(people){
-  return (Array.isArray(people) ? people : []).reduce((a,p)=> a + Number(p.count||0), 0);
+  var arr = Array.isArray(people) ? people : [];
+  var total = 0;
+  for(var i = 0; i < arr.length; i++){
+    total += Number(arr[i].count || 0);
+  }
+  return total;
 }
+
 function formatDateLabel(dateStr){
   if(!dateStr) return "";
-  const m = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  var m = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})$/);
   if(!m) return String(dateStr);
-  return `${m[1]}.${m[2]}.${m[3]}`;
+  return m[1] + "." + m[2] + "." + m[3];
 }
 
 function prefersReducedMotion(){
-  try{ return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
-  catch(e){ return false; }
+  try{
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }catch(e){
+    return false;
+  }
 }
+
 function saveDataOn(){
-  try{ return !!navigator.connection?.saveData; }
-  catch(e){ return false; }
+  try{
+    return !!(navigator.connection && navigator.connection.saveData);
+  }catch(e){
+    return false;
+  }
 }
 
 function mountHeroMediaProject(p){
-  const wrap = document.getElementById("pHeroMediaWrap");
-  const v = document.getElementById("pHeroVideo");
-  const img = document.getElementById("pHeroImg");
+  var wrap = document.getElementById("pHeroMediaWrap");
+  var v = document.getElementById("pHeroVideo");
+  var img = document.getElementById("pHeroImg");
   if(!wrap || !v || !img) return;
 
-  const videoCfg = p.heroVideo || {};
-  const imgSrc = p.heroImage || "";
-  const imgAlt = p.heroImageAlt || "";
+  var videoCfg = p.heroVideo || {};
+  var imgSrc = p.heroImage || "";
+  var imgAlt = p.heroImageAlt || "";
 
-  const showImage = ()=>{
+  function showImage(){
     try{
       v.pause();
       v.removeAttribute("src");
-      v.querySelectorAll("source").forEach(s=>s.remove());
+      var sources = v.querySelectorAll("source");
+      for(var i = 0; i < sources.length; i++){
+        sources[i].parentNode.removeChild(sources[i]);
+      }
     }catch(e){}
     v.style.display = "none";
 
@@ -62,38 +89,41 @@ function mountHeroMediaProject(p){
       img.alt = imgAlt || "";
       img.style.display = "block";
       wrap.style.display = "block";
-      wrap.style.setProperty("--hero-bg", `url("${imgSrc}")`);
+      wrap.style.setProperty("--hero-bg", 'url("' + imgSrc + '")');
     }else{
       wrap.style.display = "none";
     }
-  };
+  }
 
-  const showVideo = ()=>{
-    const mp4 = videoCfg.mp4 || "";
-    const webm = videoCfg.webm || "";
-    if(!mp4 && !webm) return showImage();
+  function showVideo(){
+    var mp4 = videoCfg.mp4 || "";
+    var webm = videoCfg.webm || "";
+    if(!mp4 && !webm){
+      showImage();
+      return;
+    }
 
-    const poster = videoCfg.poster || imgSrc || "";
+    var poster = videoCfg.poster || imgSrc || "";
     if(poster){
       v.setAttribute("poster", poster);
-      wrap.style.setProperty("--hero-bg", `url("${poster}")`);
+      wrap.style.setProperty("--hero-bg", 'url("' + poster + '")');
     }
 
     v.innerHTML = "";
     if(webm){
-      const s = document.createElement("source");
-      s.src = webm;
-      s.type = "video/webm";
-      v.appendChild(s);
+      var s1 = document.createElement("source");
+      s1.src = webm;
+      s1.type = "video/webm";
+      v.appendChild(s1);
     }
     if(mp4){
-      const s = document.createElement("source");
-      s.src = mp4;
-      s.type = "video/mp4";
-      v.appendChild(s);
+      var s2 = document.createElement("source");
+      s2.src = mp4;
+      s2.type = "video/mp4";
+      v.appendChild(s2);
     }
 
-    const allowAuto = !prefersReducedMotion() && !saveDataOn();
+    var allowAuto = !prefersReducedMotion() && !saveDataOn();
     v.muted = true;
     v.playsInline = true;
     v.loop = videoCfg.loop !== false;
@@ -104,113 +134,140 @@ function mountHeroMediaProject(p){
 
     v.onerror = showImage;
     if(allowAuto){
-      v.play().catch(()=>{});
+      v.play().catch(function(){});
     }
-  };
+  }
 
-  if(videoCfg.enabled) showVideo();
-  else showImage();
+  if(videoCfg.enabled){
+    showVideo();
+  }else{
+    showImage();
+  }
 }
 
 async function fetchJsonWithNoCache(url){
-  const u = url + (url.includes("?") ? "&" : "?") + "v=" + Date.now();
-  const r = await fetch(u, { cache: "no-store" });
+  var u = url + (url.indexOf("?") >= 0 ? "&" : "?") + "v=" + Date.now();
+  var r = await fetch(u, { cache: "no-store" });
   if(!r.ok) throw new Error("fetch failed: " + r.status);
   return await r.json();
 }
 
 function normalizeMessages(list){
-  const arr = Array.isArray(list) ? list : [];
-  return arr
-    .filter(x => x && x.approved !== false && String(x.message || "").trim())
-    .map(x => ({
+  var arr = Array.isArray(list) ? list : [];
+  var result = [];
+  for(var i = 0; i < arr.length; i++){
+    var x = arr[i];
+    if(!x) continue;
+    if(x.approved === false) continue;
+    var msg = String(x.message || "").trim();
+    if(!msg) continue;
+    result.push({
       date: String(x.date || ""),
       name: String(x.name || "匿名"),
-      message: String(x.message || "").trim()
-    }))
-    .sort((a,b)=> String(b.date).localeCompare(String(a.date)));
+      message: msg
+    });
+  }
+  result.sort(function(a, b){
+    return String(b.date).localeCompare(String(a.date));
+  });
+  return result;
 }
 
 async function renderSupportMessagesProject(){
-  const cfg = window.PUPPYS_CONFIG?.supportMessages;
-  if(!cfg || cfg.enabled === false) return;
+  var cfg = window.PUPPYS_CONFIG;
+  var msgCfg = cfg && cfg.supportMessages;
+  if(!msgCfg || msgCfg.enabled === false) return;
 
-  const grid = document.getElementById("projectMessagesGrid");
+  var grid = document.getElementById("projectMessagesGrid");
   if(!grid) return;
 
-  const note = document.getElementById("projectMessagesNote");
-  if(note){
-    note.textContent = cfg.note || "";
-    note.style.display = note.textContent ? "block" : "none";
+  var noteEl = document.getElementById("projectMessagesNote");
+  if(noteEl){
+    noteEl.textContent = msgCfg.note || "";
+    noteEl.style.display = noteEl.textContent ? "block" : "none";
   }
 
-  const btn = document.getElementById("projectMessageFormBtn");
+  var btn = document.getElementById("projectMessageFormBtn");
   if(btn){
-    if(cfg.formUrl){
-      btn.href = cfg.formUrl;
+    if(msgCfg.formUrl){
+      btn.href = msgCfg.formUrl;
       btn.style.display = "inline-flex";
     }else{
       btn.style.display = "none";
     }
   }
 
-  let data = [];
+  // Loading state
+  grid.innerHTML = '<div class="muted">読み込み中...</div>';
+
+  var data = [];
   try{
-    if(cfg.dataUrl){
-      data = await fetchJsonWithNoCache(cfg.dataUrl);
+    if(msgCfg.dataUrl){
+      data = await fetchJsonWithNoCache(msgCfg.dataUrl);
     }
   }catch(e){
-    data = [];
-  }
-
-  const items = normalizeMessages(data).slice(0, Number(cfg.maxOnProject || 24));
-  if(!items.length){
-    grid.innerHTML = `<div class="muted">応援メッセージを募集中です。</div>`;
+    console.error("メッセージ取得失敗:", e);
+    grid.innerHTML = '<div class="muted">メッセージの読み込みに失敗しました。</div>';
     return;
   }
 
-  grid.innerHTML = items.map(m => `
-    <div class="msgCard">
-      <div class="msgTop">
-        <div class="msgName">${escapeHtml(m.name)}</div>
-        <div class="msgDate">${escapeHtml(formatDateLabel(m.date))}</div>
-      </div>
-      <p class="msgBody">${escapeHtml(m.message)}</p>
-    </div>
-  `).join("");
+  var max = Number(msgCfg.maxOnProject) || 24;
+  var items = normalizeMessages(data).slice(0, max);
+
+  if(!items.length){
+    grid.innerHTML = '<div class="muted">応援メッセージを募集中です。</div>';
+    return;
+  }
+
+  var html = "";
+  for(var i = 0; i < items.length; i++){
+    var m = items[i];
+    html += '<div class="msgCard">' +
+      '<div class="msgTop">' +
+        '<div class="msgName">' + escapeHtml(m.name) + '</div>' +
+        '<div class="msgDate">' + escapeHtml(formatDateLabel(m.date)) + '</div>' +
+      '</div>' +
+      '<p class="msgBody">' + escapeHtml(m.message) + '</p>' +
+    '</div>';
+  }
+  grid.innerHTML = html;
 }
 
 function wireProjectShare(){
-  const btn = document.getElementById("projectShareBtn");
+  var btn = document.getElementById("projectShareBtn");
   if(!btn) return;
 
-  const title = document.title;
-  const text = "World Challenge Project｜POM PUPPYS bright";
-  const url = location.href;
+  var title = document.title;
+  var text = "World Challenge Project｜POM PUPPYS bright";
+  var url = location.href;
 
-  btn.addEventListener("click", async ()=>{
+  btn.addEventListener("click", async function(){
     try{
       if(navigator.share){
-        await navigator.share({ title, text, url });
+        await navigator.share({ title: title, text: text, url: url });
       }else{
         if(navigator.clipboard) await navigator.clipboard.writeText(url);
-        const prev = btn.textContent;
+        var prev = btn.textContent;
         btn.textContent = "URLをコピーしました";
-        setTimeout(()=> btn.textContent = prev || "共有", 1400);
+        setTimeout(function(){
+          btn.textContent = prev || "共有";
+        }, 1400);
       }
     }catch(e){}
   });
 }
 
 function renderProject(){
-  const p = window.PUPPYS_CONFIG?.project;
+  var cfg = window.PUPPYS_CONFIG;
+  var p = cfg && cfg.project;
   if(!p) return;
 
-  const c = p.copy || {};
-  const set = (id, text) => {
-    const el = document.getElementById(id);
+  var c = p.copy || {};
+
+  function set(id, text){
+    var el = document.getElementById(id);
     if(el) el.textContent = text || "";
-  };
+  }
 
   set("pKicker", c.heroKicker);
   set("pHeadline", c.heroHeadline);
@@ -218,47 +275,53 @@ function renderProject(){
 
   mountHeroMediaProject(p);
 
-  const goal = Number(p.goalYen || 0);
-  const raised = Number(p.raisedYen || 0);
-  const pct = goal > 0 ? (raised / goal) * 100 : 0;
+  var goal = Number(p.goalYen || 0);
+  var raised = Number(p.raisedYen || 0);
+  var pct = goal > 0 ? (raised / goal) * 100 : 0;
 
   set("goalYen", yen(goal));
   set("raisedYen", yen(raised));
   set("pct", Math.round(pct) + "%");
 
-  const dl = daysLeft(p.endDate);
-  set("daysLeft", dl === null ? "—" : (dl < 0 ? "終了" : `${dl}日`));
+  var dl = daysLeft(p.endDate);
+  if(dl === null){
+    set("daysLeft", "—");
+  }else if(dl < 0){
+    set("daysLeft", "終了");
+  }else{
+    set("daysLeft", dl + "日");
+  }
   set("updatedAt", p.updatedAt || "—");
 
-  const bar = document.getElementById("barFill");
-  if(bar) bar.style.width = clamp(pct,0,100).toFixed(1) + "%";
+  var bar = document.getElementById("barFill");
+  if(bar) bar.style.width = clamp(pct, 0, 100).toFixed(1) + "%";
 
-  const ppl = sumPeople(p.people);
-  const perPackage = Number(p.costPerPersonYen || 0);
-  const perExtras = Number(p.extrasPerPersonEstimateYen || 0);
-  const perTotal = perPackage + perExtras;
-  const totalCost = perPackage * ppl;
+  var ppl = sumPeople(p.people);
+  var perPackage = Number(p.costPerPersonYen || 0);
+  var perExtras = Number(p.extrasPerPersonEstimateYen || 0);
+  var perTotal = perPackage + perExtras;
+  var totalCost = perPackage * ppl;
 
   set("perPerson", yen(perPackage));
   set("extrasPerPerson", yen(perExtras) + "（目安）");
   set("totalPerPerson", yen(perTotal) + "（目安）");
-  set("headcount", `${ppl}名（選手・コーチ合計）`);
+  set("headcount", ppl + "名（選手・コーチ合計）");
   set("totalCost", yen(totalCost));
 
-  const mp = document.getElementById("mealPlanNote");
+  var mp = document.getElementById("mealPlanNote");
   if(mp){
     mp.textContent = p.mealPlanNote || "";
     mp.style.display = mp.textContent ? "block" : "none";
   }
 
-  const supportEl = document.getElementById("supportMeaning");
+  var supportEl = document.getElementById("supportMeaning");
   if(supportEl){
-    const eq = perTotal > 0 ? (goal / perTotal) : 0;
-    const rounded = Math.round(eq * 10) / 10;
+    var eq = perTotal > 0 ? (goal / perTotal) : 0;
+    var rounded = Math.round(eq * 10) / 10;
     if(perTotal > 0 && eq > 0){
       supportEl.innerHTML =
-        `目標${yen(goal)}は、1人あたりの費用目安（${yen(perTotal)}）の <strong>約${rounded}人分</strong> に相当します。` +
-        ` <small>※あくまで目安（燃油等は変動）</small>`;
+        "目標" + yen(goal) + "は、1人あたりの費用目安（" + yen(perTotal) + "）の <strong>約" + rounded + "人分</strong> に相当します。" +
+        " <small>※あくまで目安（燃油等は変動）</small>";
       supportEl.style.display = "block";
     }else{
       supportEl.style.display = "none";
@@ -266,17 +329,17 @@ function renderProject(){
   }
 
   // CTA
-  const url = p.crowdfundingUrl || "";
-  const btn = document.getElementById("crowdfundingBtn");
-  const sticky = document.getElementById("stickyCta");
-  const sbtn = document.getElementById("stickyCrowdfundingBtn");
+  var url = p.crowdfundingUrl || "";
+  var ctaBtn = document.getElementById("crowdfundingBtn");
+  var sticky = document.getElementById("stickyCta");
+  var sbtn = document.getElementById("stickyCrowdfundingBtn");
 
-  if(btn){
+  if(ctaBtn){
     if(url){
-      btn.href = url;
-      btn.style.display = "inline-flex";
+      ctaBtn.href = url;
+      ctaBtn.style.display = "inline-flex";
     }else{
-      btn.style.display = "none";
+      ctaBtn.style.display = "none";
     }
   }
   if(sticky && sbtn){
@@ -288,43 +351,56 @@ function renderProject(){
     }
   }
 
-  // Lists
-  const mountList = (id, lines)=>{
-    const el = document.getElementById(id);
+  // Lists helper
+  function mountList(id, lines){
+    var el = document.getElementById(id);
     if(!el) return;
-    el.innerHTML = (Array.isArray(lines)?lines:[]).map(t=>`<li>${escapeHtml(t)}</li>`).join("");
-  };
-
-  set("whyTitle", c.sections?.whyTitle || "なぜ支援が必要か");
-  mountList("whyBody", c.sections?.whyBody);
-  set("usageTitle", c.sections?.usageTitle || "資金の使い道");
-  mountList("usageBody", c.sections?.usageBody);
-
-  // Price table
-  const pt = document.getElementById("priceTable");
-  if(pt){
-    const rows = Array.isArray(p.priceTable) ? p.priceTable : [];
-    pt.innerHTML = rows.map(r=>`
-      <tr>
-        <td>${escapeHtml(r.room || "")}</td>
-        <td>${escapeHtml(r.meal || "")}</td>
-        <td style="text-align:right;font-weight:900;color:var(--navy)">${escapeHtml(yen(r.athleteCoachAdult))}</td>
-        <td style="text-align:right">${r.child ? escapeHtml(yen(r.child)) : "—"}</td>
-      </tr>
-    `).join("");
+    var arr = Array.isArray(lines) ? lines : [];
+    var html = "";
+    for(var i = 0; i < arr.length; i++){
+      html += "<li>" + escapeHtml(arr[i]) + "</li>";
+    }
+    el.innerHTML = html;
   }
 
-  const ex = document.getElementById("extraCosts");
+  var sections = c.sections || {};
+  set("whyTitle", sections.whyTitle || "なぜ支援が必要か");
+  mountList("whyBody", sections.whyBody);
+  set("usageTitle", sections.usageTitle || "資金の使い道");
+  mountList("usageBody", sections.usageBody);
+
+  // Price table
+  var pt = document.getElementById("priceTable");
+  if(pt){
+    var rows = Array.isArray(p.priceTable) ? p.priceTable : [];
+    var ptHtml = "";
+    for(var i = 0; i < rows.length; i++){
+      var r = rows[i];
+      ptHtml += "<tr>" +
+        "<td>" + escapeHtml(r.room || "") + "</td>" +
+        "<td>" + escapeHtml(r.meal || "") + "</td>" +
+        '<td style="text-align:right;font-weight:900;color:var(--navy)">' + escapeHtml(yen(r.athleteCoachAdult)) + "</td>" +
+        '<td style="text-align:right">' + (r.child ? escapeHtml(yen(r.child)) : "—") + "</td>" +
+      "</tr>";
+    }
+    pt.innerHTML = ptHtml;
+  }
+
+  var ex = document.getElementById("extraCosts");
   if(ex){
-    const lines = Array.isArray(p.extraCosts) ? p.extraCosts : [];
-    ex.innerHTML = lines.map(t=>`<li>${escapeHtml(t)}</li>`).join("");
+    var extraLines = Array.isArray(p.extraCosts) ? p.extraCosts : [];
+    var exHtml = "";
+    for(var j = 0; j < extraLines.length; j++){
+      exHtml += "<li>" + escapeHtml(extraLines[j]) + "</li>";
+    }
+    ex.innerHTML = exHtml;
   }
 
   // Fund flow
-  const ff = p.fundFlow || {};
-  const ffTitle = document.getElementById("fundFlowTitle");
-  const ffNote = document.getElementById("fundFlowNote");
-  const ffWrap = document.getElementById("fundFlow");
+  var ff = p.fundFlow || {};
+  var ffTitle = document.getElementById("fundFlowTitle");
+  var ffNote = document.getElementById("fundFlowNote");
+  var ffWrap = document.getElementById("fundFlow");
 
   if(ffTitle) ffTitle.textContent = ff.title || "ご支援の使い道（優先順位）";
   if(ffNote){
@@ -332,73 +408,88 @@ function renderProject(){
     ffNote.style.display = ffNote.textContent ? "block" : "none";
   }
   if(ffWrap){
-    const steps = Array.isArray(ff.steps) ? ff.steps : [];
-    ffWrap.innerHTML = steps.map((s, i)=>`
-      <div class="flowStep">
-        <div class="flowStep__top">
-          <div class="flowStep__index">${i+1}</div>
-          <div class="flowStep__title">${escapeHtml(s.title || "")}</div>
-        </div>
-        ${s.body ? `<div class="muted" style="line-height:1.8;margin-top:8px;">${escapeHtml(s.body)}</div>` : ""}
-        ${
-          Array.isArray(s.examples) && s.examples.length
-            ? `<ul class="muted flowStep__list">${s.examples.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>`
-            : ""
+    var steps = Array.isArray(ff.steps) ? ff.steps : [];
+    var ffHtml = "";
+    for(var k = 0; k < steps.length; k++){
+      var s = steps[k];
+      var examplesHtml = "";
+      if(Array.isArray(s.examples) && s.examples.length){
+        examplesHtml = '<ul class="muted flowStep__list">';
+        for(var l = 0; l < s.examples.length; l++){
+          examplesHtml += "<li>" + escapeHtml(s.examples[l]) + "</li>";
         }
-      </div>
-    `).join("");
+        examplesHtml += "</ul>";
+      }
+      ffHtml += '<div class="flowStep">' +
+        '<div class="flowStep__top">' +
+          '<div class="flowStep__index">' + (k + 1) + '</div>' +
+          '<div class="flowStep__title">' + escapeHtml(s.title || "") + '</div>' +
+        '</div>' +
+        (s.body ? '<div class="muted" style="line-height:1.8;margin-top:8px;">' + escapeHtml(s.body) + '</div>' : '') +
+        examplesHtml +
+      '</div>';
+    }
+    ffWrap.innerHTML = ffHtml;
   }
 
   // Itinerary
-  set("itineraryTitle", c.sections?.scheduleTitle || "渡航〜大会までの流れ（抜粋）");
-  const itWrap = document.getElementById("itinerary");
+  set("itineraryTitle", sections.scheduleTitle || "渡航〜大会までの流れ（抜粋）");
+  var itWrap = document.getElementById("itinerary");
   if(itWrap){
-    const list = Array.isArray(p.itinerary) ? p.itinerary.filter(x=>!x.hidden) : [];
-    itWrap.innerHTML = list.map(row=>`
-      <div class="step">
-        <div class="step__label">${escapeHtml(row.label || "")}</div>
-        <div class="step__body">
-          <div class="step__title">${escapeHtml(row.title || "")}</div>
-          ${row.body ? `<div class="step__text muted">${escapeHtml(row.body || "")}</div>` : ""}
-          ${row.meals ? `<div class="step__meta muted">食事：${escapeHtml(row.meals)}</div>` : ""}
-        </div>
-      </div>
-    `).join("");
+    var itList = Array.isArray(p.itinerary) ? p.itinerary : [];
+    var itHtml = "";
+    for(var m = 0; m < itList.length; m++){
+      var row = itList[m];
+      if(row.hidden) continue;
+      itHtml += '<div class="step">' +
+        '<div class="step__label">' + escapeHtml(row.label || "") + '</div>' +
+        '<div class="step__body">' +
+          '<div class="step__title">' + escapeHtml(row.title || "") + '</div>' +
+          (row.body ? '<div class="step__text muted">' + escapeHtml(row.body || "") + '</div>' : '') +
+          (row.meals ? '<div class="step__meta muted">食事：' + escapeHtml(row.meals) + '</div>' : '') +
+        '</div>' +
+      '</div>';
+    }
+    itWrap.innerHTML = itHtml;
   }
 
   // FAQ
-  const faqWrap = document.getElementById("faq");
+  var faqWrap = document.getElementById("faq");
   if(faqWrap){
-    const items = Array.isArray(c.faq) ? c.faq : [];
-    faqWrap.innerHTML = items.map(item=>`
-      <details class="faqItem">
-        <summary>${escapeHtml(item.q || "")}</summary>
-        <div class="muted" style="margin-top:8px;line-height:1.8;">${escapeHtml(item.a || "")}</div>
-      </details>
-    `).join("");
+    var faqItems = Array.isArray(c.faq) ? c.faq : [];
+    var faqHtml = "";
+    for(var n = 0; n < faqItems.length; n++){
+      var item = faqItems[n];
+      faqHtml += '<details class="faqItem">' +
+        '<summary>' + escapeHtml(item.q || "") + '</summary>' +
+        '<div class="muted" style="margin-top:8px;line-height:1.8;">' + escapeHtml(item.a || "") + '</div>' +
+      '</details>';
+    }
+    faqWrap.innerHTML = faqHtml;
   }
 
   // Support section
-  const sup = p.support || {};
-  const email = window.PUPPYS_CONFIG?.pressEmail || "";
-  const contactName = window.PUPPYS_CONFIG?.pressContactName || "";
+  var sup = p.support || {};
+  var email = (cfg && cfg.pressEmail) || "";
+  var contactName = (cfg && cfg.pressContactName) || "";
 
-  const supTitle = document.getElementById("supportTitle");
+  var supTitle = document.getElementById("supportTitle");
   if(supTitle) supTitle.textContent = sup.title || "応援の方法";
 
   // Individual
-  const iTitle = document.getElementById("supportIndTitle");
-  const iBody  = document.getElementById("supportIndBody");
-  const iBtn   = document.getElementById("supportIndBtn");
-  const iNote  = document.getElementById("supportIndNote");
+  var ind = sup.individual || {};
+  var iTitle = document.getElementById("supportIndTitle");
+  var iBody = document.getElementById("supportIndBody");
+  var iBtn = document.getElementById("supportIndBtn");
+  var iNote = document.getElementById("supportIndNote");
 
-  if(iTitle) iTitle.textContent = sup.individual?.title || "個人で応援";
-  if(iBody)  iBody.textContent  = sup.individual?.body || "";
+  if(iTitle) iTitle.textContent = ind.title || "個人で応援";
+  if(iBody) iBody.textContent = ind.body || "";
 
   if(iBtn){
     if(url){
       iBtn.href = url;
-      iBtn.textContent = sup.individual?.ctaLabel || "支援ページを見る";
+      iBtn.textContent = ind.ctaLabel || "支援ページを見る";
       iBtn.style.display = "inline-flex";
       if(iNote) iNote.style.display = "none";
     }else{
@@ -411,22 +502,24 @@ function renderProject(){
   }
 
   // Corporate
-  const cTitle = document.getElementById("supportCorpTitle");
-  const cBody  = document.getElementById("supportCorpBody");
-  const cBtn   = document.getElementById("supportCorpBtn");
-  const cNote  = document.getElementById("supportCorpNote");
+  var corp = sup.corporate || {};
+  var cTitle = document.getElementById("supportCorpTitle");
+  var cBody = document.getElementById("supportCorpBody");
+  var cBtn = document.getElementById("supportCorpBtn");
+  var cNote = document.getElementById("supportCorpNote");
 
-  if(cTitle) cTitle.textContent = sup.corporate?.title || "企業・団体として応援（協賛）";
-  if(cBody)  cBody.textContent  = sup.corporate?.body || "";
+  if(cTitle) cTitle.textContent = corp.title || "企業・団体として応援（協賛）";
+  if(cBody) cBody.textContent = corp.body || "";
 
   if(cBtn){
-    cBtn.textContent = sup.corporate?.ctaLabel || "協賛の相談をする（メール）";
+    cBtn.textContent = corp.ctaLabel || "協賛の相談をする（メール）";
     if(email){
-      const subject = encodeURIComponent(sup.corporate?.mailSubject || "【協賛のご相談】POM PUPPYS bright");
-      const body = encodeURIComponent((sup.corporate?.mailBody || "") + (contactName ? `\n\n（署名）\n${contactName}` : ""));
-      cBtn.href = `mailto:${email}?subject=${subject}&body=${body}`;
+      var subject = encodeURIComponent(corp.mailSubject || "【協賛のご相談】POM PUPPYS bright");
+      var bodyText = (corp.mailBody || "") + (contactName ? "\n\n（署名）\n" + contactName : "");
+      var body = encodeURIComponent(bodyText);
+      cBtn.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
       if(cNote){
-        cNote.textContent = `送信先：${email}`;
+        cNote.textContent = "送信先：" + email;
         cNote.style.display = "block";
       }
     }else{
@@ -438,18 +531,21 @@ function renderProject(){
     }
   }
 
-  // Corporate menu（ここが元コードで壊れやすかったので完全に安全化）
-  const menuWrap = document.getElementById("supportCorpMenu");
+  // Corporate menu
+  var menuWrap = document.getElementById("supportCorpMenu");
   if(menuWrap){
-    const menu = sup.corporate?.menu;
+    var menu = corp.menu;
     if(Array.isArray(menu) && menu.length){
       menuWrap.style.display = "grid";
-      menuWrap.innerHTML = menu.map(m => `
-        <div class="supportMenuItem">
-          <div class="supportMenuItem__title">${escapeHtml(m.title || "")}</div>
-          ${m.body ? `<div class="muted" style="line-height:1.8;margin-top:6px;">${escapeHtml(m.body || "")}</div>` : ""}
-        </div>
-      `).join("");
+      var menuHtml = "";
+      for(var o = 0; o < menu.length; o++){
+        var menuItem = menu[o];
+        menuHtml += '<div class="supportMenuItem">' +
+          '<div class="supportMenuItem__title">' + escapeHtml(menuItem.title || "") + '</div>' +
+          (menuItem.body ? '<div class="muted" style="line-height:1.8;margin-top:6px;">' + escapeHtml(menuItem.body || "") + '</div>' : '') +
+        '</div>';
+      }
+      menuWrap.innerHTML = menuHtml;
     }else{
       menuWrap.style.display = "none";
       menuWrap.innerHTML = "";
@@ -457,7 +553,7 @@ function renderProject(){
   }
 }
 
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", function(){
   try{
     renderProject();
     renderSupportMessagesProject();
@@ -466,4 +562,3 @@ document.addEventListener("DOMContentLoaded", ()=>{
     console.error(e);
   }
 });
-
