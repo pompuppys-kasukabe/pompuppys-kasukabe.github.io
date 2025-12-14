@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-  <title>POM PUPPYS bright（埼玉・春日部）｜The Dance Summit 2026 Challenge</title>
-  <meta name="description" content="悔しさを転機に、「楽しむ」へ。埼玉・春日部のチアダンスチーム「POM PUPPYS bright」がThe Dance Summit 2026へ挑戦します。" />
+  <title>POM PUPPYS bright（埼玉・春日部）｜Official</title>
+  <meta name="description" content="埼玉・春日部のチアダンスチーム「POM PUPPYS bright」公式サイト。The Dance Summit 2026へ挑戦。" />
 
   <link rel="canonical" href="https://pompuppys-kasukabe.github.io/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="POM PUPPYS bright" />
-  <meta property="og:title" content="POM PUPPYS bright（埼玉・春日部）｜The Dance Summit 2026 Challenge" />
+  <meta property="og:title" content="POM PUPPYS bright（埼玉・春日部）｜Official" />
   <meta property="og:description" content="悔しさを転機に、「楽しむ」へ。演技が変わった瞬間から、世界への道が始まりました。" />
   <meta property="og:url" content="https://pompuppys-kasukabe.github.io/" />
   <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
@@ -44,7 +44,7 @@
 <body data-page="official">
   <header class="header">
     <div class="container header__inner">
-      <div class="brand" aria-label="POM PUPPYS bright">
+      <div class="brand">
         <span class="brand__dot" aria-hidden="true"></span>
         <span>POM PUPPYS <span style="font-weight:900;color:var(--pink)">bright</span></span>
       </div>
@@ -52,38 +52,44 @@
       <nav class="nav" aria-label="primary">
         <a href="#news">NEWS</a>
         <a href="#about">ABOUT</a>
+        <a href="#photosSection">PHOTOS</a>
         <a href="#story">STORY</a>
         <a href="#timeline">年表</a>
-        <a id="mediaPageLink" href="./media.html">MEDIA</a>
-        <button id="shareBtn" class="btn btn-small" type="button" style="display:none;">共有</button>
+        <a href="./media.html">MEDIA</a>
       </nav>
     </div>
   </header>
 
   <main>
+    <!-- HERO -->
     <section class="hero">
       <div class="container hero__grid">
         <div class="heroCard">
-          <h1 class="heroTitle" id="heroHeadline"></h1>
-          <p class="heroLead" id="heroLead"></p>
-          <p class="heroSub muted" id="heroSub"></p>
+          <h1 class="heroTitle" id="heroHeadline">悔しさを転機に、「楽しむ」へ。</h1>
+          <p class="heroLead" id="heroLead">胸がいっぱいになるほど悔しかった日を越えて、笑顔が戻った瞬間がありました。</p>
+          <p class="heroSub muted" id="heroSub">
+            埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。勝ち負けだけではなく、“踊ることを楽しむ”原点に立ち返り、表情・一体感・空気づくりまで磨き直して The Dance Summit 2026 に挑戦します。
+          </p>
 
-          <div class="summitNote" id="summitNote" style="display:none;"></div>
+          <a class="projectBadge" href="./project-world-challenge.html">Road to the World / Special Project →</a>
 
-          <!-- Video/Image hero (auto switch by config.js) -->
-          <div class="heroMediaWrap" id="heroMediaWrap" style="display:none;">
-            <video class="heroVideo" id="heroVideo" playsinline muted loop preload="metadata" style="display:none;"></video>
-            <img class="heroPhoto" id="heroPhoto" src="" alt="" loading="eager" decoding="async" style="display:none;"/>
+          <div class="summitNote" id="summitNote" style="display:block;">
+            米国Varsity社が主催する、世界最高峰のチアダンス・ダンスの世界選手権大会。
           </div>
-          
-        <a id="projectBadgeLink" class="projectBadge" href="./project-world-challenge.html">
-         Road to the World / Special Project →
-         </a>
 
-          <div class="chips" id="factsChips" aria-label="Key facts chips"></div>
+          <!-- Hero media (default image set so it won't be blank even if JS breaks) -->
+          <div class="heroMediaWrap" id="heroMediaWrap"
+               style="--hero-bg:url('./assets/photos/award_flag.jpg');">
+            <img class="heroPhoto" id="heroPhoto"
+                 src="./assets/photos/award_flag.jpg"
+                 alt="表彰後、フラッグを掲げるPOM PUPPYS bright"
+                 loading="eager" decoding="async"/>
+          </div>
+
+          <div class="chips" id="factsChips"></div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
-            <a class="btn btn-primary" id="mediaCtaBtn" href="./media.html">取材の方へ（Media）</a>
+            <a class="btn btn-primary" href="./media.html">取材の方へ（Media）</a>
           </div>
         </div>
 
@@ -97,6 +103,7 @@
       </div>
     </section>
 
+    <!-- NEWS -->
     <section id="news" class="section">
       <div class="container">
         <div class="section-head">
@@ -107,6 +114,7 @@
       </div>
     </section>
 
+    <!-- ABOUT -->
     <section id="about" class="section">
       <div class="container">
         <div class="section-head">
@@ -132,6 +140,7 @@
       </div>
     </section>
 
+    <!-- PHOTOS -->
     <section id="photosSection" class="section">
       <div class="container">
         <div class="section-head">
@@ -142,6 +151,7 @@
       </div>
     </section>
 
+    <!-- STORY -->
     <section id="story" class="section">
       <div class="container">
         <div class="section-head">
@@ -158,6 +168,7 @@
       </div>
     </section>
 
+    <!-- TIMELINE -->
     <section id="timeline" class="section">
       <div class="container">
         <div class="section-head">
@@ -170,85 +181,6 @@
       </div>
     </section>
 
+    <!-- SPONSORS -->
     <section id="sponsors" class="section">
       <div class="container">
-        <div class="section-head">
-          <h2 id="sponsorsTitle">スポンサー / 協賛</h2>
-          <p class="muted">応援ありがとうございます</p>
-        </div>
-        <div class="card">
-          <p class="note" id="sponsorsNote" style="margin:0 0 12px;display:none;"></p>
-          <div id="sponsorsGrid" class="sponsorsGrid"></div>
-          <div style="height:10px;"></div>
-          <a class="smallLink" href="./sponsor.html">企業・団体の方へ（協賛 / 応援出演）</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <div class="media-card">
-          <div class="media-card__left">
-            <h3>取材の方へ（Media）</h3>
-            <p class="muted" style="line-height:1.85;">
-              記事制作に必要な素材（PDF・写真・紹介文）をまとめています。<br/>
-              ※Mediaページにはクラファン導線は置いていません。
-            </p>
-          </div>
-          <div class="media-card__right">
-            <a class="btn btn-primary" href="./media.html">Mediaページを開く</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section id="supportMessages" class="section">
-  <div class="container">
-    <div class="section-head">
-      <h2>応援メッセージ</h2>
-      <p class="muted">最新の声（審査制）</p>
-    </div>
-
-    <div class="card">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
-        <p class="note" id="supportMessagesNote" style="margin:0;display:none;"></p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a id="supportMessageFormBtn" class="btn btn-ghost" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">
-            応援メッセージを送る
-          </a>
-          <a id="supportMessagesMore" class="btn btn-primary" href="./project-world-challenge.html#messages">
-            特設で読む →
-          </a>
-        </div>
-      </div>
-
-      <div style="height:12px;"></div>
-      <div id="supportMessagesGrid" class="msgGrid"></div>
-    </div>
-  </div>
-</section>
-
-  </main>
-
-  <div class="mascotFloat" id="mascotFloat" aria-hidden="true">
-    <img id="mascotFloatImg" src="" alt="" loading="lazy" decoding="async"/>
-  </div>
-
-  <div class="lightbox" id="lightbox" aria-hidden="true">
-    <button class="lightbox__bg" id="lightboxBg" aria-label="閉じる"></button>
-    <div class="lightbox__panel" role="dialog" aria-modal="true">
-      <button class="lightbox__close" id="lightboxClose" aria-label="閉じる">×</button>
-      <img class="lightbox__img" id="lightboxImg" src="" alt="" />
-      <div class="lightbox__cap" id="lightboxCap"></div>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <div class="container">
-      <div>© POM PUPPYS bright</div>
-      <div class="muted" style="margin-top:6px;">
-        取材窓口：<a href="mailto:moccy0306@gmail.com">moccy0306@gmail.com</a>（保護者代表 飯田 絵里）
-      </div>
-    </div>
-  </footer>
-</body>
-</html>
