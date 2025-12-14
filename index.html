@@ -1,3 +1,4 @@
+<!-- index.html（丸ごと置換） -->
 <!doctype html>
 <html lang="ja">
 <head>
@@ -20,6 +21,11 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
 
+  <!-- Fonts (no @import in CSS) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="./style.css" />
   <script src="./config.js"></script>
   <script src="./main.js" defer></script>
@@ -36,11 +42,11 @@
   </script>
 </head>
 
-<body>
+<body data-page="official">
   <header class="header">
     <div class="container header__inner">
-      <div class="brand">
-        <span class="brand__dot"></span>
+      <div class="brand" aria-label="POM PUPPYS bright">
+        <span class="brand__dot" aria-hidden="true"></span>
         <span>POM PUPPYS <span style="font-weight:900;color:var(--pink)">bright</span></span>
       </div>
 
@@ -56,6 +62,7 @@
   </header>
 
   <main>
+    <!-- HERO -->
     <section class="hero">
       <div class="container hero__grid">
         <div class="heroCard">
@@ -65,6 +72,7 @@
 
           <div class="summitNote" id="summitNote" style="display:none;"></div>
 
+          <!-- Portrait-friendly (blur bg + contain) handled by CSS/JS -->
           <div class="heroPhotoWrap" id="heroPhotoWrap" style="display:none;">
             <img class="heroPhoto" id="heroPhoto" src="" alt="" loading="eager" decoding="async"/>
           </div>
@@ -75,23 +83,24 @@
             </div>
           </div>
 
-          <div class="chips" id="factsChips"></div>
+          <div class="chips" id="factsChips" aria-label="Key facts chips"></div>
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
             <a class="btn btn-primary" id="mediaCtaBtn" href="./media.html">取材の方へ（Media）</a>
           </div>
         </div>
 
-        <div class="card">
+        <aside class="card" aria-label="Key Facts">
           <div class="section-head" style="margin-bottom:10px;">
-            <h2 style="font-size:1.1rem;">Key Facts</h2>
+            <h2 style="font-size:1.05rem;">Key Facts</h2>
             <p class="muted" style="font-size:.95rem;">30秒で把握</p>
           </div>
           <ul id="keyFactsList" class="keyFacts"></ul>
-        </div>
+        </aside>
       </div>
     </section>
 
+    <!-- NEWS -->
     <section id="news" class="section">
       <div class="container">
         <div class="section-head">
@@ -102,6 +111,7 @@
       </div>
     </section>
 
+    <!-- ABOUT -->
     <section id="about" class="section">
       <div class="container">
         <div class="section-head">
@@ -112,12 +122,13 @@
         <div class="grid2">
           <div class="card">
             <h3 style="margin:0 0 10px;color:var(--navy)" id="aboutTitle"></h3>
-            <div class="muted" id="aboutBody" style="line-height:1.7;"></div>
-            <p class="note" id="aboutNote" style="margin-top:10px;"></p>
+            <div class="muted" id="aboutBody" style="line-height:1.8;"></div>
+            <p class="note" id="aboutNote" style="margin-top:10px;display:none;"></p>
           </div>
+
           <div class="card">
             <h3 style="margin:0 0 10px;color:var(--navy)">The Dance Summit 2026 とは</h3>
-            <p class="muted" style="margin:0;line-height:1.8;">
+            <p class="muted" style="margin:0;line-height:1.9;">
               米国Varsity社が主催する、世界最高峰のチアダンス・ダンスの世界選手権大会です。<br/>
               私たちはこの舞台に向けて準備を進めています。
             </p>
@@ -126,15 +137,18 @@
       </div>
     </section>
 
+    <!-- PHOTOS -->
     <section id="photosSection" class="section">
       <div class="container">
         <div class="section-head">
           <h2>PHOTOS</h2>
+          <p class="muted">活動の一部をご紹介</p>
         </div>
         <div id="photoGrid" class="photoGrid"></div>
       </div>
     </section>
 
+    <!-- STORY -->
     <section id="story" class="section">
       <div class="container">
         <div class="section-head">
@@ -143,14 +157,15 @@
         </div>
 
         <div class="card">
-          <div class="muted" id="storyBody" style="line-height:1.85;"></div>
+          <div class="muted" id="storyBody" style="line-height:1.9;"></div>
           <div style="height:14px;"></div>
           <h3 style="margin:0 0 10px;color:var(--navy);font-size:1.05rem;">取材ポイント（切り口）</h3>
-          <ul class="muted" id="interviewPoints" style="margin:0;line-height:1.8;"></ul>
+          <ul class="muted" id="interviewPoints" style="margin:0;line-height:1.9;"></ul>
         </div>
       </div>
     </section>
 
+    <!-- TIMELINE -->
     <section id="timeline" class="section">
       <div class="container">
         <div class="section-head">
@@ -163,6 +178,7 @@
       </div>
     </section>
 
+    <!-- SPONSORS -->
     <section id="sponsors" class="section">
       <div class="container">
         <div class="section-head">
@@ -178,12 +194,13 @@
       </div>
     </section>
 
+    <!-- Media CTA (keep separated from crowdfunding) -->
     <section class="section">
       <div class="container">
         <div class="media-card">
           <div class="media-card__left">
             <h3>取材の方へ（Media）</h3>
-            <p class="muted">
+            <p class="muted" style="line-height:1.85;">
               記事制作に必要な素材（PDF・写真・紹介文）をまとめています。<br/>
               ※Mediaページにはクラファン導線は置いていません。
             </p>
@@ -196,10 +213,12 @@
     </section>
   </main>
 
+  <!-- floating mascot (optional) -->
   <div class="mascotFloat" id="mascotFloat" aria-hidden="true">
     <img id="mascotFloatImg" src="" alt="" loading="lazy" decoding="async"/>
   </div>
 
+  <!-- Lightbox -->
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <button class="lightbox__bg" id="lightboxBg" aria-label="閉じる"></button>
     <div class="lightbox__panel" role="dialog" aria-modal="true">
@@ -213,7 +232,7 @@
     <div class="container">
       <div>© POM PUPPYS bright</div>
       <div class="muted" style="margin-top:6px;">
-        取材窓口：moccy0306@gmail.com（保護者代表 飯田 絵里）
+        取材窓口：<a href="mailto:moccy0306@gmail.com">moccy0306@gmail.com</a>（保護者代表 飯田 絵里）
       </div>
     </div>
   </footer>
