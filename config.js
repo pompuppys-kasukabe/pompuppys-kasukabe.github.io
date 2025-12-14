@@ -1,30 +1,25 @@
 /* config.js */
 window.PUPPYS_CONFIG = {
-  // Site URL (canonical / OGP). Keep trailing slash.
   siteUrl: "https://pompuppys-kasukabe.github.io/",
   ogImageUrl: "https://pompuppys-kasukabe.github.io/assets/ogp.jpg",
   ogImageUrlProject: "https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg",
 
-  // Pages（4ページ）
   pages: {
     media: "./media.html",
-    project: "./project-world-challenge.html", // 公式/Mediaからはリンクしない運用も可
+    project: "./project-world-challenge.html",
     sponsor: "./sponsor.html"
   },
 
-  // Media（取材導線）※Mediaにはクラファン導線を出さない設計
   mediaKitUrl: "https://drive.google.com/drive/folders/1jfploQJhKcJWmGzHVKrY2VnJykLoE-d0?usp=sharing",
   instagramUrl: "",
   pressEmail: "moccy0306@gmail.com",
   pressContactName: "POM PUPPYS bright 保護者代表　飯田 絵里",
 
-  // UI flags
   ui: {
     enableLightbox: true,
     showShareButton: true
   },
 
-  // 記事用テキスト（サイト側にも同梱：コピペ1クリック用）
   mediaTexts: {
     credit: "写真クレジット：POM PUPPYS bright 提供",
     short100:
@@ -32,10 +27,9 @@ window.PUPPYS_CONFIG = {
     mid200:
       "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。直前の大会で悔しい結果を経験し、勝ち負けだけではなく“踊ることを楽しむ”原点へ。表情・一体感・空気づくりまで磨き直し、JAMfestで1位を獲得。The Dance Summit 2026に向け準備を進めている。",
     long400:
-      "「勝つため」ではなく「踊ることを楽しむ」原点へ。その劇的な意識改革が、強豪ひしめく「JAMfest JAPAN」第1位という快挙を手繰り寄せました。 埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」（小6〜中3）は、この優勝を弾みに、世界最高峰の舞台、米国「The Dance Summit 2026」への切符を掴みました。 直前の大会での敗北という試練。どん底の中で技術だけでなく、表情やチームの空気感まで全てを見つめ直し、彼女たちは生まれ変わりました。ふじみ野発祥の姉妹チームの系譜を継ぎ、2016年の始動から苦節を乗り越え、ついに世界の扉を開いたのです。 「原点回帰」でチアの楽しさを再発見した彼女たちは、最高の笑顔を春日部から世界へ届けようとしています。困難を笑顔に変えて進む少女たちの挑戦は、見る人々に勇気と感動を与えています。"
+      "埼玉・春日部を拠点に活動するチアダンスチーム「POM PUPPYS bright」。直前の大会で悔しい結果を経験したことをきっかけに、勝ち負けだけではなく“踊ることを楽しむ”原点へ立ち返った。表情、声、チームの空気づくりまで含めて演技を一から再構築し、気持ちが揃った瞬間に踊りが変わった。プロセスが結果につながり、JAMfest JAPAN vol.23 in TOKYO（Junior編成 Pom部門 Small B）で1位を獲得。現在は米国Varsity社主催の世界最高峰の舞台「The Dance Summit 2026」へ挑戦する。"
   },
 
-  // NEWS（dateは "YYYY-MM-DD" 推奨。空なら日付表示なし）
   news: [
     {
       date: "2025-12-28",
@@ -53,7 +47,6 @@ window.PUPPYS_CONFIG = {
     }
   ],
 
-  // 公式サイト本文（修正はここだけでOK）
   copy: {
     hero: {
       headline: "悔しさを転機に、「楽しむ」へ。",
@@ -100,25 +93,23 @@ window.PUPPYS_CONFIG = {
     ]
   },
 
-  // サイト見た目用（写真・差し替え用）
+  // 画像・動画
   siteImages: {
-    // 公式トップ：縦長の表彰写真をヒーローに（CSS/JSで「ぼかし背景 + contain」でリッチに表示）
     heroImage: "./assets/photos/award_flag.jpg",
     heroImageAlt: "表彰後、フラッグを掲げるPOM PUPPYS bright",
 
-    // 公式トップ：動画ヒーロー（必要なら enabled=true に）
     heroVideo: {
       enabled: false,
       mp4: "./assets/video/official_hero.mp4",
-      webm: "./assets/video/official_hero.webm", // 任意（無ければ空文字でもOK）
+      webm: "",
       poster: "./assets/photos/award_flag.jpg",
       alt: "POM PUPPYS bright 公式映像",
       loop: true
     },
 
     gallery: [
-      { title: "JAMfest", src: "./assets/photos/jam.jpg", alt: "大会マスコットと" },
-      { title: "本番前の練習風景", src: "./assets/photos/practice_01.JPG", alt: "練習風景" },
+      { title: "表彰のあと", src: "./assets/photos/award_flag.jpg", alt: "表彰後の様子" },
+      { title: "練習風景", src: "./assets/photos/practice_01.JPG", alt: "練習風景" },
       { title: "チーム集合", src: "./assets/photos/team_01.jpg", alt: "チーム集合写真" }
     ],
 
@@ -129,7 +120,6 @@ window.PUPPYS_CONFIG = {
     }
   },
 
-  // スポンサー（公式トップに表示：ロゴ+リンク）
   sponsors: {
     enabled: true,
     title: "スポンサー / 協賛",
@@ -137,34 +127,22 @@ window.PUPPYS_CONFIG = {
     items: []
   },
 
-  // 企業・団体向け（フォームは一旦なし、メール導線のみ）
   sponsor: {
     pageTitle: "企業・団体の方へ（協賛 / 応援出演）",
     formUrl: "",
-
     areaNote: "埼玉県を中心に、関東は要相談です。",
     feeNote:
       "協賛・応援出演は1万円〜を目安に、移動距離・拘束時間・内容によりお見積りします。交通費等が発生する場合は事前にご案内します。",
-
     policy: [
       "掲載は当チームの基準に基づき審査の上で行います。内容により掲載を見合わせる場合があります（例：成人向け、ギャンブル、反社会的勢力に該当する恐れがあるもの等）。",
       "掲載期間は原則1年（更新可）です。",
       "写真掲載・訪問レポート掲載は、事前に許諾をいただいた場合のみ行います。"
     ],
-
     menus: [
-      {
-        title: "広告協賛（ロゴ掲載）",
-        body: "公式サイト／クラファン特設ページへのロゴ掲載（リンク付）、活動報告（NEWS）でのご紹介。"
-      },
-      {
-        title: "応援出演（有料・演技のみ）",
-        body:
-          "イベント等での演技披露（体験会は原則行っていません）。距離・拘束時間・内容によりお見積りします。企業様との記念写真（集合写真）をNEWS素材として掲載する場合があります。※実施可否はチーム判断となります。"
-      },
+      { title: "広告協賛（ロゴ掲載）", body: "公式サイト／クラファン特設ページへのロゴ掲載（リンク付）、活動報告（NEWS）でのご紹介。" },
+      { title: "応援出演（有料・演技のみ）", body: "イベント等での演技披露（体験会は原則行っていません）。距離・拘束時間・内容によりお見積りします。" },
       { title: "物品提供・告知協力", body: "備品提供、告知協力など。内容はご相談ください。" }
     ],
-
     required: [
       "企業・団体名／ご担当者名／ご連絡先",
       "ご希望（協賛／応援出演／物品提供等）",
@@ -172,7 +150,6 @@ window.PUPPYS_CONFIG = {
       "ロゴデータ（推奨：透過PNG）・掲載希望URL（ロゴ掲載の場合）",
       "領収書の宛名（会社名でOK）"
     ],
-
     mail: {
       subject: "【協賛/応援出演のご相談】POM PUPPYS bright",
       body:
@@ -189,42 +166,51 @@ window.PUPPYS_CONFIG = {
 【ご予算感】（任意）
 【領収書の宛名】（会社名でOK）
 
-【応援出演をご希望の場合】
-・演技披露のみ（可/不可の希望）
-・音響（音源再生可否、スピーカー有無）
-・床（フロア種類）
-・控室（有/無）
-・撮影（企業様との集合写真：可/不可）
-
 【備考】
 
 よろしくお願いいたします。`
     }
   },
 
-  // クラファン特設ページ用（LP仕様）
+  // 応援メッセージ（審査制）
+  supportMessages: {
+    enabled: true,
+
+    // Googleフォーム or NotionフォームURLを入れる（入れない場合はボタン非表示）
+    formUrl: "",
+
+    // 表示データはこのJSONから読む（運用しやすい）
+    dataUrl: "./assets/messages.json",
+
+    // 表示件数
+    maxOnOfficial: 3,
+    maxOnProject: 24,
+
+    // 注意書き（必要なら）
+    note:
+      "※掲載は内容確認のうえ反映します。個人情報（学校名/住所/電話番号など）は記載しないでください。"
+  },
+
+  // クラファン特設
   project: {
     title: "World Challenge Project",
-    crowdfundingUrl: "", // CAMPFIRE URL が決まったら入れる
+    crowdfundingUrl: "",
     goalYen: 1000000,
     raisedYen: 0,
     endDate: "2026-03-31",
     updatedAt: "2025-12-13",
 
-    // 特設：ヒーロー動画（こちらはON推奨）
     heroVideo: {
       enabled: true,
       mp4: "./assets/video/project_hero.mp4",
-      webm: "./assets/video/project_hero.webm", // 任意
+      webm: "",
       poster: "./assets/photos/award_flag.jpg",
       alt: "World Challenge Project 映像",
       loop: true
     },
-    // 特設：動画が出ない環境向けの静止画フォールバック
     heroImage: "./assets/photos/award_flag.jpg",
     heroImageAlt: "表彰後、フラッグを掲げるPOM PUPPYS bright",
 
-    // cost assumptions
     costPerPersonYen: 580000,
     extrasPerPersonEstimateYen: 100000,
     nights: 6,
@@ -241,7 +227,6 @@ window.PUPPYS_CONFIG = {
       { room: "3名1室", meal: "食事付", athleteCoachAdult: 597000, child: 479000 },
       { room: "2名1室", meal: "食事付", athleteCoachAdult: 625000, child: 500000 },
       { room: "1名1室", meal: "食事付", athleteCoachAdult: 707000, child: null },
-
       { room: "4名1室", meal: "食事無", athleteCoachAdult: 537000, child: 436000 },
       { room: "3名1室", meal: "食事無", athleteCoachAdult: 554000, child: 436000 },
       { room: "2名1室", meal: "食事無", athleteCoachAdult: 582000, child: 456000 },
@@ -258,73 +243,41 @@ window.PUPPYS_CONFIG = {
     ],
 
     copy: {
-      heroKicker: "World Stage / みんなで同じ舞台へ",
-      heroHeadline: "挫折からの返り咲きで掴んだ世界大会。その一歩を、費用の壁で止めたくありません。",
+      heroKicker: "Road to the World / Special Project",
+      heroHeadline: "子どもたち全員が、同じ舞台に立てるように。",
       heroLead:
-        "POM PUPPYS bright は「The Dance Summit 2026」へ出場します。直前の悔しさを乗り越え、演技を立て直して世界大会出場を勝ち取りました。しかし円安と物価高で渡航費が高騰し、指定旅行会社のセット料金のため削減が難しい状況です。選手全員が同じ舞台に立てるよう、費用の一部として目標100万円のご支援をお願いしています。※本プロジェクトはAll-In方式（目標未達でも実施）です。",
+        "POM PUPPYS bright は「The Dance Summit 2026」へ出場します。円安と物価高で渡航費が高騰し、指定旅行会社のセット料金のため削減が難しい状況です。挑戦を“プロジェクト”として記録しながら、世界への一歩を進めます。",
 
       sections: {
         whyTitle: "なぜ支援が必要か",
         whyBody: [
-          "世界大会出場を勝ち取った一方で、渡航・宿泊・大会関連費用が現実の壁になっています。",
-          "近年の円安・物価高の影響で費用が大きく上昇しています。",
-          "大会指定の旅行会社によるセット料金のため、こちら側での削減が難しい状況です。",
-          "親戚・企業協賛などでもお願いしていますが、あと一歩をクラファンでも支えていただきたいです。"
+          "渡航・宿泊・大会関連費用が現実の壁になっています。",
+          "円安・物価高の影響で費用が上昇しています。",
+          "大会指定の旅行会社によるセット料金のため削減が難しい状況です。",
+          "選手全員が同じ舞台に立てるよう準備を進めています。"
         ],
-        usageTitle: "資金の使い道（目標100万円）",
+        usageTitle: "資金の使い道",
         usageBody: [
-          "ご支援は、世界大会出場に必要な費用の一部（渡航パッケージ費用を中心に、燃油サーチャージ・ESTA・海外旅行保険などの必要経費を含む）に充当します。",
-          "まずは大会指定の旅行パッケージ費用の支払いを優先し、不足や状況に応じて別途必要となる費用へ充当します（All-In方式／目標未達でも実施）。",
-          "旅行パッケージ約58万円/人に加え、別途費用が約10万円/人前後かかる見込みです（燃油等は変動するため目安です）。",
+          "渡航パッケージ費用を中心に必要経費へ充当します。",
+          "All-In方式（目標未達でも実施）です。",
           "使途の概要は活動報告等で共有します。"
         ],
         scheduleTitle: "渡航〜大会までの流れ（抜粋）"
       },
 
       faq: [
-        {
-          q: "このプロジェクトはAll-In方式ですか？",
-          a: "はい、All-In方式（目標未達でも実施）です。集まったご支援は渡航・大会関連費用の一部に充当し、出場を最優先に準備します。"
-        },
-        {
-          q: "目標に届かなかった場合はどうなりますか？",
-          a: "All-In方式のためプロジェクトは実施します。不足分は各家庭負担・協賛等で補い、選手全員で出場できるよう準備を進めます。"
-        },
-        {
-          q: "目標を超えた場合はどう使われますか？",
-          a: "追加分も渡航・大会関連費用（現地移動、備品、諸経費等）に充当します。使途は活動報告等で共有します。"
-        },
-        {
-          q: "費用はなぜ削減できないのですか？",
-          a: "大会指定の旅行会社によるパッケージ料金が基本となるため、チーム側で大きく削ることが難しい状況です。"
-        },
-        {
-          q: "企業として協賛したいです。",
-          a: "特設の「企業・団体の方へ」ページからご連絡ください。協賛内容をご案内します。"
-        }
+        { q: "All-In方式ですか？", a: "はい、All-In方式（目標未達でも実施）です。集まったご支援は渡航・大会関連費用の一部に充当します。" },
+        { q: "目標未達の場合は？", a: "All-In方式のためプロジェクトは実施します。不足分は各家庭負担・協賛等で補います。" }
       ]
     },
 
     fundFlow: {
       title: "ご支援の使い道（優先順位）",
-      note:
-        "※特定費目への固定配分ではなく、出場に必要な支払いを優先して充当します（All-In方式）。",
+      note: "※固定配分ではなく、出場に必要な支払いを優先して充当します。",
       steps: [
-        {
-          title: "① 渡航パッケージ費（最優先）",
-          body: "大会指定の旅行会社パッケージ費用の支払いを優先します。",
-          examples: ["航空券・宿泊・大会関連の基本費用（パッケージ内）"]
-        },
-        {
-          title: "② 別途必要経費（目安：1人 約10万円前後）",
-          body: "円安・燃油等の変動も見込み、出場に必要な費用へ充当します。",
-          examples: ["燃油サーチャージ等諸費用", "ESTA", "海外旅行保険 など"]
-        },
-        {
-          title: "③ 出場に必要な不足分・備品等（状況に応じて）",
-          body: "不足が出た場合は各家庭負担・協賛等でも補いながら、出場を最優先で準備します。",
-          examples: ["現地移動・備品等"]
-        }
+        { title: "① 渡航パッケージ費（最優先）", body: "旅行会社パッケージ費用の支払いを優先します。", examples: ["航空券・宿泊・大会関連の基本費用（パッケージ内）"] },
+        { title: "② 別途必要経費", body: "燃油等の変動も見込み、必要費用へ充当します。", examples: ["燃油サーチャージ等", "ESTA", "海外旅行保険 など"] },
+        { title: "③ 不足分・備品等", body: "状況に応じて不足分へ充当します。", examples: ["現地移動・備品等"] }
       ]
     },
 
@@ -332,20 +285,19 @@ window.PUPPYS_CONFIG = {
       title: "応援の方法",
       individual: {
         title: "個人で応援（CAMPFIRE）",
-        body: "CAMPFIREのプロジェクトページからご支援いただけます。All-In方式（目標未達でも実施）です。",
-        ctaLabel: "CAMPFIREで支援する"
+        body: "プロジェクトページからご支援いただけます（All-In方式）。",
+        ctaLabel: "CAMPFIREで見る"
       },
       corporate: {
         title: "企業・団体として応援（協賛）",
-        body: "協賛のご相談を承ります（広告協賛／物品提供／応援出演など）。まずはメールでご連絡ください。",
+        body: "協賛のご相談を承ります。まずはメールでご連絡ください。",
         ctaLabel: "協賛の相談をする（メール）",
         mailSubject: "【協賛のご相談】POM PUPPYS bright World Challenge",
         mailBody:
           "協賛のご相談です。\n\n【企業・団体名】\n【ご担当者名】\n【ご連絡先】\n【ご検討内容】（協賛/物品提供/応援出演など）\n【備考】\n\nどうぞよろしくお願いいたします。",
         menu: [
           { title: "ロゴ掲載（公式サイト／特設ページ）", body: "支援企業としてご紹介します（掲載可否・仕様は相談）。" },
-          { title: "応援メッセージ掲載", body: "企業・団体からのメッセージを掲載します（任意）。" },
-          { title: "物品提供・サービス提供", body: "備品提供、告知協力など（内容は相談）。" }
+          { title: "応援メッセージ掲載", body: "企業・団体からのメッセージを掲載します（任意）。" }
         ]
       }
     },
