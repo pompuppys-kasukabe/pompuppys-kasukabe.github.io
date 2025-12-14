@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
   <title>POM PUPPYS bright｜埼玉・春日部のチアダンスチーム</title>
-  <meta name="description" content="埼玉・春日部で活動するチアダンスチーム「POM PUPPYS bright」公式サイト。The Dance Summit 2026 世界大会へ挑戦中！" />
+  <meta name="description" content="埼玉・春日部で活動するチアダンスチーム「POM PUPPYS bright」公式サイト。世界最高峰の舞台、米国「The Dance Summit 2026」へ挑戦中！" />
 
   <link rel="canonical" href="https://pompuppys-kasukabe.github.io/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="POM PUPPYS bright" />
   <meta property="og:title" content="POM PUPPYS bright｜埼玉・春日部のチアダンスチーム" />
-  <meta property="og:description" content="悔しさを転機に、「楽しむ」へ。世界への挑戦が始まりました。" />
+  <meta property="og:description" content="悔しさを転機に、「楽しむ」へ。世界最高峰の舞台、米国「The Dance Summit 2026」への挑戦が始まりました。" />
   <meta property="og:url" content="https://pompuppys-kasukabe.github.io/" />
   <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
   <meta property="og:image:width" content="1200" />
@@ -52,10 +52,11 @@
       </a>
 
       <nav class="nav" aria-label="メインナビゲーション">
-        <a href="#team">Team</a>
-        <a href="#photos">Photos</a>
         <a href="#story">Story</a>
         <a href="#news">News</a>
+        <a href="#team">Team</a>
+        <a href="#photos">Photos</a>
+        <a href="#road-to-the-world">応援する</a>
         <a href="./media.html">Media</a>
         <button id="shareBtn" class="btn btn-small btn-ghost" type="button">共有</button>
       </nav>
@@ -70,22 +71,22 @@
 
         <!-- Left: Text -->
         <div class="heroCard">
-          <p class="heroKicker" id="heroKicker">Saitama • Kasukabe</p>
-          <h1 class="heroTitle" id="heroHeadline">
+          <p class="heroKicker">Saitama • Kasukabe</p>
+          <h1 class="heroTitle">
             笑顔で踊る、<br>
             <span class="highlight">世界へ挑む。</span>
           </h1>
-          <p class="heroLead" id="heroLead">
+          <p class="heroLead">
             悔しさを転機に、「楽しむ」を取り戻した私たち。
           </p>
-          <p class="heroSub" id="heroSub">
+          <p class="heroSub">
             埼玉・春日部で活動するチアダンスチーム「POM PUPPYS bright」。
-            JAMfest JAPAN 2025 で1位を獲得し、The Dance Summit 2026 への切符を掴みました。
+            JAMfest JAPAN 2025 で1位を獲得し、世界最高峰の舞台、米国「The Dance Summit 2026」への切符を掴みました。
           </p>
 
-          <div class="heroCta mt-3">
-            <a href="#road-to-the-world" class="btn btn-primary">
-              🌍 世界への挑戦を見る
+          <div class="heroCta">
+            <a href="#story" class="btn btn-primary">
+              📖 私たちのストーリー
             </a>
             <a href="./media.html" class="btn btn-secondary">
               📰 取材の方へ
@@ -99,10 +100,9 @@
         </div>
 
         <!-- Right: Photo -->
-        <div class="heroPhotoWrap" id="heroPhotoWrap">
+        <div class="heroPhotoWrap">
           <img 
             class="heroPhoto" 
-            id="heroPhoto"
             src="./assets/photos/team_main.jpg" 
             alt="POM PUPPYS bright チーム写真"
             loading="eager"
@@ -112,74 +112,62 @@
       </div>
     </section>
 
-    <!-- ===== Road to the World ===== -->
-    <section class="roadSection" id="road-to-the-world">
-      <div class="container roadSection__inner">
-
-        <header class="roadSection__header">
-          <span class="roadSection__kicker">Road to the World</span>
-          <h2 class="roadSection__title">
-            世界への挑戦を、<br class="sp-only">みんなで応援しよう
-          </h2>
-          <p class="roadSection__lead">
-            2026年春、アメリカで開催される The Dance Summit へ。<br>
-            子どもたちが夢の舞台へ羽ばたくプロジェクトです。
-          </p>
-        </header>
-
-        <div class="roadSection__grid">
-
-          <!-- Progress Card -->
-          <div class="roadCard">
-            <h3 class="roadCard__title">🎯 プロジェクト進捗</h3>
-            
-            <div class="progressBar">
-              <div class="progressBar__fill" id="progressFill" style="width: 0%;"></div>
-            </div>
-            
-            <div class="progressBar__labels">
-              <div>
-                <span class="progressBar__current" id="raisedAmount">—</span>
-                <span style="opacity:0.7;font-size:0.9rem;"> / <span id="goalAmount">—</span></span>
-              </div>
-              <div>
-                <span style="opacity:0.7;">残り </span>
-                <strong id="daysRemaining">—</strong>
-              </div>
-            </div>
-
-            <p class="mt-2" style="opacity:0.8;font-size:0.9rem;" id="projectNote">
-              ※ 支援だけでなく、応援メッセージも力になります！
-            </p>
-          </div>
-
-          <!-- Messages Preview Card -->
-          <div class="roadCard">
-            <h3 class="roadCard__title">💬 応援メッセージ</h3>
-            
-            <div class="messagesPreview" id="messagesPreview">
-              <!-- JSで挿入 -->
-              <div class="messagePreview">
-                <span class="messagePreview__name">読み込み中...</span>
-              </div>
-            </div>
-
-            <p class="mt-2" style="opacity:0.8;font-size:0.9rem;">
-              <span id="messageCount">—</span>件のメッセージが届いています
-            </p>
-          </div>
-
+    <!-- ===== Story ===== -->
+    <section class="section" id="story">
+      <div class="container">
+        <div class="section-head">
+          <h2>📖 Our Story</h2>
+          <p class="muted">私たちの歩み</p>
         </div>
 
-        <div class="roadSection__cta">
-          <a href="./project-world-challenge.html" class="btn btn-primary" style="background:linear-gradient(135deg, var(--gold), #e6a800);">
-            ✨ 特設サイトを見る
-          </a>
-          <a href="#" class="btn btn-ghost" id="sendMessageBtn" style="color:#fff;border-color:rgba(255,255,255,0.3);">
-            💌 応援メッセージを送る
-          </a>
+        <div class="grid2">
+          <div class="card">
+            <h3 class="card__title">悔しさから、笑顔へ</h3>
+            <div class="card__body muted">
+              <p>直前の大会で悔しい結果を経験し、私たちは一度立ち止まりました。</p>
+              <p>悔しさを抱えたままでは、踊る姿も硬くなってしまう——そう気づいたとき、原点の「楽しむ」に戻る決断をしました。</p>
+              <p>表情、声、チームの空気づくりまで見直し、演技を一から再構築。</p>
+              <p>気持ちが揃った瞬間、踊りが変わり、会場の空気も変わりました。</p>
+              <p>そして私たちは、世界最高峰の舞台、米国「The Dance Summit 2026」への挑戦権を手にしました。</p>
+            </div>
+          </div>
+
+          <div class="card card--highlight">
+            <h3 class="card__title">🏆 これまでの歩み</h3>
+            <ul class="timeline">
+              <li class="timeline__item">
+                <span class="timeline__year">2016</span>
+                <span class="timeline__text">春日部で活動開始</span>
+              </li>
+              <li class="timeline__item">
+                <span class="timeline__year">2020</span>
+                <span class="timeline__text">大会への挑戦を本格化</span>
+              </li>
+              <li class="timeline__item">
+                <span class="timeline__year">2025</span>
+                <span class="timeline__text">JAMfest JAPAN vol.23 で1位獲得</span>
+              </li>
+              <li class="timeline__item timeline__item--highlight">
+                <span class="timeline__year">2026</span>
+                <span class="timeline__text">The Dance Summit へ挑戦予定</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== News ===== -->
+    <section class="section section--alt" id="news">
+      <div class="container">
+        <div class="section-head">
+          <h2>📢 News</h2>
+          <p class="muted">最新情報</p>
         </div>
 
+        <div class="newsGrid" id="newsGrid">
+          <!-- JSで挿入 -->
+        </div>
       </div>
     </section>
 
@@ -192,7 +180,6 @@
         </div>
 
         <div class="membersGrid" id="membersGrid">
-          <!-- JSで挿入、または直接記述 -->
           <div class="memberCard">
             <img src="./assets/photos/member_01.jpg" alt="メンバー" loading="lazy" />
             <div class="memberCard__overlay"></div>
@@ -229,8 +216,8 @@
             <div class="memberCard__name">Member</div>
           </div>
           <!-- マスコットも仲間として -->
-          <div class="memberCard" style="background:linear-gradient(135deg, rgba(233,30,140,0.1), rgba(212,168,75,0.1));">
-            <img src="./assets/mascot.png" alt="マスコット" loading="lazy" style="object-fit:contain;padding:10px;" />
+          <div class="memberCard memberCard--mascot">
+            <img src="./assets/mascot.png" alt="マスコット" loading="lazy" />
             <div class="memberCard__overlay"></div>
             <div class="memberCard__name">Mascot 🎀</div>
           </div>
@@ -242,8 +229,8 @@
       </div>
     </section>
 
-    <!-- ===== Photos / Memories ===== -->
-    <section class="section" id="photos" style="background:rgba(26,26,62,0.02);">
+    <!-- ===== Photos ===== -->
+    <section class="section section--alt" id="photos">
       <div class="container">
         <div class="section-head">
           <h2>📸 Photos</h2>
@@ -251,68 +238,115 @@
         </div>
 
         <div class="photoGrid" id="photoGrid">
-          <figure class="photoCard">
+          <!-- 1段目：2枚 -->
+          <figure class="photoCard photoCard--half">
             <img class="photoImg" src="./assets/photos/award_flag.jpg" alt="表彰式" loading="lazy" />
             <figcaption class="photoCap">JAMfest JAPAN 2025 優勝 🏆</figcaption>
           </figure>
-          <figure class="photoCard">
-            <img class="photoImg" src="./assets/photos/practice_01.jpg" alt="練習風景" loading="lazy" />
-            <figcaption class="photoCap">練習風景</figcaption>
-          </figure>
-          <figure class="photoCard">
+          <figure class="photoCard photoCard--half">
             <img class="photoImg" src="./assets/photos/team_01.jpg" alt="チーム集合" loading="lazy" />
             <figcaption class="photoCap">チーム集合写真</figcaption>
           </figure>
-          <figure class="photoCard">
+
+          <!-- 2段目：3枚 -->
+          <figure class="photoCard photoCard--third">
+            <img class="photoImg" src="./assets/photos/practice_01.jpg" alt="練習風景" loading="lazy" />
+            <figcaption class="photoCap">練習風景</figcaption>
+          </figure>
+          <figure class="photoCard photoCard--third">
             <img class="photoImg" src="./assets/photos/performance_01.jpg" alt="演技中" loading="lazy" />
             <figcaption class="photoCap">演技中</figcaption>
           </figure>
-          <figure class="photoCard">
-            <img class="photoImg" src="./assets/photos/offshot_01.jpg" alt="オフショット" loading="lazy" />
-            <figcaption class="photoCap">オフショット 😊</figcaption>
-          </figure>
-          <figure class="photoCard">
+          <figure class="photoCard photoCard--third">
             <img class="photoImg" src="./assets/photos/jam.jpg" alt="大会会場" loading="lazy" />
             <figcaption class="photoCap">大会会場にて</figcaption>
           </figure>
+
+          <!-- 3段目：2枚 -->
+          <figure class="photoCard photoCard--half">
+            <img class="photoImg" src="./assets/photos/offshot_01.jpg" alt="オフショット" loading="lazy" />
+            <figcaption class="photoCap">オフショット 😊</figcaption>
+          </figure>
+          <figure class="photoCard photoCard--half">
+            <img class="photoImg" src="./assets/photos/offshot_02.jpg" alt="オフショット" loading="lazy" />
+            <figcaption class="photoCap">みんなで記念撮影</figcaption>
+          </figure>
         </div>
       </div>
     </section>
 
-    <!-- ===== Story ===== -->
-    <section class="section" id="story">
-      <div class="container">
-        <div class="section-head">
-          <h2>📖 Our Story</h2>
-          <p class="muted">私たちの歩み</p>
-        </div>
+    <!-- ===== Road to the World ===== -->
+    <section class="roadSection" id="road-to-the-world">
+      <div class="container roadSection__inner">
 
-        <div class="grid2">
-          <div class="card">
-            <h3 style="color:var(--navy);margin:0 0 16px;">悔しさから、笑顔へ</h3>
-            <div class="muted" id="storyBody" style="line-height:2;">
-              <p>直前の大会で悔しい結果を経験し、私たちは一度立ち止まりました。</p>
-              <p>悔しさを抱えたままでは、踊る姿も硬くなってしまう——そう気づいたとき、原点の「楽しむ」に戻る決断をしました。</p>
-              <p>表情、声、チームの空気づくりまで見直し、演技を一から再構築。</p>
-              <p>気持ちが揃った瞬間、踊りが変わり、会場の空気も変わりました。</p>
+        <header class="roadSection__header">
+          <span class="roadSection__kicker">Road to the World</span>
+          <h2 class="roadSection__title">
+            世界への挑戦を、<br class="sp-only">みんなで応援しよう
+          </h2>
+          <p class="roadSection__lead">
+            2026年春、世界最高峰の舞台、米国「The Dance Summit 2026」へ。<br>
+            子どもたちが夢の舞台へ羽ばたくプロジェクトです。
+          </p>
+        </header>
+
+        <div class="roadSection__grid">
+
+          <!-- Left: Messages Preview -->
+          <div class="roadCard">
+            <h3 class="roadCard__title">💬 応援メッセージ</h3>
+            
+            <div class="messagesPreview" id="messagesPreview">
+              <!-- JSで挿入 -->
+              <div class="messagePreview">
+                <span class="messagePreview__name">読み込み中...</span>
+              </div>
             </div>
+
+            <p class="roadCard__note">
+              <span id="messageCount">—</span>件のメッセージが届いています
+            </p>
           </div>
 
-          <div class="card card--highlight">
-            <h3 style="color:var(--navy);margin:0 0 16px;">🏆 これまでの歩み</h3>
-            <ul class="muted" id="timelineList" style="line-height:2;">
-              <li><strong>2016</strong> — 春日部で活動開始</li>
-              <li><strong>2020</strong> — 大会への挑戦を本格化</li>
-              <li><strong>2025</strong> — JAMfest JAPAN vol.23 で1位獲得</li>
-              <li><strong>2026</strong> — The Dance Summit へ挑戦予定</li>
-            </ul>
+          <!-- Right: Progress -->
+          <div class="roadCard">
+            <h3 class="roadCard__title">🎯 プロジェクト進捗</h3>
+            
+            <div class="progressBar">
+              <div class="progressBar__fill" id="progressFill" style="width: 0%;"></div>
+            </div>
+            
+            <div class="progressBar__labels">
+              <div>
+                <span class="progressBar__current" id="raisedAmount">—</span>
+                <span class="progressBar__goal"> / <span id="goalAmount">—</span></span>
+              </div>
+              <div class="progressBar__days">
+                残り <strong id="daysRemaining">—</strong>
+              </div>
+            </div>
+
+            <p class="roadCard__note" id="projectNote">
+              ※ 支援だけでなく、応援メッセージも力になります！
+            </p>
           </div>
+
         </div>
+
+        <div class="roadSection__cta">
+          <a href="./project-world-challenge.html" class="btn btn-gold">
+            ✨ 特設サイトを見る
+          </a>
+          <a href="#" class="btn btn-outline-light" id="sendMessageBtn">
+            💌 応援メッセージを送る
+          </a>
+        </div>
+
       </div>
     </section>
 
-    <!-- ===== 応援メッセージ ===== -->
-    <section class="section" id="messages" style="background:linear-gradient(135deg, rgba(233,30,140,0.03), rgba(212,168,75,0.05));">
+    <!-- ===== 応援メッセージ一覧 ===== -->
+    <section class="section" id="messages">
       <div class="container">
         <div class="section-head">
           <h2>💬 応援メッセージ</h2>
@@ -321,12 +355,6 @@
 
         <div class="msgGrid" id="msgGrid">
           <!-- JSで挿入 -->
-          <div class="msgCard">
-            <div class="msgCard__header">
-              <span class="msgCard__name">読み込み中...</span>
-            </div>
-            <p class="msgCard__body">メッセージを取得しています</p>
-          </div>
         </div>
 
         <div class="text-center mt-4">
@@ -340,29 +368,15 @@
       </div>
     </section>
 
-    <!-- ===== News ===== -->
-    <section class="section" id="news">
-      <div class="container">
-        <div class="section-head">
-          <h2>📢 News</h2>
-          <p class="muted">最新情報</p>
-        </div>
-
-        <div class="newsGrid" id="newsGrid">
-          <!-- JSで挿入 -->
-        </div>
-      </div>
-    </section>
-
     <!-- ===== Sponsors ===== -->
-    <section class="section" id="sponsors">
+    <section class="section section--alt" id="sponsors">
       <div class="container">
         <div class="section-head">
           <h2 id="sponsorsTitle">🤝 Sponsors</h2>
           <p class="muted">応援ありがとうございます</p>
         </div>
 
-        <div class="card">
+        <div class="card card--flat">
           <p class="note mb-3" id="sponsorsNote">
             掲載は活動支援への謝意として行っています（原則1年更新・審査あり）
           </p>
@@ -400,7 +414,7 @@
     <div class="container footer__inner">
       <div>
         <strong>© POM PUPPYS bright</strong>
-        <span style="opacity:0.7;margin-left:8px;">埼玉・春日部</span>
+        <span class="footer__location">埼玉・春日部</span>
       </div>
       <div class="footer__links">
         <a href="./media.html">Media（取材の方へ）</a>
