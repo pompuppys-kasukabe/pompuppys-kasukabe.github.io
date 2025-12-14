@@ -1,67 +1,4 @@
-/* project.js (BROWSER COMPATIBLE VERSION) */
-
-// 共通ユーティリティ
-function escapeHtml(str){
-  return String(str == null ? "" : str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function yen(n){
-  var v = Number(n || 0);
-  try{
-    return new Intl.NumberFormat("ja-JP").format(v) + "円";
-  }catch(e){
-    return v + "円";
-  }
-}
-
-function clamp(n, min, max){
-  return Math.max(min, Math.min(max, n));
-}
-
-function daysLeft(endDateStr){
-  var end = new Date(String(endDateStr || ""));
-  if(!isFinite(end.getTime())) return null;
-  var today = new Date();
-  var ms = end.getTime() - today.getTime();
-  return Math.ceil(ms / (1000 * 60 * 60 * 24));
-}
-
-function sumPeople(people){
-  var arr = Array.isArray(people) ? people : [];
-  var total = 0;
-  for(var i = 0; i < arr.length; i++){
-    total += Number(arr[i].count || 0);
-  }
-  return total;
-}
-
-function formatDateLabel(dateStr){
-  if(!dateStr) return "";
-  var m = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if(!m) return String(dateStr);
-  return m[1] + "." + m[2] + "." + m[3];
-}
-
-function prefersReducedMotion(){
-  try{
-    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }catch(e){
-    return false;
-  }
-}
-
-function saveDataOn(){
-  try{
-    return !!(navigator.connection && navigator.connection.saveData);
-  }catch(e){
-    return false;
-  }
-}
+/* project.js - クラファン特設ページ用 */
 
 function mountHeroMediaProject(p){
   var wrap = document.getElementById("pHeroMediaWrap");
@@ -145,37 +82,8 @@ function mountHeroMediaProject(p){
   }
 }
 
-async function fetchJsonWithNoCache(url){
-  var u = url + (url.indexOf("?") >= 0 ? "&" : "?") + "v=" + Date.now();
-  var r = await fetch(u, { cache: "no-store" });
-  if(!r.ok) throw new Error("fetch failed: " + r.status);
-  return await r.json();
-}
-
-function normalizeMessages(list){
-  var arr = Array.isArray(list) ? list : [];
-  var result = [];
-  for(var i = 0; i < arr.length; i++){
-    var x = arr[i];
-    if(!x) continue;
-    if(x.approved === false) continue;
-    var msg = String(x.message || "").trim();
-    if(!msg) continue;
-    result.push({
-      date: String(x.date || ""),
-      name: String(x.name || "匿名"),
-      message: msg
-    });
-  }
-  result.sort(function(a, b){
-    return String(b.date).localeCompare(String(a.date));
-  });
-  return result;
-}
-
 async function renderSupportMessagesProject(){
-  var cfg = window.PUPPYS_CONFIG;
-  var msgCfg = cfg && cfg.supportMessages;
+  var msgCfg = getConfigValue("supportMessages", {});
   if(!msgCfg || msgCfg.enabled === false) return;
 
   var grid = document.getElementById("projectMessagesGrid");
@@ -257,21 +165,26 @@ function wireProjectShare(){
   });
 }
 
+function mountList(id, lines){
+  var el = document.getElementById(id);
+  if(!el) return;
+  var arr = Array.isArray(lines) ? lines : [];
+  var html = "";
+  for(var i = 0; i < arr.length; i++){
+    html += "<li>" + escapeHtml(arr[i]) + "</li>";
+  }
+  el.innerHTML = html;
+}
+
 function renderProject(){
-  var cfg = window.PUPPYS_CONFIG;
-  var p = cfg && cfg.project;
+  var p = getConfigValue("project", null);
   if(!p) return;
 
   var c = p.copy || {};
 
-  function set(id, text){
-    var el = document.getElementById(id);
-    if(el) el.textContent = text || "";
-  }
-
-  set("pKicker", c.heroKicker);
-  set("pHeadline", c.heroHeadline);
-  set("pLead", c.heroLead);
+  setText("pKicker", c.heroKicker);
+  setText("pHeadline", c.heroHeadline);
+  setText("pLead", c.heroLead);
 
   mountHeroMediaProject(p);
 
@@ -279,19 +192,19 @@ function renderProject(){
   var raised = Number(p.raisedYen || 0);
   var pct = goal > 0 ? (raised / goal) * 100 : 0;
 
-  set("goalYen", yen(goal));
-  set("raisedYen", yen(raised));
-  set("pct", Math.round(pct) + "%");
+  setText("goalYen", yen(goal));
+  setText("raisedYen", yen(raised));
+  setText("pct", Math.round(pct) + "%");
 
   var dl = daysLeft(p.endDate);
   if(dl === null){
-    set("daysLeft", "—");
+    setText("daysLeft", "—");
   }else if(dl < 0){
-    set("daysLeft", "終了");
+    setText("daysLeft", "終了");
   }else{
-    set("daysLeft", dl + "日");
+    setText("daysLeft", dl + "日");
   }
-  set("updatedAt", p.updatedAt || "—");
+  setText("updatedAt", p.updatedAt || "—");
 
   var bar = document.getElementById("barFill");
   if(bar) bar.style.width = clamp(pct, 0, 100).toFixed(1) + "%";
@@ -302,11 +215,11 @@ function renderProject(){
   var perTotal = perPackage + perExtras;
   var totalCost = perPackage * ppl;
 
-  set("perPerson", yen(perPackage));
-  set("extrasPerPerson", yen(perExtras) + "（目安）");
-  set("totalPerPerson", yen(perTotal) + "（目安）");
-  set("headcount", ppl + "名（選手・コーチ合計）");
-  set("totalCost", yen(totalCost));
+  setText("perPerson", yen(perPackage));
+  setText("extrasPerPerson", yen(perExtras) + "（目安）");
+  setText("totalPerPerson", yen(perTotal) + "（目安）");
+  setText("headcount", ppl + "名（選手・コーチ合計）");
+  setText("totalCost", yen(totalCost));
 
   var mp = document.getElementById("mealPlanNote");
   if(mp){
@@ -351,22 +264,11 @@ function renderProject(){
     }
   }
 
-  // Lists helper
-  function mountList(id, lines){
-    var el = document.getElementById(id);
-    if(!el) return;
-    var arr = Array.isArray(lines) ? lines : [];
-    var html = "";
-    for(var i = 0; i < arr.length; i++){
-      html += "<li>" + escapeHtml(arr[i]) + "</li>";
-    }
-    el.innerHTML = html;
-  }
-
+  // Sections
   var sections = c.sections || {};
-  set("whyTitle", sections.whyTitle || "なぜ支援が必要か");
+  setText("whyTitle", sections.whyTitle || "なぜ支援が必要か");
   mountList("whyBody", sections.whyBody);
-  set("usageTitle", sections.usageTitle || "資金の使い道");
+  setText("usageTitle", sections.usageTitle || "資金の使い道");
   mountList("usageBody", sections.usageBody);
 
   // Price table
@@ -386,27 +288,17 @@ function renderProject(){
     pt.innerHTML = ptHtml;
   }
 
-  var ex = document.getElementById("extraCosts");
-  if(ex){
-    var extraLines = Array.isArray(p.extraCosts) ? p.extraCosts : [];
-    var exHtml = "";
-    for(var j = 0; j < extraLines.length; j++){
-      exHtml += "<li>" + escapeHtml(extraLines[j]) + "</li>";
-    }
-    ex.innerHTML = exHtml;
-  }
+  mountList("extraCosts", p.extraCosts);
 
   // Fund flow
   var ff = p.fundFlow || {};
-  var ffTitle = document.getElementById("fundFlowTitle");
+  setText("fundFlowTitle", ff.title || "ご支援の使い道（優先順位）");
   var ffNote = document.getElementById("fundFlowNote");
-  var ffWrap = document.getElementById("fundFlow");
-
-  if(ffTitle) ffTitle.textContent = ff.title || "ご支援の使い道（優先順位）";
   if(ffNote){
     ffNote.textContent = ff.note || "";
     ffNote.style.display = ffNote.textContent ? "block" : "none";
   }
+  var ffWrap = document.getElementById("fundFlow");
   if(ffWrap){
     var steps = Array.isArray(ff.steps) ? ff.steps : [];
     var ffHtml = "";
@@ -433,7 +325,7 @@ function renderProject(){
   }
 
   // Itinerary
-  set("itineraryTitle", sections.scheduleTitle || "渡航〜大会までの流れ（抜粋）");
+  setText("itineraryTitle", sections.scheduleTitle || "渡航〜大会までの流れ（抜粋）");
   var itWrap = document.getElementById("itinerary");
   if(itWrap){
     var itList = Array.isArray(p.itinerary) ? p.itinerary : [];
@@ -470,22 +362,18 @@ function renderProject(){
 
   // Support section
   var sup = p.support || {};
-  var email = (cfg && cfg.pressEmail) || "";
-  var contactName = (cfg && cfg.pressContactName) || "";
+  var email = getConfigValue("pressEmail", "");
+  var contactName = getConfigValue("pressContactName", "");
 
-  var supTitle = document.getElementById("supportTitle");
-  if(supTitle) supTitle.textContent = sup.title || "応援の方法";
+  setText("supportTitle", sup.title || "応援の方法");
 
   // Individual
   var ind = sup.individual || {};
-  var iTitle = document.getElementById("supportIndTitle");
-  var iBody = document.getElementById("supportIndBody");
+  setText("supportIndTitle", ind.title || "個人で応援");
+  setText("supportIndBody", ind.body);
+
   var iBtn = document.getElementById("supportIndBtn");
   var iNote = document.getElementById("supportIndNote");
-
-  if(iTitle) iTitle.textContent = ind.title || "個人で応援";
-  if(iBody) iBody.textContent = ind.body || "";
-
   if(iBtn){
     if(url){
       iBtn.href = url;
@@ -503,21 +391,18 @@ function renderProject(){
 
   // Corporate
   var corp = sup.corporate || {};
-  var cTitle = document.getElementById("supportCorpTitle");
-  var cBody = document.getElementById("supportCorpBody");
+  setText("supportCorpTitle", corp.title || "企業・団体として応援（協賛）");
+  setText("supportCorpBody", corp.body);
+
   var cBtn = document.getElementById("supportCorpBtn");
   var cNote = document.getElementById("supportCorpNote");
-
-  if(cTitle) cTitle.textContent = corp.title || "企業・団体として応援（協賛）";
-  if(cBody) cBody.textContent = corp.body || "";
-
   if(cBtn){
     cBtn.textContent = corp.ctaLabel || "協賛の相談をする（メール）";
     if(email){
       var subject = encodeURIComponent(corp.mailSubject || "【協賛のご相談】POM PUPPYS bright");
       var bodyText = (corp.mailBody || "") + (contactName ? "\n\n（署名）\n" + contactName : "");
-      var body = encodeURIComponent(bodyText);
-      cBtn.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
+      var bodyEnc = encodeURIComponent(bodyText);
+      cBtn.href = "mailto:" + email + "?subject=" + subject + "&body=" + bodyEnc;
       if(cNote){
         cNote.textContent = "送信先：" + email;
         cNote.style.display = "block";
