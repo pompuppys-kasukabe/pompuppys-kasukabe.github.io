@@ -1568,8 +1568,9 @@ body[data-page="project"] .hero {
 .contactCard:hover .contactCard__arrow {
   transform: translateX(4px);
 }
+
 .roadCard__title {
-  color: var(--navy);
+  color: #fff;
 }
 
 .messagesPreview .msgCard {
@@ -1586,15 +1587,15 @@ body[data-page="project"] .hero {
 }
 
 .progressBar__labels {
-  color: var(--navy);
+  color: #fff;
 }
 
 .progressBar__current,
 .progressBar__goal {
-  color: var(--navy);
+  color: #fff;
 }
 
 .roadCard__note {
-  color: #666;
+  color: rgba(255, 255, 255, 0.8);
 }
 
