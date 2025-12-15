@@ -1,5 +1,6 @@
 /* =========================
    POM PUPPYS bright - Style Sheet
+   (Color Theme: Black / Purple / Gold)
    =========================
 */
 
@@ -7,27 +8,43 @@
    TOKENS（カラーパレット）
 ========================= */
 :root {
-  /* メインカラー */
-  --navy: #1a1a3e;
-  --purple: #2d2a5e;
-  --pink: #e91e8c;
-  --gold: #d4a84b;
+  /* メインカラー変更エリア */
+  
+  /* --navy (紺) → 黒 (Black) */
+  /* テキストや見出し、フッター背景などに使用される引き締め色 */
+  --navy: #0a0a0a; 
+
+  /* --purple (青紫) → 深い紫 (Deep Purple) */
+  /* グラデーションの暗部などに使用 */
+  --purple: #240046;
+
+  /* --pink (ピンク) → 鮮やかな紫 (Bright Purple) */
+  /* ※変数名はpinkのままですが、色を紫に変えることでボタン等を「紫×金」にします */
+  --pink: #7b2cbf;
+
+  /* --gold (金) → ゴールド (Gold) */
+  /* そのまま維持、または黒に合わせて少し鮮やかに調整 */
+  --gold: #d4af37;
   
   /* 背景・サーフェス */
-  --bg: #faf8fc;
-  --bg-gradient-1: rgba(233, 30, 140, 0.12);
-  --bg-gradient-2: rgba(212, 168, 75, 0.10);
-  --bg-gradient-3: rgba(45, 42, 94, 0.06);
-  --surface: rgba(255, 255, 255, 0.88);
+  /* ほんの少しグレーを入れて、真っ白すぎない高級感を出す */
+  --bg: #f5f5f7;
+  
+  /* 背景用グラデーション色（メインカラーに合わせて調整） */
+  --bg-gradient-1: rgba(123, 44, 191, 0.08); /* 紫 */
+  --bg-gradient-2: rgba(212, 175, 55, 0.08); /* 金 */
+  --bg-gradient-3: rgba(10, 10, 10, 0.04);   /* 黒 */
+  
+  --surface: rgba(255, 255, 255, 0.92);
   --surfaceSolid: #ffffff;
   
   /* テキスト */
-  --text: #0b1220;
-  --muted: #4a4a68;
+  --text: #111111;
+  --muted: #555555; /* 青みを抜いてグレーに */
   
   /* ライン・ボーダー */
-  --line: rgba(45, 42, 94, 0.15);
-  --line-light: rgba(212, 168, 75, 0.3);
+  --line: rgba(10, 10, 10, 0.12);
+  --line-light: rgba(212, 175, 55, 0.3);
   
   /* 角丸 */
   --radius-lg: 28px;
@@ -35,14 +52,14 @@
   --radius-sm: 14px;
   --radius-full: 999px;
   
-  /* シャドウ */
-  --shadow-sm: 0 4px 20px rgba(26, 26, 62, 0.06);
-  --shadow-md: 0 8px 40px rgba(26, 26, 62, 0.10);
-  --shadow-lg: 0 16px 60px rgba(26, 26, 62, 0.14);
-  --shadow-glow: 0 0 30px rgba(233, 30, 140, 0.20);
+  /* シャドウ（色味を紫系に寄せる） */
+  --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 40px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 16px 60px rgba(0, 0, 0, 0.14);
+  --shadow-glow: 0 0 30px rgba(123, 44, 191, 0.20);
   
   /* フォーカスリング */
-  --ring: rgba(233, 30, 140, 0.40);
+  --ring: rgba(123, 44, 191, 0.40);
   
   /* コンテナ */
   --container: 1140px;
@@ -68,6 +85,7 @@ body {
   margin: 0;
   font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
   color: var(--text);
+  /* 背景グラデーションの構成はそのまま、変数の色だけ変わります */
   background:
     radial-gradient(ellipse 900px 600px at 10% -5%, var(--bg-gradient-1), transparent 60%),
     radial-gradient(ellipse 800px 500px at 90% 0%, var(--bg-gradient-2), transparent 55%),
@@ -122,7 +140,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section--alt {
-  background: rgba(26, 26, 62, 0.02);
+  background: rgba(10, 10, 10, 0.03);
 }
 
 .muted {
@@ -156,7 +174,7 @@ h1, h2, h3, h4, h5, h6 {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -190,8 +208,9 @@ h1, h2, h3, h4, h5, h6 {
   width: 12px;
   height: 12px;
   border-radius: var(--radius-full);
+  /* ここが 紫×金 に変わります */
   background: linear-gradient(135deg, var(--pink), var(--gold));
-  box-shadow: 0 4px 12px rgba(233, 30, 140, 0.3);
+  box-shadow: 0 4px 12px var(--bg-gradient-1);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -223,7 +242,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav a:hover {
   color: var(--navy);
-  background: rgba(233, 30, 140, 0.08);
+  background: rgba(123, 44, 191, 0.08); /* 薄い紫背景 */
   text-decoration: none;
 }
 
@@ -271,6 +290,7 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(0);
 }
 
+/* Primaryボタンも 紫×深い紫 のグラデーションになります */
 .btn-primary {
   color: #fff;
   background: linear-gradient(135deg, var(--pink), var(--purple));
@@ -278,7 +298,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary:hover {
-  box-shadow: var(--shadow-lg), 0 0 40px rgba(233, 30, 140, 0.35);
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(123, 44, 191, 0.35);
 }
 
 .btn-secondary {
@@ -305,13 +325,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-gold {
-  color: var(--navy);
-  background: linear-gradient(135deg, var(--gold), #e6a800);
-  box-shadow: var(--shadow-md), 0 0 20px rgba(212, 168, 75, 0.3);
+  color: var(--navy); /* ゴールド背景上の文字は黒 */
+  background: linear-gradient(135deg, var(--gold), #b8860b);
+  box-shadow: var(--shadow-md), 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
 .btn-gold:hover {
-  box-shadow: var(--shadow-lg), 0 0 30px rgba(212, 168, 75, 0.4);
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(212, 175, 55, 0.4);
 }
 
 .btn-outline-light {
@@ -347,7 +367,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .card--highlight {
   border-color: var(--gold);
-  background: linear-gradient(135deg, rgba(233, 30, 140, 0.03), rgba(212, 168, 75, 0.05));
+  background: linear-gradient(135deg, rgba(123, 44, 191, 0.03), rgba(212, 175, 55, 0.05));
 }
 
 .card--flat {
@@ -419,7 +439,7 @@ h1, h2, h3, h4, h5, h6 {
   right: -30%;
   width: 80%;
   height: 150%;
-  background: radial-gradient(circle, rgba(233, 30, 140, 0.08), transparent 60%);
+  background: radial-gradient(circle, var(--bg-gradient-1), transparent 60%);
   pointer-events: none;
 }
 
@@ -435,7 +455,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--pink);
+  color: var(--pink); /* ここは明るい紫になります */
   margin: 0 0 12px;
 }
 
@@ -449,6 +469,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .heroTitle .highlight {
+  /* 文字グラデーション：紫〜金 */
   background: linear-gradient(90deg, var(--pink), var(--gold));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -491,6 +512,7 @@ h1, h2, h3, h4, h5, h6 {
   inset: 0;
   border: 3px solid transparent;
   border-radius: var(--radius-lg);
+  /* 枠線グラデーション：紫〜金 */
   background: linear-gradient(135deg, var(--pink), var(--gold)) border-box;
   -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
@@ -594,7 +616,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Poppins", sans-serif;
   font-weight: 800;
   font-size: 1.1rem;
-  color: var(--pink);
+  color: var(--pink); /* 明るい紫 */
   min-width: 60px;
 }
 
@@ -605,7 +627,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .timeline__item--highlight {
-  background: linear-gradient(90deg, rgba(233, 30, 140, 0.08), transparent);
+  /* 背景を薄い紫に */
+  background: linear-gradient(90deg, rgba(123, 44, 191, 0.08), transparent);
   margin: 0 -16px;
   padding: 12px 16px;
   border-radius: var(--radius-sm);
@@ -625,6 +648,7 @@ h1, h2, h3, h4, h5, h6 {
 .roadSection {
   position: relative;
   padding: 80px 0;
+  /* 背景：黒〜深い紫 のグラデーション */
   background: linear-gradient(135deg, var(--navy) 0%, var(--purple) 100%);
   color: #fff;
   overflow: hidden;
@@ -635,8 +659,8 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(circle at 20% 80%, rgba(233, 30, 140, 0.3), transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(212, 168, 75, 0.2), transparent 50%);
+    radial-gradient(circle at 20% 80%, rgba(123, 44, 191, 0.3), transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(212, 175, 55, 0.2), transparent 50%);
   pointer-events: none;
 }
 
@@ -836,7 +860,7 @@ h1, h2, h3, h4, h5, h6 {
 .memberCard__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(26, 26, 62, 0.8), transparent 50%);
+  background: linear-gradient(to top, rgba(10, 10, 10, 0.8), transparent 50%);
   opacity: 0;
   transition: opacity var(--duration-fast);
 }
@@ -864,7 +888,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .memberCard--mascot {
-  background: linear-gradient(135deg, rgba(233, 30, 140, 0.1), rgba(212, 168, 75, 0.1));
+  background: linear-gradient(135deg, rgba(123, 44, 191, 0.1), rgba(212, 175, 55, 0.1));
 }
 
 .memberCard--mascot img {
@@ -1042,9 +1066,9 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: linear-gradient(135deg, rgba(233, 30, 140, 0.1), rgba(212, 168, 75, 0.1));
-  color: var(--pink);
-  border: 1px solid rgba(233, 30, 140, 0.2);
+  background: linear-gradient(135deg, rgba(123, 44, 191, 0.1), rgba(212, 175, 55, 0.1));
+  color: var(--pink); /* 明るい紫 */
+  border: 1px solid rgba(123, 44, 191, 0.2);
 }
 
 .newsDate {
@@ -1070,7 +1094,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .newsLink {
-  color: var(--pink);
+  color: var(--pink); /* 明るい紫 */
   font-weight: 700;
   font-size: 0.9rem;
   text-decoration: none;
@@ -1201,7 +1225,7 @@ h1, h2, h3, h4, h5, h6 {
   inset: 0;
   z-index: 9999;
   display: none;
-  background: rgba(26, 26, 62, 0.95);
+  background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -1256,7 +1280,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ===== Copy Block (Media page) ===== */
 .copyBlock {
-  background: rgba(26, 26, 62, 0.03);
+  background: rgba(10, 10, 10, 0.03);
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   padding: 16px;
@@ -1294,7 +1318,7 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   padding: 24px;
-  background: linear-gradient(135deg, rgba(233, 30, 140, 0.04), rgba(212, 168, 75, 0.06));
+  background: linear-gradient(135deg, rgba(123, 44, 191, 0.04), rgba(212, 175, 55, 0.06));
   box-shadow: var(--shadow-sm);
 }
 
@@ -1358,7 +1382,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: baseline;
   padding: 12px 16px;
   border-radius: var(--radius-sm);
-  background: rgba(26, 26, 62, 0.03);
+  background: rgba(10, 10, 10, 0.03);
   border: 1px solid var(--line);
   margin-bottom: 10px;
 }
@@ -1470,16 +1494,16 @@ body[data-page="sponsor"] {
 
 /* Project page */
 body[data-page="project"] .hero {
-  background: linear-gradient(135deg, rgba(26, 26, 62, 0.03), rgba(233, 30, 140, 0.05));
+  background: linear-gradient(135deg, rgba(10, 10, 10, 0.03), rgba(123, 44, 191, 0.05));
 }
 
 /* ===== Button Gold with Outline ===== */
 .btn-gold.btn-outlined {
   color: #fff;
-  background: linear-gradient(135deg, var(--gold), #e6a800);
+  background: linear-gradient(135deg, var(--gold), #b8860b);
   box-shadow: 
     var(--shadow-md), 
-    0 0 20px rgba(212, 168, 75, 0.3),
+    0 0 20px rgba(212, 175, 55, 0.3),
     inset 0 0 0 2px rgba(255, 255, 255, 0.5);
   border: 2px solid rgba(255, 255, 255, 0.6);
 }
@@ -1487,7 +1511,7 @@ body[data-page="project"] .hero {
 .btn-gold.btn-outlined:hover {
   box-shadow: 
     var(--shadow-lg), 
-    0 0 30px rgba(212, 168, 75, 0.5),
+    0 0 30px rgba(212, 175, 55, 0.5),
     inset 0 0 0 2px rgba(255, 255, 255, 0.7);
   border-color: rgba(255, 255, 255, 0.9);
 }
@@ -1534,7 +1558,7 @@ body[data-page="project"] .hero {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(233, 30, 140, 0.08), rgba(212, 168, 75, 0.08));
+  background: linear-gradient(135deg, rgba(123, 44, 191, 0.08), rgba(212, 175, 55, 0.08));
   border-radius: var(--radius-sm);
 }
 
@@ -1559,7 +1583,7 @@ body[data-page="project"] .hero {
 
 .contactCard__arrow {
   font-size: 1.2rem;
-  color: var(--pink);
+  color: var(--pink); /* 明るい紫 */
   font-weight: 800;
   flex-shrink: 0;
   transition: transform var(--duration-fast);
