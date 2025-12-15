@@ -79,16 +79,27 @@ function getDriveImageUrl(fileId, width) {
 // Hero画像
 // ============================================
 
+
 async function renderHeroMedia() {
-  var wrap = document.getElementById("heroMediaWrap");
+  var wrap = document.getElementById("heroPhotoWrap");
   var img = document.getElementById("heroPhoto");
-  if (!wrap || !img) return;
+  
+  console.log("Hero要素確認:", { wrap: wrap, img: img });
+  
+  if (!wrap || !img) {
+    console.log("Hero要素が見つかりません");
+    return;
+  }
 
   var photos = await fetchPhotos();
+  console.log("写真データ:", photos);
+  
   var hero = photos.hero;
 
   if (hero && hero.driveId) {
-    img.src = getDriveImageUrl(hero.driveId);
+    var src = getDriveImageUrl(hero.driveId);
+    console.log("Hero画像URL:", src);
+    img.src = src;
     img.alt = hero.alt || "POM PUPPYS bright";
     img.style.display = "block";
     wrap.style.display = "block";
@@ -97,15 +108,18 @@ async function renderHeroMedia() {
     var cfg = getConfig();
     var imgs = cfg.siteImages || {};
     if (imgs.heroImage) {
+      console.log("フォールバック使用:", imgs.heroImage);
       img.src = imgs.heroImage;
       img.alt = imgs.heroImageAlt || "POM PUPPYS bright";
       img.style.display = "block";
       wrap.style.display = "block";
     } else {
+      console.log("Hero画像なし");
       wrap.style.display = "none";
     }
   }
 }
+
 
 // ============================================
 // メンバー写真
