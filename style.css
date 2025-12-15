@@ -11,26 +11,21 @@
   /* メインカラー変更エリア */
   
   /* --navy (紺) → 黒 (Black) */
-  /* テキストや見出し、フッター背景などに使用される引き締め色 */
   --navy: #0a0a0a; 
 
   /* --purple (青紫) → 深い紫 (Deep Purple) */
-  /* グラデーションの暗部などに使用 */
   --purple: #240046;
 
   /* --pink (ピンク) → 鮮やかな紫 (Bright Purple) */
-  /* ※変数名はpinkのままですが、色を紫に変えることでボタン等を「紫×金」にします */
   --pink: #7b2cbf;
 
   /* --gold (金) → ゴールド (Gold) */
-  /* そのまま維持、または黒に合わせて少し鮮やかに調整 */
   --gold: #d4af37;
   
   /* 背景・サーフェス */
-  /* ほんの少しグレーを入れて、真っ白すぎない高級感を出す */
   --bg: #f5f5f7;
   
-  /* 背景用グラデーション色（メインカラーに合わせて調整） */
+  /* 背景用グラデーション色 */
   --bg-gradient-1: rgba(123, 44, 191, 0.08); /* 紫 */
   --bg-gradient-2: rgba(212, 175, 55, 0.08); /* 金 */
   --bg-gradient-3: rgba(10, 10, 10, 0.04);   /* 黒 */
@@ -40,7 +35,7 @@
   
   /* テキスト */
   --text: #111111;
-  --muted: #555555; /* 青みを抜いてグレーに */
+  --muted: #555555;
   
   /* ライン・ボーダー */
   --line: rgba(10, 10, 10, 0.12);
@@ -52,7 +47,7 @@
   --radius-sm: 14px;
   --radius-full: 999px;
   
-  /* シャドウ（色味を紫系に寄せる） */
+  /* シャドウ */
   --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 8px 40px rgba(0, 0, 0, 0.10);
   --shadow-lg: 0 16px 60px rgba(0, 0, 0, 0.14);
@@ -85,7 +80,6 @@ body {
   margin: 0;
   font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
   color: var(--text);
-  /* 背景グラデーションの構成はそのまま、変数の色だけ変わります */
   background:
     radial-gradient(ellipse 900px 600px at 10% -5%, var(--bg-gradient-1), transparent 60%),
     radial-gradient(ellipse 800px 500px at 90% 0%, var(--bg-gradient-2), transparent 55%),
@@ -208,7 +202,6 @@ h1, h2, h3, h4, h5, h6 {
   width: 12px;
   height: 12px;
   border-radius: var(--radius-full);
-  /* ここが 紫×金 に変わります */
   background: linear-gradient(135deg, var(--pink), var(--gold));
   box-shadow: 0 4px 12px var(--bg-gradient-1);
   animation: pulse 2s ease-in-out infinite;
@@ -242,7 +235,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav a:hover {
   color: var(--navy);
-  background: rgba(123, 44, 191, 0.08); /* 薄い紫背景 */
+  background: rgba(123, 44, 191, 0.08);
   text-decoration: none;
 }
 
@@ -290,7 +283,6 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(0);
 }
 
-/* Primaryボタンも 紫×深い紫 のグラデーションになります */
 .btn-primary {
   color: #fff;
   background: linear-gradient(135deg, var(--pink), var(--purple));
@@ -325,7 +317,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-gold {
-  color: var(--navy); /* ゴールド背景上の文字は黒 */
+  color: var(--navy);
   background: linear-gradient(135deg, var(--gold), #b8860b);
   box-shadow: var(--shadow-md), 0 0 20px rgba(212, 175, 55, 0.3);
 }
@@ -455,7 +447,7 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--pink); /* ここは明るい紫になります */
+  color: var(--pink);
   margin: 0 0 12px;
 }
 
@@ -469,7 +461,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .heroTitle .highlight {
-  /* 文字グラデーション：紫〜金 */
   background: linear-gradient(90deg, var(--pink), var(--gold));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -512,7 +503,6 @@ h1, h2, h3, h4, h5, h6 {
   inset: 0;
   border: 3px solid transparent;
   border-radius: var(--radius-lg);
-  /* 枠線グラデーション：紫〜金 */
   background: linear-gradient(135deg, var(--pink), var(--gold)) border-box;
   -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
@@ -616,7 +606,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Poppins", sans-serif;
   font-weight: 800;
   font-size: 1.1rem;
-  color: var(--pink); /* 明るい紫 */
+  color: var(--pink);
   min-width: 60px;
 }
 
@@ -627,7 +617,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .timeline__item--highlight {
-  /* 背景を薄い紫に */
   background: linear-gradient(90deg, rgba(123, 44, 191, 0.08), transparent);
   margin: 0 -16px;
   padding: 12px 16px;
@@ -648,7 +637,6 @@ h1, h2, h3, h4, h5, h6 {
 .roadSection {
   position: relative;
   padding: 80px 0;
-  /* 背景：黒〜深い紫 のグラデーション */
   background: linear-gradient(135deg, var(--navy) 0%, var(--purple) 100%);
   color: #fff;
   overflow: hidden;
@@ -1067,7 +1055,7 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   background: linear-gradient(135deg, rgba(123, 44, 191, 0.1), rgba(212, 175, 55, 0.1));
-  color: var(--pink); /* 明るい紫 */
+  color: var(--pink);
   border: 1px solid rgba(123, 44, 191, 0.2);
 }
 
@@ -1094,7 +1082,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .newsLink {
-  color: var(--pink); /* 明るい紫 */
+  color: var(--pink);
   font-weight: 700;
   font-size: 0.9rem;
   text-decoration: none;
@@ -1478,7 +1466,6 @@ h1, h2, h3, h4, h5, h6 {
    PAGES
 ========================= */
 
-/* Media page - より落ち着いたトーン */
 body[data-page="media"] {
   --bg: #f8f8fa;
 }
@@ -1487,12 +1474,10 @@ body[data-page="media"] .heroCard {
   background: linear-gradient(145deg, #fff, #fafafa);
 }
 
-/* Sponsor page */
 body[data-page="sponsor"] {
   --bg: #f8f8fa;
 }
 
-/* Project page */
 body[data-page="project"] .hero {
   background: linear-gradient(135deg, rgba(10, 10, 10, 0.03), rgba(123, 44, 191, 0.05));
 }
@@ -1583,7 +1568,7 @@ body[data-page="project"] .hero {
 
 .contactCard__arrow {
   font-size: 1.2rem;
-  color: var(--pink); /* 明るい紫 */
+  color: var(--pink);
   font-weight: 800;
   flex-shrink: 0;
   transition: transform var(--duration-fast);
@@ -1633,57 +1618,106 @@ body[data-page="project"] .hero {
 }
 
 /* ========== ロゴ画像対応 ========== */
-
-/* ヘッダーロゴ */
 .header__logo {
   display: flex;
   align-items: center;
 }
-
 .header__logoImg {
   height: 40px;
   width: auto;
   object-fit: contain;
 }
-
 @media (min-width: 768px) {
   .header__logoImg {
     height: 50px;
   }
 }
-
-/* フッターロゴ */
 .footer__logo {
   margin-bottom: 1.5rem;
 }
-
 .footer__logoImg {
   height: 80px;
   width: auto;
   object-fit: contain;
 }
-
 @media (min-width: 768px) {
   .footer__logoImg {
     height: 100px;
   }
 }
-
 .footer__inner {
   text-align: center;
 }
-
 .footer__links {
   margin-top: 1rem;
 }
-
 .footer__links a {
   color: rgba(255, 255, 255, 0.8);
   margin: 0 0.75rem;
   text-decoration: none;
   font-size: 0.875rem;
 }
-
 .footer__links a:hover {
   color: #fff;
+}
+
+/* =========================
+   Loading Screen (Added)
+========================= */
+#loadingScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--navy); /* 黒背景 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#loadingScreen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loading-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 金と紫のリングが回転 */
+.loading-ring {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--gold);
+  border-right-color: var(--purple);
+  animation: spin 1.5s linear infinite;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+.loading-logo {
+  width: 100px; /* ロゴサイズアップ */
+  height: auto;
+  animation: pulseLogo 2s infinite ease-in-out;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulseLogo {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
 }
