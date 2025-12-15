@@ -1607,3 +1607,60 @@ body[data-page="project"] .hero {
 .contactCard:hover .contactCard__icon svg {
   opacity: 1;
 }
+
+/* ========== ロゴ画像対応 ========== */
+
+/* ヘッダーロゴ */
+.header__logo {
+  display: flex;
+  align-items: center;
+}
+
+.header__logoImg {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .header__logoImg {
+    height: 50px;
+  }
+}
+
+/* フッターロゴ */
+.footer__logo {
+  margin-bottom: 1.5rem;
+}
+
+.footer__logoImg {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .footer__logoImg {
+    height: 100px;
+  }
+}
+
+.footer__inner {
+  text-align: center;
+}
+
+.footer__links {
+  margin-top: 1rem;
+}
+
+.footer__links a {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0.75rem;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.footer__links a:hover {
+  color: #fff;
+}
+
