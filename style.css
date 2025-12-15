@@ -1686,12 +1686,13 @@ body[data-page="project"] .hero {
 }
 
 .loadingScreen__logo {
-  width: 280px;
-  max-width: 80%;
+  width: 400px;
+  max-width: 90%;
   height: auto;
   margin-bottom: 2rem;
   animation: logoPulse 1.5s ease-in-out infinite;
 }
+
 
 @keyframes logoPulse {
   0%, 100% { opacity: 1; transform: scale(1); }
