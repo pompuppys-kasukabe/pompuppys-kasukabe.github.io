@@ -815,7 +815,7 @@ h1, h2, h3, h4, h5, h6 {
 .memberCard {
   position: relative;
   border-radius: var(--radius-md);
-  overflow: hidden;
+  
   aspect-ratio: 1;
   box-shadow: var(--shadow-sm);
   transition: all var(--duration-normal) var(--ease-out);
