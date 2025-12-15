@@ -1,294 +1,262 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>POM PUPPYS bright | 埼玉・春日部のチアダンスチーム</title>
-  <meta name="description" content="埼玉・春日部で活動するチアダンスチーム「POM PUPPYS bright」公式サイト。JAMfest JAPAN 2025で1位を獲得し、The Dance Summit 2026への出場権を獲得しました。">
-  
-  <!-- OGP -->
-  <meta property="og:title" content="POM PUPPYS bright | 埼玉・春日部のチアダンスチーム">
-  <meta property="og:description" content="JAMfest JAPAN 2025で1位獲得。The Dance Summit 2026に挑戦します。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://pompuppys-kasukabe.github.io/">
-  <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg">
-  <meta property="og:locale" content="ja_JP">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="POM PUPPYS bright">
-  <meta name="twitter:description" content="埼玉・春日部のチアダンスチーム。世界大会に挑戦！">
-  <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg">
-  
-  <!-- Favicon -->
-  <link rel="icon" href="./assets/logo_emblem.png" type="image/png">
-  
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
-  
-  <!-- Styles -->
-  <link rel="stylesheet" href="./style.css">
-  <style>
-  .loadingScreen.is-hidden {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-  }
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POM PUPPYS bright | チアダンスチーム</title>
+    <link rel="icon" type="image/png" href="assets/emblem.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-<body data-page="home">
-
-  <!-- ========== Loading Screen ========== -->
-  <div id="loadingScreen" class="loadingScreen">
-    <img src="./assets/logo_header.png" alt="POM PUPPYS bright" class="loadingScreen__logo">
-    <div class="loadingScreen__bar">
-      <div class="loadingScreen__progress"></div>
-    </div>
-  </div>
-
-  <!-- ========== Header ========== -->
-  <header class="header">
-    <div class="container header__inner">
-      <a href="./" class="brand">
-        <span class="brand__dot"></span>
-        <span>POM <span class="brand__pink">PUPPYS</span> bright</span>
-      </a>
-      <nav class="nav">
-        <a href="#story">Story</a>
-        <a href="#news">News</a>
-        <a href="#team">Team</a>
-        <a href="#photos">Photos</a>
-        <a href="#road">Road to the World</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- ========== Hero ========== -->
-  <section id="hero" class="hero">
-    <div class="container hero__grid">
-      <!-- 左：テキスト -->
-      <div class="heroCard">
-        <p class="heroKicker" id="heroKicker">Saitama - Kasukabe</p>
-        <h1 class="heroTitle" id="heroHeadline">笑顔で踊る、<span class="highlight">世界へ挑む。</span></h1>
-        <p class="heroLead" id="heroLead">悔しさを転機に、「楽しむ」を取り戻した私たち。</p>
-        <p class="heroSub" id="heroSub"></p>
-        <div class="heroCta">
-          <a href="#team" class="btn btn-primary">チームを見る</a>
-          <a href="#road" class="btn btn-secondary">Road to the World</a>
+<body>
+    <!-- ローディング画面 -->
+    <div id="loading-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:9999;">
+        <div class="loading-content">
+            <img src="assets/emblem.png" alt="POM PUPPYS bright" class="loading-logo">
+            <div class="loading-spinner"></div>
         </div>
-      </div>
-      
-      <!-- 右：写真 -->
-      <div id="heroPhotoWrap" class="heroPhotoWrap">
-        <img id="heroPhoto" class="heroPhoto" src="" alt="POM PUPPYS bright" loading="eager">
-      </div>
     </div>
-  </section>
 
-  <!-- ========== Story ========== -->
-  <section id="story" class="section">
-    <div class="container">
-      <div class="grid2">
-        <div class="card">
-          <h2 class="card__title" id="storyTitle">Our Story</h2>
-          <div class="card__body" id="storyBody">
-            <!-- config.jsから動的生成 -->
-          </div>
+    <!-- ヘッダー -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="#" class="logo">
+                <img src="assets/logo-horizontal.png" alt="POM PUPPYS bright">
+            </a>
+            <nav class="nav" id="nav">
+                <ul class="nav-list">
+                    <li><a href="#story">Story</a></li>
+                    <li><a href="#news">News</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#photos">Photos</a></li>
+                    <li><a href="#world">Road to the World</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="メニュー">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
-        <div class="card card--highlight">
-          <h3 class="card__title">これまでの歩み</h3>
-          <ul class="timeline" id="timelineList">
-            <!-- config.jsから動的生成 -->
-          </ul>
+    </header>
+
+    <main>
+        <!-- Hero セクション -->
+        <section class="hero" id="hero">
+            <div class="hero-media" id="hero-media">
+                <!-- JSで動的に挿入 -->
+            </div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title">POM PUPPYS bright</h1>
+                <p class="hero-subtitle">輝く笑顔で世界へ羽ばたく</p>
+            </div>
+            <div class="hero-scroll">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12l7 7 7-7"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- Story セクション -->
+        <section class="section story" id="story">
+            <div class="container">
+                <h2 class="section-title">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    Our Story
+                </h2>
+                <div class="story-content">
+                    <div class="story-text">
+                        <p>POM PUPPYS brightは、チアダンスを通じて子どもたちの夢と可能性を広げるチームです。</p>
+                        <p>私たちは「輝く笑顔」をモットーに、日々の練習に励んでいます。チームワークを大切にし、一人ひとりが主役として輝ける場所を目指しています。</p>
+                        <p>世界大会への挑戦を通じて、子どもたちに「努力は必ず実を結ぶ」ということを伝えていきます。</p>
+                    </div>
+                    <div class="story-image">
+                        <img src="assets/story-image.jpg" alt="チーム練習風景">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- News セクション -->
+        <section class="section news" id="news">
+            <div class="container">
+                <h2 class="section-title">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2"/>
+                    </svg>
+                    News
+                </h2>
+                <div class="news-list" id="news-list">
+                    <article class="news-item">
+                        <time class="news-date">2024.12.01</time>
+                        <h3 class="news-item-title">冬季大会に向けて練習強化中</h3>
+                    </article>
+                    <article class="news-item">
+                        <time class="news-date">2024.11.15</time>
+                        <h3 class="news-item-title">新メンバー募集のお知らせ</h3>
+                    </article>
+                    <article class="news-item">
+                        <time class="news-date">2024.10.20</time>
+                        <h3 class="news-item-title">秋季大会で優勝しました！</h3>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team セクション -->
+        <section class="section team" id="team">
+            <div class="container">
+                <h2 class="section-title">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    Team Members
+                </h2>
+                <div class="members-grid" id="members-grid">
+                    <!-- JSで動的に挿入 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Photos セクション -->
+        <section class="section photos" id="photos">
+            <div class="container">
+                <h2 class="section-title">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                    Photos
+                </h2>
+                <div class="photos-grid" id="photos-grid">
+                    <!-- JSで動的に挿入 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Road to the World セクション -->
+        <section class="section world" id="world">
+            <div class="container">
+                <h2 class="section-title">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    Road to the World
+                </h2>
+                <div class="world-content">
+                    <div class="world-text">
+                        <p>私たちの目標は、世界大会での優勝です。</p>
+                        <p>日本代表として、世界の舞台で輝くために、毎日の練習を大切にしています。</p>
+                        <div class="world-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-year">2024</div>
+                                <div class="timeline-content">全国大会出場・入賞</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2025</div>
+                                <div class="timeline-content">アジア大会挑戦</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-year">2026</div>
+                                <div class="timeline-content">世界大会出場</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact セクション -->
+        <section class="section contact" id="contact">
+            <div class="container">
+                <h2 class="section-title">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    Contact
+                </h2>
+                <div class="contact-content">
+                    <p>お問い合わせ・見学のお申し込みはこちらから</p>
+                    <div class="contact-links">
+                        <a href="mailto:info@pompuppys.com" class="contact-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            メールで問い合わせ
+                        </a>
+                        <a href="https://instagram.com/pompuppys" target="_blank" rel="noopener noreferrer" class="contact-btn contact-btn-instagram">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                            </svg>
+                            Instagram
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sponsors セクション -->
+        <section class="section sponsors" id="sponsors">
+            <div class="container">
+                <h2 class="section-title">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    Sponsors
+                </h2>
+                <div class="sponsors-grid">
+                    <div class="sponsor-item">
+                        <img src="assets/sponsor1.png" alt="スポンサー1">
+                    </div>
+                    <div class="sponsor-item">
+                        <img src="assets/sponsor2.png" alt="スポンサー2">
+                    </div>
+                    <div class="sponsor-item">
+                        <img src="assets/sponsor3.png" alt="スポンサー3">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/emblem.png" alt="POM PUPPYS bright エンブレム">
+                </div>
+                <div class="footer-info">
+                    <p class="footer-team-name">POM PUPPYS bright</p>
+                    <p class="footer-copyright">&copy; 2024 POM PUPPYS bright. All Rights Reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#story">Story</a>
+                    <a href="#news">News</a>
+                    <a href="#team">Team</a>
+                    <a href="#photos">Photos</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </footer>
 
-  <!-- ========== News ========== -->
-  <section id="news" class="section section--alt">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>News</h2>
-          <p>お知らせ・活動報告</p>
-        </div>
-      </div>
-      <div id="newsGrid" class="newsGrid">
-        <!-- config.jsから動的生成 -->
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== Team ========== -->
-  <section id="team" class="section">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Team</h2>
-          <p>小学6年生〜中学3年生のメンバーで活動しています</p>
-        </div>
-      </div>
-      <div id="membersGrid" class="membersGrid">
-        <!-- GAS API または config.jsから動的生成 -->
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== Photos ========== -->
-  <section id="photos" class="section section--alt">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Photos</h2>
-          <p>活動の様子</p>
-        </div>
-      </div>
-      <div id="photoGrid" class="photoGrid">
-        <!-- GAS API または config.jsから動的生成 -->
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== Road to the World ========== -->
-  <section id="road" class="roadSection">
-    <div class="container roadSection__inner">
-      <div class="roadSection__header">
-        <span class="roadSection__kicker">Special Project</span>
-        <h2 class="roadSection__title">Road to the World</h2>
-        <p class="roadSection__lead">世界最高峰の舞台、米国「The Dance Summit 2026」への挑戦</p>
-      </div>
-      
-      <div class="roadSection__grid">
-        <!-- 左：メッセージプレビュー -->
-        <div class="roadCard">
-          <h3 class="roadCard__title">応援メッセージ</h3>
-          <div id="roadMessagesPreview" class="messagesPreview"></div>
-        </div>
-        
-        <!-- 右：進捗 -->
-        <div class="roadCard">
-          <h3 class="roadCard__title">プロジェクト進捗</h3>
-          <div class="progressBar">
-            <div id="roadProgressBar" class="progressBar__fill" style="width: 0%"></div>
-          </div>
-          <div class="progressBar__labels">
-            <span class="progressBar__current" id="roadRaised">0円</span>
-            <span class="progressBar__goal">目標: <span id="roadGoal">1,000,000円</span></span>
-          </div>
-          <p class="roadCard__note">応援いただいた皆様、ありがとうございます</p>
-        </div>
-      </div>
-      
-      <div class="roadSection__cta">
-        <a id="roadProjectLink" href="./project-world-challenge.html" class="btn btn-gold btn-outlined">特設ページを見る</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== Contact ========== -->
-  <section id="contact" class="section">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2>Contact</h2>
-          <p>お問い合わせ</p>
-        </div>
-      </div>
-      <div class="contactGrid">
-        <a id="mediaPageLink" href="./media.html" class="contactCard">
-          <div class="contactCard__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
-              <polyline points="17 2 12 7 7 2"></polyline>
-            </svg>
-          </div>
-          <div class="contactCard__content">
-            <h3 class="contactCard__title">メディアの方へ</h3>
-            <p class="contactCard__desc">取材・掲載のご相談</p>
-          </div>
-          <span class="contactCard__arrow">→</span>
-        </a>
-        <a id="sponsorPageLink" href="./sponsor.html" class="contactCard">
-          <div class="contactCard__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 7.65l1.06 1.06L12 20.23l7.36-6.94 1.06-1.06a5.4 5.4 0 0 0 0-7.65z"></path>
-            </svg>
-          </div>
-          <div class="contactCard__content">
-            <h3 class="contactCard__title">協賛・応援出演</h3>
-            <p class="contactCard__desc">企業・団体の方へ</p>
-          </div>
-          <span class="contactCard__arrow">→</span>
-        </a>
-        <a id="contactMailLink" href="mailto:" class="contactCard">
-          <div class="contactCard__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-          </div>
-          <div class="contactCard__content">
-            <h3 class="contactCard__title">お問い合わせ</h3>
-            <p class="contactCard__desc">その他のご連絡</p>
-          </div>
-          <span class="contactCard__arrow">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== Sponsors ========== -->
-  <section id="sponsors" class="section section--alt">
-    <div class="container">
-      <div class="section-head">
-        <div>
-          <h2 id="sponsorsTitle">Sponsors</h2>
-          <p>ご支援いただいている皆様</p>
-        </div>
-      </div>
-      <div id="sponsorsGrid" class="sponsorsGrid">
-        <!-- config.jsから動的生成 -->
-      </div>
-    </div>
-  </section>
-
-  <!-- ========== Footer ========== -->
-  <footer class="footer">
-    <div class="container footer__inner">
-      <div class="footer__logo">
-        <img src="./assets/logo_emblem.png" alt="POM PUPPYS bright" class="footer__logoImg">
-      </div>
-      <div>
-        <strong>POM PUPPYS bright</strong>
-        <span class="footer__location">埼玉・春日部</span>
-      </div>
-      <div class="footer__links">
-        <a href="./media.html">メディアの方へ</a>
-        <a href="./sponsor.html">協賛について</a>
-        <a href="./project-world-challenge.html">Road to the World</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ========== Mascot Float ========== -->
-  <div id="mascotFloat" class="mascotFloat" style="display: none;" aria-hidden="true">
-    <img id="mascotFloatImg" src="" alt="マスコット">
-  </div>
-
-  <!-- ========== Lightbox ========== -->
-  <div id="lightbox" class="lightbox" aria-hidden="true">
-    <div id="lightboxBg" class="lightbox" style="position:absolute;inset:0;"></div>
-    <button id="lightboxClose" class="lightbox__close" aria-label="閉じる">×</button>
-    <img id="lightboxImg" class="lightbox__img" src="" alt="">
-    <p id="lightboxCap" class="lightbox__cap"></p>
-  </div>
-
-  <!-- ========== Scripts ========== -->
-  <script src="./config.js"></script>
-  <script src="./main.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
