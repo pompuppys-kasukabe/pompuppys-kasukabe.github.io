@@ -126,55 +126,36 @@ async function renderHeroMedia() {
 // ============================================
 
 async function renderMembers() {
-  var grid = document.getElementById("membersGrid");
-  if (!grid) return;
-
-  grid.innerHTML = '<p class="loadingText">読み込み中...</p>';
+  var container = document.getElementById("membersGrid");
+  if (!container) return;
 
   var photos = await fetchPhotos();
-  var members = (photos.members || []).slice().sort(function(a, b) {
-    return (a.slot || 0) - (b.slot || 0);
-  });
+  var members = photos.members || [];
 
-  // GASから取得できない場合はconfig.jsにフォールバック
   if (members.length === 0) {
+    // フォールバック: config.jsから
     var cfg = getConfig();
     var imgs = cfg.siteImages || {};
-    var fallback = imgs.members || [];
-    if (fallback.length > 0) {
-      var html = "";
-      for (var i = 0; i < fallback.length; i++) {
-        var m = fallback[i];
-        if (!m.src) continue;
-        var name = m.name || "";
-        html += '<figure class="memberCard">' +
-          '<img class="memberPhoto" src="' + escapeHtml(m.src) + '" alt="' + escapeHtml(name || "Member") + '" loading="lazy" decoding="async">' +
-          (name ? '<figcaption class="memberName">' + escapeHtml(name) + '</figcaption>' : '') +
-        '</figure>';
-      }
-      grid.innerHTML = html;
-      return;
-    }
-    grid.innerHTML = '<p class="muted">メンバー写真は準備中です</p>';
-    return;
+    members = imgs.members || [];
   }
 
-  var html = "";
-  for (var i = 0; i < members.length; i++) {
-    var m = members[i];
-    if (!m.driveId) continue;
-    
-    var src = getDriveImageUrl(m.driveId);
-    var name = m.name || "";
-    
-    html += '<figure class="memberCard">' +
-      '<img class="memberPhoto" src="' + src + '" alt="' + escapeHtml(name || "Member") + '" ' +
-        'loading="lazy" decoding="async" onerror="this.parentElement.style.display=\'none\'">' +
-      (name ? '<figcaption class="memberName">' + escapeHtml(name) + '</figcaption>' : '') +
-    '</figure>';
-  }
-  grid.innerHTML = html || '<p class="muted">メンバー写真は準備中です</p>';
+  container.innerHTML = "";
+
+  members.forEach(function(member) {
+    var src = member.driveId 
+      ? getDriveImageUrl(member.driveId) 
+      : member.src;
+    var name = member.title || member.name || "Member";
+
+    var card = document.createElement("div");
+    card.className = "memberCard";
+    card.innerHTML = 
+      '<img src="' + src + '" alt="' + name + '" class="memberPhoto" loading="lazy">' +
+      '<p class="memberName">' + name + '</p>';
+    container.appendChild(card);
+  });
 }
+
 
 // ============================================
 // フォトギャラリー
