@@ -2,32 +2,52 @@
    TOKENS（カラーパレット）
 ========================= */
 :root {
-  /* メインカラー（チームカラー） */
+  /* メインカラー（チームカラー：黒・紫・金） */
   --navy: #0a0a14;
-  --navy-light: #1a1a2e;
-  --purple: #7b2d8e;
-  --purple-light: #9b4db0;
+  --purple: #4a2c6a;
+  --pink: #7b2d8e;
   --gold: #c9a227;
-  --gold-light: #f4d03f;
   
-  /* 背景色 */
-  --bg-primary: #0a0a14;
-  --bg-secondary: #12121f;
-  --bg-card: #1a1a2e;
-  --bg-alt: #0f0f1a;
+  /* 背景・サーフェス */
+  --bg: #0d0d18;
+  --bg-gradient-1: rgba(123, 45, 142, 0.15);
+  --bg-gradient-2: rgba(201, 162, 39, 0.12);
+  --bg-gradient-3: rgba(74, 44, 106, 0.10);
+  --surface: rgba(20, 20, 35, 0.95);
+  --surfaceSolid: #14141f;
   
   /* テキスト */
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.85);
-  --text-muted: rgba(255, 255, 255, 0.6);
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.7);
   
-  /* その他 */
-  --border: rgba(255, 255, 255, 0.1);
-  --shadow: rgba(0, 0, 0, 0.4);
-  --radius: 12px;
-  --radius-sm: 8px;
-  --transition: 0.3s ease;
+  /* ライン・ボーダー */
+  --line: rgba(201, 162, 39, 0.2);
+  --line-light: rgba(201, 162, 39, 0.3);
+  
+  /* 角丸 */
+  --radius-lg: 28px;
+  --radius-md: 20px;
+  --radius-sm: 14px;
+  --radius-full: 999px;
+  
+  /* シャドウ */
+  --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 40px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 60px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 30px rgba(123, 45, 142, 0.3);
+  
+  /* フォーカスリング */
+  --ring: rgba(201, 162, 39, 0.5);
+  
+  /* コンテナ */
+  --container: 1140px;
+  
+  /* アニメーション */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
 }
+
 
 /* =========================
    RESET & BASE
