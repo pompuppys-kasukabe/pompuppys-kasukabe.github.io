@@ -1568,3 +1568,33 @@ body[data-page="project"] .hero {
 .contactCard:hover .contactCard__arrow {
   transform: translateX(4px);
 }
+.roadCard__title {
+  color: var(--navy);
+}
+
+.messagesPreview .msgCard {
+  background: #fff;
+  color: var(--navy);
+}
+
+.messagesPreview .msgBody {
+  color: var(--navy);
+}
+
+.messagesPreview .msgMeta {
+  color: #666;
+}
+
+.progressBar__labels {
+  color: var(--navy);
+}
+
+.progressBar__current,
+.progressBar__goal {
+  color: var(--navy);
+}
+
+.roadCard__note {
+  color: #666;
+}
+
