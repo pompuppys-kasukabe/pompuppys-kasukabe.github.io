@@ -1,722 +1,231 @@
-/* ===== Reset & Base ===== */
-*, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: 'Noto Sans JP', sans-serif;
-    background-color: #ffffff;
-    color: #1a1a2e;
-    line-height: 1.8;
-    overflow-x: hidden;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-ul {
-    list-style: none;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* ===== Loading Screen ===== */
-#loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #4a2c6a 0%, #7b2d8e 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-#loading-screen.is-hidden {
-    display: none;
-}
-
-.loading-content {
-    text-align: center;
-}
-
-.loading-logo {
-    width: 120px;
-    height: 120px;
-    object-fit: contain;
-    margin-bottom: 24px;
-    animation: pulse 1.5s ease-in-out infinite;
-}
-
-.loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top-color: #c9a227;
-    border-radius: 50%;
-    margin: 0 auto;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.05); opacity: 0.8; }
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* ===== Header ===== */
-.header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 80px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.header-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo img {
-    height: 48px;
-    width: auto;
-}
-
-.nav-list {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-list li {
-    list-style: none;
-}
-
-.nav-list a {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #1a1a2e;
-}
-
-.nav-list a:hover {
-    color: #c9a227;
-}
-
-.hamburger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 6px;
-    width: 32px;
-    height: 32px;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-.hamburger span {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background: #1a1a2e;
-}
-
-/* ===== Hero Section ===== */
-.hero {
-    position: relative;
-    height: 100vh;
-    min-height: 600px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background: #1a1a2e;
-}
-
-.hero-media {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-}
-
-.hero-media img,
-.hero-media video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(26, 26, 46, 0.4) 0%, rgba(74, 44, 106, 0.6) 100%);
-    z-index: 2;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 3;
-    text-align: center;
-    color: #ffffff;
-    padding: 0 20px;
-}
-
-.hero-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 4rem;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.hero-subtitle {
-    font-size: 1.5rem;
-    font-weight: 500;
-    letter-spacing: 2px;
-    opacity: 0.9;
-}
-
-.hero-scroll {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    color: #ffffff;
-    animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(10px); }
-}
-
-/* ===== Section Common ===== */
-.section {
-    padding: 100px 0;
-}
-
-.section-title {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 60px;
-    color: #1a1a2e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
-
-.section-title svg {
-    color: #c9a227;
-}
-
-/* ===== Story Section ===== */
-.story {
-    background: #faf8fc;
-}
-
-.story-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-}
-
-.story-text p {
-    margin-bottom: 20px;
-    font-size: 1.1rem;
-    line-height: 2;
-}
-
-.story-image {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-}
-
-.story-image img {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-}
-
-/* ===== News Section ===== */
-.news-list {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.news-item {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 24px 0;
-    border-bottom: 1px solid #eeeeee;
-}
-
-.news-item:hover {
-    padding-left: 16px;
-    background: #faf8fc;
-}
-
-.news-date {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: #4a2c6a;
-    white-space: nowrap;
-}
-
-.news-item-title {
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-/* ===== Team Section ===== */
-.team {
-    background: #faf8fc;
-}
-
-.members-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 32px;
-}
-
-.member-card {
-    background: #ffffff;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.member-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-}
-
-.member-image {
-    width: 100%;
-    aspect-ratio: 1;
-    overflow: hidden;
-}
-
-.member-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.member-info {
-    padding: 20px;
-    overflow: visible;
-}
-
-.member-name {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #1a1a2e;
-    margin-bottom: 4px;
-    overflow: visible;
-    white-space: normal;
-}
-
-.member-role {
-    font-size: 0.85rem;
-    color: #4a2c6a;
-    font-weight: 500;
-}
-
-/* ===== Photos Section ===== */
-.photos-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-}
-
-.photo-item {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-}
-
-.photo-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
-
-.photo-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.photo-item.size-full {
-    grid-column: span 4;
-    aspect-ratio: 16 / 9;
-}
-
-.photo-item.size-half {
-    grid-column: span 2;
-    aspect-ratio: 16 / 9;
-}
-
-.photo-item.size-third {
-    grid-column: span 1;
-    aspect-ratio: 1;
-}
-
-.photo-item.size-quarter {
-    grid-column: span 1;
-    aspect-ratio: 1;
-}
-
-/* ===== World Section ===== */
-.world {
-    background: linear-gradient(135deg, #4a2c6a 0%, #7b2d8e 100%);
-    color: #ffffff;
-}
-
-.world .section-title {
-    color: #ffffff;
-}
-
-.world .section-title svg {
-    color: #c9a227;
-}
-
-.world-content {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-}
-
-.world-text p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    line-height: 2;
-}
-
-.world-timeline {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 60px;
-    flex-wrap: wrap;
-}
-
-.timeline-item {
-    text-align: center;
-    padding: 24px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    min-width: 180px;
-    backdrop-filter: blur(10px);
-}
-
-.timeline-year {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #c9a227;
-    margin-bottom: 8px;
-}
-
-.timeline-content {
-    font-size: 1rem;
-}
-
-/* ===== Contact Section ===== */
-.contact {
-    background: #faf8fc;
-}
-
-.contact-content {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.contact-content > p {
-    font-size: 1.1rem;
-    margin-bottom: 40px;
-}
-
-.contact-links {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    flex-wrap: wrap;
-}
-
-.contact-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 16px 32px;
-    background: linear-gradient(135deg, #4a2c6a 0%, #7b2d8e 100%);
-    color: #ffffff;
-    font-weight: 600;
-    border-radius: 50px;
-}
-
-.contact-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
-
-.contact-btn-instagram {
-    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-}
-
-/* ===== Sponsors Section ===== */
-.sponsors-grid {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 60px;
-    flex-wrap: wrap;
-}
-
-.sponsor-item {
-    max-width: 180px;
-    opacity: 0.7;
-    filter: grayscale(100%);
-}
-
-.sponsor-item:hover {
-    opacity: 1;
-    filter: grayscale(0%);
-}
-
-.sponsor-item img {
-    max-height: 80px;
-    width: auto;
-}
-
-/* ===== Footer ===== */
-.footer {
-    background: #1a1a2e;
-    color: #ffffff;
-    padding: 60px 0 40px;
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 40px;
-}
-
-.footer-logo img {
-    height: 80px;
-    width: auto;
-}
-
-.footer-info {
-    text-align: center;
-}
-
-.footer-team-name {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.footer-copyright {
-    font-size: 0.85rem;
-    opacity: 0.7;
-}
-
-.footer-links {
-    display: flex;
-    gap: 24px;
-}
-
-.footer-links a {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
-.footer-links a:hover {
-    opacity: 1;
-    color: #c9a227;
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 1024px) {
-    .story-content {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
-    .story-image {
-        order: -1;
-    }
-
-    .photos-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .photo-item.size-full,
-    .photo-item.size-half {
-        grid-column: span 2;
-    }
-
-    .photo-item.size-third,
-    .photo-item.size-quarter {
-        grid-column: span 1;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 80%;
-        max-width: 320px;
-        height: 100vh;
-        background: #ffffff;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        padding: 100px 40px;
-    }
-
-    .nav.is-open {
-        right: 0;
-    }
-
-    .nav-list {
-        flex-direction: column;
-        gap: 24px;
-    }
-
-    .nav-list a {
-        font-size: 18px;
-    }
-
-    .hamburger {
-        display: flex;
-    }
-
-    .hero-title {
-        font-size: 2.5rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1rem;
-    }
-
-    .section {
-        padding: 60px 0;
-    }
-
-    .section-title {
-        font-size: 1.75rem;
-        margin-bottom: 40px;
-    }
-
-    .members-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
-
-    .photos-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .photo-item.size-full,
-    .photo-item.size-half,
-    .photo-item.size-third,
-    .photo-item.size-quarter {
-        grid-column: span 1;
-        aspect-ratio: 4 / 3;
-    }
-
-    .world-timeline {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .footer-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .footer-links {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-title {
-        font-size: 2rem;
-    }
-
-    .members-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .contact-links {
-        flex-direction: column;
-    }
-
-    .contact-btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POM PUPPYS bright | 埼玉・春日部のチアダンスチーム</title>
+  <meta name="description" content="埼玉・春日部で活動するチアダンスチーム「POM PUPPYS bright」公式サイト。JAMfest JAPAN 2025で1位を獲得し、世界最高峰の舞台、米国「The Dance Summit 2026」に挑戦します。">
+  <meta property="og:title" content="POM PUPPYS bright | 埼玉・春日部のチアダンスチーム">
+  <meta property="og:description" content="埼玉・春日部で活動するチアダンスチーム。JAMfest JAPAN 2025で1位獲得、The Dance Summit 2026に挑戦。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pompuppys-kasukabe.github.io/">
+  <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg">
+  <link rel="canonical" href="https://pompuppys-kasukabe.github.io/">
+  <link rel="icon" href="./assets/favicon.ico">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="./" class="header__logo">POM PUPPYS bright</a>
+      <nav class="header__nav">
+        <a href="#story">Story</a>
+        <a href="#news">News</a>
+        <a href="#photos">Photos</a>
+        <a href="./project-world-challenge.html">Project</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section id="hero" class="hero">
+    <div id="heroPhotoWrap" class="heroPhotoWrap">
+      <img id="heroPhoto" class="heroPhoto" src="" alt="POM PUPPYS bright" loading="eager">
+    </div>
+    <div class="hero__overlay"></div>
+    <div class="container hero__content">
+      <span class="hero__kicker" id="heroKicker">Saitama - Kasukabe</span>
+      <h1 class="hero__title" id="heroTitle">笑顔で踊る、世界へ挑む。</h1>
+      <p class="hero__lead" id="heroLead">悔しさを転機に、「楽しむ」を取り戻した私たち。</p>
+      <p class="hero__sub" id="heroSub">埼玉・春日部で活動するチアダンスチーム「POM PUPPYS bright」。JAMfest JAPAN 2025 で1位を獲得し、世界最高峰の舞台、米国「The Dance Summit 2026」への切符を掴みました。</p>
+      <div class="hero__cta">
+        <a href="./project-world-challenge.html" class="btn btn-gold">特設ページを見る</a>
+        <button id="shareBtn" class="btn btn-outline">シェアする</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== KEY FACTS ========== -->
+  <section class="keyFacts">
+    <div class="container">
+      <div id="factsGrid" class="keyFacts__grid">
+        <!-- config.jsから動的生成 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== STORY ========== -->
+  <section id="story" class="section">
+    <div class="container">
+      <h2 class="section__title" id="storyTitle">Our Story</h2>
+      <div class="story__content" id="storyBody">
+        <!-- config.jsから動的生成 -->
+      </div>
+      <div class="timeline" id="timeline">
+        <!-- config.jsから動的生成 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== NEWS ========== -->
+  <section id="news" class="section section--alt">
+    <div class="container">
+      <h2 class="section__title">News</h2>
+      <div id="newsGrid" class="newsGrid">
+        <!-- config.jsから動的生成 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TEAM ========== -->
+  <section id="team" class="section">
+    <div class="container">
+      <h2 class="section__title">Team</h2>
+      <p class="section__lead">小学6年生〜中学3年生のメンバーで活動しています</p>
+      <div id="membersGrid" class="membersGrid">
+        <!-- config.jsまたはAPIから動的生成 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PHOTOS ========== -->
+  <section id="photos" class="section section--alt">
+    <div class="container">
+      <h2 class="section__title">Photos</h2>
+      <p class="section__lead">活動の様子</p>
+      <div id="photoGallery" class="photoGallery">
+        <!-- config.jsまたはAPIから動的生成 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ROAD TO THE WORLD ========== -->
+  <section id="road" class="roadSection">
+    <div class="container roadSection__inner">
+      <div class="roadSection__header">
+        <span class="roadSection__kicker">Special Project</span>
+        <h2 class="roadSection__title">Road to the World</h2>
+        <p class="roadSection__lead">世界最高峰の舞台、米国「The Dance Summit 2026」への挑戦</p>
+      </div>
+      
+      <div class="roadSection__grid">
+        <!-- 左：メッセージプレビュー -->
+        <div class="roadCard">
+          <h3 class="roadCard__title">応援メッセージ</h3>
+          <div id="roadMessagesPreview" class="messagesPreview"></div>
+        </div>
+        
+        <!-- 右：進捗 -->
+        <div class="roadCard">
+          <h3 class="roadCard__title">プロジェクト進捗</h3>
+          <div class="progressBar">
+            <div id="roadProgressBar" class="progressBar__fill" style="width: 0%"></div>
+          </div>
+          <div class="progressBar__labels">
+            <span class="progressBar__current" id="roadRaised">0円</span>
+            <span class="progressBar__goal">目標: <span id="roadGoal">1,000,000円</span></span>
+          </div>
+          <p class="roadCard__note">応援いただいた皆様、ありがとうございます</p>
+        </div>
+      </div>
+      
+      <div class="roadSection__cta">
+        <a id="roadProjectLink" href="./project-world-challenge.html" class="btn btn-gold btn-outlined">特設ページを見る</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2 class="section__title">Contact</h2>
+      <p class="section__lead">お問い合わせ・ご相談</p>
+      
+      <div class="contactGrid">
+        <a id="mediaPageLink" href="./media.html" class="contactCard">
+          <div class="contactCard__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
+              <polyline points="17 2 12 7 7 2"></polyline>
+            </svg>
+          </div>
+          <div class="contactCard__content">
+            <h3 class="contactCard__title">メディアの方へ</h3>
+            <p class="contactCard__desc">取材・掲載のご相談</p>
+          </div>
+          <span class="contactCard__arrow">→</span>
+        </a>
+
+        <a id="sponsorPageLink" href="./sponsor.html" class="contactCard">
+          <div class="contactCard__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 7.65l1.06 1.06L12 20.23l7.36-6.94 1.06-1.06a5.4 5.4 0 0 0 0-7.65z"></path>
+            </svg>
+          </div>
+          <div class="contactCard__content">
+            <h3 class="contactCard__title">協賛・応援出演</h3>
+            <p class="contactCard__desc">企業・団体の方へ</p>
+          </div>
+          <span class="contactCard__arrow">→</span>
+        </a>
+
+        <a id="contactEmailLink" href="" class="contactCard">
+          <div class="contactCard__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+          </div>
+          <div class="contactCard__content">
+            <h3 class="contactCard__title">お問い合わせ</h3>
+            <p class="contactCard__desc">その他のご連絡</p>
+          </div>
+          <span class="contactCard__arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SPONSORS ========== -->
+  <section id="sponsors" class="section section--alt">
+    <div class="container">
+      <h2 class="section__title">Sponsors</h2>
+      <p class="section__lead" id="sponsorsNote">掲載は活動支援への謝意として行っています</p>
+      <div id="sponsorsGrid" class="sponsorsGrid">
+        <!-- config.jsから動的生成 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p class="footer__copy">&copy; 2025 POM PUPPYS bright. All rights reserved.</p>
+      <div class="footer__links">
+        <a href="./media.html">メディアの方へ</a>
+        <a href="./sponsor.html">協賛について</a>
+        <a href="./project-world-challenge.html">特設ページ</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========== MASCOT ========== -->
+  <div id="mascotFloat" class="mascotFloat" style="display: none;">
+    <img id="mascotImg" src="" alt="マスコット">
+  </div>
+
+  <!-- ========== LIGHTBOX ========== -->
+  <div id="lightbox" class="lightbox" style="display: none;">
+    <button class="lightbox__close" aria-label="閉じる">&times;</button>
+    <img id="lightboxImg" class="lightbox__img" src="" alt="">
+    <p id="lightboxCaption" class="lightbox__caption"></p>
+  </div>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script src="./config.js"></script>
+  <script src="./main.js"></script>
+
+</body>
+</html>
