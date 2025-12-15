@@ -1720,4 +1720,19 @@ body[data-page="project"] .hero {
   100% { width: 100%; }
 }
 
+/* ========== ストーリー強調 ========== */
+.card__body strong {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+.card__body em {
+  font-style: normal;
+  color: #666;
+}
+
+.card__body .highlight {
+  background: linear-gradient(transparent 60%, rgba(201, 162, 39, 0.3) 60%);
+  padding: 0 0.25rem;
+}
 
