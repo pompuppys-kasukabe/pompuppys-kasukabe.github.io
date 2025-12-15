@@ -143,28 +143,27 @@
         <p class="roadSection__lead">世界最高峰の舞台、米国「The Dance Summit 2026」への挑戦</p>
       </div>
       
-      <div class="roadSection__grid">
-        <!-- 左：進捗 -->
-        <div class="roadCard">
-          <h3 class="roadCard__title">プロジェクト進捗</h3>
-          <div class="progressBar">
-            <div id="roadProgressBar" class="progressBar__fill" style="width: 0%"></div>
-          </div>
-          <div class="progressBar__labels">
-            <span class="progressBar__current" id="roadRaised">0円</span>
-            <span class="progressBar__goal">目標: <span id="roadGoal">1,000,000円</span></span>
-          </div>
-          <p class="roadCard__note">応援いただいた皆様、ありがとうございます</p>
-        </div>
-        
-        <!-- 右：メッセージプレビュー -->
-        <div class="roadCard">
-          <h3 class="roadCard__title">応援メッセージ</h3>
-          <div id="roadMessagesPreview" class="messagesPreview">
-            <!-- messages.jsonから動的生成 -->
-          </div>
-        </div>
-      </div>
+     <div class="roadSection__grid">
+  <!-- 左：メッセージプレビュー -->
+  <div class="roadCard">
+    <h3 class="roadCard__title">応援メッセージ</h3>
+    <div id="roadMessagesPreview" class="messagesPreview"></div>
+  </div>
+  
+  <!-- 右：進捗 -->
+  <div class="roadCard">
+    <h3 class="roadCard__title">プロジェクト進捗</h3>
+    <div class="progressBar">
+      <div id="roadProgressBar" class="progressBar__fill" style="width: 0%"></div>
+    </div>
+    <div class="progressBar__labels">
+      <span class="progressBar__current" id="roadRaised">0円</span>
+      <span class="progressBar__goal">目標: <span id="roadGoal">1,000,000円</span></span>
+    </div>
+    <p class="roadCard__note">応援いただいた皆様、ありがとうございます</p>
+  </div>
+</div>
+
       
       <div class="roadSection__cta">
         <a id="roadProjectLink" href="./project-world-challenge.html" class="btn btn-gold btn-outlined">特設ページを見る</a>
