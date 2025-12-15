@@ -7,27 +7,27 @@
    TOKENS（カラーパレット）
 ========================= */
 :root {
-  /* メインカラー */
-  --navy: #1a1a3e;
-  --purple: #2d2a5e;
-  --pink: #e91e8c;
-  --gold: #d4a84b;
+  /* メインカラー（チームカラー：黒・紫・金） */
+  --navy: #1a1a2e;
+  --purple: #4a2c6a;
+  --pink: #7b2d8e;
+  --gold: #c9a227;
   
-  /* 背景・サーフェス */
-  --bg: #faf8fc;
-  --bg-gradient-1: rgba(233, 30, 140, 0.12);
-  --bg-gradient-2: rgba(212, 168, 75, 0.10);
-  --bg-gradient-3: rgba(45, 42, 94, 0.06);
-  --surface: rgba(255, 255, 255, 0.88);
+  /* 背景・サーフェス（白ベース） */
+  --bg: #ffffff;
+  --bg-gradient-1: rgba(123, 45, 142, 0.08);
+  --bg-gradient-2: rgba(201, 162, 39, 0.08);
+  --bg-gradient-3: rgba(74, 44, 106, 0.04);
+  --surface: rgba(255, 255, 255, 0.95);
   --surfaceSolid: #ffffff;
   
   /* テキスト */
-  --text: #0b1220;
-  --muted: #4a4a68;
+  --text: #1a1a2e;
+  --muted: #5a5a7a;
   
   /* ライン・ボーダー */
-  --line: rgba(45, 42, 94, 0.15);
-  --line-light: rgba(212, 168, 75, 0.3);
+  --line: rgba(26, 26, 46, 0.12);
+  --line-light: rgba(201, 162, 39, 0.3);
   
   /* 角丸 */
   --radius-lg: 28px;
@@ -36,13 +36,13 @@
   --radius-full: 999px;
   
   /* シャドウ */
-  --shadow-sm: 0 4px 20px rgba(26, 26, 62, 0.06);
-  --shadow-md: 0 8px 40px rgba(26, 26, 62, 0.10);
-  --shadow-lg: 0 16px 60px rgba(26, 26, 62, 0.14);
-  --shadow-glow: 0 0 30px rgba(233, 30, 140, 0.20);
+  --shadow-sm: 0 4px 20px rgba(26, 26, 46, 0.08);
+  --shadow-md: 0 8px 40px rgba(26, 26, 46, 0.12);
+  --shadow-lg: 0 16px 60px rgba(26, 26, 46, 0.16);
+  --shadow-glow: 0 0 30px rgba(123, 45, 142, 0.25);
   
   /* フォーカスリング */
-  --ring: rgba(233, 30, 140, 0.40);
+  --ring: rgba(201, 162, 39, 0.50);
   
   /* コンテナ */
   --container: 1140px;
@@ -52,6 +52,7 @@
   --duration-fast: 0.2s;
   --duration-normal: 0.4s;
 }
+
 
 /* =========================
    BASE
