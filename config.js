@@ -18,8 +18,8 @@ window.PUPPYS_CONFIG = {
   },
 
   // ===== 連絡先 =====
-  pressEmail: "moccy0306@gmail.com",
-  pressContactName: "POM PUPPYS bright 保護者代表 飯田 絵里",
+  pressEmail: "loveaiheart@icloud.com",
+  pressContactName: "POM PUPPYS 共同代表 今井 愛",
   
   // ===== 外部リンク =====
   mediaKitUrl: "https://drive.google.com/drive/folders/1jfploQJhKcJWmGzHVKrY2VnJykLoE-d0?usp=sharing",
@@ -241,7 +241,7 @@ story: {
     ],
 
     extraCosts: [
-      "燃油サーチャージ等 諸費用：目安 73,000円（2025年11月時点）",
+      "燃油サーチャージ等 諸費用：目安 73,000円（2025年12月時点）",
       "ESTA（米国電子渡航認証）：申請料実費",
       "日程内で「各自」と記載の食事",
       "その他個人的費用一式",
