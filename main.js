@@ -351,15 +351,16 @@ function renderCopy() {
   var st = document.getElementById("storyTitle");
   if (st && c.story) st.textContent = c.story.title || "Our Story";
 
-  var sb = document.getElementById("storyBody");
-  if (sb && c.story && c.story.body) {
-    var storyLines = c.story.body;
-    var sbHtml = "";
-    for (var m = 0; m < storyLines.length; m++) {
-      sbHtml += '<p>' + escapeHtml(storyLines[m]) + '</p>';
-    }
-    sb.innerHTML = sbHtml;
+  // 変更後（HTMLタグを許可）
+var sb = document.getElementById("storyBody");
+if (sb && c.story && c.story.body) {
+  var storyLines = c.story.body;
+  var sbHtml = "";
+  for (var m = 0; m < storyLines.length; m++) {
+    sbHtml += '<p>' + storyLines[m] + '</p>';
   }
+  sb.innerHTML = sbHtml;
+}
 
   // Timeline
   var tl = document.getElementById("timelineList");
