@@ -2219,3 +2219,8 @@ body[data-page="project"] .hero {
     font-size: 0.95rem;
   }
 }
+.brand__emblem {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
