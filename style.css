@@ -2201,3 +2201,21 @@ body[data-page="project"] .hero {
     font-size: 0.95rem;
   }
 }
+/* ===== Logo Name with Accent ===== */
+.logo__name {
+  font-family: "Poppins", "Noto Sans JP", sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--navy);
+  letter-spacing: 0.02em;
+}
+
+.logo__accent {
+  color: var(--purple);
+}
+
+@media (max-width: 600px) {
+  .logo__name {
+    font-size: 0.95rem;
+  }
+}
