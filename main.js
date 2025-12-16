@@ -653,14 +653,14 @@ function wireMediaKit() {
   btn.href = url;
 }
 
+// 変更後（署名部分を削除）
 function wirePressMail() {
   var cfg = getConfig();
   var email = cfg.pressEmail;
-  var name = cfg.pressContactName || "";
   var btn = document.getElementById("pressMailBtn");
   if (!btn || !email) return;
   var subject = encodeURIComponent("POM PUPPYS bright 取材のご相談");
-  var body = encodeURIComponent("取材のご相談です。\n\n媒体名：\nご担当者名：\nご希望内容：\nご希望日時：\n\n（署名）\n" + name);
+  var body = encodeURIComponent("取材のご相談です。\n\n媒体名：\nご担当者名：\nご希望内容：\nご希望日時：\n\n");
   btn.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
 }
 
