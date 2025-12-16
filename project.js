@@ -272,21 +272,20 @@ function renderProject(){
   mountList("usageBody", sections.usageBody);
 
   // Price table
-  var pt = document.getElementById("priceTable");
-  if(pt){
-    var rows = Array.isArray(p.priceTable) ? p.priceTable : [];
-    var ptHtml = "";
-    for(var i = 0; i < rows.length; i++){
-      var r = rows[i];
-      ptHtml += "<tr>" +
-        "<td>" + escapeHtml(r.room || "") + "</td>" +
-        "<td>" + escapeHtml(r.meal || "") + "</td>" +
-        '<td style="text-align:right;font-weight:900;color:var(--navy)">' + escapeHtml(yen(r.athleteCoachAdult)) + "</td>" +
-        '<td style="text-align:right">' + (r.child ? escapeHtml(yen(r.child)) : "—") + "</td>" +
-      "</tr>";
-    }
-    pt.innerHTML = ptHtml;
+ var pt = document.getElementById("priceTable");
+if(pt){
+  var rows = Array.isArray(p.priceTable) ? p.priceTable : [];
+  var ptHtml = "";
+  for(var i = 0; i < rows.length; i++){
+    var r = rows[i];
+    ptHtml += "<tr>" +
+      "<td>" + escapeHtml(r.room || "") + "</td>" +
+      "<td>" + escapeHtml(r.meal || "") + "</td>" +
+      '<td style="text-align:right;font-weight:900;color:var(--navy)">' + escapeHtml(yen(r.athleteCoachAdult)) + "</td>" +
+    "</tr>";
   }
+  pt.innerHTML = ptHtml;
+}
 
   mountList("extraCosts", p.extraCosts);
 
