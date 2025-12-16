@@ -2054,3 +2054,21 @@ body[data-page="project"] .hero {
   font-weight: 700;
 }
 
+/* ===== Logo with Emblem ===== */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo__emblem {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.logo__text {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+}
