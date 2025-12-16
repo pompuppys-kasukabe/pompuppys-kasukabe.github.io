@@ -1134,6 +1134,12 @@ h1, h2, h3, h4, h5, h6 {
   gap: 16px;
 }
 
+.sponsorsGrid > p.muted {
+  grid-column: 1 / -1;
+  text-align: center;
+  white-space: nowrap;
+}
+
 .sponsorCard {
   background: #fff;
   border: 1px solid var(--line);
@@ -1161,8 +1167,9 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: var(--navy);
   text-align: center;
-  white-space: nowrap;  /* ← これを追加 */
+  white-space: nowrap;
 }
+
 
 /* ===== Footer ===== */
 .footer {
