@@ -15,7 +15,7 @@
   
   /* 背景・サーフェス（白〜薄い紫グラデーション） */
   --bg: #faf9fc;
-  --bg-gradient-1: rgba(107, 63, 160, 0.08);
+  --bg-gradient-1: rgba(255, 255,255,0.85);
   --bg-gradient-2: rgba(212, 168, 75, 0.06);
   --bg-gradient-3: rgba(107, 63, 160, 0.04);
   --surface: rgba(255, 255, 255, 0.88);
