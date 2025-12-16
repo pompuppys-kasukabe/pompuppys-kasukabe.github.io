@@ -2005,7 +2005,7 @@ body[data-page="project"] .hero {
 }
 
 .loadingScreen__logo {
-  height: 80px;
+  height: 200px;
   width: auto;
   animation: loadingPulse 1.5s ease-in-out infinite;
 }
