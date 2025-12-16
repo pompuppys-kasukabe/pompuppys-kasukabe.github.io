@@ -2208,3 +2208,36 @@ body[data-page="project"] .hero {
 .nav-overlay.is-open {
   display: block;
 }
+/* 準備中メッセージ（視認性改善） */
+.preparing-message {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(107, 63, 160, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.preparing-message p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.preparing-message svg {
+  width: 20px;
+  height: 20px;
+  fill: #6b3fa0;
+  flex-shrink: 0;
+}
+
+.preparing-message strong {
+  color: #6b3fa0;
+}
