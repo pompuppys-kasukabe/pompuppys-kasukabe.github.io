@@ -230,21 +230,20 @@ story: {
     ],
 
     priceTable: [
-      { room: "4名1室", meal: "食事付", athleteCoachAdult: 580000, child: 479000 },
-      { room: "3名1室", meal: "食事付", athleteCoachAdult: 597000, child: 479000 },
-      { room: "2名1室", meal: "食事付", athleteCoachAdult: 625000, child: 500000 },
-      { room: "1名1室", meal: "食事付", athleteCoachAdult: 707000, child: null },
-      { room: "4名1室", meal: "食事無", athleteCoachAdult: 537000, child: 436000 },
-      { room: "3名1室", meal: "食事無", athleteCoachAdult: 554000, child: 436000 },
-      { room: "2名1室", meal: "食事無", athleteCoachAdult: 582000, child: 456000 },
-      { room: "1名1室", meal: "食事無", athleteCoachAdult: 664000, child: null }
+      { room: "4名1室", meal: "食事付", athleteCoachAdult: 580000 },
+      { room: "3名1室", meal: "食事付", athleteCoachAdult: 597000 },
+      { room: "2名1室", meal: "食事付", athleteCoachAdult: 625000 },
+      { room: "1名1室", meal: "食事付", athleteCoachAdult: 707000 },
+      { room: "4名1室", meal: "食事無", athleteCoachAdult: 537000 },
+      { room: "3名1室", meal: "食事無", athleteCoachAdult: 554000 },
+      { room: "2名1室", meal: "食事無", athleteCoachAdult: 582000 },
+      { room: "1名1室", meal: "食事無", athleteCoachAdult: 664000 }
     ],
 
     extraCosts: [
       "燃油サーチャージ等 諸費用：目安 73,000円（2025年11月時点）",
-      "ESTA（米国電子渡航認証）：代行手数料 8,800円 + 申請料実費",
+      "ESTA（米国電子渡航認証）：申請料実費",
       "日程内で「各自」と記載の食事",
-      "日本国内線（国際線乗継）の航空券",
       "その他個人的費用一式",
       "海外旅行保険：加入必須"
     ],
