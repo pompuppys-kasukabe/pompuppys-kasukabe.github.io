@@ -31,7 +31,7 @@ function initSponsorPage(){
       var mail = s.mail || {};
       var subject = encodeURIComponent(mail.subject || "【協賛/応援出演のご相談】POM PUPPYS bright");
       var bodyBase = mail.body || "";
-      var bodyText = bodyBase + (name ? "\n\n（署名）\n" + name : "");
+      var bodyText = bodyBase;
       var body = encodeURIComponent(bodyText);
       mailBtn.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
     }else{
