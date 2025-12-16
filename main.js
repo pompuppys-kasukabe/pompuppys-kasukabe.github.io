@@ -5,7 +5,6 @@
 // ============================================
 
 var PHOTOS_API_URL = "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec";
-// 例: "https://script.google.com/macros/s/AKfycbxxxxx.../exec"
 
 // ============================================
 // ユーティリティ関数
@@ -79,47 +78,36 @@ function getDriveImageUrl(fileId, width) {
 // Hero画像
 // ============================================
 
-
 async function renderHeroMedia() {
   var wrap = document.getElementById("heroPhotoWrap");
   var img = document.getElementById("heroPhoto");
   
-  console.log("Hero要素確認:", { wrap: wrap, img: img });
-  
   if (!wrap || !img) {
-    console.log("Hero要素が見つかりません");
     return;
   }
 
   var photos = await fetchPhotos();
-  console.log("写真データ:", photos);
-  
   var hero = photos.hero;
 
   if (hero && hero.driveId) {
     var src = getDriveImageUrl(hero.driveId);
-    console.log("Hero画像URL:", src);
     img.src = src;
     img.alt = hero.alt || "POM PUPPYS bright";
     img.style.display = "block";
     wrap.style.display = "block";
   } else {
-    // フォールバック: config.jsから
     var cfg = getConfig();
     var imgs = cfg.siteImages || {};
     if (imgs.heroImage) {
-      console.log("フォールバック使用:", imgs.heroImage);
       img.src = imgs.heroImage;
       img.alt = imgs.heroImageAlt || "POM PUPPYS bright";
       img.style.display = "block";
       wrap.style.display = "block";
     } else {
-      console.log("Hero画像なし");
       wrap.style.display = "none";
     }
   }
 }
-
 
 // ============================================
 // メンバー写真
@@ -133,7 +121,6 @@ async function renderMembers() {
   var members = photos.members || [];
 
   if (members.length === 0) {
-    // フォールバック: config.jsから
     var cfg = getConfig();
     var imgs = cfg.siteImages || {};
     members = imgs.members || [];
@@ -156,7 +143,6 @@ async function renderMembers() {
   });
 }
 
-
 // ============================================
 // フォトギャラリー
 // ============================================
@@ -173,7 +159,6 @@ async function renderPhotos() {
     return (a.slot || 0) - (b.slot || 0);
   });
 
-  // GASから取得できない場合はconfig.jsにフォールバック
   if (gallery.length === 0) {
     var cfg = getConfig();
     var imgs = cfg.siteImages || {};
@@ -351,16 +336,15 @@ function renderCopy() {
   var st = document.getElementById("storyTitle");
   if (st && c.story) st.textContent = c.story.title || "Our Story";
 
-  // 変更後（HTMLタグを許可）
-var sb = document.getElementById("storyBody");
-if (sb && c.story && c.story.body) {
-  var storyLines = c.story.body;
-  var sbHtml = "";
-  for (var m = 0; m < storyLines.length; m++) {
-    sbHtml += '<p>' + storyLines[m] + '</p>';
+  var sb = document.getElementById("storyBody");
+  if (sb && c.story && c.story.body) {
+    var storyLines = c.story.body;
+    var sbHtml = "";
+    for (var m = 0; m < storyLines.length; m++) {
+      sbHtml += '<p>' + storyLines[m] + '</p>';
+    }
+    sb.innerHTML = sbHtml;
   }
-  sb.innerHTML = sbHtml;
-}
 
   // Timeline
   var tl = document.getElementById("timelineList");
@@ -415,7 +399,6 @@ async function fetchMessages() {
     if (!res.ok) throw new Error("HTTP " + res.status);
     var data = await res.json();
     
-    // approved のみ、日付降順
     return data
       .filter(function(m) { return m.approved !== false && m.message; })
       .sort(function(a, b) { return String(b.date).localeCompare(String(a.date)); });
@@ -438,7 +421,7 @@ async function renderMessagesPreview() {
   }
 
   var messages = await fetchMessages();
-  var max = 3; // プレビューは3件
+  var max = 3;
   var items = messages.slice(0, max);
 
   if (items.length === 0) {
@@ -579,33 +562,54 @@ function wireWebShare() {
 function wireLinks() {
   var cfg = getConfig();
   
-  // Road to World リンク
   var roadLink = document.getElementById("roadProjectLink");
   if (roadLink) {
     var projUrl = (cfg.pages && cfg.pages.project) || "./project-world-challenge.html";
     roadLink.href = projUrl;
   }
 
-  // メディアリンク
   var mediaLink = document.getElementById("mediaPageLink");
   if (mediaLink) {
     var mediaUrl = (cfg.pages && cfg.pages.media) || "./media.html";
     mediaLink.href = mediaUrl;
   }
 
-  // スポンサーリンク
   var sponsorLink = document.getElementById("sponsorPageLink");
   if (sponsorLink) {
     var sponsorUrl = (cfg.pages && cfg.pages.sponsor) || "./sponsor.html";
     sponsorLink.href = sponsorUrl;
   }
 
-  // お問い合わせメール
   var contactLink = document.getElementById("contactMailLink");
   if (contactLink && cfg.pressEmail) {
     var subject = encodeURIComponent("【お問い合わせ】POM PUPPYS bright");
     var body = encodeURIComponent("お問い合わせ内容をご記入ください。\n\n");
     contactLink.href = "mailto:" + cfg.pressEmail + "?subject=" + subject + "&body=" + body;
+  }
+}
+
+// ============================================
+// ハンバーガーメニュー
+// ============================================
+
+function setupHamburgerMenu() {
+  var hamburger = document.getElementById("hamburger");
+  var navList = document.querySelector(".nav-list");
+  
+  if (!hamburger || !navList) return;
+  
+  hamburger.addEventListener("click", function() {
+    navList.classList.toggle("is-open");
+    hamburger.classList.toggle("is-active");
+  });
+  
+  // メニュー項目をクリックしたら閉じる
+  var navLinks = navList.querySelectorAll("a");
+  for (var i = 0; i < navLinks.length; i++) {
+    navLinks[i].addEventListener("click", function() {
+      navList.classList.remove("is-open");
+      hamburger.classList.remove("is-active");
+    });
   }
 }
 
@@ -617,7 +621,6 @@ function setupScrollAnimations() {
   var targets = document.querySelectorAll(".section, .card, .photoCard, .memberCard, .newsItem");
   
   if (!("IntersectionObserver" in window)) {
-    // フォールバック: 全て表示
     for (var i = 0; i < targets.length; i++) {
       targets[i].classList.add("isVisible");
     }
@@ -653,7 +656,6 @@ function wireMediaKit() {
   btn.href = url;
 }
 
-// 変更後（署名部分を削除）
 function wirePressMail() {
   var cfg = getConfig();
   var email = cfg.pressEmail;
@@ -734,6 +736,7 @@ async function initSite() {
   renderRoadProgress();
   renderSponsors();
   renderMascot();
+  setupHamburgerMenu();
   
   // 非同期処理
   await renderHeroMedia();
@@ -760,5 +763,3 @@ document.addEventListener("DOMContentLoaded", function() {
     initSite();
   }
 });
-
-
