@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-  <title>クラファン特設｜POM PUPPYS bright</title>
+  <title>World Challenge｜POM PUPPYS bright</title>
   <meta name="description" content="POM PUPPYS bright の挑戦を応援する特設ページ。進捗・費用の透明性・支援方法をまとめています。" />
 
   <link rel="canonical" href="https://pompuppys-kasukabe.github.io/project-world-challenge.html" />
@@ -12,7 +12,7 @@
 
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="POM PUPPYS bright" />
-  <meta property="og:title" content="クラファン特設｜POM PUPPYS bright" />
+  <meta property="og:title" content="World Challenge｜POM PUPPYS bright" />
   <meta property="og:description" content="進捗・費用の透明性・支援方法（公式サイト/Mediaとは分離）。" />
   <meta property="og:url" content="https://pompuppys-kasukabe.github.io/project-world-challenge.html" />
   <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg" />
@@ -22,7 +22,6 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp_project.jpg" />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
@@ -36,10 +35,10 @@
 <body data-page="project">
   <header class="header">
     <div class="container header__inner">
-     <div class="brand">
-  <img src="./assets/logo_emblem.png" alt="" class="brand__emblem">
-  <span>World Challenge</span>
-</div>
+      <div class="brand">
+        <img src="./assets/logo_emblem.png" alt="" class="brand__emblem">
+        <span>World Challenge</span>
+      </div>
       <nav class="nav" aria-label="primary">
         <a href="./index.html">← 公式サイトへ</a>
         <button id="projectShareBtn" class="btn btn-small" type="button">共有</button>
@@ -55,7 +54,6 @@
           <h1 class="heroTitle" id="pHeadline"></h1>
           <p class="heroSub muted" id="pLead" style="margin-top:10px;"></p>
 
-          <!-- Project hero media (auto) -->
           <div class="heroMediaWrap heroMediaWrap--project" id="pHeroMediaWrap" style="display:none;">
             <video class="heroVideo" id="pHeroVideo" playsinline muted loop preload="metadata" style="display:none;"></video>
             <img class="heroPhoto" id="pHeroImg" src="" alt="" loading="eager" decoding="async" style="display:none;"/>
@@ -69,14 +67,13 @@
           </div>
 
           <p class="note" style="margin-top:12px;">
-            ※本ページは支援のための特設です。取材素材は <a href="./media.html">Mediaページ</a> にまとめています。
+            ※本ページは支援のための特設サイトです。取材素材は <a href="./media.html">Mediaページ</a> をご確認下さい。
           </p>
         </div>
 
         <div class="card" id="progressCard">
           <div class="section-head" style="margin-bottom:10px;">
             <h2 style="font-size:1.05rem;">進捗</h2>
-            <p class="muted" style="font-size:.95rem;">透明性を大切に</p>
           </div>
 
           <div class="kpiGrid">
@@ -118,7 +115,6 @@
       <div class="container">
         <div class="section-head">
           <h2>費用の目安</h2>
-          <p class="muted">できるだけ分かりやすく</p>
         </div>
 
         <div class="grid2">
@@ -132,7 +128,7 @@
 
             <div style="height:10px;"></div>
 
-            <div class="kpi" style="background:linear-gradient(135deg, rgba(255,56,160,.08), rgba(215,182,94,.10));">
+            <div class="kpi" style="background:linear-gradient(135deg, rgba(107,63,160,.08), rgba(212,168,75,.10));">
               <div class="muted">パッケージ費総額（目安）</div>
               <div class="kpi__v" id="totalCost">—</div>
             </div>
@@ -146,9 +142,9 @@
               <table class="priceTbl">
                 <thead>
                   <tr>
-                    <th>部屋</th><th>食事</th>
+                    <th>部屋</th>
+                    <th>食事</th>
                     <th style="text-align:right;">選手/コーチ/大人</th>
-                    <th style="text-align:right;">子ども</th>
                   </tr>
                 </thead>
                 <tbody id="priceTable"></tbody>
@@ -232,26 +228,27 @@
         </div>
       </div>
     </section>
-<section class="section" id="messages">
-  <div class="container">
-    <div class="section-head">
-      <h2>応援メッセージ</h2>
-      <p class="muted">みんなで同じ舞台へ</p>
-    </div>
 
-    <div class="card">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
-        <p class="note" id="projectMessagesNote" style="margin:0;display:none;"></p>
-        <a id="projectMessageFormBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">
-          応援メッセージを送る
-        </a>
+    <section class="section" id="messages">
+      <div class="container">
+        <div class="section-head">
+          <h2>応援メッセージ</h2>
+          <p class="muted">みんなで同じ舞台へ</p>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+            <p class="note" id="projectMessagesNote" style="margin:0;display:none;"></p>
+            <a id="projectMessageFormBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">
+              応援メッセージを送る
+            </a>
+          </div>
+
+          <div style="height:12px;"></div>
+          <div id="projectMessagesGrid" class="msgGrid"></div>
+        </div>
       </div>
-
-      <div style="height:12px;"></div>
-      <div id="projectMessagesGrid" class="msgGrid"></div>
-    </div>
-  </div>
-</section>
+    </section>
 
     <section class="section">
       <div class="container">
