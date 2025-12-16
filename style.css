@@ -15,7 +15,7 @@
   
   /* 背景・サーフェス（白〜薄い紫グラデーション） */
   --bg: #faf9fc;
-  --bg-gradient-1: rgba(255, 255,255,0.85);
+  --bg-gradient-1: rgba(255, 255, 255, 0.85);
   --bg-gradient-2: rgba(212, 168, 75, 0.06);
   --bg-gradient-3: rgba(107, 63, 160, 0.04);
   --surface: rgba(255, 255, 255, 0.88);
@@ -156,17 +156,17 @@ h1, h2, h3, h4, h5, h6 {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255, 255, 255, 0.85);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
-/* ===== Header Container (index.html用) ===== */
+/* ===== Header Container ===== */
 .header-container {
   max-width: var(--container);
   margin: 0 auto;
-  padding: 14px 20px;
+  padding: 12px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -179,41 +179,49 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   gap: 10px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .logo:hover {
   text-decoration: none;
 }
 
-.logo img {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
-}
-
 .logo__emblem {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
-.logo__text {
-  height: 36px;
-  width: auto;
-  object-fit: contain;
+.logo__name {
+  font-family: "Poppins", "Noto Sans JP", sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--navy);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
-@media (min-width: 768px) {
-  .logo img {
-    height: 50px;
+.logo__accent {
+  color: var(--purple);
+}
+
+@media (max-width: 480px) {
+  .logo__emblem {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .logo__name {
+    font-size: 0.9rem;
   }
 }
 
-/* ===== Navigation List (index.html用) ===== */
+/* ===== Navigation List ===== */
 .nav-list {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -223,31 +231,38 @@ h1, h2, h3, h4, h5, h6 {
   list-style: none;
 }
 
-.nav-list a {
+.nav-list a,
+.nav-list button {
   text-decoration: none;
   color: var(--muted);
   font-weight: 700;
-  font-size: 0.9rem;
-  padding: 8px 12px;
+  font-size: 0.85rem;
+  padding: 8px 10px;
   border-radius: var(--radius-full);
   transition: all var(--duration-fast) var(--ease-out);
+  white-space: nowrap;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-.nav-list a:hover {
+.nav-list a:hover,
+.nav-list button:hover {
   color: var(--navy);
   background: rgba(107, 63, 160, 0.08);
   text-decoration: none;
 }
 
-/* ===== Hamburger Menu ===== */
+/* ===== Hamburger ===== */
 .hamburger {
   display: none;
   flex-direction: column;
   gap: 5px;
-  padding: 8px;
+  padding: 10px;
   background: none;
   border: none;
   cursor: pointer;
+  z-index: 101;
 }
 
 .hamburger span {
@@ -258,35 +273,58 @@ h1, h2, h3, h4, h5, h6 {
   transition: all var(--duration-fast);
 }
 
-@media (max-width: 768px) {
+.hamburger.is-active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.is-active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.is-active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* ===== Mobile Navigation ===== */
+@media (max-width: 900px) {
   .nav-list {
     position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
     background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     flex-direction: column;
-    padding: 20px;
-    gap: 4px;
-    border-bottom: 1px solid var(--line);
-    box-shadow: var(--shadow-md);
-    display: none;
+    padding: 80px 24px 40px;
+    gap: 8px;
+    box-shadow: var(--shadow-lg);
+    transition: right 0.3s var(--ease-out);
+    z-index: 100;
+    align-items: stretch;
   }
   
   .nav-list.is-open {
-    display: flex;
+    right: 0;
   }
   
-  .nav-list a {
+  .nav-list a,
+  .nav-list button {
     width: 100%;
     text-align: center;
-    padding: 12px 16px;
+    padding: 14px 20px;
+    font-size: 1rem;
   }
   
   .hamburger {
     display: flex;
+  }
+}
+
+@media (min-width: 901px) {
+  .hamburger {
+    display: none;
   }
 }
 
@@ -540,7 +578,7 @@ h1, h2, h3, h4, h5, h6 {
 .heroCard {
   position: relative;
   border-radius: var(--radius-lg);
-  background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
   border: 1px solid var(--line);
   padding: 40px;
   box-shadow: var(--shadow-lg);
@@ -971,6 +1009,7 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: var(--shadow-sm);
   transition: all var(--duration-normal) var(--ease-out);
   background: var(--surfaceSolid);
+  overflow: hidden;
 }
 
 .memberCard:hover {
@@ -1023,7 +1062,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 12px;
 }
 
-/* ===== Photo Gallery（2-3-2構成） ===== */
+/* ===== Photo Gallery ===== */
 .photoGrid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -1045,12 +1084,10 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: var(--shadow-lg);
 }
 
-/* 2枚構成（各3カラム = 50%） */
 .photoCard--half {
   grid-column: span 3;
 }
 
-/* 3枚構成（各2カラム = 33.3%） */
 .photoCard--third {
   grid-column: span 2;
 }
@@ -1332,6 +1369,16 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
+.footer__logo {
+  flex-shrink: 0;
+}
+
+.footer__logoImg {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+
 .footer__location {
   opacity: 0.7;
   margin-left: 12px;
@@ -1341,12 +1388,10 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   gap: 24px;
   flex-wrap: wrap;
-  margin-top: 1rem;
 }
 
 .footer__links a {
   color: rgba(255, 255, 255, 0.8);
-  margin: 0 0.75rem;
   text-decoration: none;
   font-size: 0.875rem;
 }
@@ -1625,7 +1670,7 @@ h1, h2, h3, h4, h5, h6 {
    PAGES
 ========================= */
 
-/* Media page - より落ち着いたトーン */
+/* Media page */
 body[data-page="media"] {
   --bg: #f8f8fa;
 }
@@ -1747,43 +1792,6 @@ body[data-page="project"] .hero {
 
 .contactCard:hover .contactCard__arrow {
   transform: translateX(4px);
-}
-
-/* ========== ロゴ画像対応 ========== */
-
-/* ヘッダーロゴ */
-.header__logo {
-  display: flex;
-  align-items: center;
-}
-
-.header__logoImg {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
-}
-
-@media (min-width: 768px) {
-  .header__logoImg {
-    height: 50px;
-  }
-}
-
-/* フッターロゴ */
-.footer__logo {
-  margin-bottom: 1.5rem;
-}
-
-.footer__logoImg {
-  height: 80px;
-  width: auto;
-  object-fit: contain;
-}
-
-@media (min-width: 768px) {
-  .footer__logoImg {
-    height: 100px;
-  }
 }
 
 /* ===== Project Page Specific ===== */
@@ -2115,7 +2123,7 @@ body[data-page="project"] .hero {
   margin: 0 0 12px;
 }
 
-/* ========== Loading Screen ========== */
+/* ===== Loading Screen ===== */
 .loadingScreen {
   position: fixed;
   top: 0;
@@ -2187,53 +2195,16 @@ body[data-page="project"] .hero {
   padding: 0 4px;
   font-weight: 700;
 }
-/* ===== Logo Name ===== */
-.logo__name {
-  font-family: "Poppins", "Noto Sans JP", sans-serif;
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: var(--navy);
-  letter-spacing: 0.02em;
+
+/* ===== Mobile Menu Overlay ===== */
+.nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
 }
 
-@media (max-width: 600px) {
-  .logo__name {
-    font-size: 0.95rem;
-  }
-}
-/* ===== Logo Name with Accent ===== */
-.logo__name {
-  font-family: "Poppins", "Noto Sans JP", sans-serif;
-  font-weight: 800;
-  font-size: 1.1rem;
-  color: var(--navy);
-  letter-spacing: 0.02em;
-}
-
-.logo__accent {
-  color: var(--purple);
-}
-
-@media (max-width: 600px) {
-  .logo__name {
-    font-size: 0.95rem;
-  }
-}
-.brand__emblem {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
-
-/* ===== Hamburger Active State ===== */
-.hamburger.is-active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-
-.hamburger.is-active span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.is-active span:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -6px);
+.nav-overlay.is-open {
+  display: block;
 }
