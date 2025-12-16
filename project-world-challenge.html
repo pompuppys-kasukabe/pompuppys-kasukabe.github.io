@@ -30,6 +30,203 @@
   <script src="./utils.js"></script>
   <script src="./config.js"></script>
   <script src="./project.js" defer></script>
+
+  <style>
+    /* ヒーロー背景画像スタイル */
+    .hero--bg {
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('./assets/photos/hero.jpg') center center / cover no-repeat;
+      overflow: hidden;
+    }
+    
+    .hero--bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(26, 26, 26, 0.7) 0%,
+        rgba(26, 26, 26, 0.5) 50%,
+        rgba(26, 26, 26, 0.8) 100%
+      );
+      z-index: 1;
+    }
+    
+    .hero--bg .hero__content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+      padding: 60px 20px;
+    }
+    
+    .hero--bg .kicker {
+      color: #d4a84b;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    
+    .hero--bg .heroTitle {
+      color: #fff;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    }
+    
+    .hero--bg .heroSub {
+      color: rgba(255,255,255,0.85);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    
+    /* 準備中バッジ */
+    .badge--preparing {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #6b3fa0, #8b5fbf);
+      color: #fff;
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .badge--preparing svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    
+    /* 進捗カード（ヒーロー内） */
+    .progressCard--hero {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 24px 32px;
+      margin-top: 30px;
+      display: inline-block;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    
+    .progressCard--hero .kpiGrid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      text-align: center;
+    }
+    
+    @media (max-width: 600px) {
+      .progressCard--hero .kpiGrid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    .progressCard--hero .kpi__label {
+      font-size: 0.75rem;
+      color: #666;
+      margin-bottom: 4px;
+    }
+    
+    .progressCard--hero .kpi__value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+    
+    .progressCard--hero .bar {
+      margin-top: 16px;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progressCard--hero .bar__fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6b3fa0, #d4a84b);
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    
+    .progressCard--hero .update-date {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: #888;
+    }
+    
+    /* CTAボタン群 */
+    .hero__cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    
+    .hero__cta .btn {
+      min-width: 180px;
+    }
+    
+    .hero__cta .btn-ghost {
+      border-color: rgba(255,255,255,0.5);
+      color: #fff;
+    }
+    
+    .hero__cta .btn-ghost:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: #fff;
+    }
+    
+    /* 準備中メッセージ */
+    .preparing-message {
+      background: linear-gradient(135deg, rgba(107,63,160,0.1), rgba(212,168,75,0.1));
+      border: 1px solid rgba(107,63,160,0.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .preparing-message p {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 0;
+      color: #1a1a1a;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    
+    .preparing-message svg {
+      width: 20px;
+      height: 20px;
+      fill: #6b3fa0;
+      flex-shrink: 0;
+    }
+    
+    .preparing-message strong {
+      color: #6b3fa0;
+    }
+  </style>
 </head>
 
 <body data-page="project">
@@ -47,51 +244,65 @@
   </header>
 
   <main>
-    <section class="hero hero--project">
-      <div class="container hero__grid">
-        <div class="heroCard heroCard--project">
-          <div class="kicker" id="pKicker"></div>
-          <h1 class="heroTitle" id="pHeadline"></h1>
-          <p class="heroSub muted" id="pLead" style="margin-top:10px;"></p>
-
-          <div class="heroMediaWrap heroMediaWrap--project" id="pHeroMediaWrap" style="display:none;">
-            <video class="heroVideo" id="pHeroVideo" playsinline muted loop preload="metadata" style="display:none;"></video>
-            <img class="heroPhoto" id="pHeroImg" src="" alt="" loading="eager" decoding="async" style="display:none;"/>
-          </div>
-
-          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center;">
-            <a id="crowdfundingBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">
-              支援ページへ
-            </a>
-            <a class="btn btn-ghost" id="toSponsorPage" href="./sponsor.html">企業・団体として応援（協賛）</a>
-          </div>
-
-          <p class="note" style="margin-top:12px;">
-            ※本ページは支援のための特設サイトです。取材素材は <a href="./media.html">Mediaページ</a> をご確認下さい。
-          </p>
+    <!-- ヒーローセクション（B案：背景画像） -->
+    <section class="hero--bg">
+      <div class="hero__content">
+        <div class="badge--preparing">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          クラウドファンディング準備中
         </div>
-
-        <div class="card" id="progressCard">
-          <div class="section-head" style="margin-bottom:10px;">
-            <h2 style="font-size:1.05rem;">進捗</h2>
-          </div>
-
+        
+        <p class="kicker" id="pKicker">ROAD TO THE WORLD - SPECIAL PROJECT</p>
+        <h1 class="heroTitle" id="pHeadline">子どもたち全員が、同じ舞台に立てるように。</h1>
+        <p class="heroSub" id="pLead">POM PUPPYS bright は世界最高峰の舞台、米国「The Dance Summit 2026」へ出場します。円安と物価高で渡航費が高騰する中、挑戦をプロジェクトとして記録しながら、世界への一歩を進めます。</p>
+        
+        <!-- 進捗カード -->
+        <div class="progressCard--hero">
           <div class="kpiGrid">
-            <div class="kpi"><div class="muted">目標</div><div class="kpi__v" id="goalYen">—</div></div>
-            <div class="kpi"><div class="muted">現在</div><div class="kpi__v" id="raisedYen">—</div></div>
-            <div class="kpi"><div class="muted">達成率</div><div class="kpi__v" id="pct">—</div></div>
-            <div class="kpi"><div class="muted">残り</div><div class="kpi__v" id="daysLeft">—</div></div>
+            <div class="kpi">
+              <div class="kpi__label">目標</div>
+              <div class="kpi__value" id="goalYen">1,000,000円</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi__label">現在</div>
+              <div class="kpi__value" id="raisedYen">準備中</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi__label">達成率</div>
+              <div class="kpi__value" id="pct">-%</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi__label">残り</div>
+              <div class="kpi__value" id="daysLeft">—</div>
+            </div>
           </div>
-
+          
           <div class="bar" aria-hidden="true">
-            <div class="bar__fill" id="barFill"></div>
+            <div class="bar__fill" id="barFill" style="width: 0%;"></div>
           </div>
-
-          <div class="muted" style="margin-top:10px;font-size:.92rem;">
-            更新日：<span id="updatedAt">—</span>
-          </div>
-
-          <p class="supportMeaning" id="supportMeaning" style="display:none;"></p>
+          
+          <div class="update-date">更新日：<span id="updatedAt">—</span></div>
+        </div>
+        
+        <!-- CTAボタン -->
+        <div class="hero__cta">
+          <a id="crowdfundingBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">
+            支援ページへ
+          </a>
+          <a class="btn btn-ghost" id="toSponsorPage" href="./sponsor.html">企業・団体として応援（協賛）</a>
+          <a class="btn btn-ghost" href="#support">応援の方法を見る</a>
+        </div>
+        
+        <!-- 準備中メッセージ -->
+        <div class="preparing-message">
+          <p>
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z"/>
+            </svg>
+            クラウドファンディングは<strong>2025年1月〜2月頃</strong>に開始予定です。<br>先行して企業・団体様からの協賛を募集しています。
+          </p>
         </div>
       </div>
     </section>
@@ -185,7 +396,7 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section" id="support">
       <div class="container">
         <div class="section-head">
           <h2 id="supportTitle">応援の方法</h2>
@@ -202,6 +413,15 @@
               </div>
             </div>
 
+            <div class="preparing-message" style="margin-top:14px;">
+              <p>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z"/>
+                </svg>
+                <strong>準備中</strong> - 2025年1月〜2月頃に開始予定
+              </p>
+            </div>
+            
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
               <a id="supportIndBtn" class="btn btn-primary" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">CAMPFIREで支援する</a>
             </div>
@@ -218,7 +438,7 @@
             </div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;">
-              <a id="supportCorpBtn" class="btn btn-ghost" href="#">協賛の相談をする（メール）</a>
+              <a id="supportCorpBtn" class="btn btn-primary" href="#">協賛の相談をする（メール）</a>
               <a class="btn btn-ghost" href="./sponsor.html">協賛メニューを見る</a>
             </div>
             <p class="note" id="supportCorpNote" style="margin-top:10px;display:none;"></p>
