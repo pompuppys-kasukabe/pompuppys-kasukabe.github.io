@@ -404,9 +404,9 @@ function renderProject(){
       var bodyEnc = encodeURIComponent(bodyText);
       cBtn.href = "mailto:" + email + "?subject=" + subject + "&body=" + bodyEnc;
       if(cNote){
-        cNote.textContent = "送信先：" + email;
-        cNote.style.display = "block";
-      }
+  cNote.textContent = "送信先：" + email + "（" + contactName + "）";
+  cNote.style.display = "block";
+}
     }else{
       cBtn.href = "#";
       if(cNote){
