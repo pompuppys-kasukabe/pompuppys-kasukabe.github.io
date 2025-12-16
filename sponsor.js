@@ -12,6 +12,7 @@ function initSponsorPage(){
   setText("spFeeNote", s.feeNote || "");
   setText("spAreaNote", s.areaNote || "");
   setText("spEmailText", email || "—");
+  setText("spContactName", name || "—");
 
   // Form button (optional)
   var formBtn = document.getElementById("spFormBtn");
