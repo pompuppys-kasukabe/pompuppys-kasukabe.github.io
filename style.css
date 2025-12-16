@@ -162,6 +162,135 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-backdrop-filter: blur(16px);
 }
 
+/* ===== Header Container (index.html用) ===== */
+.header-container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* ===== Logo ===== */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo:hover {
+  text-decoration: none;
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logo__emblem {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.logo__text {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 768px) {
+  .logo img {
+    height: 50px;
+  }
+}
+
+/* ===== Navigation List (index.html用) ===== */
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list li {
+  list-style: none;
+}
+
+.nav-list a {
+  text-decoration: none;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 8px 12px;
+  border-radius: var(--radius-full);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.nav-list a:hover {
+  color: var(--navy);
+  background: rgba(107, 63, 160, 0.08);
+  text-decoration: none;
+}
+
+/* ===== Hamburger Menu ===== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 24px;
+  height: 2px;
+  background: var(--navy);
+  border-radius: 2px;
+  transition: all var(--duration-fast);
+}
+
+@media (max-width: 768px) {
+  .nav-list {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    flex-direction: column;
+    padding: 20px;
+    gap: 4px;
+    border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow-md);
+    display: none;
+  }
+  
+  .nav-list.is-open {
+    display: flex;
+  }
+  
+  .nav-list a {
+    width: 100%;
+    text-align: center;
+    padding: 12px 16px;
+  }
+  
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* ===== Header Inner (他ページ用) ===== */
 .header__inner {
   display: flex;
   align-items: center;
@@ -193,6 +322,12 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(135deg, var(--purple), var(--gold));
   box-shadow: 0 4px 12px rgba(107, 63, 160, 0.3);
   animation: pulse 2s ease-in-out infinite;
+}
+
+.brand__emblem {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 @keyframes pulse {
@@ -1170,7 +1305,6 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
 }
 
-
 /* ===== Footer ===== */
 .footer {
   padding: 40px 0;
@@ -2052,23 +2186,4 @@ body[data-page="project"] .hero {
   background: linear-gradient(transparent 60%, rgba(212, 168, 75, 0.3) 60%);
   padding: 0 4px;
   font-weight: 700;
-}
-
-/* ===== Logo with Emblem ===== */
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo__emblem {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-}
-
-.logo__text {
-    height: 36px;
-    width: auto;
-    object-fit: contain;
 }
