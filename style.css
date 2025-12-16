@@ -2035,3 +2035,22 @@ body[data-page="project"] .hero {
   0% { width: 0%; }
   100% { width: 100%; }
 }
+
+/* ===== Story 装飾 ===== */
+#storyBody strong {
+  color: var(--navy);
+  font-weight: 800;
+}
+
+#storyBody em {
+  color: var(--purple);
+  font-style: normal;
+  font-weight: 600;
+}
+
+#storyBody .highlight {
+  background: linear-gradient(transparent 60%, rgba(212, 168, 75, 0.3) 60%);
+  padding: 0 4px;
+  font-weight: 700;
+}
+
