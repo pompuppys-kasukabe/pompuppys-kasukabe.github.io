@@ -2224,3 +2224,16 @@ body[data-page="project"] .hero {
   height: 28px;
   object-fit: contain;
 }
+
+/* ===== Hamburger Active State ===== */
+.hamburger.is-active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.is-active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.is-active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
