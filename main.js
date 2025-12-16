@@ -761,13 +761,4 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-// ========== ローディング画面 ==========
-window.addEventListener("load", function() {
-  var loadingScreen = document.getElementById("loadingScreen");
-  if (loadingScreen) {
-    setTimeout(function() {
-      loadingScreen.classList.add("is-hidden");
-    }, 1800);
-  }
-});
 
