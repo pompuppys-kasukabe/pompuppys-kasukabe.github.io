@@ -1410,7 +1410,24 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: center;
   }
 }
+Copy.footer a {
+  color: #d4a84b;
+  text-decoration: none;
+  transition: color 0.2s;
+}
 
+.footer a:hover {
+  color: #e8c06a;
+  text-decoration: underline;
+}
+
+.footer .muted a {
+  color: #d4a84b;
+}
+
+.footer .muted a:hover {
+  color: #e8c06a;
+}
 /* ===== Lightbox ===== */
 .lightbox {
   position: fixed;
