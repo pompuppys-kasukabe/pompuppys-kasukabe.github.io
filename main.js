@@ -747,10 +747,15 @@ function setupMessageForm() {
 
   if (!btn || !msgCfg.formUrl) return;
 
+  // TallyフォームIDを抽出（https://tally.so/r/Y50Z5v → Y50Z5v）
+  var formId = msgCfg.formUrl.split('/').pop();
+
+  // Tallyポップアップ用の属性を設定
+  btn.setAttribute("data-tally-open", formId);
+  btn.setAttribute("data-tally-emoji-text", "👋");
+  btn.setAttribute("data-tally-emoji-animation", "wave");
+
   btn.style.display = "inline-flex";
-  btn.addEventListener("click", function() {
-    window.open(msgCfg.formUrl, "_blank", "noopener,noreferrer");
-  });
 }
 
 // ============================================

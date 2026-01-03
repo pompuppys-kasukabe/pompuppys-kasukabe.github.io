@@ -98,7 +98,14 @@ async function renderSupportMessagesProject(){
   var btn = document.getElementById("projectMessageFormBtn");
   if(btn){
     if(msgCfg.formUrl){
-      btn.href = msgCfg.formUrl;
+      // TallyフォームIDを抽出（https://tally.so/r/Y50Z5v → Y50Z5v）
+      var formId = msgCfg.formUrl.split('/').pop();
+
+      // Tallyポップアップ用の属性を設定
+      btn.setAttribute("data-tally-open", formId);
+      btn.setAttribute("data-tally-emoji-text", "👋");
+      btn.setAttribute("data-tally-emoji-animation", "wave");
+      btn.removeAttribute("href");
       btn.style.display = "inline-flex";
     }else{
       btn.style.display = "none";
