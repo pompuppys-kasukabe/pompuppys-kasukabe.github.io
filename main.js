@@ -607,14 +607,19 @@ function wireLinks() {
 function setupHamburgerMenu() {
   var hamburger = document.getElementById("hamburger");
   var navList = document.querySelector(".nav-list");
-  
-  if (!hamburger || !navList) return;
-  
-  hamburger.addEventListener("click", function() {
+
+  if (!hamburger || !navList) {
+    console.error("ハンバーガーメニュー要素が見つかりません");
+    return;
+  }
+
+  hamburger.addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
     navList.classList.toggle("is-open");
     hamburger.classList.toggle("is-active");
   });
-  
+
   // メニュー項目をクリックしたら閉じる
   var navLinks = navList.querySelectorAll("a");
   for (var i = 0; i < navLinks.length; i++) {
