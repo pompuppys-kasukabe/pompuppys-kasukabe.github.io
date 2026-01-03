@@ -18,7 +18,7 @@ window.PUPPYS_CONFIG = {
   },
 
   // ===== 連絡先 =====
-  pressEmail: "loveaiheart@icloud.com",
+  pressEmail: "pompuppys.kasukabe@gmail.com",
   pressContactName: "POM PUPPYS 共同代表 今井 愛",
   
   // ===== 外部リンク =====
