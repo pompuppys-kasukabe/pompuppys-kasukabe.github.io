@@ -42,6 +42,13 @@ window.PUPPYS_CONFIG = {
   // ===== ニュース =====
   news: [
     {
+      date: "2025-12-29",
+      tag: "RESULT",
+      title: "USA Regionals で好成績、USA Nationals 2026 出場決定！",
+      body: "USA Regionals 埼玉大会にて見事好成績を収め、2026年3月開催のUSA Nationalsへの出場権を獲得しました。引き続き応援よろしくお願いします。",
+      url: ""
+    },
+    {
       date: "2025-12-28",
       tag: "EVENT",
       title: "USA Regionals 埼玉大会 出場予定",
