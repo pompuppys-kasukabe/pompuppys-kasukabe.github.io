@@ -69,14 +69,6 @@ window.PUPPYS_CONFIG = {
       body: "Junior編成 Pom部門 Small Bで1位を獲得し、世界最高峰の舞台、米国「The Dance Summit 2026」への出場権を獲得しました。",
       url: ""
     }
-    {
-  date: "2025-12-23",
-  tag: "INFO",
-  title: "公式Instagram開設しました",
-  body: "チームの活動や日常を発信していきます。ぜひフォローお願いします！",
-  url: "https://www.instagram.com/pompuppysbright"
-},
-
   ],
 
   // ===== サイト画像 =====
