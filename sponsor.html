@@ -71,6 +71,18 @@
     }
     .infoRow__value {
       color: var(--muted);
+      flex: 1;
+      word-break: break-all;
+      overflow-wrap: break-word;
+    }
+    @media (max-width: 640px) {
+      .infoRow {
+        flex-direction: column;
+        gap: 6px;
+      }
+      .infoRow__label {
+        min-width: auto;
+      }
     }
   </style>
 </head>
