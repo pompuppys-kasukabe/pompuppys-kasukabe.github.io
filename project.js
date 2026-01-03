@@ -105,7 +105,6 @@ async function renderSupportMessagesProject(){
       btn.setAttribute("data-tally-open", formId);
       btn.setAttribute("data-tally-emoji-text", "👋");
       btn.setAttribute("data-tally-emoji-animation", "wave");
-      btn.removeAttribute("href");
       btn.style.display = "inline-flex";
     }else{
       btn.style.display = "none";
