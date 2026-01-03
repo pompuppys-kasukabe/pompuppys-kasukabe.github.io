@@ -200,7 +200,8 @@ story: {
   supportMessages: {
     enabled: true,
     formUrl: "",
-    dataUrl: "./assets/messages.json",
+    dataUrl: "", // GAS APIから取得（main.jsで設定）
+    useNotionAPI: true, // Notion連携を使用
     maxOnOfficial: 12,
     maxOnProject: 24,
     note: "掲載は内容確認のうえ反映します。個人情報（学校名/住所/電話番号など）は記載しないでください。"

@@ -391,14 +391,26 @@ function renderRoadProgress() {
 async function fetchMessages() {
   var cfg = getConfig();
   var msgCfg = cfg.supportMessages;
-  if (!msgCfg || !msgCfg.dataUrl) return [];
+  if (!msgCfg) return [];
 
   try {
-    var url = msgCfg.dataUrl + "?v=" + Date.now();
+    var url;
+
+    // Notion API連携を使用する場合
+    if (msgCfg.useNotionAPI) {
+      url = PHOTOS_API_URL + "?action=getMessages&t=" + Date.now();
+    }
+    // 従来のJSONファイルを使用する場合
+    else if (msgCfg.dataUrl) {
+      url = msgCfg.dataUrl + "?v=" + Date.now();
+    } else {
+      return [];
+    }
+
     var res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
     var data = await res.json();
-    
+
     return data
       .filter(function(m) { return m.approved !== false && m.message; })
       .sort(function(a, b) { return String(b.date).localeCompare(String(a.date)); });
