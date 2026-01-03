@@ -110,7 +110,16 @@ async function renderSupportMessagesProject(){
 
   var data = [];
   try{
-    if(msgCfg.dataUrl){
+    // Notion API連携を使用する場合
+    if(msgCfg.useNotionAPI){
+      var photosApiUrl = "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec";
+      var url = photosApiUrl + "?action=getMessages&t=" + Date.now();
+      var res = await fetch(url, { cache: "no-store" });
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      data = await res.json();
+    }
+    // 従来のJSONファイルを使用する場合
+    else if(msgCfg.dataUrl){
       data = await fetchJsonWithNoCache(msgCfg.dataUrl);
     }
   }catch(e){

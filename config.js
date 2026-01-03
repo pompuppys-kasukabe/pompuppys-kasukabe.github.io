@@ -199,7 +199,7 @@ story: {
   // ===== 応援メッセージ =====
   supportMessages: {
     enabled: true,
-    formUrl: "",
+    formUrl: "https://tally.so/r/Y50Z5v",
     dataUrl: "", // GAS APIから取得（main.jsで設定）
     useNotionAPI: true, // Notion連携を使用
     maxOnOfficial: 12,

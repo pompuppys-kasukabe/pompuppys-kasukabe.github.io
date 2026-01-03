@@ -737,6 +737,23 @@ function wireCopyButtons() {
 }
 
 // ============================================
+// 応援メッセージフォーム
+// ============================================
+
+function setupMessageForm() {
+  var cfg = getConfig();
+  var msgCfg = cfg.supportMessages || {};
+  var btn = document.getElementById("sendMessageBtn");
+
+  if (!btn || !msgCfg.formUrl) return;
+
+  btn.style.display = "inline-flex";
+  btn.addEventListener("click", function() {
+    window.open(msgCfg.formUrl, "_blank", "noopener,noreferrer");
+  });
+}
+
+// ============================================
 // 初期化
 // ============================================
 
@@ -749,13 +766,14 @@ async function initSite() {
   renderSponsors();
   renderMascot();
   setupHamburgerMenu();
-  
+  setupMessageForm();
+
   // 非同期処理
   await renderHeroMedia();
   await renderMembers();
   await renderPhotos();
   await renderMessagesPreview();
-  
+
   setupLightbox();
   setupScrollAnimations();
 }
