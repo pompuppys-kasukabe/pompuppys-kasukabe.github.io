@@ -1,0 +1,125 @@
+/* ===== Copy Block (Media page) ===== */
+.copyBlock {
+  background: rgba(26, 26, 26, 0.03);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+
+.copyTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.copyTop h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.copyText {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+
+/* ===== Media Card ===== */
+.media-card {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(107, 63, 160, 0.04), rgba(212, 168, 75, 0.06));
+  box-shadow: var(--shadow-sm);
+}
+
+.media-card__left {
+  flex: 1;
+  min-width: 200px;
+}
+
+.media-card__right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 180px;
+}
+
+.media-card h3 {
+  margin: 0 0 8px;
+  color: var(--navy);
+  font-weight: 800;
+}
+
+.media-card p {
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .media-card {
+    flex-direction: column;
+  }
+  
+  .media-card__right {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* ===== Menu Item (Sponsor page) ===== */
+.menuItem {
+  padding: 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.8);
+  margin-bottom: 12px;
+}
+
+.menuItem:last-child {
+  margin-bottom: 0;
+}
+
+.menuItem__title {
+  font-weight: 800;
+  color: var(--navy);
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+
+/* ===== Info Row (Sponsor page) ===== */
+.infoRow {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(26, 26, 26, 0.03);
+  border: 1px solid var(--line);
+  margin-bottom: 10px;
+}
+
+.infoRow:last-child {
+  margin-bottom: 0;
+}
+
+.infoRow__label {
+  font-weight: 800;
+  color: var(--navy);
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.infoRow__value {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
