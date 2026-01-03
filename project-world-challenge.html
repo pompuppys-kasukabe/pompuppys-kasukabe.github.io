@@ -47,7 +47,29 @@
       background: url('./assets/photos/hero.jpg') center center / cover no-repeat;
       overflow: hidden;
     }
-    
+
+    /* 背景動画/画像 */
+    .hero__media {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .hero__video,
+    .hero__image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+
     .hero--bg::before {
       content: '';
       position: absolute;
@@ -249,8 +271,14 @@
   </header>
 
   <main>
-    <!-- ヒーローセクション（B案：背景画像） -->
+    <!-- ヒーローセクション（B案：背景画像/動画） -->
     <section class="hero--bg">
+      <!-- 背景動画/画像 -->
+      <div id="pHeroMediaWrap" class="hero__media">
+        <video id="pHeroVideo" class="hero__video" muted playsinline loop></video>
+        <img id="pHeroImg" class="hero__image" src="./assets/photos/award_flag.jpg" alt="POM PUPPYS bright">
+      </div>
+
       <div class="hero__content">
         <div class="badge--preparing">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
