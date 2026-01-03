@@ -45,32 +45,105 @@ function getDriveImageUrl(fileId, width) {
 
 async function renderHeroMedia() {
   var wrap = document.getElementById("heroPhotoWrap");
+  var video = document.getElementById("heroVideo");
   var img = document.getElementById("heroPhoto");
-  
+
   if (!wrap || !img) {
     return;
   }
 
+  var cfg = getConfig();
+  var imgs = cfg.siteImages || {};
+  var videoCfg = imgs.heroVideo || {};
+
   var photos = await fetchPhotos();
   var hero = photos.hero;
 
+  // 画像ソースの決定
+  var imgSrc = "";
+  var imgAlt = "POM PUPPYS bright";
+
   if (hero && hero.driveId) {
-    var src = getDriveImageUrl(hero.driveId);
-    img.src = src;
-    img.alt = hero.alt || "POM PUPPYS bright";
+    imgSrc = getDriveImageUrl(hero.driveId);
+    imgAlt = hero.alt || imgAlt;
+  } else if (imgs.heroImage) {
+    imgSrc = imgs.heroImage;
+    imgAlt = imgs.heroImageAlt || imgAlt;
+  }
+
+  // 動画が有効な場合
+  if (video && videoCfg.enabled) {
+    var mp4 = videoCfg.mp4 || "";
+    var webm = videoCfg.webm || "";
+
+    if (mp4 || webm) {
+      // ポスター画像の設定
+      var poster = videoCfg.poster || imgSrc || "";
+      if (poster) {
+        video.setAttribute("poster", poster);
+      }
+
+      // video要素のクリア
+      video.innerHTML = "";
+
+      // ソースの追加
+      if (webm) {
+        var sourceWebm = document.createElement("source");
+        sourceWebm.src = webm;
+        sourceWebm.type = "video/webm";
+        video.appendChild(sourceWebm);
+      }
+      if (mp4) {
+        var sourceMp4 = document.createElement("source");
+        sourceMp4.src = mp4;
+        sourceMp4.type = "video/mp4";
+        video.appendChild(sourceMp4);
+      }
+
+      // 動画属性の設定
+      video.muted = true;
+      video.playsInline = true;
+      video.loop = videoCfg.loop !== false;
+
+      // 動画を表示、画像を非表示
+      video.style.display = "block";
+      img.style.display = "none";
+      wrap.style.display = "block";
+
+      // エラー時は画像にフォールバック
+      video.onerror = function() {
+        video.style.display = "none";
+        if (imgSrc) {
+          img.src = imgSrc;
+          img.alt = imgAlt;
+          img.style.display = "block";
+        }
+      };
+
+      // 自動再生（prefers-reduced-motion考慮）
+      var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        video.play().catch(function() {
+          // 自動再生失敗時は何もしない
+        });
+      }
+
+      return;
+    }
+  }
+
+  // 動画が無効または利用不可の場合は画像を表示
+  if (video) {
+    video.style.display = "none";
+  }
+
+  if (imgSrc) {
+    img.src = imgSrc;
+    img.alt = imgAlt;
     img.style.display = "block";
     wrap.style.display = "block";
   } else {
-    var cfg = getConfig();
-    var imgs = cfg.siteImages || {};
-    if (imgs.heroImage) {
-      img.src = imgs.heroImage;
-      img.alt = imgs.heroImageAlt || "POM PUPPYS bright";
-      img.style.display = "block";
-      wrap.style.display = "block";
-    } else {
-      wrap.style.display = "none";
-    }
+    wrap.style.display = "none";
   }
 }
 
