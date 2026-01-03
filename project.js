@@ -101,8 +101,15 @@ async function renderSupportMessagesProject(){
       // TallyフォームIDを抽出（https://tally.so/r/Y50Z5v → Y50Z5v）
       var formId = msgCfg.formUrl.split('/').pop();
 
-      // Tallyポップアップ用の属性を設定
+      // 現在の日付を取得（YYYY-MM-DD形式）
+      var today = new Date();
+      var dateStr = today.getFullYear() + '-' +
+                    String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(today.getDate()).padStart(2, '0');
+
+      // Tallyポップアップ用の属性を設定（日付パラメータを追加）
       btn.setAttribute("data-tally-open", formId);
+      btn.setAttribute("data-tally-hidden-fields", JSON.stringify({ date: dateStr }));
       btn.setAttribute("data-tally-emoji-text", "👋");
       btn.setAttribute("data-tally-emoji-animation", "wave");
       btn.style.display = "inline-flex";
