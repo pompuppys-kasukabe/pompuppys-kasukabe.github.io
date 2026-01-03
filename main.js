@@ -7,44 +7,9 @@
 var PHOTOS_API_URL = "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec";
 
 // ============================================
-// ユーティリティ関数
+// ユーティリティ関数（utils.jsから読み込み）
 // ============================================
-
-function escapeHtml(str) {
-  return String(str == null ? "" : str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function formatDateLabel(dateStr) {
-  if (!dateStr) return "";
-  var m = String(dateStr).match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (!m) return String(dateStr);
-  return m[1] + "." + m[2] + "." + m[3];
-}
-
-function yen(n) {
-  if (n == null || isNaN(n)) return "-";
-  return Number(n).toLocaleString("ja-JP");
-}
-
-function getConfig() {
-  return window.PUPPYS_CONFIG || {};
-}
-
-function getConfigValue(path, defaultValue) {
-  var cfg = getConfig();
-  var keys = path.split(".");
-  var value = cfg;
-  for (var i = 0; i < keys.length; i++) {
-    if (value == null) return defaultValue;
-    value = value[keys[i]];
-  }
-  return value != null ? value : defaultValue;
-}
+// escapeHtml, formatDateLabel, yen, getConfig, getConfigValue は utils.js で定義
 
 // ============================================
 // 写真データ取得（GAS API経由）
