@@ -84,10 +84,10 @@ window.PUPPYS_CONFIG = {
     heroImageAlt: "POM PUPPYS bright チーム写真",
 
     heroVideo: {
-      enabled: false,
-      mp4: "",
+      enabled: true,
+      mp4: "./assets/video/official_hero.mp4",
       webm: "",
-      poster: "",
+      poster: "./assets/photos/team_main.jpg",
       loop: true
     },
 
@@ -225,8 +225,8 @@ story: {
     updatedAt: "2025-12-14",
 
     heroVideo: {
-      enabled: false,
-      mp4: "",
+      enabled: true,
+      mp4: "./assets/video/project_hero.mp4",
       webm: "",
       poster: "./assets/photos/award_flag.jpg",
       loop: true
