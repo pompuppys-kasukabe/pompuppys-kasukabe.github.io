@@ -608,17 +608,25 @@ function setupHamburgerMenu() {
   var hamburger = document.getElementById("hamburger");
   var navList = document.querySelector(".nav-list");
 
+  console.log("setupHamburgerMenu 実行", { hamburger: hamburger, navList: navList });
+
   if (!hamburger || !navList) {
-    console.error("ハンバーガーメニュー要素が見つかりません");
+    console.error("ハンバーガーメニュー要素が見つかりません", { hamburger: hamburger, navList: navList });
     return;
   }
 
+  console.log("イベントリスナー登録中");
+
   hamburger.addEventListener("click", function(e) {
+    console.log("ハンバーガーメニューがクリックされました");
     e.preventDefault();
     e.stopPropagation();
     navList.classList.toggle("is-open");
     hamburger.classList.toggle("is-active");
+    console.log("is-open:", navList.classList.contains("is-open"));
   });
+
+  console.log("イベントリスナー登録完了");
 
   // メニュー項目をクリックしたら閉じる
   var navLinks = navList.querySelectorAll("a");
