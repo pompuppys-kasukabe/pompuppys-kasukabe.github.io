@@ -225,7 +225,7 @@ story: {
     updatedAt: "2025-12-14",
 
     heroVideo: {
-      enabled: true,
+      enabled: false,
       mp4: "./assets/video/project_hero.mp4",
       webm: "",
       poster: "./assets/photos/award_flag.jpg",
