@@ -178,6 +178,73 @@
     </div>
   </section>
 
+  <!-- ========== 活動カレンダー ========== -->
+  <section id="activity-calendar" class="section section--alt" style="display: none;">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>活動カレンダー</h2>
+          <p>練習・大会・イベント、全ての活動を可視化</p>
+        </div>
+      </div>
+
+      <!-- 統計情報 -->
+      <div class="activityStats" id="activityStats">
+        <div class="activityStat">
+          <div class="activityStat__label">月間活動日数</div>
+          <div class="activityStat__value" id="statMonthlyTotal">-</div>
+        </div>
+        <div class="activityStat">
+          <div class="activityStat__label">練習</div>
+          <div class="activityStat__value" id="statPractice">-</div>
+        </div>
+        <div class="activityStat">
+          <div class="activityStat__label">大会・イベント</div>
+          <div class="activityStat__value" id="statEvents">-</div>
+        </div>
+        <div class="activityStat">
+          <div class="activityStat__label">その他</div>
+          <div class="activityStat__value" id="statOthers">-</div>
+        </div>
+      </div>
+
+      <!-- カレンダー本体 -->
+      <div class="activityCalendar" id="activityCalendarGrid">
+        <!-- JavaScriptで動的生成 -->
+        <div class="calendar-loading">
+          <p>活動データを読み込み中...</p>
+        </div>
+      </div>
+
+      <!-- 凡例 -->
+      <div class="activityLegend">
+        <span class="legend__label">活動タイプ:</span>
+        <div class="legend__items">
+          <div class="legend__item">
+            <span class="legend__icon">🟣</span>
+            <span>練習</span>
+          </div>
+          <div class="legend__item">
+            <span class="legend__icon">🏆</span>
+            <span>大会</span>
+          </div>
+          <div class="legend__item">
+            <span class="legend__icon">🎪</span>
+            <span>イベント出演</span>
+          </div>
+          <div class="legend__item">
+            <span class="legend__icon">💰</span>
+            <span>クラファン・協賛</span>
+          </div>
+          <div class="legend__item">
+            <span class="legend__icon">📢</span>
+            <span>メディア取材</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ========== Photos ========== -->
   <section id="photos" class="section section--alt">
     <div class="container">

@@ -55,6 +55,43 @@ window.PUPPYS_CONFIG = {
     // { name: "メディア名", logo: "./assets/media/logo.png", url: "記事URL", date: "2025-XX-XX" }
   ],
 
+  // ===== 活動カレンダー =====
+  activityCalendar: {
+    enabled: true,
+    apiUrl: "", // Google Apps Script のデプロイURLを設定（NOTION_ACTIVITY_CALENDAR_SETUP.md 参照）
+    displayMonths: 3, // 表示する月数（過去3ヶ月）
+    colorScheme: {
+      "練習": "#8b5fbf",              // 紫
+      "大会": "#d4a84b",              // ゴールド
+      "イベント出演": "#4a90e2",      // 青
+      "クラファン・協賛": "#2ecc71",  // 緑
+      "メディア取材": "#e74c3c",      // 赤
+      "リハーサル": "#f39c12",        // オレンジ
+      "ミーティング": "#95a5a6",      // グレー
+      "その他": "#bdc3c7"             // ライトグレー
+    },
+    typeIcons: {
+      "練習": "🟣",
+      "大会": "🏆",
+      "イベント出演": "🎪",
+      "クラファン・協賛": "💰",
+      "メディア取材": "📢",
+      "リハーサル": "🎭",
+      "ミーティング": "💬",
+      "その他": "📌"
+    },
+    hoverInfo: {
+      showTime: true,      // 開始・終了時間を表示
+      showLocation: true,  // 場所を表示
+      showNotes: true      // メモを表示
+    },
+    stats: {
+      showMonthlyTotal: true,      // 月間活動日数
+      showByType: true,            // タイプ別集計
+      showUpcomingEvents: false    // 今後の予定（Phase 2で実装）
+    }
+  },
+
   // ===== メディア用テキスト =====
   mediaTexts: {
     credit: "写真クレジット：POM PUPPYS bright 提供",
