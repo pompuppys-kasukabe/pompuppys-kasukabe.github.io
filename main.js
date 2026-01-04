@@ -121,14 +121,39 @@ async function renderHeroMedia() {
       };
 
       // 自動再生（prefers-reduced-motion考慮）
-      var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!prefersReduced) {
-        video.play().catch(function() {
-          // 自動再生失敗時は何もしない
-        });
-      }
+var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!prefersReduced) {
+  // 動画終了時に静止画に切り替え
+  video.addEventListener('ended', function() {
+    video.style.opacity = '0';
+    video.style.transition = 'opacity 0.8s ease';
+    
+    setTimeout(function() {
+      video.style.display = 'none';
+      img.src = imgSrc;
+      img.alt = imgAlt;
+      img.style.display = 'block';
+      img.style.opacity = '0';
+      
+      // 少し遅らせてフェードイン
+      setTimeout(function() {
+        img.style.transition = 'opacity 0.8s ease';
+        img.style.opacity = '1';
+      }, 50);
+    }, 800);
+  });
+  
+  video.play().catch(function() {
+    // 自動再生失敗時は静止画を表示
+    video.style.display = 'none';
+    img.src = imgSrc;
+    img.alt = imgAlt;
+    img.style.display = 'block';
+  });
+}
 
-      return;
+return;
+
     }
   }
 
