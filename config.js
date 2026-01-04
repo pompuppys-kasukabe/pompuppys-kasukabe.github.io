@@ -146,12 +146,13 @@ window.PUPPYS_CONFIG = {
     heroImageAlt: "POM PUPPYS bright チーム写真",
 
     heroVideo: {
-      enabled: true,
-      mp4: "./assets/video/official_hero.mp4",
-      webm: "",
-      poster: "./assets/photos/team_main.jpg",
-      loop: true
-    },
+  enabled: true,
+  mp4: "./assets/video/official_hero.mp4",
+  webm: "",
+  poster: "./assets/photos/team_main.jpg",
+  loop: false  // ← false に変更
+},
+
 
     gallery: [
       { title: "JAMfest JAPAN 2025 優勝", src: "./assets/photos/award_flag.jpg", alt: "表彰式でフラッグを掲げるチーム", size: "half" },
