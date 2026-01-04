@@ -75,7 +75,7 @@ window.PUPPYS_CONFIG = {
       "練習": "fa-solid fa-dumbbell",
       "大会": "fa-solid fa-trophy",
       "イベント出演": "fa-solid fa-star",
-      "クラファン・協賛": "fa-solid fa-hand-holding-dollar",
+      "クラファン・協賛": "fa-solid fa-gift",
       "メディア取材": "fa-solid fa-camera",
       "リハーサル": "fa-solid fa-masks-theater",
       "ミーティング": "fa-solid fa-users",
