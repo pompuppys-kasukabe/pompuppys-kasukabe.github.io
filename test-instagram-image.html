@@ -123,35 +123,36 @@
   </div>
 
   <script>
-    // NotionのInstagram URLから画像URLを生成
+    // 実際のCDN URL（GAS APIで取得したもの）でテスト
     const testUrls = [
-      'https://www.instagram.com/pompuppysbright/p/DS_owBOEi__/',
-      'https://www.instagram.com/pompuppysbright/p/DSm_vJkErsN/',
-      'https://www.instagram.com/pompuppysbright/p/DTFfaJEEi_5/'
+      'https://scontent-ord5-3.cdninstagram.com/v/t51.2885-15/609062166_17850614241605604_6579766442266345713_n.heic?stp=dst-jpg_e35_p1080x1080_sh0.08_tt6&_nc_ht=scontent-ord5-3.cdninstagram.com&_nc_cat=100&_nc_oc=Q6cZ2QErvjxOyvAkhDBnIfFSkmyYTW2ewSeiTXiI37k-0Q86q0yGrj-kE3OSFAFofo8nb-Y&_nc_ohc=RMTqo4HUtjoQ7kNvwFE3ROL&_nc_gid=Mu_KoLPoI1RkG4wbFkdNXw&edm=AGenrX8BAAAA&ccb=7-5&oh=00_Afog7jk82ESsyU4TmGZ-HvA0rXH0alQRtIvaHK0loxAf0Q&oe=696042DB&_nc_sid=ed990e',
+      'https://scontent-ord5-3.cdninstagram.com/v/t51.2885-15/604046417_17848568481605604_361630002783267139_n.heic?stp=dst-jpg_e35_s1080x1080_sh0.08_tt6&_nc_ht=scontent-ord5-3.cdninstagram.com&_nc_cat=100&_nc_oc=Q6cZ2QF1KXMeltYGcFmIJV4ZbmoCigykSUgma2oFhdF96uGc7ilJucJJkmlhDOucxA4YhK8&_nc_ohc=XsF__VSSnYMQ7kNvwE8kcKF&_nc_gid=xKQ-EEm3_z1UdFvo-EpAtA&edm=AGenrX8BAAAA&ccb=7-5&oh=00_AfoEsv5U0GhHT-jJnTsjSNa6Do2nBR1X9j18CfxdbgNKYw&oe=6960328F&_nc_sid=ed990e',
+      'https://scontent-ord5-3.cdninstagram.com/v/t51.2885-15/610555354_17851117524605604_773086265911517158_n.heic?stp=dst-jpg_e35_s1080x1080_sh0.08_tt6&_nc_ht=scontent-ord5-3.cdninstagram.com&_nc_cat=100&_nc_oc=Q6cZ2QHO7OApWD5e_rSPM9dYoH6BeW4nXNzPJuD4xtaMcFKMStwoPg9yNg1FycZZZ76OUPM&_nc_ohc=GuNIu5FkJU4Q7kNvwG9Ce1p&_nc_gid=PyZxgVW4ihjip-nAwdv7gw&edm=AGenrX8BAAAA&ccb=7-5&oh=00_Afrd9VOG3CE0uJnSZYuQ3VKn6pHv0MLWSHjT2Uoz602tFA&oe=69604713&_nc_sid=ed990e'
     ];
 
-    testUrls.forEach((url, index) => {
+    testUrls.forEach((imageUrl, index) => {
       const testNumber = index + 1;
       const img = document.getElementById('test' + testNumber);
       const status = document.getElementById('status' + testNumber);
       const urlDisplay = document.getElementById('url' + testNumber);
 
-      // 規則的に画像URLを生成
-      const imageUrl = url + 'media/?size=l';
-      urlDisplay.textContent = imageUrl;
+      // CDN URLを表示（短縮版）
+      const shortUrl = imageUrl.substring(0, 80) + '...';
+      urlDisplay.textContent = shortUrl;
+      urlDisplay.title = imageUrl; // フルURLはツールチップで表示
 
       // 画像を読み込み
       img.src = imageUrl;
 
       // 読み込み成功
       img.onload = function() {
-        status.textContent = '✅ 成功: 画像が表示されました';
+        status.textContent = '✅ 成功: CDN URLから画像が表示されました！';
         status.className = 'status success';
       };
 
       // 読み込み失敗
       img.onerror = function() {
-        status.textContent = '❌ 失敗: 画像を読み込めませんでした（CORS制限またはURL無効）';
+        status.textContent = '❌ 失敗: CDN URLでもCORS制限またはURL無効';
         status.className = 'status error';
       };
     });
