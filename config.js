@@ -60,7 +60,7 @@ window.PUPPYS_CONFIG = {
   activityCalendar: {
     enabled: true,
     apiUrl: "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec",
-    displayMonths: 3, // 表示する月数（過去3ヶ月）
+    displayMonths: 6, // 表示する月数（11月〜4月末の6ヶ月間）
     colorScheme: {
       "練習": "#8b5fbf",              // 紫
       "大会": "#d4a84b",              // ゴールド

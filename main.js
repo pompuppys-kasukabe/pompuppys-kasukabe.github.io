@@ -1176,22 +1176,26 @@ function renderMonth(month, activityMap, colorScheme) {
 }
 
 function renderActivityStats(activities) {
+  var config = getConfig();
   var now = new Date();
-  var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  var displayMonths = config.activityCalendar.displayMonths || 6;
 
-  // 今月の活動をフィルタ
-  var monthlyActivities = activities.filter(function(a) {
+  // 過去N ヶ月の開始日を計算
+  var startDate = new Date(now.getFullYear(), now.getMonth() - displayMonths + 1, 1);
+
+  // 過去N ヶ月の活動をフィルタ
+  var periodActivities = activities.filter(function(a) {
     if (!a.date) return false;
     var date = new Date(a.date);
-    return date >= monthStart;
+    return date >= startDate;
   });
 
   // 統計計算
-  var total = monthlyActivities.length;
-  var events = monthlyActivities.filter(function(a) {
+  var total = periodActivities.length;
+  var events = periodActivities.filter(function(a) {
     return a.type === '大会' || a.type === 'イベント出演';
   }).length;
-  var practice = monthlyActivities.filter(function(a) {
+  var practice = periodActivities.filter(function(a) {
     return a.type === '練習';
   }).length;
 
