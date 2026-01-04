@@ -45,8 +45,9 @@ window.PUPPYS_CONFIG = {
   instagram: {
     enabled: true,
     username: "pompuppysbright",
+    apiUrl: "", // GASデプロイURL（例: https://script.google.com/macros/s/xxxxx/exec）
     displayCount: 6, // 表示する投稿数
-    embedType: "simple" // simple または widget
+    cacheMinutes: 30 // キャッシュ時間（分）
   },
 
   // ===== メディア掲載実績 =====

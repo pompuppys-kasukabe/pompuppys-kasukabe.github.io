@@ -872,16 +872,89 @@ function renderInstagramFeed() {
   var feedContainer = document.getElementById("instagramFeed");
   if (!feedContainer) return;
 
-  // Instagram Basic Display APIやElfsightウィジェットを使う場合はここに実装
-  // 現在はプレースホルダーを表示（実際の投稿は手動埋め込みまたはAPI実装が必要）
+  // API URLが設定されていない場合はプレースホルダー表示
+  if (!config.instagram.apiUrl) {
+    feedContainer.innerHTML = '<div class="instagram-placeholder">' +
+      '<p style="margin-bottom: 16px;">📸 Instagramで最新の活動をチェック！</p>' +
+      '<a href="https://www.instagram.com/' + escapeHtml(config.instagram.username) + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary">' +
+      '@' + escapeHtml(config.instagram.username) + ' をフォロー' +
+      '</a>' +
+      '</div>';
+    return;
+  }
 
-  // シンプルな実装: Instagramへのリンク誘導
-  feedContainer.innerHTML = '<div class="instagram-placeholder">' +
-    '<p style="margin-bottom: 16px;">📸 Instagramで最新の活動をチェック！</p>' +
-    '<a href="' + escapeHtml(config.instagramUrl) + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary">' +
-    '@' + escapeHtml(config.instagram.username) + ' をフォロー' +
-    '</a>' +
-    '</div>';
+  // ローディング表示
+  feedContainer.innerHTML = '<div class="instagram-placeholder">読み込み中...</div>';
+
+  // キャッシュチェック
+  var cacheKey = 'instagram_feed_cache';
+  var cacheTimeKey = 'instagram_feed_cache_time';
+  var cachedData = localStorage.getItem(cacheKey);
+  var cacheTime = localStorage.getItem(cacheTimeKey);
+  var cacheMinutes = config.instagram.cacheMinutes || 30;
+  var now = new Date().getTime();
+
+  // キャッシュが有効な場合は使用
+  if (cachedData && cacheTime && (now - parseInt(cacheTime)) < cacheMinutes * 60 * 1000) {
+    try {
+      var posts = JSON.parse(cachedData);
+      displayInstagramPosts(posts, feedContainer, config);
+      return;
+    } catch (e) {
+      console.error('Instagram cache parse error:', e);
+    }
+  }
+
+  // APIからデータ取得
+  fetch(config.instagram.apiUrl + '?action=getInstagramFeed')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      if (data.success && data.data && data.data.length > 0) {
+        var posts = data.data.slice(0, config.instagram.displayCount);
+
+        // キャッシュに保存
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(posts));
+          localStorage.setItem(cacheTimeKey, now.toString());
+        } catch (e) {
+          console.error('Instagram cache save error:', e);
+        }
+
+        displayInstagramPosts(posts, feedContainer, config);
+      } else {
+        // データがない場合
+        feedContainer.innerHTML = '<div class="instagram-placeholder">' +
+          '<p style="margin-bottom: 16px;">📸 Instagramで最新の活動をチェック！</p>' +
+          '<a href="https://www.instagram.com/' + escapeHtml(config.instagram.username) + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary">' +
+          '@' + escapeHtml(config.instagram.username) + ' をフォロー' +
+          '</a>' +
+          '</div>';
+      }
+    })
+    .catch(function(error) {
+      console.error('Instagram API error:', error);
+      feedContainer.innerHTML = '<div class="instagram-placeholder">' +
+        '<p style="margin-bottom: 16px;">投稿の読み込みに失敗しました</p>' +
+        '<a href="https://www.instagram.com/' + escapeHtml(config.instagram.username) + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary">' +
+        '@' + escapeHtml(config.instagram.username) + ' をフォロー' +
+        '</a>' +
+        '</div>';
+    });
+}
+
+function displayInstagramPosts(posts, container, config) {
+  var html = posts.map(function(post) {
+    var caption = post.caption ? escapeHtml(post.caption.substring(0, 100)) + (post.caption.length > 100 ? '...' : '') : '';
+
+    return '<a href="' + escapeHtml(post.permalink) + '" target="_blank" rel="noopener noreferrer" class="instagram-post">' +
+      '<img src="' + escapeHtml(post.mediaUrl) + '" alt="Instagram post" loading="lazy">' +
+      (caption ? '<div class="instagram-post__overlay">' + caption + '</div>' : '') +
+      '</a>';
+  }).join('');
+
+  container.innerHTML = html;
 }
 
 // ============================================
