@@ -897,77 +897,8 @@ function renderInstagramFeed() {
   var feedContainer = document.getElementById("instagramFeed");
   if (!feedContainer) return;
 
-  // ローディング表示
-  feedContainer.innerHTML = '<div class="instagram-placeholder">読み込み中...</div>';
-
-  // Notion連携またはJSONファイルから取得
-  var fetchUrl;
-  if (config.instagram.useNotion && config.instagram.apiUrl) {
-    // Notion連携モード
-    fetchUrl = config.instagram.apiUrl + '?action=getInstagramFeedFromNotion';
-  } else {
-    // JSONファイルモード
-    fetchUrl = config.instagram.jsonUrl;
-  }
-
-  // キャッシュチェック
-  var cacheKey = 'instagram_feed_cache';
-  var cacheTimeKey = 'instagram_feed_cache_time';
-  var cachedData = localStorage.getItem(cacheKey);
-  var cacheTime = localStorage.getItem(cacheTimeKey);
-  var cacheMinutes = config.instagram.cacheMinutes || 30;
-  var now = new Date().getTime();
-
-  // キャッシュが有効な場合は使用
-  if (cachedData && cacheTime && (now - parseInt(cacheTime)) < cacheMinutes * 60 * 1000) {
-    try {
-      var posts = JSON.parse(cachedData);
-      displayInstagramPosts(posts, feedContainer, config);
-      return;
-    } catch (e) {
-      console.error('Instagram cache parse error:', e);
-    }
-  }
-
-  // データ取得
-  fetch(fetchUrl)
-    .then(function(response) {
-      if (!response.ok) {
-        throw new Error('読み込みエラー');
-      }
-      return response.json();
-    })
-    .then(function(data) {
-      var posts = [];
-
-      // Notion APIレスポンス形式
-      if (data.success && data.data && data.data.length > 0) {
-        posts = data.data.slice(0, config.instagram.displayCount);
-      }
-      // JSONファイル形式
-      else if (data.posts && data.posts.length > 0) {
-        posts = data.posts.slice(0, config.instagram.displayCount);
-      }
-
-      if (posts.length > 0) {
-        // キャッシュに保存
-        try {
-          localStorage.setItem(cacheKey, JSON.stringify(posts));
-          localStorage.setItem(cacheTimeKey, now.toString());
-        } catch (e) {
-          console.error('Instagram cache save error:', e);
-        }
-
-        displayInstagramPosts(posts, feedContainer, config);
-      } else {
-        // データがない場合
-        showInstagramPlaceholder(feedContainer, config);
-      }
-    })
-    .catch(function(error) {
-      console.error('Instagram読み込みエラー:', error);
-      showInstagramPlaceholder(feedContainer, config);
-    });
+  // 一時的にフォロー誘導のみ表示（画像は非表示）
+  showInstagramPlaceholder(feedContainer, config);
 }
 
 function showInstagramPlaceholder(container, config) {
