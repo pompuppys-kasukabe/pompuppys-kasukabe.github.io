@@ -1092,6 +1092,7 @@ function fetchActivityData() {
 
         renderActivityCalendar(activities);
         renderActivityStats(activities);
+        renderUpcomingEvents(activities);
       } else {
         grid.innerHTML = '<div class="calendar-loading">' +
           '<p>活動データがありません。</p>' +
@@ -1281,6 +1282,71 @@ function createTooltip(activities) {
 
     return icon + escapeHtml(parts.join(' / '));
   }).join('<br>');
+}
+
+function renderUpcomingEvents(activities) {
+  var container = document.getElementById('upcomingEventsList');
+  if (!container) return;
+
+  var config = getConfig();
+  var typeIcons = config.activityCalendar.typeIcons || {};
+  var colorScheme = config.activityCalendar.colorScheme || {};
+
+  // 今日以降の活動をフィルタして日付順にソート
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  var upcoming = activities
+    .filter(function(a) {
+      if (!a.date) return false;
+      var date = new Date(a.date);
+      return date >= today;
+    })
+    .sort(function(a, b) {
+      return new Date(a.date) - new Date(b.date);
+    })
+    .slice(0, 5);
+
+  if (upcoming.length === 0) {
+    container.innerHTML = '<div class="upcomingEvents__empty">今後の予定はありません</div>';
+    return;
+  }
+
+  var html = upcoming.map(function(activity) {
+    var date = new Date(activity.date);
+    var monthDay = (date.getMonth() + 1) + '/' + date.getDate();
+    var dayNames = ['日', '月', '火', '水', '木', '金', '土'];
+    var dayOfWeek = dayNames[date.getDay()];
+
+    var time = '';
+    if (activity.startTime && activity.endTime) {
+      time = activity.startTime + ' - ' + activity.endTime;
+    } else if (activity.startTime) {
+      time = activity.startTime + ' ~';
+    }
+
+    var iconClass = typeIcons[activity.type] || typeIcons['その他'] || '';
+    var icon = iconClass ? '<i class="' + iconClass + '"></i>' : '';
+    var color = colorScheme[activity.type] || '#bdc3c7';
+
+    return '<div class="upcomingEvent" style="border-left-color: ' + color + ';">' +
+      '<div class="upcomingEvent__date">' +
+        '<div class="upcomingEvent__monthDay">' + escapeHtml(monthDay) + '</div>' +
+        '<div class="upcomingEvent__dayOfWeek">(' + escapeHtml(dayOfWeek) + ')</div>' +
+      '</div>' +
+      '<div class="upcomingEvent__details">' +
+        '<div class="upcomingEvent__header">' +
+          '<span class="upcomingEvent__icon">' + icon + '</span>' +
+          '<span class="upcomingEvent__type">' + escapeHtml(activity.type) + '</span>' +
+        '</div>' +
+        '<div class="upcomingEvent__name">' + escapeHtml(activity.name) + '</div>' +
+        (time ? '<div class="upcomingEvent__time"><i class="fa-solid fa-clock"></i> ' + escapeHtml(time) + '</div>' : '') +
+        (activity.location ? '<div class="upcomingEvent__location"><i class="fa-solid fa-location-dot"></i> ' + escapeHtml(activity.location) + '</div>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  container.innerHTML = html;
 }
 
 // ============================================

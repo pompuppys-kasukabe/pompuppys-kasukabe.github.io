@@ -30,6 +30,9 @@ function getConfig() {
     // Google Drive設定
     DRIVE_FOLDER_ID: props.getProperty('DRIVE_FOLDER_ID'),
 
+    // Instagram設定
+    INSTAGRAM_ACCESS_TOKEN: props.getProperty('INSTAGRAM_ACCESS_TOKEN'),
+
     // 掲載枠とファイル名のマッピング
     SLOT_TO_FILENAME: {
       "Hero": "hero",
@@ -74,6 +77,10 @@ function doGet(e) {
     } else if (action === "getActivityData") {
       const activities = getActivityData();
       return jsonResponse(activities);
+
+    } else if (action === "getInstagramFeed") {
+      const feed = getInstagramFeed();
+      return jsonResponse(feed);
 
     } else {
       return jsonResponse({ error: "Unknown action" });
@@ -494,6 +501,106 @@ function createDailyTrigger() {
 }
 
 // ============================================
+// Instagram Feed取得
+// ============================================
+
+function getInstagramFeed() {
+  const CONFIG = getConfig();
+
+  if (!CONFIG.INSTAGRAM_ACCESS_TOKEN) {
+    return {
+      success: false,
+      error: "Missing INSTAGRAM_ACCESS_TOKEN"
+    };
+  }
+
+  const fields = 'id,caption,media_type,media_url,permalink,thumbnail_url,timestamp';
+  const url = `https://graph.instagram.com/me/media?fields=${fields}&access_token=${CONFIG.INSTAGRAM_ACCESS_TOKEN}&limit=12`;
+
+  try {
+    const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+    const data = JSON.parse(response.getContentText());
+
+    // エラーチェック
+    if (data.error) {
+      return {
+        success: false,
+        error: data.error.message || "Instagram API error"
+      };
+    }
+
+    // データがない場合
+    if (!data.data || data.data.length === 0) {
+      return {
+        success: true,
+        data: [],
+        count: 0
+      };
+    }
+
+    // データ整形
+    const posts = data.data.map(function(post) {
+      return {
+        id: post.id,
+        caption: post.caption || "",
+        mediaType: post.media_type,
+        mediaUrl: post.media_type === 'VIDEO' ? (post.thumbnail_url || post.media_url) : post.media_url,
+        permalink: post.permalink,
+        timestamp: post.timestamp
+      };
+    }).filter(function(post) {
+      // 画像とカルーセルのみ表示
+      return post.mediaType === 'IMAGE' || post.mediaType === 'CAROUSEL_ALBUM';
+    });
+
+    return {
+      success: true,
+      data: posts.slice(0, 6),
+      count: posts.length
+    };
+
+  } catch (error) {
+    return {
+      success: false,
+      error: error.toString()
+    };
+  }
+}
+
+// ============================================
+// Instagramトークンリフレッシュ
+// ============================================
+
+function refreshInstagramToken() {
+  const CONFIG = getConfig();
+
+  if (!CONFIG.INSTAGRAM_ACCESS_TOKEN) {
+    console.log("No Instagram access token found");
+    return;
+  }
+
+  const url = `https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${CONFIG.INSTAGRAM_ACCESS_TOKEN}`;
+
+  try {
+    const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+    const data = JSON.parse(response.getContentText());
+
+    if (data.error) {
+      console.error("Token refresh error: " + data.error.message);
+      return;
+    }
+
+    // 新しいトークンを保存
+    PropertiesService.getScriptProperties().setProperty('INSTAGRAM_ACCESS_TOKEN', data.access_token);
+
+    console.log("Instagram token refreshed successfully. Expires in: " + data.expires_in + " seconds");
+
+  } catch (error) {
+    console.error("Error refreshing Instagram token: " + error.toString());
+  }
+}
+
+// ============================================
 // テスト用
 // ============================================
 
@@ -510,4 +617,9 @@ function testGetMessages() {
 function testGetActivityData() {
   const activities = getActivityData();
   console.log(JSON.stringify(activities, null, 2));
+}
+
+function testGetInstagramFeed() {
+  const feed = getInstagramFeed();
+  console.log(JSON.stringify(feed, null, 2));
 }

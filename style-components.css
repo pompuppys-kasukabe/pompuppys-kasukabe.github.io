@@ -1443,3 +1443,157 @@ Copy.footer a {
   font-size: 1.2rem;
   line-height: 1;
 }
+
+/* ===== 直近の予定 ===== */
+.upcomingEvents {
+  background: #fff;
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.upcomingEvents__title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin: 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.upcomingEvents__title i {
+  color: var(--purple);
+}
+
+.upcomingEvents__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.upcomingEvents__loading,
+.upcomingEvents__empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.upcomingEvent {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(107, 63, 160, 0.02), rgba(212, 168, 75, 0.02));
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--purple);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.upcomingEvent:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.upcomingEvent__date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  padding: 8px;
+  background: #fff;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.upcomingEvent__monthDay {
+  font-size: 1.3rem;
+  font-weight: 900;
+  font-family: var(--font-en);
+  color: var(--navy);
+  line-height: 1;
+}
+
+.upcomingEvent__dayOfWeek {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.upcomingEvent__details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.upcomingEvent__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.upcomingEvent__icon {
+  color: var(--purple);
+  font-size: 1rem;
+}
+
+.upcomingEvent__type {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.upcomingEvent__name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+.upcomingEvent__time,
+.upcomingEvent__location {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.upcomingEvent__time i,
+.upcomingEvent__location i {
+  color: var(--purple);
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .upcomingEvents {
+    padding: 20px;
+  }
+
+  .upcomingEvent {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .upcomingEvent__date {
+    flex-direction: row;
+    min-width: 100%;
+    justify-content: flex-start;
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .upcomingEvent__monthDay {
+    font-size: 1.5rem;
+  }
+
+  .upcomingEvent__dayOfWeek {
+    font-size: 0.9rem;
+    margin-top: 0;
+  }
+}
