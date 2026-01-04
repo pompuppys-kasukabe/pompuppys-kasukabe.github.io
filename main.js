@@ -418,8 +418,8 @@ function renderRoadProgress() {
 
   if (bar) bar.style.width = percent + "%";
   if (pct) pct.textContent = percent + "%";
-  if (raised) raised.textContent = yen(raisedYen) + "円";
-  if (goal) goal.textContent = yen(goalYen) + "円";
+  if (raised) raised.textContent = yen(raisedYen);
+  if (goal) goal.textContent = yen(goalYen);
 }
 
 // ============================================
