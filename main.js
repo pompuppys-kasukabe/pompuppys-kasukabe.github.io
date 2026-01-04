@@ -990,6 +990,250 @@ function renderMediaFeatures() {
 }
 
 // ============================================
+// 活動カレンダー
+// ============================================
+
+function initActivityCalendar() {
+  var config = getConfig();
+  if (!config.activityCalendar || !config.activityCalendar.enabled) {
+    return;
+  }
+
+  var section = document.getElementById("activity-calendar");
+  if (!section) return;
+
+  section.style.display = "block";
+
+  // API URLが設定されていない場合はプレースホルダー表示
+  if (!config.activityCalendar.apiUrl) {
+    var grid = document.getElementById("activityCalendarGrid");
+    if (grid) {
+      grid.innerHTML = '<div class="calendar-loading">' +
+        '<p>活動カレンダーを表示するには、Notion APIの設定が必要です。</p>' +
+        '<p style="margin-top: 8px; font-size: 0.9rem; color: var(--text-muted);">NOTION_ACTIVITY_CALENDAR_SETUP.md を参照してください。</p>' +
+        '</div>';
+    }
+    return;
+  }
+
+  fetchActivityData();
+}
+
+function fetchActivityData() {
+  var config = getConfig();
+  var grid = document.getElementById("activityCalendarGrid");
+
+  if (!grid) return;
+
+  // ローディング表示
+  grid.innerHTML = '<div class="calendar-loading">読み込み中...</div>';
+
+  // キャッシュチェック
+  var cacheKey = 'activity_calendar_cache';
+  var cacheTimeKey = 'activity_calendar_cache_time';
+  var cachedData = localStorage.getItem(cacheKey);
+  var cacheTime = localStorage.getItem(cacheTimeKey);
+  var cacheMinutes = 30;
+  var now = new Date().getTime();
+
+  // キャッシュが有効な場合は使用
+  if (cachedData && cacheTime && (now - parseInt(cacheTime)) < cacheMinutes * 60 * 1000) {
+    try {
+      var activities = JSON.parse(cachedData);
+      renderActivityCalendar(activities);
+      renderActivityStats(activities);
+      return;
+    } catch (e) {
+      console.error('Activity calendar cache parse error:', e);
+    }
+  }
+
+  // APIからデータ取得
+  fetch(config.activityCalendar.apiUrl + '?action=getActivityData')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      if (data.success && data.data && data.data.length > 0) {
+        var activities = data.data;
+
+        // キャッシュに保存
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(activities));
+          localStorage.setItem(cacheTimeKey, now.toString());
+        } catch (e) {
+          console.error('Activity calendar cache save error:', e);
+        }
+
+        renderActivityCalendar(activities);
+        renderActivityStats(activities);
+      } else {
+        grid.innerHTML = '<div class="calendar-loading">' +
+          '<p>活動データがありません。</p>' +
+          '<p style="margin-top: 8px; font-size: 0.9rem; color: var(--text-muted);">Notionに活動を記録してください。</p>' +
+          '</div>';
+      }
+    })
+    .catch(function(error) {
+      console.error('Activity calendar API error:', error);
+      grid.innerHTML = '<div class="calendar-loading">' +
+        '<p>データの読み込みに失敗しました。</p>' +
+        '<p style="margin-top: 8px; font-size: 0.9rem; color: var(--text-muted);">しばらくしてから再度お試しください。</p>' +
+        '</div>';
+    });
+}
+
+function renderActivityCalendar(activities) {
+  var config = getConfig();
+  var grid = document.getElementById("activityCalendarGrid");
+
+  if (!grid) return;
+
+  var displayMonths = config.activityCalendar.displayMonths || 3;
+  var colorScheme = config.activityCalendar.colorScheme || {};
+
+  // アクティビティを日付でマッピング
+  var activityMap = {};
+  activities.forEach(function(activity) {
+    if (activity.date) {
+      var dateKey = activity.date.substring(0, 10); // YYYY-MM-DD
+      if (!activityMap[dateKey]) {
+        activityMap[dateKey] = [];
+      }
+      activityMap[dateKey].push(activity);
+    }
+  });
+
+  // カレンダーグリッド生成
+  var now = new Date();
+  var monthsHtml = [];
+
+  for (var i = displayMonths - 1; i >= 0; i--) {
+    var month = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    var monthHtml = renderMonth(month, activityMap, colorScheme);
+    monthsHtml.push(monthHtml);
+  }
+
+  grid.innerHTML = '<div class="calendar-grid">' +
+    '<div class="calendar-months">' + monthsHtml.join('') + '</div>' +
+    '</div>';
+}
+
+function renderMonth(month, activityMap, colorScheme) {
+  var monthLabel = (month.getMonth() + 1) + '月';
+  var year = month.getFullYear();
+  var monthIndex = month.getMonth();
+
+  var firstDay = new Date(year, monthIndex, 1);
+  var lastDay = new Date(year, monthIndex + 1, 0);
+  var daysInMonth = lastDay.getDate();
+
+  var weeks = [];
+  var currentWeek = [];
+
+  // 月の最初の週の空白を埋める
+  var startDayOfWeek = firstDay.getDay(); // 0=日曜
+  for (var i = 0; i < startDayOfWeek; i++) {
+    currentWeek.push('<div class="calendar-day" data-level="0"></div>');
+  }
+
+  // 日付を追加
+  for (var day = 1; day <= daysInMonth; day++) {
+    var date = new Date(year, monthIndex, day);
+    var dateKey = formatDateKey(date);
+    var activities = activityMap[dateKey] || [];
+    var level = Math.min(activities.length, 4);
+    var color = activities.length > 0 ? getActivityColor(activities[0], colorScheme) : '';
+    var tooltip = activities.length > 0 ? createTooltip(activities) : '';
+
+    var style = color ? ' style="background-color: ' + color + ';"' : '';
+
+    currentWeek.push(
+      '<div class="calendar-day" data-level="' + level + '"' + style + '>' +
+      (tooltip ? '<div class="calendar-tooltip">' + tooltip + '</div>' : '') +
+      '</div>'
+    );
+
+    // 週が完成したら追加
+    if (currentWeek.length === 7) {
+      weeks.push('<div class="calendar-weeks">' + currentWeek.join('') + '</div>');
+      currentWeek = [];
+    }
+  }
+
+  // 最後の週の空白を埋める
+  while (currentWeek.length > 0 && currentWeek.length < 7) {
+    currentWeek.push('<div class="calendar-day" data-level="0"></div>');
+  }
+  if (currentWeek.length > 0) {
+    weeks.push('<div class="calendar-weeks">' + currentWeek.join('') + '</div>');
+  }
+
+  return '<div class="calendar-month">' +
+    '<div class="calendar-month-label">' + monthLabel + '</div>' +
+    weeks.join('') +
+    '</div>';
+}
+
+function renderActivityStats(activities) {
+  var now = new Date();
+  var monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  // 今月の活動をフィルタ
+  var monthlyActivities = activities.filter(function(a) {
+    if (!a.date) return false;
+    var date = new Date(a.date);
+    return date >= monthStart;
+  });
+
+  // 統計計算
+  var total = monthlyActivities.length;
+  var events = monthlyActivities.filter(function(a) {
+    return a.type === '大会' || a.type === 'イベント出演';
+  }).length;
+  var practice = monthlyActivities.filter(function(a) {
+    return a.type === '練習';
+  }).length;
+
+  // DOM更新
+  var totalEl = document.getElementById('statMonthlyTotal');
+  var eventsEl = document.getElementById('statEvents');
+  var practiceEl = document.getElementById('statPractice');
+
+  if (totalEl) totalEl.textContent = total + '日';
+  if (eventsEl) eventsEl.textContent = events + '回';
+  if (practiceEl) practiceEl.textContent = practice + '日';
+}
+
+function formatDateKey(date) {
+  var y = date.getFullYear();
+  var m = String(date.getMonth() + 1).padStart(2, '0');
+  var d = String(date.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + d;
+}
+
+function getActivityColor(activity, colorScheme) {
+  return colorScheme[activity.type] || '#bdc3c7';
+}
+
+function createTooltip(activities) {
+  return activities.map(function(a) {
+    var time = '';
+    if (a.startTime && a.endTime) {
+      time = a.startTime + ' - ' + a.endTime;
+    } else if (a.startTime) {
+      time = a.startTime + ' ~';
+    }
+
+    var parts = [a.name];
+    if (time) parts.push(time);
+    if (a.location) parts.push(a.location);
+
+    return escapeHtml(parts.join(' / '));
+  }).join('<br>');
+}
+
+// ============================================
 // 初期化
 // ============================================
 
@@ -1008,6 +1252,7 @@ async function initSite() {
   initCountdown();
   renderInstagramFeed();
   renderMediaFeatures();
+  initActivityCalendar();
 
   // 非同期処理
   await renderHeroMedia();
