@@ -23,13 +23,37 @@ window.PUPPYS_CONFIG = {
   
   // ===== 外部リンク =====
   mediaKitUrl: "https://drive.google.com/drive/folders/1jfploQJhKcJWmGzHVKrY2VnJykLoE-d0?usp=sharing",
-  instagramUrl: "",
+  instagramUrl: "https://www.instagram.com/pompuppysbright",
 
   // ===== UI設定 =====
   ui: {
     enableLightbox: true,
     showShareButton: true
   },
+
+  // ===== The Dance Summit 設定 =====
+  danceSummit: {
+    date: "2026-05-01", // The Dance Summit 2026 予選日
+    location: "Orlando, Florida, USA",
+    countdown: {
+      enabled: true,
+      title: "The Dance Summit 2026まで"
+    }
+  },
+
+  // ===== Instagram設定 =====
+  instagram: {
+    enabled: true,
+    username: "pompuppysbright",
+    displayCount: 6, // 表示する投稿数
+    embedType: "simple" // simple または widget
+  },
+
+  // ===== メディア掲載実績 =====
+  mediaFeatures: [
+    // メディア掲載が増えたら追加
+    // { name: "メディア名", logo: "./assets/media/logo.png", url: "記事URL", date: "2025-XX-XX" }
+  ],
 
   // ===== メディア用テキスト =====
   mediaTexts: {

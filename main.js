@@ -806,6 +806,117 @@ function setupMessageForm() {
 }
 
 // ============================================
+// カウントダウンタイマー
+// ============================================
+
+function initCountdown() {
+  var config = getConfig();
+  if (!config.danceSummit || !config.danceSummit.countdown || !config.danceSummit.countdown.enabled) {
+    return;
+  }
+
+  var timer = document.getElementById("countdownTimer");
+  if (!timer) return;
+
+  var targetDate = new Date(config.danceSummit.date);
+
+  // タイトル設定
+  var titleEl = document.getElementById("countdownTitle");
+  if (titleEl && config.danceSummit.countdown.title) {
+    titleEl.textContent = config.danceSummit.countdown.title;
+  }
+
+  function updateCountdown() {
+    var now = new Date();
+    var diff = targetDate - now;
+
+    if (diff <= 0) {
+      // イベント終了
+      timer.style.display = "none";
+      return;
+    }
+
+    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    document.getElementById("countdownDays").textContent = days;
+    document.getElementById("countdownHours").textContent = String(hours).padStart(2, "0");
+    document.getElementById("countdownMinutes").textContent = String(minutes).padStart(2, "0");
+    document.getElementById("countdownSeconds").textContent = String(seconds).padStart(2, "0");
+
+    timer.style.display = "block";
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+
+// ============================================
+// Instagram埋め込みフィード
+// ============================================
+
+function renderInstagramFeed() {
+  var config = getConfig();
+  if (!config.instagram || !config.instagram.enabled) {
+    return;
+  }
+
+  var section = document.getElementById("instagram");
+  if (!section) return;
+
+  // セクションを表示
+  section.style.display = "block";
+
+  var feedContainer = document.getElementById("instagramFeed");
+  if (!feedContainer) return;
+
+  // Instagram Basic Display APIやElfsightウィジェットを使う場合はここに実装
+  // 現在はプレースホルダーを表示（実際の投稿は手動埋め込みまたはAPI実装が必要）
+
+  // シンプルな実装: Instagramへのリンク誘導
+  feedContainer.innerHTML = '<div class="instagram-placeholder">' +
+    '<p style="margin-bottom: 16px;">📸 Instagramで最新の活動をチェック！</p>' +
+    '<a href="' + escapeHtml(config.instagramUrl) + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary">' +
+    '@' + escapeHtml(config.instagram.username) + ' をフォロー' +
+    '</a>' +
+    '</div>';
+}
+
+// ============================================
+// メディア掲載セクション
+// ============================================
+
+function renderMediaFeatures() {
+  var config = getConfig();
+  if (!config.mediaFeatures || config.mediaFeatures.length === 0) {
+    return;
+  }
+
+  var section = document.getElementById("media-features");
+  if (!section) return;
+
+  section.style.display = "block";
+
+  var grid = document.getElementById("mediaFeaturesGrid");
+  if (!grid) return;
+
+  var html = config.mediaFeatures.map(function(media) {
+    var url = media.url || "#";
+    var target = media.url ? ' target="_blank" rel="noopener noreferrer"' : '';
+    var date = media.date ? '<span class="mediaFeature__date">' + escapeHtml(media.date) + '</span>' : '';
+
+    return '<a href="' + escapeHtml(url) + '" class="mediaFeature"' + target + '>' +
+      '<img src="' + escapeHtml(media.logo) + '" alt="' + escapeHtml(media.name) + '">' +
+      date +
+      '</a>';
+  }).join("");
+
+  grid.innerHTML = html;
+}
+
+// ============================================
 // 初期化
 // ============================================
 
@@ -819,6 +930,11 @@ async function initSite() {
   renderMascot();
   setupHamburgerMenu();
   setupMessageForm();
+
+  // 新機能の初期化
+  initCountdown();
+  renderInstagramFeed();
+  renderMediaFeatures();
 
   // 非同期処理
   await renderHeroMedia();
