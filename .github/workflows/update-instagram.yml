@@ -1,0 +1,78 @@
+name: Instagram投稿自動更新
+
+on:
+  # 毎週月曜日の午前9時（JST）に実行
+  schedule:
+    - cron: '0 0 * * 1'  # 毎週月曜 0:00 UTC = 9:00 JST
+
+  # 手動実行も可能
+  workflow_dispatch:
+
+jobs:
+  update-instagram:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # リポジトリへの書き込み権限
+
+    steps:
+      - name: チェックアウト
+        uses: actions/checkout@v4
+
+      - name: Python環境セットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 依存関係インストール
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Instagram投稿取得
+        run: |
+          python scripts/update-instagram.py
+
+      - name: 変更確認
+        id: check_changes
+        run: |
+          if git diff --quiet instagram-posts.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ 変更なし"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "✅ instagram-posts.json が更新されました"
+          fi
+
+      - name: 変更をコミット
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add instagram-posts.json
+          git commit -m "🤖 Instagram投稿を自動更新
+
+自動更新日時: $(date +'%Y-%m-%d %H:%M:%S')
+
+Generated with GitHub Actions"
+
+      - name: 変更をプッシュ
+        if: steps.check_changes.outputs.changed == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+
+      - name: 実行サマリー
+        run: |
+          echo "## 📸 Instagram投稿更新完了" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**実行日時**: $(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_STEP_SUMMARY
+          echo "**ユーザー名**: @pompuppysbright" >> $GITHUB_STEP_SUMMARY
+          echo "**変更**: ${{ steps.check_changes.outputs.changed == 'true' && '✅ 更新あり' || 'ℹ️ 変更なし' }}" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f instagram-posts.json ]; then
+            post_count=$(python -c "import json; data = json.load(open('instagram-posts.json')); print(len(data.get('posts', [])))")
+            echo "**投稿数**: ${post_count}件" >> $GITHUB_STEP_SUMMARY
+          fi
