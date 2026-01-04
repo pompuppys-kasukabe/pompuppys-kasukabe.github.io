@@ -1104,12 +1104,22 @@ function renderActivityCalendar(activities) {
     }
   });
 
-  // カレンダーグリッド生成
+  // カレンダーグリッド生成（11月〜4月の6ヶ月固定）
   var now = new Date();
-  var monthsHtml = [];
+  var currentYear = now.getFullYear();
+  var currentMonth = now.getMonth(); // 0-11
 
-  for (var i = displayMonths - 1; i >= 0; i--) {
-    var month = new Date(now.getFullYear(), now.getMonth() - i, 1);
+  // シーズン開始年を決定（11月以降なら今年、10月以前なら前年）
+  var seasonStartYear = currentMonth >= 10 ? currentYear : currentYear - 1;
+
+  // 11月から6ヶ月間（11, 12, 1, 2, 3, 4月）を生成
+  var monthsHtml = [];
+  var months = [10, 11, 0, 1, 2, 3]; // 10=11月, 11=12月, 0=1月, 1=2月, 2=3月, 3=4月
+
+  for (var i = 0; i < months.length; i++) {
+    var monthIndex = months[i];
+    var year = monthIndex >= 10 ? seasonStartYear : seasonStartYear + 1;
+    var month = new Date(year, monthIndex, 1);
     var monthHtml = renderMonth(month, activityMap, colorScheme);
     monthsHtml.push(monthHtml);
   }
@@ -1176,18 +1186,22 @@ function renderMonth(month, activityMap, colorScheme) {
 }
 
 function renderActivityStats(activities) {
-  var config = getConfig();
   var now = new Date();
-  var displayMonths = config.activityCalendar.displayMonths || 6;
+  var currentYear = now.getFullYear();
+  var currentMonth = now.getMonth(); // 0-11
 
-  // 過去N ヶ月の開始日を計算
-  var startDate = new Date(now.getFullYear(), now.getMonth() - displayMonths + 1, 1);
+  // シーズン開始年を決定（11月以降なら今年、10月以前なら前年）
+  var seasonStartYear = currentMonth >= 10 ? currentYear : currentYear - 1;
 
-  // 過去N ヶ月の活動をフィルタ
+  // 11月1日から4月30日までの期間を設定
+  var startDate = new Date(seasonStartYear, 10, 1); // 11月1日
+  var endDate = new Date(seasonStartYear + 1, 4, 0); // 4月末（5月0日 = 4月末）
+
+  // 11月〜4月の活動をフィルタ
   var periodActivities = activities.filter(function(a) {
     if (!a.date) return false;
     var date = new Date(a.date);
-    return date >= startDate;
+    return date >= startDate && date <= endDate;
   });
 
   // 統計計算
