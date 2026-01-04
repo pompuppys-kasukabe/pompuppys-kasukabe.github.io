@@ -59,7 +59,7 @@ window.PUPPYS_CONFIG = {
   // ===== 活動カレンダー =====
   activityCalendar: {
     enabled: true,
-    apiUrl: "", // Google Apps Script のデプロイURLを設定（NOTION_ACTIVITY_CALENDAR_SETUP.md 参照）
+    apiUrl: "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec",
     displayMonths: 3, // 表示する月数（過去3ヶ月）
     colorScheme: {
       "練習": "#8b5fbf",              // 紫
