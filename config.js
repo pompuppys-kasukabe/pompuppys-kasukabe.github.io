@@ -72,14 +72,14 @@ window.PUPPYS_CONFIG = {
       "その他": "#bdc3c7"             // ライトグレー
     },
     typeIcons: {
-      "練習": "🟣",
-      "大会": "🏆",
-      "イベント出演": "🎪",
-      "クラファン・協賛": "💰",
-      "メディア取材": "📢",
-      "リハーサル": "🎭",
-      "ミーティング": "💬",
-      "その他": "📌"
+      "練習": "fa-solid fa-dumbbell",
+      "大会": "fa-solid fa-trophy",
+      "イベント出演": "fa-solid fa-star",
+      "クラファン・協賛": "fa-solid fa-hand-holding-dollar",
+      "メディア取材": "fa-solid fa-camera",
+      "リハーサル": "fa-solid fa-masks-theater",
+      "ミーティング": "fa-solid fa-users",
+      "その他": "fa-solid fa-circle"
     },
     hoverInfo: {
       showTime: true,      // 開始・終了時間を表示

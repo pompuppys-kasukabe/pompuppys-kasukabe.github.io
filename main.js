@@ -1235,6 +1235,9 @@ function getActivityColor(activity, colorScheme) {
 }
 
 function createTooltip(activities) {
+  var config = getConfig();
+  var typeIcons = config.activityCalendar.typeIcons || {};
+
   return activities.map(function(a) {
     var time = '';
     if (a.startTime && a.endTime) {
@@ -1243,11 +1246,15 @@ function createTooltip(activities) {
       time = a.startTime + ' ~';
     }
 
+    // アイコン取得
+    var iconClass = typeIcons[a.type] || typeIcons['その他'] || '';
+    var icon = iconClass ? '<i class="' + iconClass + '"></i> ' : '';
+
     var parts = [a.name];
     if (time) parts.push(time);
     if (a.location) parts.push(a.location);
 
-    return escapeHtml(parts.join(' / '));
+    return icon + escapeHtml(parts.join(' / '));
   }).join('<br>');
 }
 
