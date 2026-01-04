@@ -897,56 +897,20 @@ function renderInstagramFeed() {
   var feedContainer = document.getElementById("instagramFeed");
   if (!feedContainer) return;
 
-  // API URLが設定されていない場合はプレースホルダー表示
-  if (!config.instagram.apiUrl) {
-    feedContainer.innerHTML = '<div class="instagram-placeholder">' +
-      '<p style="margin-bottom: 16px;">📸 Instagramで最新の活動をチェック！</p>' +
-      '<a href="https://www.instagram.com/' + escapeHtml(config.instagram.username) + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary">' +
-      '@' + escapeHtml(config.instagram.username) + ' をフォロー' +
-      '</a>' +
-      '</div>';
-    return;
-  }
-
   // ローディング表示
   feedContainer.innerHTML = '<div class="instagram-placeholder">読み込み中...</div>';
 
-  // キャッシュチェック
-  var cacheKey = 'instagram_feed_cache';
-  var cacheTimeKey = 'instagram_feed_cache_time';
-  var cachedData = localStorage.getItem(cacheKey);
-  var cacheTime = localStorage.getItem(cacheTimeKey);
-  var cacheMinutes = config.instagram.cacheMinutes || 30;
-  var now = new Date().getTime();
-
-  // キャッシュが有効な場合は使用
-  if (cachedData && cacheTime && (now - parseInt(cacheTime)) < cacheMinutes * 60 * 1000) {
-    try {
-      var posts = JSON.parse(cachedData);
-      displayInstagramPosts(posts, feedContainer, config);
-      return;
-    } catch (e) {
-      console.error('Instagram cache parse error:', e);
-    }
-  }
-
-  // APIからデータ取得
-  fetch(config.instagram.apiUrl + '?action=getInstagramFeed')
+  // JSONファイルから投稿データを取得
+  fetch(config.instagram.jsonUrl)
     .then(function(response) {
+      if (!response.ok) {
+        throw new Error('JSON読み込みエラー');
+      }
       return response.json();
     })
     .then(function(data) {
-      if (data.success && data.data && data.data.length > 0) {
-        var posts = data.data.slice(0, config.instagram.displayCount);
-
-        // キャッシュに保存
-        try {
-          localStorage.setItem(cacheKey, JSON.stringify(posts));
-          localStorage.setItem(cacheTimeKey, now.toString());
-        } catch (e) {
-          console.error('Instagram cache save error:', e);
-        }
-
+      if (data.posts && data.posts.length > 0) {
+        var posts = data.posts.slice(0, config.instagram.displayCount);
         displayInstagramPosts(posts, feedContainer, config);
       } else {
         // データがない場合
@@ -959,9 +923,9 @@ function renderInstagramFeed() {
       }
     })
     .catch(function(error) {
-      console.error('Instagram API error:', error);
+      console.error('Instagram読み込みエラー:', error);
       feedContainer.innerHTML = '<div class="instagram-placeholder">' +
-        '<p style="margin-bottom: 16px;">投稿の読み込みに失敗しました</p>' +
+        '<p style="margin-bottom: 16px;">📸 Instagramで最新の活動をチェック！</p>' +
         '<a href="https://www.instagram.com/' + escapeHtml(config.instagram.username) + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary">' +
         '@' + escapeHtml(config.instagram.username) + ' をフォロー' +
         '</a>' +
@@ -972,9 +936,11 @@ function renderInstagramFeed() {
 function displayInstagramPosts(posts, container, config) {
   var html = posts.map(function(post) {
     var caption = post.caption ? escapeHtml(post.caption.substring(0, 100)) + (post.caption.length > 100 ? '...' : '') : '';
+    var imageUrl = post.image || post.mediaUrl; // JSON形式とAPI形式の両方に対応
+    var postUrl = post.url || post.permalink; // JSON形式とAPI形式の両方に対応
 
-    return '<a href="' + escapeHtml(post.permalink) + '" target="_blank" rel="noopener noreferrer" class="instagram-post">' +
-      '<img src="' + escapeHtml(post.mediaUrl) + '" alt="Instagram post" loading="lazy">' +
+    return '<a href="' + escapeHtml(postUrl) + '" target="_blank" rel="noopener noreferrer" class="instagram-post">' +
+      '<img src="' + escapeHtml(imageUrl) + '" alt="Instagram post" loading="lazy">' +
       (caption ? '<div class="instagram-post__overlay">' + caption + '</div>' : '') +
       '</a>';
   }).join('');

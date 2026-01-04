@@ -1,0 +1,41 @@
+{
+  "posts": [
+    {
+      "id": "sample1",
+      "url": "https://www.instagram.com/pompuppysbright/",
+      "image": "https://via.placeholder.com/400x400/6B3FA0/ffffff?text=Instagram+1",
+      "caption": "最新の投稿をここに表示します"
+    },
+    {
+      "id": "sample2",
+      "url": "https://www.instagram.com/pompuppysbright/",
+      "image": "https://via.placeholder.com/400x400/D4A84B/ffffff?text=Instagram+2",
+      "caption": "投稿の更新方法は INSTAGRAM_UPDATE_GUIDE.md を参照"
+    },
+    {
+      "id": "sample3",
+      "url": "https://www.instagram.com/pompuppysbright/",
+      "image": "https://via.placeholder.com/400x400/6B3FA0/ffffff?text=Instagram+3",
+      "caption": "週1回の更新で最新情報を共有"
+    },
+    {
+      "id": "sample4",
+      "url": "https://www.instagram.com/pompuppysbright/",
+      "image": "https://via.placeholder.com/400x400/D4A84B/ffffff?text=Instagram+4",
+      "caption": "POM PUPPYS bright の活動"
+    },
+    {
+      "id": "sample5",
+      "url": "https://www.instagram.com/pompuppysbright/",
+      "image": "https://via.placeholder.com/400x400/6B3FA0/ffffff?text=Instagram+5",
+      "caption": "練習風景やイベント情報"
+    },
+    {
+      "id": "sample6",
+      "url": "https://www.instagram.com/pompuppysbright/",
+      "image": "https://via.placeholder.com/400x400/D4A84B/ffffff?text=Instagram+6",
+      "caption": "最新6件の投稿を表示"
+    }
+  ],
+  "_comment": "投稿の更新方法は INSTAGRAM_UPDATE_GUIDE.md を参照してください"
+}
