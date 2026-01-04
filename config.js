@@ -219,12 +219,13 @@ story: {
 },
 
 
-    timeline: [
-      { year: "2016", text: "春日部で活動開始" },
-      { year: "2020", text: "大会への挑戦を本格化" },
-      { year: "2025", text: "JAMfest JAPAN vol.23 で1位獲得" },
-      { year: "2026", text: "The Dance Summit へ挑戦予定", highlight: true }
-    ],
+timeline: [
+  { year: "2016", text: "春日部で活動開始" },
+  { year: "2020", text: "大会への挑戦を本格化" },
+  { year: "2025.11", text: "JAMfest JAPAN vol.23 で1位獲得" },
+  { year: "2026.3", text: "USA Nationals 出場予定" },
+  { year: "2026.5", text: "The Dance Summit へ挑戦予定", highlight: true }
+],
 
     summitNote: "The Dance Summit は、米国Varsity社が主催する世界最高峰のチアダンス・ダンスの世界選手権大会です。"
   },
