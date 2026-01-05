@@ -240,18 +240,25 @@ async function renderMembers() {
     var card = document.createElement("div");
     card.className = "memberCard";
 
-    // 説明文がある場合はツールチップ付きで表示
+    // 説明文がある場合は展開可能にする
     if (description) {
       card.innerHTML =
-        '<div class="memberPhoto__wrap">' +
+        '<div class="memberCard__content">' +
         '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
-        '<div class="memberPhoto__overlay">' + escapeHtml(description) + '</div>' +
-        '</div>' +
-        '<p class="memberName">' + escapeHtml(name) + '</p>';
+        '<p class="memberName">' + escapeHtml(name) + '</p>' +
+        '<div class="memberCard__description">' + escapeHtml(description) + '</div>' +
+        '</div>';
+
+      // クリックで展開/閉じる
+      card.addEventListener('click', function() {
+        this.classList.toggle('memberCard--expanded');
+      });
     } else {
       card.innerHTML =
+        '<div class="memberCard__content">' +
         '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
-        '<p class="memberName">' + escapeHtml(name) + '</p>';
+        '<p class="memberName">' + escapeHtml(name) + '</p>' +
+        '</div>';
     }
 
     container.appendChild(card);
@@ -370,7 +377,7 @@ function setupLightbox() {
     var t = e.target;
     if (!(t instanceof HTMLElement)) return;
 
-    // フォトギャラリーのライトボックス
+    // フォトギャラリーのライトボックスのみ
     var card = t.closest(".photoCard");
     if (card) {
       var imgEl = card.querySelector("img.photoImg");
@@ -382,28 +389,6 @@ function setupLightbox() {
           if (capEl) caption = capEl.textContent || "";
         }
         openLightbox(imgEl.getAttribute("src"), caption, imgEl.getAttribute("alt") || caption);
-      }
-      return;
-    }
-
-    // メンバー写真のライトボックス
-    var memberCard = t.closest(".memberCard");
-    if (memberCard) {
-      var memberImg = memberCard.querySelector(".memberPhoto");
-      if (memberImg && memberImg.getAttribute("src")) {
-        var memberName = memberCard.querySelector(".memberName");
-        var memberOverlay = memberCard.querySelector(".memberPhoto__overlay");
-
-        var name = memberName ? memberName.textContent : "";
-        var description = memberOverlay ? memberOverlay.textContent : "";
-
-        // 名前と説明文を組み合わせてキャプションを作成
-        var caption = name;
-        if (description) {
-          caption = name + "\n\n" + description;
-        }
-
-        openLightbox(memberImg.getAttribute("src"), caption, name);
       }
     }
   });
