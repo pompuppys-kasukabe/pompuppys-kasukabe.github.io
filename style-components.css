@@ -1110,10 +1110,18 @@ Copy.footer a {
 }
 
 .lightbox__img {
-  max-width: 90vw;
-  max-height: 85vh;
+  max-width: 60vw;
+  max-height: 70vh;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
+}
+
+/* モバイルでは大きめに表示 */
+@media (max-width: 768px) {
+  .lightbox__img {
+    max-width: 85vw;
+    max-height: 75vh;
+  }
 }
 
 .lightbox__cap {

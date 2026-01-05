@@ -67,8 +67,28 @@ function doGet(e) {
 
   try {
     if (action === "sync") {
-      syncPhotosFromNotion();
-      return jsonResponse({ success: true, message: "同期完了" });
+      const syncCount = syncPhotosFromNotion();
+      return ContentService.createTextOutput(
+        '<!DOCTYPE html>' +
+        '<html lang="ja">' +
+        '<head><meta charset="UTF-8"><title>同期完了</title>' +
+        '<style>body{font-family:sans-serif;max-width:600px;margin:50px auto;padding:20px;text-align:center;}' +
+        '.success{color:#27ae60;font-size:24px;margin:20px 0;}' +
+        '.info{background:#ecf0f1;padding:15px;border-radius:8px;margin:20px 0;line-height:1.6;}' +
+        'a{display:inline-block;margin-top:20px;padding:12px 24px;background:#6b3fa0;color:#fff;text-decoration:none;border-radius:6px;}' +
+        'a:hover{background:#8b5fc0;}</style></head>' +
+        '<body>' +
+        '<div class="success">✅ 同期完了！</div>' +
+        '<p>' + syncCount + '件の写真をGoogle Driveに同期しました</p>' +
+        '<div class="info">' +
+        '<strong>📢 重要:</strong><br>' +
+        'Webサイトに反映するには、キャッシュをクリアする必要があります。<br>' +
+        '下のボタンをクリックしてサイトを開いてください。' +
+        '</div>' +
+        '<a href="https://pompuppys-kasukabe.github.io/?reload=1" target="_blank">サイトを開く（キャッシュクリア）</a>' +
+        '<p style="margin-top:30px;color:#7f8c8d;font-size:14px;">このタブは閉じて構いません</p>' +
+        '</body></html>'
+      ).setMimeType(ContentService.MimeType.HTML);
 
     } else if (action === "getPhotos") {
       const data = buildPhotosData();
