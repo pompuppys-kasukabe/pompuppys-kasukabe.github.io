@@ -1209,7 +1209,10 @@ function renderMonth(month, activityMap, colorScheme) {
     var dateKey = formatDateKey(date);
     var activities = activityMap[dateKey] || [];
     var level = Math.min(activities.length, 4);
-    var color = activities.length > 0 ? getActivityColor(activities[0], colorScheme) : '';
+
+    // 優先順位に基づいて最高優先度の活動の色を使用
+    var highestActivity = getHighestPriorityActivity(activities);
+    var color = highestActivity ? getActivityColor(highestActivity, colorScheme) : '';
     var tooltip = activities.length > 0 ? createTooltip(activities) : '';
 
     var style = color ? ' style="background-color: ' + color + ';"' : '';
@@ -1288,6 +1291,34 @@ function formatDateKey(date) {
 
 function getActivityColor(activity, colorScheme) {
   return colorScheme[activity.type] || '#bdc3c7';
+}
+
+function getHighestPriorityActivity(activities) {
+  if (!activities || activities.length === 0) return null;
+  if (activities.length === 1) return activities[0];
+
+  // 優先順位: 大会 > イベント > メディア取材 > 協賛 > 練習
+  var priority = {
+    '大会': 1,
+    'イベント': 2,
+    'メディア取材': 3,
+    '協賛': 4,
+    '練習': 5
+  };
+
+  // 最高優先度の活動を見つける
+  var highest = activities[0];
+  var highestPriority = priority[highest.type] || 999;
+
+  for (var i = 1; i < activities.length; i++) {
+    var activityPriority = priority[activities[i].type] || 999;
+    if (activityPriority < highestPriority) {
+      highest = activities[i];
+      highestPriority = activityPriority;
+    }
+  }
+
+  return highest;
 }
 
 function createTooltip(activities) {
