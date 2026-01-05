@@ -18,30 +18,56 @@ var PHOTOS_API_URL = "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm
 var photosCache = null;
 
 async function fetchPhotos() {
+  // URLパラメータでキャッシュクリア（?reload=1 でキャッシュ削除）
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('reload') === '1') {
+    localStorage.removeItem('photos_data');
+    localStorage.removeItem('photos_time');
+    console.log('📸 写真キャッシュをクリアしました');
+  }
+
+  // メモリキャッシュチェック
+  if (photosCache) return photosCache;
+
+  // localStorageキャッシュチェック（30分有効）
+  var cachedData = localStorage.getItem('photos_data');
+  var cachedTime = localStorage.getItem('photos_time');
+  var now = Date.now();
+  var cacheMinutes = 30;
+
+  if (cachedData && cachedTime) {
+    var elapsed = (now - parseInt(cachedTime, 10)) / 1000 / 60;
+    if (elapsed < cacheMinutes) {
+      photosCache = JSON.parse(cachedData);
+      console.log('📸 写真データをキャッシュから取得（残り ' + Math.round(cacheMinutes - elapsed) + '分）');
+      return photosCache;
+    }
+  }
+
+  // APIから取得
   try {
-    var url = PHOTOS_API_URL + "?action=getPhotos&t=" + Date.now();
+    var url = PHOTOS_API_URL + "?action=getPhotos&t=" + now;
     var res = await fetch(url);
     if (!res.ok) throw new Error("HTTP " + res.status);
     var data = await res.json();
 
-    // バージョンチェック
-    var savedVersion = localStorage.getItem('photos_version');
-    var currentVersion = data.version ? data.version.toString() : '';
-
-    if (savedVersion !== currentVersion) {
-      // バージョンが変わっている → キャッシュクリア
-      console.log('📸 写真データが更新されました（Notion編集を検知）');
-      localStorage.setItem('photos_version', currentVersion);
-      photosCache = null; // キャッシュをクリア
-    }
-
-    // 新しいデータを返す
+    // キャッシュに保存
     photosCache = data;
+    localStorage.setItem('photos_data', JSON.stringify(data));
+    localStorage.setItem('photos_time', now.toString());
+    console.log('📸 写真データをAPIから取得してキャッシュ');
+
     return photosCache;
   } catch (e) {
     console.error("写真データ取得失敗:", e);
-    // キャッシュがあれば返す
-    return photosCache || { hero: null, gallery: [], members: [] };
+
+    // エラー時は古いキャッシュでも使用
+    if (cachedData) {
+      console.log('📸 エラーのため古いキャッシュを使用');
+      return JSON.parse(cachedData);
+    }
+
+    return { hero: null, gallery: [], members: [] };
   }
 }
 
@@ -205,16 +231,29 @@ async function renderMembers() {
   container.innerHTML = "";
 
   members.forEach(function(member) {
-    var src = member.driveId 
-      ? getDriveImageUrl(member.driveId) 
+    var src = member.driveId
+      ? getDriveImageUrl(member.driveId)
       : member.src;
     var name = member.title || member.name || "Member";
+    var description = member.alt || "";
 
     var card = document.createElement("div");
     card.className = "memberCard";
-    card.innerHTML = 
-      '<img src="' + src + '" alt="' + name + '" class="memberPhoto" loading="lazy">' +
-      '<p class="memberName">' + name + '</p>';
+
+    // 説明文がある場合はツールチップ付きで表示
+    if (description) {
+      card.innerHTML =
+        '<div class="memberPhoto__wrap">' +
+        '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
+        '<div class="memberPhoto__overlay">' + escapeHtml(description) + '</div>' +
+        '</div>' +
+        '<p class="memberName">' + escapeHtml(name) + '</p>';
+    } else {
+      card.innerHTML =
+        '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
+        '<p class="memberName">' + escapeHtml(name) + '</p>';
+    }
+
     container.appendChild(card);
   });
 }
@@ -487,18 +526,7 @@ async function fetchMessages() {
     if (!res.ok) throw new Error("HTTP " + res.status);
     var data = await res.json();
 
-    // Notion API連携の場合、バージョンチェック
-    if (msgCfg.useNotionAPI && data.version) {
-      var savedVersion = localStorage.getItem('messages_version');
-      var currentVersion = data.version.toString();
-
-      if (savedVersion !== currentVersion) {
-        console.log('💬 メッセージデータが更新されました（Notion編集を検知）');
-        localStorage.setItem('messages_version', currentVersion);
-      }
-    }
-
-    // データ形式の統一（Notion APIは{messages: [], version: N}、JSONは配列）
+    // データ形式の統一（Notion APIは{messages: []}、JSONは配列）
     var messages = data.messages || data;
 
     return messages
@@ -1062,7 +1090,6 @@ function fetchActivityData() {
 
         renderActivityCalendar(activities);
         renderActivityStats(activities);
-        renderUpcomingEvents(activities);
       } else {
         grid.innerHTML = '<div class="calendar-loading">' +
           '<p>活動データがありません。</p>' +
@@ -1254,70 +1281,7 @@ function createTooltip(activities) {
   }).join('<br>');
 }
 
-function renderUpcomingEvents(activities) {
-  var container = document.getElementById('upcomingEventsList');
-  if (!container) return;
-
-  var config = getConfig();
-  var typeIcons = config.activityCalendar.typeIcons || {};
-  var colorScheme = config.activityCalendar.colorScheme || {};
-
-  // 今日以降の活動をフィルタして日付順にソート
-  var today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  var upcoming = activities
-    .filter(function(a) {
-      if (!a.date) return false;
-      var date = new Date(a.date);
-      return date >= today;
-    })
-    .sort(function(a, b) {
-      return new Date(a.date) - new Date(b.date);
-    })
-    .slice(0, 5);
-
-  if (upcoming.length === 0) {
-    container.innerHTML = '<div class="upcomingEvents__empty">今後の予定はありません</div>';
-    return;
-  }
-
-  var html = upcoming.map(function(activity) {
-    var date = new Date(activity.date);
-    var monthDay = (date.getMonth() + 1) + '/' + date.getDate();
-    var dayNames = ['日', '月', '火', '水', '木', '金', '土'];
-    var dayOfWeek = dayNames[date.getDay()];
-
-    var time = '';
-    if (activity.startTime && activity.endTime) {
-      time = activity.startTime + ' - ' + activity.endTime;
-    } else if (activity.startTime) {
-      time = activity.startTime + ' ~';
-    }
-
-    var iconClass = typeIcons[activity.type] || typeIcons['その他'] || '';
-    var icon = iconClass ? '<i class="' + iconClass + '"></i>' : '';
-    var color = colorScheme[activity.type] || '#bdc3c7';
-
-    return '<div class="upcomingEvent" style="border-left-color: ' + color + ';">' +
-      '<div class="upcomingEvent__date">' +
-        '<div class="upcomingEvent__monthDay">' + escapeHtml(monthDay) + '</div>' +
-        '<div class="upcomingEvent__dayOfWeek">(' + escapeHtml(dayOfWeek) + ')</div>' +
-      '</div>' +
-      '<div class="upcomingEvent__details">' +
-        '<div class="upcomingEvent__header">' +
-          '<span class="upcomingEvent__icon">' + icon + '</span>' +
-          '<span class="upcomingEvent__type">' + escapeHtml(activity.type) + '</span>' +
-        '</div>' +
-        '<div class="upcomingEvent__name">' + escapeHtml(activity.name) + '</div>' +
-        (time ? '<div class="upcomingEvent__time"><i class="fa-solid fa-clock"></i> ' + escapeHtml(time) + '</div>' : '') +
-        (activity.location ? '<div class="upcomingEvent__location"><i class="fa-solid fa-location-dot"></i> ' + escapeHtml(activity.location) + '</div>' : '') +
-      '</div>' +
-    '</div>';
-  }).join('');
-
-  container.innerHTML = html;
-}
+// renderUpcomingEvents() - 削除済み
 
 // ============================================
 // 初期化

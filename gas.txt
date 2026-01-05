@@ -220,18 +220,8 @@ function buildPhotosData() {
   const pages = fetchNotionDatabase(CONFIG.PHOTOS_DB_ID, CONFIG.NOTION_TOKEN);
   const fileIdCache = getFileIdCache();
 
-  // 最新の編集時刻を取得（バージョン管理用）
-  let latestEdit = 0;
-  for (let i = 0; i < pages.length; i++) {
-    const editTime = new Date(pages[i].last_edited_time).getTime();
-    if (editTime > latestEdit) {
-      latestEdit = editTime;
-    }
-  }
-
   const result = {
     updatedAt: new Date().toISOString().split("T")[0],
-    version: latestEdit, // タイムスタンプをバージョンとして使用
     hero: null,
     gallery: [],
     members: []
@@ -317,16 +307,7 @@ function getMessages() {
 
     if (!data.results) {
       Logger.log("Error: " + response.getContentText());
-      return [];
-    }
-
-    // 最新の編集時刻を取得（バージョン管理用）
-    let latestEdit = 0;
-    for (let i = 0; i < data.results.length; i++) {
-      const editTime = new Date(data.results[i].last_edited_time).getTime();
-      if (editTime > latestEdit) {
-        latestEdit = editTime;
-      }
+      return { messages: [] };
     }
 
     const messages = data.results.map(page => {
@@ -344,14 +325,11 @@ function getMessages() {
       };
     });
 
-    return {
-      messages: messages,
-      version: latestEdit
-    };
+    return { messages: messages };
 
   } catch (e) {
     Logger.log("Error in getMessages: " + e.toString());
-    return { messages: [], version: 0 };
+    return { messages: [] };
   }
 }
 
@@ -738,8 +716,18 @@ function getInstagramFeedFromNotion() {
         success: true,
         data: [],
         count: 0,
+        cacheVersion: 1,
         message: "Notionデータベースに投稿がありません"
       };
+    }
+
+    // 更新バージョンを取得（最初の投稿から取得、全投稿で同じ値のはず）
+    let cacheVersion = 1; // デフォルト値
+    if (data.results.length > 0) {
+      const firstPage = data.results[0];
+      if (firstPage.properties['更新バージョン'] && firstPage.properties['更新バージョン'].number) {
+        cacheVersion = firstPage.properties['更新バージョン'].number;
+      }
     }
 
     // データ整形
@@ -801,6 +789,7 @@ function getInstagramFeedFromNotion() {
       success: true,
       data: posts,
       count: posts.length,
+      cacheVersion: cacheVersion,
       source: 'notion'
     };
 

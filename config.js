@@ -49,7 +49,7 @@ window.PUPPYS_CONFIG = {
     apiUrl: "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec", // GASエンドポイント
     jsonUrl: "./instagram-posts.json", // 手動更新方式のJSONファイル（useNotion: false の場合）
     displayCount: 6, // 表示する投稿数
-    cacheMinutes: 0 // キャッシュ時間（分）0=即時反映
+    cacheMinutes: 30 // キャッシュ時間（分）※Notionの「更新バージョン」が変わると即時反映
   },
 
   // ===== メディア掲載実績 =====
