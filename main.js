@@ -339,7 +339,15 @@ function setupLightbox() {
   function openLightbox(src, caption, alt) {
     lbImg.src = src;
     lbImg.alt = alt || caption || "";
-    cap.textContent = caption || "";
+
+    // キャプションの改行を<br>に変換
+    if (caption) {
+      var formattedCaption = escapeHtml(caption).replace(/\n/g, '<br>');
+      cap.innerHTML = formattedCaption;
+    } else {
+      cap.textContent = "";
+    }
+
     lb.classList.add("isOpen");
     lb.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -361,17 +369,42 @@ function setupLightbox() {
   document.addEventListener("click", function(e) {
     var t = e.target;
     if (!(t instanceof HTMLElement)) return;
+
+    // フォトギャラリーのライトボックス
     var card = t.closest(".photoCard");
-    if (!card) return;
-    var imgEl = card.querySelector("img.photoImg");
-    if (imgEl && imgEl.getAttribute("src")) {
-      var fig = t.closest("figure");
-      var caption = "";
-      if (fig) {
-        var capEl = fig.querySelector(".photoCap");
-        if (capEl) caption = capEl.textContent || "";
+    if (card) {
+      var imgEl = card.querySelector("img.photoImg");
+      if (imgEl && imgEl.getAttribute("src")) {
+        var fig = t.closest("figure");
+        var caption = "";
+        if (fig) {
+          var capEl = fig.querySelector(".photoCap");
+          if (capEl) caption = capEl.textContent || "";
+        }
+        openLightbox(imgEl.getAttribute("src"), caption, imgEl.getAttribute("alt") || caption);
       }
-      openLightbox(imgEl.getAttribute("src"), caption, imgEl.getAttribute("alt") || caption);
+      return;
+    }
+
+    // メンバー写真のライトボックス
+    var memberCard = t.closest(".memberCard");
+    if (memberCard) {
+      var memberImg = memberCard.querySelector(".memberPhoto");
+      if (memberImg && memberImg.getAttribute("src")) {
+        var memberName = memberCard.querySelector(".memberName");
+        var memberOverlay = memberCard.querySelector(".memberPhoto__overlay");
+
+        var name = memberName ? memberName.textContent : "";
+        var description = memberOverlay ? memberOverlay.textContent : "";
+
+        // 名前と説明文を組み合わせてキャプションを作成
+        var caption = name;
+        if (description) {
+          caption = name + "\n\n" + description;
+        }
+
+        openLightbox(memberImg.getAttribute("src"), caption, name);
+      }
     }
   });
 }
