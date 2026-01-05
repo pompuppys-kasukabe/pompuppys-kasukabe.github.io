@@ -18,17 +18,30 @@ var PHOTOS_API_URL = "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm
 var photosCache = null;
 
 async function fetchPhotos() {
-  if (photosCache) return photosCache;
-  
   try {
     var url = PHOTOS_API_URL + "?action=getPhotos&t=" + Date.now();
     var res = await fetch(url);
     if (!res.ok) throw new Error("HTTP " + res.status);
-    photosCache = await res.json();
+    var data = await res.json();
+
+    // バージョンチェック
+    var savedVersion = localStorage.getItem('photos_version');
+    var currentVersion = data.version ? data.version.toString() : '';
+
+    if (savedVersion !== currentVersion) {
+      // バージョンが変わっている → キャッシュクリア
+      console.log('📸 写真データが更新されました（Notion編集を検知）');
+      localStorage.setItem('photos_version', currentVersion);
+      photosCache = null; // キャッシュをクリア
+    }
+
+    // 新しいデータを返す
+    photosCache = data;
     return photosCache;
   } catch (e) {
     console.error("写真データ取得失敗:", e);
-    return { hero: null, gallery: [], members: [] };
+    // キャッシュがあれば返す
+    return photosCache || { hero: null, gallery: [], members: [] };
   }
 }
 
@@ -474,7 +487,21 @@ async function fetchMessages() {
     if (!res.ok) throw new Error("HTTP " + res.status);
     var data = await res.json();
 
-    return data
+    // Notion API連携の場合、バージョンチェック
+    if (msgCfg.useNotionAPI && data.version) {
+      var savedVersion = localStorage.getItem('messages_version');
+      var currentVersion = data.version.toString();
+
+      if (savedVersion !== currentVersion) {
+        console.log('💬 メッセージデータが更新されました（Notion編集を検知）');
+        localStorage.setItem('messages_version', currentVersion);
+      }
+    }
+
+    // データ形式の統一（Notion APIは{messages: [], version: N}、JSONは配列）
+    var messages = data.messages || data;
+
+    return messages
       .filter(function(m) { return m.approved !== false && m.message; })
       .sort(function(a, b) { return String(b.date).localeCompare(String(a.date)); });
   } catch (e) {
