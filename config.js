@@ -116,9 +116,9 @@ window.PUPPYS_CONFIG = {
       date: "2025-01-03",
       tag: "INFO",
       title: "公式Instagram開設しました",
-       body: "チームの活動や日常を発信していきます。ぜひフォローお願いします！",
-        url: "https://www.instagram.com/pompuppysbright"
-　　 },
+      body: "チームの活動や日常を発信していきます。ぜひフォローお願いします！",
+      url: "https://www.instagram.com/pompuppysbright"
+    },
     {
       date: "2025-12-28",
       tag: "EVENT",
