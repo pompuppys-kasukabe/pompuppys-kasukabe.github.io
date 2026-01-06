@@ -1,10 +1,19 @@
-/* main.js - POM PUPPYS bright（Notion + Google Drive 連携版） */
+/* main.js - POM PUPPYS bright（Notion + Google Drive 連携版 + Swiper カルーセル） */
 
 // ============================================
 // 写真API設定
 // ============================================
 
 var PHOTOS_API_URL = "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec";
+
+// ============================================
+// Swiper インスタンス管理
+// ============================================
+
+var teamSwiper = null;
+var photosSwiper = null;
+var photosThumbs = null;
+var instagramSwiper = null;
 
 // ============================================
 // ユーティリティ関数（utils.jsから読み込み）
@@ -160,39 +169,38 @@ async function renderHeroMedia() {
       };
 
       // 自動再生（prefers-reduced-motion考慮）
-var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (!prefersReduced) {
-  // 動画終了時に静止画に切り替え
-  video.addEventListener('ended', function() {
-    video.style.opacity = '0';
-    video.style.transition = 'opacity 0.8s ease';
-    
-    setTimeout(function() {
-      video.style.display = 'none';
-      img.src = imgSrc;
-      img.alt = imgAlt;
-      img.style.display = 'block';
-      img.style.opacity = '0';
-      
-      // 少し遅らせてフェードイン
-      setTimeout(function() {
-        img.style.transition = 'opacity 0.8s ease';
-        img.style.opacity = '1';
-      }, 50);
-    }, 800);
-  });
-  
-  video.play().catch(function() {
-    // 自動再生失敗時は静止画を表示
-    video.style.display = 'none';
-    img.src = imgSrc;
-    img.alt = imgAlt;
-    img.style.display = 'block';
-  });
-}
+      var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        // 動画終了時に静止画に切り替え
+        video.addEventListener('ended', function() {
+          video.style.opacity = '0';
+          video.style.transition = 'opacity 0.8s ease';
+          
+          setTimeout(function() {
+            video.style.display = 'none';
+            img.src = imgSrc;
+            img.alt = imgAlt;
+            img.style.display = 'block';
+            img.style.opacity = '0';
+            
+            // 少し遅らせてフェードイン
+            setTimeout(function() {
+              img.style.transition = 'opacity 0.8s ease';
+              img.style.opacity = '1';
+            }, 50);
+          }, 800);
+        });
+        
+        video.play().catch(function() {
+          // 自動再生失敗時は静止画を表示
+          video.style.display = 'none';
+          img.src = imgSrc;
+          img.alt = imgAlt;
+          img.style.display = 'block';
+        });
+      }
 
-return;
-
+      return;
     }
   }
 
@@ -212,7 +220,7 @@ return;
 }
 
 // ============================================
-// メンバー写真
+// メンバー写真（Swiperカルーセル対応）
 // ============================================
 
 async function renderMembers() {
@@ -228,6 +236,11 @@ async function renderMembers() {
     members = imgs.members || [];
   }
 
+  if (members.length === 0) {
+    container.innerHTML = '<div class="swiper-slide"><p class="muted">メンバー情報は準備中です</p></div>';
+    return;
+  }
+
   container.innerHTML = "";
 
   members.forEach(function(member) {
@@ -235,46 +248,76 @@ async function renderMembers() {
       ? getDriveImageUrl(member.driveId)
       : member.src;
     var name = member.title || member.name || "Member";
-    var description = member.alt || "";
+
+    // Swiper用にswiper-slideクラスを追加
+    var slide = document.createElement("div");
+    slide.className = "swiper-slide";
 
     var card = document.createElement("div");
     card.className = "memberCard";
 
-    // 説明文がある場合は展開可能にする
-    if (description) {
-      card.innerHTML =
-        '<div class="memberCard__content">' +
-        '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
-        '<p class="memberName">' + escapeHtml(name) + '</p>' +
-        '<div class="memberCard__description">' + escapeHtml(description) + '</div>' +
-        '</div>';
+    card.innerHTML =
+      '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
+      '<p class="memberName">' + escapeHtml(name) + '</p>';
 
-      // クリックで展開/閉じる
-      card.addEventListener('click', function() {
-        this.classList.toggle('memberCard--expanded');
-      });
-    } else {
-      card.innerHTML =
-        '<div class="memberCard__content">' +
-        '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
-        '<p class="memberName">' + escapeHtml(name) + '</p>' +
-        '</div>';
+    slide.appendChild(card);
+    container.appendChild(slide);
+  });
+
+  // Swiperを初期化
+  initTeamSwiper(members.length);
+}
+
+function initTeamSwiper(memberCount) {
+  if (typeof Swiper === 'undefined') {
+    console.warn('Swiper is not loaded');
+    return;
+  }
+
+  // 既存のSwiperを破棄
+  if (teamSwiper) {
+    teamSwiper.destroy(true, true);
+    teamSwiper = null;
+  }
+
+  var swiperElement = document.querySelector('.teamSwiper');
+  if (!swiperElement) return;
+
+  teamSwiper = new Swiper('.teamSwiper', {
+    slidesPerView: 'auto',
+    centeredSlides: true,
+    spaceBetween: 24,
+    loop: memberCount > 3,
+    loopAdditionalSlides: 2,
+    grabCursor: true,
+    speed: 500,
+    pagination: {
+      el: '.teamSwiper .swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.teamSwiper .swiper-button-next',
+      prevEl: '.teamSwiper .swiper-button-prev',
+    },
+    breakpoints: {
+      768: {
+        spaceBetween: 32,
+      }
     }
-
-    container.appendChild(card);
   });
 }
 
 // ============================================
-// フォトギャラリー
+// フォトギャラリー（Swiperカルーセル対応）
 // ============================================
 
 async function renderPhotos() {
   var grid = document.getElementById("photoGrid");
-  var section = document.getElementById("photosSection");
+  var thumbsContainer = document.getElementById("photoThumbs");
+  var section = document.getElementById("photos");
   if (!grid) return;
 
-  grid.innerHTML = '<p class="loadingText">読み込み中...</p>';
+  grid.innerHTML = '<div class="swiper-slide swiper-loading"></div>';
 
   var photos = await fetchPhotos();
   var gallery = (photos.gallery || []).slice().sort(function(a, b) {
@@ -284,48 +327,103 @@ async function renderPhotos() {
   if (gallery.length === 0) {
     var cfg = getConfig();
     var imgs = cfg.siteImages || {};
-    var fallback = imgs.gallery || [];
-    if (fallback.length > 0) {
-      var html = "";
-      for (var i = 0; i < fallback.length; i++) {
-        var item = fallback[i];
-        if (!item.src) continue;
-        var title = escapeHtml(item.title || "");
-        var alt = escapeHtml(item.alt || item.title || "Photo");
-        var sizeClass = item.size || "third";
-        html += '<figure class="photoCard photoCard--' + sizeClass + '">' +
-          '<img class="photoImg" src="' + escapeHtml(item.src) + '" alt="' + alt + '" loading="lazy" decoding="async">' +
-          '<figcaption class="photoCap">' + title + '</figcaption>' +
-        '</figure>';
-      }
-      grid.innerHTML = html;
-      if (section) section.style.display = "";
-      return;
-    }
+    gallery = imgs.gallery || [];
+  }
+
+  if (gallery.length === 0) {
     if (section) section.style.display = "none";
-    grid.innerHTML = '<p class="muted">写真は準備中です</p>';
+    grid.innerHTML = '<div class="swiper-slide"><p class="muted">写真は準備中です</p></div>';
     return;
   }
 
   if (section) section.style.display = "";
 
-  var html = "";
+  // メインスライド生成
+  var mainHtml = "";
+  var thumbHtml = "";
+
   for (var i = 0; i < gallery.length; i++) {
     var item = gallery[i];
-    if (!item.driveId) continue;
+    var src = item.driveId ? getDriveImageUrl(item.driveId) : item.src;
+    if (!src) continue;
     
-    var src = getDriveImageUrl(item.driveId);
     var title = escapeHtml(item.title || "");
     var alt = escapeHtml(item.alt || item.title || "Photo");
-    var sizeClass = item.size || "third";
 
-    html += '<figure class="photoCard photoCard--' + sizeClass + '">' +
-      '<img class="photoImg" src="' + src + '" alt="' + alt + '" loading="lazy" decoding="async" ' +
-        'onerror="this.parentElement.style.display=\'none\'">' +
-      '<figcaption class="photoCap">' + title + '</figcaption>' +
-    '</figure>';
+    mainHtml += '<div class="swiper-slide">' +
+      '<figure class="photoCard">' +
+        '<img class="photoImg" src="' + escapeHtml(src) + '" alt="' + alt + '" loading="lazy">' +
+        (title ? '<figcaption class="photoCap">' + title + '</figcaption>' : '') +
+      '</figure>' +
+    '</div>';
+
+    thumbHtml += '<div class="swiper-slide">' +
+      '<img src="' + escapeHtml(src) + '" alt="' + alt + '" loading="lazy">' +
+    '</div>';
   }
-  grid.innerHTML = html || '<p class="muted">写真は準備中です</p>';
+
+  grid.innerHTML = mainHtml;
+  if (thumbsContainer) thumbsContainer.innerHTML = thumbHtml;
+
+  // Swiperを初期化
+  initPhotosSwiper(gallery.length);
+}
+
+function initPhotosSwiper(photoCount) {
+  if (typeof Swiper === 'undefined') {
+    console.warn('Swiper is not loaded');
+    return;
+  }
+
+  // 既存のSwiperを破棄
+  if (photosThumbs) {
+    photosThumbs.destroy(true, true);
+    photosThumbs = null;
+  }
+  if (photosSwiper) {
+    photosSwiper.destroy(true, true);
+    photosSwiper = null;
+  }
+
+  // サムネイルSwiper
+  var thumbsElement = document.querySelector('.photosThumbs');
+  if (thumbsElement) {
+    photosThumbs = new Swiper('.photosThumbs', {
+      spaceBetween: 12,
+      slidesPerView: 4,
+      freeMode: true,
+      watchSlidesProgress: true,
+      breakpoints: {
+        480: {
+          slidesPerView: 5,
+        },
+        768: {
+          slidesPerView: 6,
+        },
+        1024: {
+          slidesPerView: 8,
+        }
+      }
+    });
+  }
+
+  // メインSwiper
+  var mainElement = document.querySelector('.photosSwiper');
+  if (mainElement) {
+    photosSwiper = new Swiper('.photosSwiper', {
+      spaceBetween: 10,
+      loop: photoCount > 1,
+      grabCursor: true,
+      speed: 500,
+      navigation: {
+        nextEl: '.photosSwiper .swiper-button-next',
+        prevEl: '.photosSwiper .swiper-button-prev',
+      },
+      thumbs: {
+        swiper: photosThumbs,
+      },
+    });
+  }
 }
 
 // ============================================
@@ -377,10 +475,10 @@ function setupLightbox() {
     var t = e.target;
     if (!(t instanceof HTMLElement)) return;
 
-    // フォトギャラリーのライトボックスのみ
-    var card = t.closest(".photoCard");
-    if (card) {
-      var imgEl = card.querySelector("img.photoImg");
+    // フォトギャラリーのライトボックス（Swiper内の画像）
+    var photoCard = t.closest(".photoCard");
+    if (photoCard) {
+      var imgEl = photoCard.querySelector("img.photoImg");
       if (imgEl && imgEl.getAttribute("src")) {
         var fig = t.closest("figure");
         var caption = "";
@@ -952,7 +1050,7 @@ function initCountdown() {
 }
 
 // ============================================
-// Instagram埋め込みフィード
+// Instagram埋め込みフィード（Swiperカルーセル対応）
 // ============================================
 
 async function renderInstagramFeed() {
@@ -969,6 +1067,9 @@ async function renderInstagramFeed() {
 
   var feedContainer = document.getElementById("instagramFeed");
   if (!feedContainer) return;
+
+  // ローディング表示
+  feedContainer.innerHTML = '<div class="swiper-slide swiper-loading"></div>';
 
   // Notion APIから投稿を取得
   try {
@@ -994,7 +1095,10 @@ async function fetchInstagramPosts() {
   }
 
   try {
-    var url = apiUrl + "?action=getInstagramFeed&t=" + Date.now();
+    // useNotionがtrueならNotion連携版を使用、falseならInstagram API版を使用
+    var action = config.instagram.useNotion ? "getInstagramFeedFromNotion" : "getInstagramFeed";
+    var url = apiUrl + "?action=" + action + "&t=" + Date.now();
+    
     var res = await fetch(url);
     if (!res.ok) throw new Error("HTTP " + res.status);
     var data = await res.json();
@@ -1010,12 +1114,14 @@ async function fetchInstagramPosts() {
 }
 
 function showInstagramPlaceholder(container, config) {
-  container.innerHTML = '<div class="instagram-placeholder">' +
-    '<p style="margin-bottom: 16px;">📸 Instagramで最新の活動をチェック！</p>' +
-    '<a href="https://www.instagram.com/' + escapeHtml(config.instagram.username) + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary">' +
-    '@' + escapeHtml(config.instagram.username) + ' をフォロー' +
-    '</a>' +
-    '</div>';
+  container.innerHTML = '<div class="swiper-slide">' +
+    '<div class="instagram-placeholder">' +
+      '<p>📸 Instagramで最新の活動をチェック！</p>' +
+      '<a href="https://www.instagram.com/' + escapeHtml(config.instagram.username) + '" target="_blank" rel="noopener noreferrer" class="btn btn-instagram">' +
+        '<i class="fab fa-instagram"></i> @' + escapeHtml(config.instagram.username) + ' をフォロー' +
+      '</a>' +
+    '</div>' +
+  '</div>';
 }
 
 function displayInstagramPosts(posts, container, config) {
@@ -1034,13 +1140,53 @@ function displayInstagramPosts(posts, container, config) {
       return '';
     }
 
-    return '<a href="' + escapeHtml(postUrl) + '" target="_blank" rel="noopener noreferrer" class="instagram-post">' +
-      '<img src="' + escapeHtml(imageUrl) + '" alt="Instagram post" loading="lazy">' +
-      (caption ? '<div class="instagram-post__overlay"><p>' + escapeHtml(caption) + '</p></div>' : '') +
-      '</a>';
+    return '<div class="swiper-slide">' +
+      '<a href="' + escapeHtml(postUrl) + '" target="_blank" rel="noopener noreferrer" class="instagram-post">' +
+        '<img src="' + escapeHtml(imageUrl) + '" alt="Instagram post" loading="lazy">' +
+        (caption ? '<div class="instagram-post__overlay"><p>' + caption + '</p></div>' : '') +
+      '</a>' +
+    '</div>';
   }).join('');
 
   container.innerHTML = html;
+
+  // Swiperを初期化
+  initInstagramSwiper(posts.length);
+}
+
+function initInstagramSwiper(postCount) {
+  if (typeof Swiper === 'undefined') {
+    console.warn('Swiper is not loaded');
+    return;
+  }
+
+  // 既存のSwiperを破棄
+  if (instagramSwiper) {
+    instagramSwiper.destroy(true, true);
+    instagramSwiper = null;
+  }
+
+  var swiperElement = document.querySelector('.instagramSwiper');
+  if (!swiperElement) return;
+
+  instagramSwiper = new Swiper('.instagramSwiper', {
+    slidesPerView: 'auto',
+    centeredSlides: true,
+    spaceBetween: 20,
+    loop: postCount > 2,
+    grabCursor: true,
+    speed: 600,
+    autoplay: {
+      delay: 4000,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true,
+    },
+    breakpoints: {
+      768: {
+        spaceBetween: 28,
+      }
+    }
+  });
 }
 
 // ============================================
@@ -1375,28 +1521,26 @@ function createTooltip(activities) {
   }).join('<br>');
 }
 
-// renderUpcomingEvents() - 削除済み
-
 // ============================================
 // 初期化
 // ============================================
 
 // FAQ アコーディオン機能
 function initFAQ() {
-  const faqItems = document.querySelectorAll('.faqItem');
+  var faqItems = document.querySelectorAll('.faqItem');
 
-  faqItems.forEach(item => {
-    const question = item.querySelector('.faqItem__question');
+  faqItems.forEach(function(item) {
+    var question = item.querySelector('.faqItem__question');
 
     if (question) {
       question.addEventListener('click', function() {
-        const isOpen = item.classList.contains('is-open');
+        var isOpen = item.classList.contains('is-open');
 
         // 他の開いているFAQを閉じる（オプション）
-        faqItems.forEach(otherItem => {
+        faqItems.forEach(function(otherItem) {
           if (otherItem !== item) {
             otherItem.classList.remove('is-open');
-            const otherQuestion = otherItem.querySelector('.faqItem__question');
+            var otherQuestion = otherItem.querySelector('.faqItem__question');
             if (otherQuestion) {
               otherQuestion.setAttribute('aria-expanded', 'false');
             }
@@ -1429,15 +1573,15 @@ async function initSite() {
 
   // 新機能の初期化
   initCountdown();
-  renderInstagramFeed();
   renderMediaFeatures();
   initActivityCalendar();
   initFAQ();
 
-  // 非同期処理
+  // 非同期処理（Swiper対応版）
   await renderHeroMedia();
   await renderMembers();
   await renderPhotos();
+  await renderInstagramFeed();
   await renderMessagesPreview();
 
   setupLightbox();
