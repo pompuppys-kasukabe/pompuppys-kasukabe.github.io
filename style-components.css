@@ -479,7 +479,7 @@
 
 .progressBar__fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--purple), var(--gold));
+  background: linear-gradient(90deg, var(--gold), #f4cf67);
   border-radius: var(--radius-full);
   transition: width 1s var(--ease-out);
   min-width: 2%;
