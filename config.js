@@ -209,25 +209,24 @@ window.PUPPYS_CONFIG = {
       note: ""
     },
 
-story: {
-  title: "Our Story",
-  body: [
-    "<strong>直前の大会で悔しい結果を経験し、私たちは一度立ち止まりました。</strong>",
-    "悔しさを抱えたままでは、踊る姿も硬くなってしまう——<em>そう気づいたとき、原点の「楽しむ」に戻る決断をしました。</em>",
-    "表情、声、チームの空気づくりまで見直し、<strong>演技を一から再構築。</strong>",
-    "<span class=\"highlight\">気持ちが揃った瞬間、踊りが変わり、会場の空気も変わりました。</span>",
-    "<strong>そして私たちは、世界最高峰の舞台、米国「The Dance Summit 2026」への挑戦権を手にしました。</strong>"
-  ]
-},
+    story: {
+      title: "Our Story",
+      body: [
+        "<strong>直前の大会で悔しい結果を経験し、私たちは一度立ち止まりました。</strong>",
+        "悔しさを抱えたままでは、踊る姿も硬くなってしまう——<em>そう気づいたとき、原点の「楽しむ」に戻る決断をしました。</em>",
+        "表情、声、チームの空気づくりまで見直し、<strong>演技を一から再構築。</strong>",
+        "<span class=\"highlight\">気持ちが揃った瞬間、踊りが変わり、会場の空気も変わりました。</span>",
+        "<strong>そして私たちは、世界最高峰の舞台、米国「The Dance Summit 2026」への挑戦権を手にしました。</strong>"
+      ]
+    },
 
-
-timeline: [
-  { year: "2016", text: "　　春日部で活動開始" },
-  { year: "2020", text: "　　大会への挑戦を本格化" },
-  { year: "2025.11", text: "　JAMfest JAPAN vol.23 で1位獲得" },
-  { year: "2026.3", text: "　USA Nationals 出場予定" },
-  { year: "2026.5", text: "　The Dance Summit へ挑戦予定", highlight: true }
-],
+    timeline: [
+      { year: "2016", text: "　　春日部で活動開始" },
+      { year: "2020", text: "　　大会への挑戦を本格化" },
+      { year: "2025.11", text: "　JAMfest JAPAN vol.23 で1位獲得" },
+      { year: "2026.3", text: "　USA Nationals 出場予定" },
+      { year: "2026.5", text: "　The Dance Summit へ挑戦予定", highlight: true }
+    ],
 
     summitNote: "The Dance Summit は、米国Varsity社が主催する世界最高峰のチアダンス・ダンスの世界選手権大会です。"
   },
