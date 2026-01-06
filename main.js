@@ -1336,6 +1336,41 @@ function createTooltip(activities) {
 // 初期化
 // ============================================
 
+// FAQ アコーディオン機能
+function initFAQ() {
+  const faqItems = document.querySelectorAll('.faqItem');
+
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faqItem__question');
+
+    if (question) {
+      question.addEventListener('click', function() {
+        const isOpen = item.classList.contains('is-open');
+
+        // 他の開いているFAQを閉じる（オプション）
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('is-open');
+            const otherQuestion = otherItem.querySelector('.faqItem__question');
+            if (otherQuestion) {
+              otherQuestion.setAttribute('aria-expanded', 'false');
+            }
+          }
+        });
+
+        // クリックされたFAQの開閉を切り替え
+        if (isOpen) {
+          item.classList.remove('is-open');
+          question.setAttribute('aria-expanded', 'false');
+        } else {
+          item.classList.add('is-open');
+          question.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+  });
+}
+
 async function initSite() {
   renderCopy();
   renderNews();
@@ -1352,6 +1387,7 @@ async function initSite() {
   renderInstagramFeed();
   renderMediaFeatures();
   initActivityCalendar();
+  initFAQ();
 
   // 非同期処理
   await renderHeroMedia();
