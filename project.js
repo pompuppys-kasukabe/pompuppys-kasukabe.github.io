@@ -467,17 +467,40 @@ if(pt){
 async function fetchMessages(){
   try {
     var cfg = getConfigValue("brightWings1000", null);
-    if(!cfg || !cfg.apiUrl) return [];
+    if(!cfg || !cfg.apiUrl){
+      console.log("brightWings1000 config not found or apiUrl missing");
+      return [];
+    }
 
     var url = cfg.apiUrl + "?action=getMessages&t=" + Date.now();
+    console.log("Fetching messages from:", url);
+
     var res = await fetch(url, { cache: "no-store" });
     if(!res.ok) throw new Error("HTTP " + res.status);
     var data = await res.json();
 
+    console.log("Received data:", data);
+
     var messages = data.messages || data;
-    return messages
-      .filter(function(m){ return m.approved !== false && m.message; })
-      .sort(function(a, b){ return String(b.date).localeCompare(String(a.date)); });
+    if(!Array.isArray(messages)){
+      console.error("Messages is not an array:", messages);
+      return [];
+    }
+
+    console.log("Total messages before filter:", messages.length);
+
+    var filtered = messages.filter(function(m){
+      // approved が false でない、かつ message がある
+      return m.approved !== false && m.message;
+    });
+
+    console.log("Filtered messages:", filtered.length);
+
+    var sorted = filtered.sort(function(a, b){
+      return String(b.date).localeCompare(String(a.date));
+    });
+
+    return sorted;
   } catch(e) {
     console.error("メッセージ取得失敗:", e);
     return [];
@@ -514,18 +537,38 @@ function closeMessageModal(){
 
 async function renderMosaicArt(){
   var mosaicGrid = document.getElementById("mosaicGrid");
-  if(!mosaicGrid) return;
+  if(!mosaicGrid){
+    console.log("Mosaic grid element not found");
+    return;
+  }
 
   // メッセージデータを取得
   var messages = [];
   try {
     messages = await fetchMessages();
+    console.log("Mosaic: fetched messages:", messages.length);
   } catch(e) {
     console.error("モザイク用メッセージ取得失敗:", e);
   }
 
   var totalCells = 1000;
   var filledCount = Math.min(messages.length, totalCells);
+  console.log("Mosaic: filling", filledCount, "cells out of", totalCells);
+
+  // メッセージカウントを更新
+  var countEl = document.getElementById("messageCount");
+  if(countEl){
+    countEl.textContent = messages.length.toLocaleString();
+    console.log("Updated message count to:", messages.length);
+  }
+
+  // プログレスバーを更新
+  var progressEl = document.getElementById("progressBarFill");
+  if(progressEl){
+    var percentage = Math.min((messages.length / 1000) * 100, 100);
+    progressEl.style.width = percentage + "%";
+    console.log("Updated progress bar to:", percentage + "%");
+  }
 
   // グリッドをクリア
   mosaicGrid.innerHTML = "";
@@ -559,15 +602,23 @@ async function renderMosaicArt(){
     // アニメーション遅延（視覚効果）
     cell.style.animationDelay = (i * 2) + "ms";
   }
+
+  console.log("Mosaic rendering complete");
 }
 
 async function renderAllMessagesGrid(){
   var grid = document.getElementById("allMessagesGrid");
-  if(!grid) return;
+  if(!grid){
+    console.log("All messages grid element not found");
+    return;
+  }
 
+  console.log("Rendering all messages grid...");
   var messages = await fetchMessages();
+  console.log("All messages grid: fetched", messages.length, "messages");
 
   if(!messages || messages.length === 0){
+    console.log("No messages to display");
     grid.innerHTML = '<div style="text-align: center; padding: 60px 20px; color: #999;"><p>まだメッセージがありません。<br>最初の応援メッセージを送りませんか？</p></div>';
     return;
   }
@@ -585,6 +636,7 @@ async function renderAllMessagesGrid(){
   }
 
   grid.innerHTML = html;
+  console.log("All messages grid rendering complete");
 }
 
 document.addEventListener("DOMContentLoaded", function(){
