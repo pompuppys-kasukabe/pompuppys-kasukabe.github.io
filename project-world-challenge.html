@@ -323,6 +323,34 @@
         -webkit-mask-size: 100% auto;
       }
     }
+
+    /* All Messages Grid */
+    .messages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .message-tile:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(212,175,55,0.3);
+      border-color: #d4af37;
+    }
+
+    @media (max-width: 768px) {
+      .messages-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .messages-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 10px;
+      }
+    }
   </style>
 </head>
 
@@ -646,7 +674,16 @@
         </div>
 
         <div class="card" style="margin-top: 24px;">
-          <p class="note" id="messagesNote">掲載は内容確認のうえ反映します。個人情報（学校名/住所/電話番号など）は記載しないでください。</p>
+          <div style="background: rgba(212,175,55,0.05); padding: 20px; border-radius: 12px; border-left: 4px solid #d4af37;">
+            <p style="font-weight: 700; color: #d4af37; margin-bottom: 12px; font-size: 0.95rem;">
+              <i class="fas fa-info-circle" style="margin-right: 6px;"></i>メッセージ送信時のご注意
+            </p>
+            <ul style="margin: 0; padding-left: 20px; color: #666; font-size: 0.9rem; line-height: 1.8;">
+              <li><strong>お名前：</strong>横断幕に掲載されます。ニックネーム、実名、肩書付き実名など、お好きな表記でどうぞ（例：春日部市長 石川良三、○○チアチーム一同、など）</li>
+              <li><strong>掲載について：</strong>内容確認のうえ反映します（通常1〜3営業日）</li>
+              <li><strong>禁止事項：</strong>住所・電話番号などの個人情報は記載しないでください（学校名・団体名はOK）</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>

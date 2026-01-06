@@ -464,6 +464,54 @@ if(pt){
   }
 }
 
+async function fetchMessages(){
+  try {
+    var cfg = getConfigValue("brightWings1000", null);
+    if(!cfg || !cfg.apiUrl) return [];
+
+    var url = cfg.apiUrl + "?action=getMessages&t=" + Date.now();
+    var res = await fetch(url, { cache: "no-store" });
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    var data = await res.json();
+
+    var messages = data.messages || data;
+    return messages
+      .filter(function(m){ return m.approved !== false && m.message; })
+      .sort(function(a, b){ return String(b.date).localeCompare(String(a.date)); });
+  } catch(e) {
+    console.error("メッセージ取得失敗:", e);
+    return [];
+  }
+}
+
+function openMessageModal(message){
+  var modal = document.getElementById("messageModal");
+  var nameEl = document.getElementById("modalMessageName");
+  var dateEl = document.getElementById("modalMessageDate");
+  var categoryEl = document.getElementById("modalMessageCategory");
+  var textEl = document.getElementById("modalMessageText");
+
+  if(!modal) return;
+
+  if(nameEl) nameEl.textContent = message.name || "匿名";
+  if(dateEl) dateEl.textContent = message.date || "";
+  if(categoryEl){
+    categoryEl.textContent = message.category || "一般";
+  }
+  if(textEl) textEl.textContent = message.message || "";
+
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+function closeMessageModal(){
+  var modal = document.getElementById("messageModal");
+  if(modal){
+    modal.style.display = "none";
+    document.body.style.overflow = "";
+  }
+}
+
 async function renderMosaicArt(){
   var mosaicGrid = document.getElementById("mosaicGrid");
   if(!mosaicGrid) return;
@@ -513,12 +561,58 @@ async function renderMosaicArt(){
   }
 }
 
+async function renderAllMessagesGrid(){
+  var grid = document.getElementById("allMessagesGrid");
+  if(!grid) return;
+
+  var messages = await fetchMessages();
+
+  if(!messages || messages.length === 0){
+    grid.innerHTML = '<div style="text-align: center; padding: 60px 20px; color: #999;"><p>まだメッセージがありません。<br>最初の応援メッセージを送りませんか？</p></div>';
+    return;
+  }
+
+  var html = "";
+  for(var i = 0; i < messages.length; i++){
+    var msg = messages[i];
+    var initial = (msg.name && msg.name.charAt(0)) || "匿";
+
+    html += '<div class="message-tile" onclick="openMessageModal(' + JSON.stringify(msg).replace(/"/g, '&quot;') + ')" style="cursor: pointer; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2); border-radius: 8px; padding: 12px; text-align: center; transition: all 0.3s ease;">' +
+      '<div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #f4cf67); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2rem; margin: 0 auto 8px;">' + escapeHtml(initial) + '</div>' +
+      '<p style="font-size: 0.85rem; font-weight: 700; margin: 0; color: #333;">' + escapeHtml(msg.name || "匿名") + '</p>' +
+      '<p style="font-size: 0.75rem; color: #999; margin: 4px 0 0;">' + escapeHtml(msg.date || "") + '</p>' +
+    '</div>';
+  }
+
+  grid.innerHTML = html;
+}
+
 document.addEventListener("DOMContentLoaded", function(){
   try{
     renderProject();
     renderSupportMessagesProject();
     wireProjectShare();
     renderMosaicArt();
+    renderAllMessagesGrid();
+
+    // モーダルクローズイベント
+    var modalClose = document.getElementById("modalClose");
+    var modalOverlay = document.getElementById("modalOverlay");
+
+    if(modalClose){
+      modalClose.addEventListener("click", closeMessageModal);
+    }
+
+    if(modalOverlay){
+      modalOverlay.addEventListener("click", closeMessageModal);
+    }
+
+    // Escキーでモーダルを閉じる
+    document.addEventListener("keydown", function(e){
+      if(e.key === "Escape"){
+        closeMessageModal();
+      }
+    });
   }catch(e){
     console.error(e);
   }
