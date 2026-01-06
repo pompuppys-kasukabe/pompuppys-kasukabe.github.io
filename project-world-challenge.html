@@ -25,6 +25,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <link rel="stylesheet" href="./style-core.css" />
   <link rel="stylesheet" href="./style-layout.css" />
@@ -34,6 +35,7 @@
   <script src="./utils.js"></script>
   <script src="./config.js" defer></script>
   <script src="./project.js" defer></script>
+  <script src="./messages.js" defer></script>
   <script async src="https://tally.so/widgets/embed.js"></script>
 
   <style>
@@ -454,26 +456,83 @@
       </div>
     </section>
 
-    <section class="section" id="messages">
+    <!-- ========== #BrightWings1000 千羽鶴企画 ========== -->
+    <section class="section section--alt" id="messages">
       <div class="container">
         <div class="section-head">
-          <h2>応援メッセージ</h2>
-          <p class="muted">みんなで同じ舞台へ</p>
+          <h2>#BrightWings1000</h2>
+          <p class="muted">1,000の想いを、世界へ届ける。</p>
         </div>
 
-        <div class="card">
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
-            <p class="note" id="projectMessagesNote" style="margin:0;display:none;"></p>
-            <button id="projectMessageFormBtn" class="btn btn-primary" style="display:none;">
+        <!-- Progress Counter -->
+        <div class="card" style="text-align: center;">
+          <h3 style="font-size: 1.2rem; margin-bottom: 20px;">あなたの一言が、彼女たちの翼になる。</h3>
+          <div class="progress-counter" style="max-width: 600px; margin: 0 auto;">
+            <div class="progress-counter__numbers" style="display: flex; align-items: baseline; justify-content: center; gap: 8px; margin-bottom: 20px;">
+              <span class="progress-counter__current" id="messageCount" style="font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 900; color: #6b3fa0;">0</span>
+              <span class="progress-counter__separator" style="font-size: clamp(1.5rem, 4vw, 2.5rem); opacity: 0.7;">/</span>
+              <span class="progress-counter__goal" id="messageGoal" style="font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 700;">1,000</span>
+              <span class="progress-counter__label" style="font-size: clamp(1rem, 2.5vw, 1.5rem); margin-left: 8px;">件</span>
+            </div>
+            <div class="progress-bar" style="height: 12px; background: #e0e0e0; border-radius: 999px; overflow: hidden; margin-bottom: 12px;">
+              <div class="progress-bar__fill" id="progressBarFill" style="height: 100%; background: linear-gradient(90deg, #6b3fa0, #d4af37); border-radius: 999px; transition: width 1s ease; width: 0%;"></div>
+            </div>
+            <p class="progress-counter__deadline" id="messagesDeadline" style="font-size: 0.9rem; color: #888;">目標期限：2026年5月1日（The Dance Summit 予選日）</p>
+          </div>
+          <div style="margin-top: 24px;">
+            <button id="sendMessageBtn" class="btn btn-primary btn-large" data-tally-open="Y50Z5v" data-tally-emoji-text="👋" data-tally-emoji-animation="wave">
               応援メッセージを送る
             </button>
           </div>
+        </div>
 
-          <div style="height:12px;"></div>
-          <div id="projectMessagesGrid" class="msgGrid"></div>
+        <!-- VIP Messages -->
+        <div id="vipMessages" style="display: none; margin-top: 40px;">
+          <h3 style="text-align: center; margin-bottom: 24px; color: #d4af37;">Special Messages</h3>
+          <div id="vipMessagesGrid" class="vip-messages-grid"></div>
+        </div>
+
+        <!-- Pickup Messages -->
+        <div id="pickupMessages" style="display: none; margin-top: 40px;">
+          <h3 style="text-align: center; margin-bottom: 24px;">Pickup Messages</h3>
+          <div id="pickupMessagesGrid" class="pickup-messages-grid"></div>
+        </div>
+
+        <!-- All Messages Grid -->
+        <div style="margin-top: 40px;">
+          <h3 style="text-align: center; margin-bottom: 24px;">All Messages</h3>
+          <div id="allMessagesGrid" class="messages-grid">
+            <div class="loading">
+              <p>メッセージを読み込み中...</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: 24px;">
+          <p class="note" id="messagesNote">掲載は内容確認のうえ反映します。個人情報（学校名/住所/電話番号など）は記載しないでください。</p>
         </div>
       </div>
     </section>
+
+    <!-- Message Detail Modal -->
+    <div class="modal" id="messageModal" style="display: none;">
+      <div class="modal__overlay" id="modalOverlay"></div>
+      <div class="modal__content">
+        <button class="modal__close" id="modalClose" aria-label="閉じる">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="modal__body">
+          <div class="message-detail">
+            <div class="message-detail__header">
+              <p class="message-detail__name" id="modalMessageName"></p>
+              <p class="message-detail__date" id="modalMessageDate"></p>
+            </div>
+            <div class="message-detail__category" id="modalMessageCategory"></div>
+            <p class="message-detail__text" id="modalMessageText"></p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <section class="section">
       <div class="container">
