@@ -318,8 +318,8 @@ function initTeamSwiper(memberCount) {
     slidesPerView: 'auto',
     centeredSlides: false,
     spaceBetween: 24,
-    slidesPerGroup: 1,  // ← この1行を追加
-    initialSlide: 0,  // ← この1行を追加
+    slidesPerGroup: 1,
+    initialSlide: 0,
     loop: memberCount > 3,
     loopAdditionalSlides: 2,
     grabCursor: true,
@@ -333,7 +333,16 @@ function initTeamSwiper(memberCount) {
       prevEl: '.teamSwiper .swiper-button-prev',
     },
     breakpoints: {
+      320: {
+        slidesPerGroup: 1,
+        spaceBetween: 16,
+      },
       768: {
+        slidesPerGroup: 1,
+        spaceBetween: 32,
+      },
+      1024: {
+        slidesPerGroup: 1,
         spaceBetween: 32,
       }
     }

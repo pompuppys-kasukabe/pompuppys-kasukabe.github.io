@@ -490,18 +490,16 @@ async function fetchMessages(){
     console.log("Total messages before filter:", messages.length);
 
     var filtered = messages.filter(function(m){
-      // message が存在すればOK（approved チェックを緩和）
+      // message が存在すればOK（approved チェックを削除）
       var hasMessage = m && m.message && String(m.message).trim().length > 0;
-      var isApproved = m.approved !== false; // approved が false の場合のみ除外
 
       console.log("Filtering message:", {
         name: m.name,
         hasMessage: hasMessage,
-        isApproved: isApproved,
-        approved: m.approved
+        message: m.message ? m.message.substring(0, 50) : null
       });
 
-      return hasMessage && isApproved;
+      return hasMessage;
     });
 
     console.log("Filtered messages:", filtered.length);
