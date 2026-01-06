@@ -955,7 +955,7 @@ function initCountdown() {
 // Instagram埋め込みフィード
 // ============================================
 
-function renderInstagramFeed() {
+async function renderInstagramFeed() {
   var config = getConfig();
   if (!config.instagram || !config.instagram.enabled) {
     return;
@@ -970,8 +970,43 @@ function renderInstagramFeed() {
   var feedContainer = document.getElementById("instagramFeed");
   if (!feedContainer) return;
 
-  // 一時的にフォロー誘導のみ表示（画像は非表示）
-  showInstagramPlaceholder(feedContainer, config);
+  // Notion APIから投稿を取得
+  try {
+    var posts = await fetchInstagramPosts();
+    if (posts && posts.length > 0) {
+      displayInstagramPosts(posts, feedContainer, config);
+    } else {
+      showInstagramPlaceholder(feedContainer, config);
+    }
+  } catch (error) {
+    console.error("Instagram投稿の取得に失敗:", error);
+    showInstagramPlaceholder(feedContainer, config);
+  }
+}
+
+async function fetchInstagramPosts() {
+  var config = getConfig();
+  var apiUrl = config.instagram.apiUrl;
+
+  if (!apiUrl) {
+    console.error("Instagram API URLが設定されていません");
+    return [];
+  }
+
+  try {
+    var url = apiUrl + "?action=getInstagramFeed&t=" + Date.now();
+    var res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    var data = await res.json();
+
+    if (data.success && data.data) {
+      return data.data.slice(0, config.instagram.displayCount || 6);
+    }
+    return [];
+  } catch (error) {
+    console.error("Instagram API エラー:", error);
+    return [];
+  }
 }
 
 function showInstagramPlaceholder(container, config) {
@@ -986,12 +1021,22 @@ function showInstagramPlaceholder(container, config) {
 function displayInstagramPosts(posts, container, config) {
   var html = posts.map(function(post) {
     var caption = post.caption ? escapeHtml(post.caption.substring(0, 100)) + (post.caption.length > 100 ? '...' : '') : '';
-    var imageUrl = post.image || post.mediaUrl; // JSON形式とAPI形式の両方に対応
-    var postUrl = post.url || post.permalink; // JSON形式とAPI形式の両方に対応
+
+    // Google DriveのIDから画像URLを生成、またはimage/mediaUrlを使用
+    var imageUrl = post.driveId
+      ? getDriveImageUrl(post.driveId, 600)
+      : (post.image || post.mediaUrl);
+
+    var postUrl = post.url || post.permalink || post.instagramUrl;
+
+    if (!imageUrl || !postUrl) {
+      console.warn("Instagram投稿に必要な情報が不足:", post);
+      return '';
+    }
 
     return '<a href="' + escapeHtml(postUrl) + '" target="_blank" rel="noopener noreferrer" class="instagram-post">' +
       '<img src="' + escapeHtml(imageUrl) + '" alt="Instagram post" loading="lazy">' +
-      (caption ? '<div class="instagram-post__overlay">' + caption + '</div>' : '') +
+      (caption ? '<div class="instagram-post__overlay"><p>' + escapeHtml(caption) + '</p></div>' : '') +
       '</a>';
   }).join('');
 
