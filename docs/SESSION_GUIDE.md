@@ -37,30 +37,43 @@ EDIT: config.js
 
 #### A-2. FAQ追加・編集
 ```
-READ: index.html (行89-121, 441-480)
+READ: index.html (行89-121: 構造化データ, 行431-482: 表示HTML)
 EDIT: index.html (2箇所を同期)
 ```
 
-#### A-3. スポンサー追加
+#### A-3. Instagram投稿管理
+```
+ACTION: Notionデータベースを更新（Instagram URL、キャプション、表示順）
+ACTION: Google Driveに画像アップロード（insta1.png, insta2.png, ...）
+CHECK: GASスクリプトが正しく動作しているか確認
+```
+
+#### A-4. 応援メッセージ追加
+```
+READ: assets/messages.json
+EDIT: assets/messages.json
+```
+
+#### A-5. スポンサー追加
 ```
 READ: config.js (sponsors セクション)
 EDIT: config.js
 ```
 
-#### A-4. タイムライン更新
+#### A-6. タイムライン更新
 ```
 READ: config.js (timeline セクション)
 EDIT: config.js
 ```
 
-#### A-5. Hero画像/動画変更
+#### A-7. Hero画像/動画変更
 ```
 READ: config.js (siteImages セクション)
 EDIT: config.js
 CHECK: ファイル名の大文字小文字
 ```
 
-#### A-6. メタタグ・SEO更新
+#### A-8. メタタグ・SEO更新
 ```
 READ: index.html (行7-27)
 EDIT: index.html (3箇所: description, og:description, twitter:description)
@@ -95,6 +108,7 @@ READ: config.js (apiUrls)
 READ: main.js (fetchPhotos等の既存例)
 EDIT: config.js (APIエンドポイント追加)
 EDIT: main.js (fetch関数追加)
+EDIT: gas.txt (GASスクリプト更新)
 ```
 
 ---
@@ -137,14 +151,30 @@ CHECK: assets/photos/ のファイル名
 EDIT: config.js (正確なファイル名に修正)
 ```
 
-#### D-2. JavaScriptエラー
+#### D-2. Instagramが表示されない
+```
+CHECK: config.js (instagram.enabled が true か)
+CHECK: index.html (#instagram に display:none がないか)
+CHECK: NotionデータベースとGoogle Driveの設定
+READ: ブラウザコンソールでエラー確認
+```
+
+#### D-3. 応援メッセージが表示されない
+```
+CHECK: config.js (supportMessages.enabled が true か)
+CHECK: config.js (supportMessages.useNotionAPI が false か)
+CHECK: assets/messages.json が存在するか
+READ: project.js (renderSupportMessagesProject関数)
+```
+
+#### D-4. JavaScriptエラー
 ```
 READ: main.js (該当関数)
 READ: ブラウザコンソール
 EDIT: main.js
 ```
 
-#### D-3. スタイルが反映されない
+#### D-5. スタイルが反映されない
 ```
 CHECK: CSSファイルの読み込み順序（index.html）
 CHECK: セレクタの優先順位
@@ -184,7 +214,7 @@ git push
 ```bash
 # 必要ファイル: index.html (特定行のみ)
 READ: index.html (行89-121: 構造化データ)
-READ: index.html (行441-480: 表示用HTML)
+READ: index.html (行431-482: 表示用HTML)
 
 # 編集（2箇所）
 EDIT: index.html
@@ -201,7 +231,51 @@ git push
 
 ---
 
-### 例3: 「Hero画像を変更して」
+### 例3: 「Instagram投稿を3件追加して」
+
+```bash
+# 作業内容
+1. Notionデータベースに投稿情報を追加（URL、キャプション、表示順1-3）
+2. Google Driveに画像アップロード（insta1.png, insta2.png, insta3.png）
+3. ブラウザで確認（GASが自動的にデータ取得）
+
+# コード変更なし（Notion/Google Drive管理）
+```
+
+**読み込みトークン**: 0トークン（コード変更不要）
+
+---
+
+### 例4: 「応援メッセージを5件追加して」
+
+```bash
+# 必要ファイル: assets/messages.json
+READ: assets/messages.json
+
+# 編集
+EDIT: assets/messages.json
+  [
+    {
+      "date": "2025-01-10",
+      "name": "応援者名",
+      "message": "応援メッセージ",
+      "approved": true
+    },
+    # 5件追加...
+    # 既存のメッセージ...
+  ]
+
+# コミット
+git add assets/messages.json
+git commit -m "応援メッセージ追加: 5件"
+git push
+```
+
+**読み込みトークン**: 約300トークン（messages.jsonのみ）
+
+---
+
+### 例5: 「Hero画像を変更して」
 
 ```bash
 # 必要ファイル: config.js
@@ -227,7 +301,7 @@ git push
 
 ---
 
-### 例4: 「新しいセクション『お問い合わせフォーム』を追加して」
+### 例6: 「新しいセクション『お問い合わせフォーム』を追加して」
 
 ```bash
 # 必要ファイル: 3つ
@@ -255,7 +329,7 @@ git push
 ### 1. **Read は必要な範囲のみ**
 ```bash
 # ❌ 悪い例: ファイル全体を読む
-READ: index.html (全530行)
+READ: index.html (全540行)
 
 # ✅ 良い例: 必要な行のみ読む
 READ: index.html (offset=89, limit=35)  # FAQの構造化データのみ
@@ -265,16 +339,16 @@ READ: index.html (offset=89, limit=35)  # FAQの構造化データのみ
 ```bash
 # まず場所を特定
 GREP: "heroImage" in config.js
-# → 147行目と判明
+# → 145行目と判明
 
 # その周辺のみ読む
-READ: config.js (offset=145, limit=10)
+READ: config.js (offset=143, limit=15)
 ```
 
-### 3. **参照用には PROJECT_STRUCTURE.md を活用**
+### 3. **参照用には docs/PROJECT_STRUCTURE.md を活用**
 ```bash
 # ファイルを読む前に
-READ: PROJECT_STRUCTURE.md (該当セクション)
+READ: docs/PROJECT_STRUCTURE.md (該当セクション)
 # → 必要なファイルと行番号が判明
 
 # 必要最小限のみ読む
@@ -296,7 +370,7 @@ READ: style-components.css (既存の.newsCardを参考に、行520-680のみ)
 ```
 開始
   ↓
-PROJECT_STRUCTURE.md の該当セクションを確認 (100トークン)
+docs/PROJECT_STRUCTURE.md の該当セクションを確認 (100トークン)
   ↓
 決定木で必要ファイルを特定 (0トークン)
   ↓
@@ -334,7 +408,7 @@ Edit で変更 (300トークン)
 
 ### 開始時
 - [ ] ユーザーの要求を明確に理解
-- [ ] PROJECT_STRUCTURE.md で該当パターンを確認
+- [ ] docs/PROJECT_STRUCTURE.md で該当パターンを確認
 - [ ] 必要なファイルと行番号を特定
 - [ ] 最小限の Read で情報収集
 
@@ -355,18 +429,22 @@ Edit で変更 (300トークン)
 | 症状 | 原因 | 確認ファイル | 解決方法 |
 |------|------|-------------|----------|
 | モバイルで画像表示されない | ファイル名大文字小文字 | config.js | 正確なファイル名に修正 |
+| Instagramが表示されない | enabled=false または display:none | config.js, index.html | enabled: true, display削除 |
+| 応援メッセージが表示されない | useNotionAPI=true | config.js | useNotionAPI: false, dataUrl設定 |
 | FAQ が動かない | JS未初期化 | main.js | initSite()でinitFAQ()呼び出し確認 |
 | スタイル反映されない | CSS優先順位 | style-*.css | セレクタを具体的に |
 | ニュースが表示されない | config.js の書式エラー | config.js | JSON構文チェック |
-| 動画が再生されない | enabled=false | config.js | heroVideo.enabled: true |
+| 動画が再生されない | autoplay属性なし | index.html | autoplay属性を追加 |
 
 ---
 
 ## 📚 関連ドキュメント
 
-- **PROJECT_STRUCTURE.md**: プロジェクト全体構造の詳細
-- **IMPLEMENTATION_GUIDE.md**: 実装ガイド
-- **WEB_IMPROVEMENT_PLAN.md**: 改善計画
+- **docs/PROJECT_STRUCTURE.md**: プロジェクト全体構造の詳細
+- **docs/IMPLEMENTATION_GUIDE.md**: 実装ガイド
+- **docs/WEB_IMPROVEMENT_PLAN.md**: 改善計画
+- **docs/GAS_SCRIPT_PROPERTIES.md**: GASスクリプトプロパティ設定
+- **docs/NOTION_INTEGRATION_SETUP.md**: Notion連携セットアップ
 
 ---
 
