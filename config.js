@@ -399,4 +399,12 @@ timeline: [
       { label: "Day 8", title: "日本到着・解散", body: "", meals: "機内食", hidden: false }
     ]
   }
+  // 千羽鶴チャレンジ（これを追加）
+  messagesChallenge: {
+    enabled: true,
+    goal: 1000,
+    deadline: "2026-05-01",
+    title: "1,000の想いを、世界へ届ける。",
+    subtitle: "あなたの一言が、彼女たちの翼になる。"
+  }
 };
