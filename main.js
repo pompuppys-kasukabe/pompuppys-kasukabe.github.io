@@ -316,7 +316,7 @@ function initTeamSwiper(memberCount) {
 
   teamSwiper = new Swiper('.teamSwiper', {
     slidesPerView: 'auto',
-    centeredSlides: true,
+    centeredSlides: false,
     spaceBetween: 24,
     slidesPerGroup: 1,  // ← この1行を追加
     initialSlide: 0,  // ← この1行を追加
