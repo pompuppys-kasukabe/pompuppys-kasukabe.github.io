@@ -423,14 +423,19 @@
       <div class="roadSection__grid">
         <!-- 左：千羽鶴プロジェクト -->
         <div class="roadCard">
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-            <h3 class="roadCard__title" style="margin: 0;">#BrightWings1000</h3>
-            <span style="background: linear-gradient(135deg, #6b3fa0, #d4af37); color: #fff; padding: 4px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">千羽鶴企画</span>
-          </div>
+          <!-- メインコピー -->
+          <h3 class="roadCard__title" style="margin-bottom: 8px; font-size: 1.4rem; line-height: 1.4;">
+            あなたの言葉が、<br>彼女たちの翼になる
+          </h3>
 
-          <p style="color: #666; font-size: 0.95rem; line-height: 1.7; margin-bottom: 16px;">
-            <strong>1,000の想いを、世界へ届ける。</strong><br>
-            千羽鶴のように、一人ひとりの応援メッセージを集めて世界大会へ挑む彼女たちを後押しするプロジェクトです。あなたの一言が、彼女たちの翼になります。
+          <!-- サブコピー -->
+          <p style="color: #6b3fa0; font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; line-height: 1.5;">
+            1,000の想いと共に、世界へ。
+          </p>
+
+          <!-- 説明文（控えめ） -->
+          <p style="color: #999; font-size: 0.85rem; line-height: 1.6; margin-bottom: 16px;">
+            #BrightWings1000 は、応援メッセージで彼女たちを世界の舞台へ送り出すプロジェクトです
           </p>
 
           <!-- 進捗カウンター -->
@@ -449,7 +454,11 @@
           <!-- 直近のメッセージ -->
           <div id="roadMessagesPreview" class="messagesPreview" style="margin-bottom: 16px;"></div>
 
+          <!-- CTA -->
           <div style="text-align: center;">
+            <p style="color: #333; font-size: 0.95rem; font-weight: 700; margin-bottom: 12px;">
+              さぁ、一緒に世界へ旅立とう
+            </p>
             <button id="sendMessageBtn" class="btn btn-primary" data-tally-open="Y50Z5v" data-tally-emoji-text="👋" data-tally-emoji-animation="wave">
               応援メッセージを送る
             </button>
