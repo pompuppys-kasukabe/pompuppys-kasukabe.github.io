@@ -633,6 +633,65 @@ function refreshInstagramToken() {
 // Instagram投稿取得（Notion連携版）
 // ============================================
 
+// Google DriveからInstagram画像ファイルIDを取得
+function getInstagramImageFileIds(folderId) {
+  const fileIds = {};
+
+  try {
+    const folder = DriveApp.getFolderById(folderId);
+
+    // insta1.png から insta6.png まで検索（.jpg, 大文字小文字のバリエーションも含む）
+    for (let i = 1; i <= 6; i++) {
+      let found = false;
+
+      // .png を検索
+      let fileName = `insta${i}.png`;
+      let files = folder.getFilesByName(fileName);
+      if (files.hasNext()) {
+        fileIds[fileName] = files.next().getId();
+        found = true;
+        continue;
+      }
+
+      // .PNG を検索
+      fileName = `insta${i}.PNG`;
+      files = folder.getFilesByName(fileName);
+      if (files.hasNext()) {
+        fileIds[`insta${i}.png`] = files.next().getId();
+        found = true;
+        continue;
+      }
+
+      // .jpg を検索
+      fileName = `insta${i}.jpg`;
+      files = folder.getFilesByName(fileName);
+      if (files.hasNext()) {
+        fileIds[fileName] = files.next().getId();
+        found = true;
+        continue;
+      }
+
+      // .JPG を検索
+      fileName = `insta${i}.JPG`;
+      files = folder.getFilesByName(fileName);
+      if (files.hasNext()) {
+        fileIds[`insta${i}.jpg`] = files.next().getId();
+        found = true;
+        continue;
+      }
+
+      if (!found) {
+        Logger.log(`Instagram画像ファイルが見つかりません: insta${i}.png または insta${i}.jpg`);
+      }
+    }
+
+    return fileIds;
+  } catch (error) {
+    Logger.log(`Instagram画像ファイル取得エラー: ${error.toString()}`);
+    return {};
+  }
+}
+
 // Instagram oEmbed APIで画像URLを取得
 function getInstagramImageUrl(instagramUrl) {
   if (!instagramUrl) return { imageUrl: '', error: 'No URL provided' };
@@ -677,6 +736,13 @@ function getInstagramFeedFromNotion() {
     return {
       success: false,
       error: "Missing NOTION_INSTAGRAM_DB_ID in Script Properties"
+    };
+  }
+
+  if (!CONFIG.DRIVE_FOLDER_ID) {
+    return {
+      success: false,
+      error: "Missing DRIVE_FOLDER_ID in Script Properties"
     };
   }
 
@@ -736,19 +802,12 @@ function getInstagramFeedFromNotion() {
         success: true,
         data: [],
         count: 0,
-        cacheVersion: 1,
         message: "Notionデータベースに投稿がありません"
       };
     }
 
-    // 更新バージョンを取得（最初の投稿から取得、全投稿で同じ値のはず）
-    let cacheVersion = 1; // デフォルト値
-    if (data.results.length > 0) {
-      const firstPage = data.results[0];
-      if (firstPage.properties['更新バージョン'] && firstPage.properties['更新バージョン'].number) {
-        cacheVersion = firstPage.properties['更新バージョン'].number;
-      }
-    }
+    // Google Driveから画像ファイルIDを取得（insta1.png, insta2.png...）
+    const imageFileIds = getInstagramImageFileIds(CONFIG.DRIVE_FOLDER_ID);
 
     // データ整形
     const posts = data.results.map(function(page, index) {
@@ -758,21 +817,6 @@ function getInstagramFeedFromNotion() {
       let instagramUrl = '';
       if (properties['Instagram URL'] && properties['Instagram URL'].url) {
         instagramUrl = properties['Instagram URL'].url;
-      }
-
-      // 画像URLを取得
-      let imageUrl = '';
-      let imageError = null;
-
-      // 優先1: Notionの「画像URL」プロパティ
-      if (properties['画像URL'] && properties['画像URL'].url) {
-        imageUrl = properties['画像URL'].url;
-      }
-      // フォールバック2: oEmbed APIで取得（レート制限に注意）
-      else if (instagramUrl) {
-        const result = getInstagramImageUrl(instagramUrl);
-        imageUrl = result.imageUrl;
-        imageError = result.error;
       }
 
       // キャプションを取得
@@ -793,24 +837,27 @@ function getInstagramFeedFromNotion() {
         displayOrder = properties['表示順'].number;
       }
 
+      // Google Driveから対応する画像のIDを取得（insta{displayOrder}.png）
+      const driveId = imageFileIds[`insta${displayOrder}.png`] || imageFileIds[`insta${displayOrder}.jpg`] || '';
+
       return {
         id: `post${displayOrder}`,
         url: instagramUrl,
-        image: imageUrl,
+        driveId: driveId,
         caption: caption,
-        displayOrder: displayOrder
+        displayOrder: displayOrder,
+        name: name
       };
     }).filter(function(post) {
-      // 画像URLがある投稿のみ
-      return post.url && post.image;
+      // URLとdriveIdがある投稿のみ
+      return post.url && post.driveId;
     });
 
     return {
       success: true,
       data: posts,
       count: posts.length,
-      cacheVersion: cacheVersion,
-      source: 'notion'
+      source: 'notion-drive'
     };
 
   } catch (error) {
