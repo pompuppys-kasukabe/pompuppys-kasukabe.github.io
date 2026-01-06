@@ -142,7 +142,12 @@ async function renderSupportMessagesProject(){
   }
 
   var max = Number(msgCfg.maxOnProject) || 24;
-  var items = normalizeMessages(data).slice(0, max);
+  var messages = Array.isArray(data) ? data : (data.messages || []);
+　var items = messages
+  .filter(function(m) { return m.approved !== false && m.message; })
+  .sort(function(a, b) { return String(b.date).localeCompare(String(a.date)); })
+  .slice(0, max);
+
 
   if(!items.length){
     grid.innerHTML = '<div class="muted">応援メッセージを募集中です。</div>';
