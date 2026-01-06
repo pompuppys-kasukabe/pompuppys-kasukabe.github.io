@@ -464,11 +464,61 @@ if(pt){
   }
 }
 
+async function renderMosaicArt(){
+  var mosaicGrid = document.getElementById("mosaicGrid");
+  if(!mosaicGrid) return;
+
+  // メッセージデータを取得
+  var messages = [];
+  try {
+    messages = await fetchMessages();
+  } catch(e) {
+    console.error("モザイク用メッセージ取得失敗:", e);
+  }
+
+  var totalCells = 1000;
+  var filledCount = Math.min(messages.length, totalCells);
+
+  // グリッドをクリア
+  mosaicGrid.innerHTML = "";
+
+  // 1,000セルを生成
+  for(var i = 0; i < totalCells; i++){
+    var cell = document.createElement("div");
+    cell.className = "mosaic-cell";
+
+    // メッセージがある分だけ塗りつぶす
+    if(i < filledCount){
+      cell.classList.add("filled");
+      var msg = messages[i];
+
+      // クリック時にモーダルを開く
+      (function(message){
+        cell.addEventListener("click", function(){
+          openMessageModal(message);
+        });
+      })(msg);
+
+      // ホバー時のツールチップ効果
+      cell.title = (msg.name || "匿名") + "さんからの応援";
+    } else {
+      cell.classList.add("empty");
+      cell.title = "メッセージ募集中";
+    }
+
+    mosaicGrid.appendChild(cell);
+
+    // アニメーション遅延（視覚効果）
+    cell.style.animationDelay = (i * 2) + "ms";
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(){
   try{
     renderProject();
     renderSupportMessagesProject();
     wireProjectShare();
+    renderMosaicArt();
   }catch(e){
     console.error(e);
   }
