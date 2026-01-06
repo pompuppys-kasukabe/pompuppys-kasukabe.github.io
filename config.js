@@ -274,9 +274,31 @@ timeline: [
     enabled: true,
     formUrl: "https://tally.so/r/Y50Z5v",
     dataUrl: "./assets/messages.json", // ローカルJSONファイル
-    useNotionAPI: true, // Notion連携を使用しない（messages.jsonを使用）
+    useNotionAPI: true, // Notion連携を使用
     maxOnOfficial: 12,
     maxOnProject: 24,
+    note: "掲載は内容確認のうえ反映します。個人情報（学校名/住所/電話番号など）は記載しないでください。"
+  },
+
+  // ===== #BrightWings1000 千羽鶴企画 =====
+  brightWings1000: {
+    enabled: true,
+    title: "#BrightWings1000",
+    mainCopy: "1,000の想いを、世界へ届ける。",
+    subCopy: "あなたの一言が、彼女たちの翼になる。",
+    goal: 1000,
+    deadline: "2026-05-01", // The Dance Summit 予選日
+    deadlineText: "2026年5月1日（The Dance Summit 予選日）",
+    mosaicText: "GO! BRIGHT!!",
+    formUrl: "https://tally.so/r/Y50Z5v", // Tallyフォーム
+    apiUrl: "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec", // GASエンドポイント
+    vipCategories: ["VIP", "市長・政治家", "スポンサー", "クラファン支援者"], // VIP表示するカテゴリ
+    showPickup: true, // ピックアップメッセージを表示
+    gridColumns: {
+      desktop: 10,
+      tablet: 6,
+      mobile: 3
+    },
     note: "掲載は内容確認のうえ反映します。個人情報（学校名/住所/電話番号など）は記載しないでください。"
   },
 

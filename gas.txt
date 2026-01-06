@@ -5,6 +5,7 @@
 // 1. 写真管理(Notion → Google Drive)
 // 2. 応援メッセージ取得
 // 3. 活動カレンダー取得
+// 4. Instagram投稿取得（Notion連携・高速版）
 // ============================================
 
 // ============================================
@@ -34,7 +35,6 @@ function getConfig() {
     INSTAGRAM_ACCESS_TOKEN: props.getProperty('INSTAGRAM_ACCESS_TOKEN'),
 
     // Notion Instagram データベース設定
-    NOTION_TOKEN: props.getProperty('NOTION_TOKEN'),
     NOTION_INSTAGRAM_DB_ID: props.getProperty('NOTION_INSTAGRAM_DB_ID'),
 
     // 掲載枠とファイル名のマッピング
@@ -110,8 +110,16 @@ function doGet(e) {
       const feed = getInstagramFeedFromNotion();
       return jsonResponse(feed);
 
+    } else if (action === "syncInstagram") {
+      const result = syncInstagramImageFileIds();
+      return jsonResponse({ success: true, data: result, message: "Instagramキャッシュ更新完了" });
+
+} else if (action === "getMessagesWithCount") {
+  return jsonResponse(getMessagesWithCount());
+
     } else {
       return jsonResponse({ error: "Unknown action" });
+      
     }
   } catch (err) {
     console.error(err);
@@ -170,7 +178,6 @@ function getActivityData() {
     const response = UrlFetchApp.fetch(url, options);
     const data = JSON.parse(response.getContentText());
 
-    // エラーチェック
     if (data.error) {
       return {
         success: false,
@@ -178,7 +185,6 @@ function getActivityData() {
       };
     }
 
-    // data.resultsが存在するかチェック
     if (!data.results) {
       return {
         success: false,
@@ -186,7 +192,6 @@ function getActivityData() {
       };
     }
 
-    // データ整形
     const activities = data.results.map(page => {
       const props = page.properties;
 
@@ -217,7 +222,7 @@ function getActivityData() {
 }
 
 // ============================================
-// ファイルIDキャッシュ管理
+// ファイルIDキャッシュ管理（写真用）
 // ============================================
 
 function getFileIdCache() {
@@ -286,14 +291,24 @@ function buildPhotosData() {
 }
 
 // ============================================
-// 応援メッセージ取得
+// 応援メッセージ取得（キャッシュ対応・高速版）
 // ============================================
 
 function getMessages() {
   const CONFIG = getConfig();
+  
+  // キャッシュをチェック（5分間有効）
+  const cache = CacheService.getScriptCache();
+  const cachedData = cache.get("messages_cache");
+  
+  if (cachedData) {
+    console.log("メッセージ: キャッシュから取得");
+    return JSON.parse(cachedData);
+  }
+  
+  console.log("メッセージ: Notion APIから取得");
 
   try {
-    // メッセージデータベースをクエリ
     const url = `https://api.notion.com/v1/databases/${CONFIG.MESSAGES_DB_ID}/query`;
 
     const payload = {
@@ -333,25 +348,55 @@ function getMessages() {
     const messages = data.results.map(page => {
       const props = page.properties;
 
-      // Notionのcreated_timeから日付部分のみ抽出(YYYY-MM-DD)
       const createdTime = page.created_time || "";
       const dateOnly = createdTime ? createdTime.split('T')[0] : "";
+
+      // カテゴリ取得（セレクトプロパティ）
+      let category = "一般";
+      if (props["category"] && props["category"].select) {
+        category = props["category"].select.name;
+      } else if (props["カテゴリ"] && props["カテゴリ"].select) {
+        category = props["カテゴリ"].select.name;
+      }
+
+      // ピックアップ取得（チェックボックス）
+      let pickup = false;
+      if (props["pickup"] && props["pickup"].checkbox !== undefined) {
+        pickup = props["pickup"].checkbox;
+      } else if (props["ピックアップ"] && props["ピックアップ"].checkbox !== undefined) {
+        pickup = props["ピックアップ"].checkbox;
+      }
 
       return {
         date: dateOnly,
         name: props["名前"] && props["名前"].rich_text[0] ? props["名前"].rich_text[0].plain_text : "匿名",
         message: props["メッセージ"] && props["メッセージ"].rich_text[0] ? props["メッセージ"].rich_text[0].plain_text : "",
+        category: category,
+        pickup: pickup,
         approved: props["承認済み"] ? props["承認済み"].checkbox : false
       };
     });
 
-    return { messages: messages };
+    const result = { messages: messages };
+    
+    // キャッシュに保存（300秒 = 5分間）
+    cache.put("messages_cache", JSON.stringify(result), 300);
+    
+    return result;
 
   } catch (e) {
     Logger.log("Error in getMessages: " + e.toString());
     return { messages: [] };
   }
 }
+
+// メッセージキャッシュをクリア（新しいメッセージを承認した後に実行）
+function clearMessagesCache() {
+  const cache = CacheService.getScriptCache();
+  cache.remove("messages_cache");
+  console.log("メッセージキャッシュをクリアしました");
+}
+
 
 // ============================================
 // Notion API(汎用)
@@ -530,7 +575,7 @@ function createDailyTrigger() {
 }
 
 // ============================================
-// Instagram Feed取得
+// Instagram Feed取得（API版 - 現在未使用）
 // ============================================
 
 function getInstagramFeed() {
@@ -550,7 +595,6 @@ function getInstagramFeed() {
     const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
     const data = JSON.parse(response.getContentText());
 
-    // エラーチェック
     if (data.error) {
       return {
         success: false,
@@ -558,7 +602,6 @@ function getInstagramFeed() {
       };
     }
 
-    // データがない場合
     if (!data.data || data.data.length === 0) {
       return {
         success: true,
@@ -567,7 +610,6 @@ function getInstagramFeed() {
       };
     }
 
-    // データ整形
     const posts = data.data.map(function(post) {
       return {
         id: post.id,
@@ -578,7 +620,6 @@ function getInstagramFeed() {
         timestamp: post.timestamp
       };
     }).filter(function(post) {
-      // 画像とカルーセルのみ表示
       return post.mediaType === 'IMAGE' || post.mediaType === 'CAROUSEL_ALBUM';
     });
 
@@ -619,7 +660,6 @@ function refreshInstagramToken() {
       return;
     }
 
-    // 新しいトークンを保存
     PropertiesService.getScriptProperties().setProperty('INSTAGRAM_ACCESS_TOKEN', data.access_token);
 
     console.log("Instagram token refreshed successfully. Expires in: " + data.expires_in + " seconds");
@@ -630,123 +670,75 @@ function refreshInstagramToken() {
 }
 
 // ============================================
-// Instagram投稿取得（Notion連携版）
+// Instagram ファイルIDキャッシュ管理
 // ============================================
 
-// Google DriveからInstagram画像ファイルIDを取得
-function getInstagramImageFileIds(folderId) {
+function getInstagramFileIdCache() {
+  const props = PropertiesService.getScriptProperties();
+  const cache = props.getProperty("instagramFileIdCache");
+  return cache ? JSON.parse(cache) : {};
+}
+
+function setInstagramFileIdCache(cache) {
+  const props = PropertiesService.getScriptProperties();
+  props.setProperty("instagramFileIdCache", JSON.stringify(cache));
+}
+
+// Instagram画像ファイルIDを更新（PNG専用・高速版）
+function syncInstagramImageFileIds() {
+  const CONFIG = getConfig();
   const fileIds = {};
 
   try {
-    const folder = DriveApp.getFolderById(folderId);
+    const folder = DriveApp.getFolderById(CONFIG.DRIVE_FOLDER_ID);
 
-    // insta1.png から insta6.png まで検索（.jpg, 大文字小文字のバリエーションも含む）
     for (let i = 1; i <= 6; i++) {
-      let found = false;
-
-      // .png を検索
-      let fileName = `insta${i}.png`;
-      let files = folder.getFilesByName(fileName);
+      const fileName = `insta${i}.png`;
+      const files = folder.getFilesByName(fileName);
+      
       if (files.hasNext()) {
-        fileIds[fileName] = files.next().getId();
-        found = true;
-        continue;
-      }
-
-      // .PNG を検索
-      fileName = `insta${i}.PNG`;
-      files = folder.getFilesByName(fileName);
-      if (files.hasNext()) {
-        fileIds[`insta${i}.png`] = files.next().getId();
-        found = true;
-        continue;
-      }
-
-      // .jpg を検索
-      fileName = `insta${i}.jpg`;
-      files = folder.getFilesByName(fileName);
-      if (files.hasNext()) {
-        fileIds[fileName] = files.next().getId();
-        found = true;
-        continue;
-      }
-
-      // .JPG を検索
-      fileName = `insta${i}.JPG`;
-      files = folder.getFilesByName(fileName);
-      if (files.hasNext()) {
-        fileIds[`insta${i}.jpg`] = files.next().getId();
-        found = true;
-        continue;
-      }
-
-      if (!found) {
-        Logger.log(`Instagram画像ファイルが見つかりません: insta${i}.png または insta${i}.jpg`);
+        fileIds[`insta${i}`] = files.next().getId();
+        console.log(`Found: ${fileName}`);
+      } else {
+        console.log(`Not found: ${fileName}`);
       }
     }
 
+    setInstagramFileIdCache(fileIds);
+    console.log("Instagram画像キャッシュ更新完了:", JSON.stringify(fileIds));
     return fileIds;
+
   } catch (error) {
-    Logger.log(`Instagram画像ファイル取得エラー: ${error.toString()}`);
+    console.error("Instagram画像キャッシュ更新エラー:", error);
     return {};
   }
 }
 
-// Instagram oEmbed APIで画像URLを取得
-function getInstagramImageUrl(instagramUrl) {
-  if (!instagramUrl) return { imageUrl: '', error: 'No URL provided' };
-
-  try {
-    // Instagram oEmbed API を使用
-    const oembedUrl = `https://api.instagram.com/oembed/?url=${encodeURIComponent(instagramUrl)}`;
-
-    const response = UrlFetchApp.fetch(oembedUrl, {
-      method: 'get',
-      muteHttpExceptions: true
-    });
-
-    const statusCode = response.getResponseCode();
-
-    if (statusCode === 200) {
-      const data = JSON.parse(response.getContentText());
-      // thumbnail_url を返す（CORS制限なし）
-      return { imageUrl: data.thumbnail_url || '', error: null };
-    }
-
-    // エラーの場合
-    return { imageUrl: '', error: `API returned status ${statusCode}` };
-
-  } catch (error) {
-    return { imageUrl: '', error: error.toString() };
-  }
-}
+// ============================================
+// Instagram投稿取得（Notion連携版）- 高速版
+// ============================================
 
 function getInstagramFeedFromNotion() {
   const CONFIG = getConfig();
 
-  // Notion設定チェック
   if (!CONFIG.NOTION_TOKEN) {
-    return {
-      success: false,
-      error: "Missing NOTION_TOKEN in Script Properties"
-    };
+    return { success: false, error: "Missing NOTION_TOKEN" };
   }
 
   if (!CONFIG.NOTION_INSTAGRAM_DB_ID) {
-    return {
-      success: false,
-      error: "Missing NOTION_INSTAGRAM_DB_ID in Script Properties"
-    };
-  }
-
-  if (!CONFIG.DRIVE_FOLDER_ID) {
-    return {
-      success: false,
-      error: "Missing DRIVE_FOLDER_ID in Script Properties"
-    };
+    return { success: false, error: "Missing NOTION_INSTAGRAM_DB_ID" };
   }
 
   try {
+    // キャッシュからファイルIDを取得（高速）
+    let imageFileIds = getInstagramFileIdCache();
+    
+    // キャッシュが空なら同期（初回のみ）
+    if (Object.keys(imageFileIds).length === 0) {
+      console.log("キャッシュが空のため同期を実行");
+      imageFileIds = syncInstagramImageFileIds();
+    }
+
     // Notionデータベースをクエリ
     const url = `https://api.notion.com/v1/databases/${CONFIG.NOTION_INSTAGRAM_DB_ID}/query`;
 
@@ -758,26 +750,11 @@ function getInstagramFeedFromNotion() {
         'Content-Type': 'application/json'
       },
       payload: JSON.stringify({
-        sorts: [
-          {
-            property: '表示順',
-            direction: 'ascending'
-          }
-        ],
+        sorts: [{ property: '表示順', direction: 'ascending' }],
         filter: {
           and: [
-            {
-              property: '表示順',
-              number: {
-                is_not_empty: true
-              }
-            },
-            {
-              property: '表示順',
-              number: {
-                less_than_or_equal_to: 6
-              }
-            }
+            { property: '表示順', number: { is_not_empty: true } },
+            { property: '表示順', number: { less_than_or_equal_to: 6 } }
           ]
         },
         page_size: 6
@@ -788,88 +765,58 @@ function getInstagramFeedFromNotion() {
     const response = UrlFetchApp.fetch(url, options);
     const data = JSON.parse(response.getContentText());
 
-    // エラーチェック
     if (data.object === 'error') {
-      return {
-        success: false,
-        error: `Notion API error: ${data.message}`
-      };
+      return { success: false, error: `Notion API error: ${data.message}` };
     }
 
-    // データがない場合
     if (!data.results || data.results.length === 0) {
-      return {
-        success: true,
-        data: [],
-        count: 0,
-        message: "Notionデータベースに投稿がありません"
-      };
+      return { success: true, data: [], count: 0 };
     }
-
-    // Google Driveから画像ファイルIDを取得（insta1.png, insta2.png...）
-    const imageFileIds = getInstagramImageFileIds(CONFIG.DRIVE_FOLDER_ID);
 
     // データ整形
-    const posts = data.results.map(function(page, index) {
+    const posts = data.results.map(function(page) {
       const properties = page.properties;
 
-      // Instagram URLを取得
       let instagramUrl = '';
       if (properties['Instagram URL'] && properties['Instagram URL'].url) {
         instagramUrl = properties['Instagram URL'].url;
       }
 
-      // キャプションを取得
       let caption = '';
       if (properties['キャプション'] && properties['キャプション'].rich_text && properties['キャプション'].rich_text.length > 0) {
         caption = properties['キャプション'].rich_text[0].plain_text;
       }
 
-      // Nameを取得
-      let name = '';
-      if (properties['Name'] && properties['Name'].title && properties['Name'].title.length > 0) {
-        name = properties['Name'].title[0].plain_text;
-      }
-
-      // 表示順を取得
-      let displayOrder = index + 1;
+      let displayOrder = 1;
       if (properties['表示順'] && properties['表示順'].number) {
         displayOrder = properties['表示順'].number;
       }
 
-      // Google Driveから対応する画像のIDを取得（insta{displayOrder}.png）
-      const driveId = imageFileIds[`insta${displayOrder}.png`] || imageFileIds[`insta${displayOrder}.jpg`] || '';
+      // キャッシュからファイルIDを取得（高速）
+      const driveId = imageFileIds[`insta${displayOrder}`] || '';
 
       return {
         id: `post${displayOrder}`,
         url: instagramUrl,
         driveId: driveId,
         caption: caption,
-        displayOrder: displayOrder,
-        name: name
+        displayOrder: displayOrder
       };
-    }).filter(function(post) {
-      // URLとdriveIdがある投稿のみ
-      return post.url && post.driveId;
-    });
+    }).filter(post => post.url && post.driveId);
 
     return {
       success: true,
       data: posts,
-      count: posts.length,
-      source: 'notion-drive'
+      count: posts.length
     };
 
   } catch (error) {
-    return {
-      success: false,
-      error: error.toString()
-    };
+    return { success: false, error: error.toString() };
   }
 }
 
 // ============================================
-// テスト用
+// テスト用関数
 // ============================================
 
 function testGetPhotos() {
@@ -887,119 +834,131 @@ function testGetActivityData() {
   console.log(JSON.stringify(activities, null, 2));
 }
 
-// Instagram画像URL取得テスト
-// 使い方: 関数を編集してInstagram URLを入力し、実行
-function testGetInstagramImageUrl() {
-  // ここにInstagram URLを入力
-  const instagramUrl = 'https://www.instagram.com/pompuppysbright/p/DS_owBOEi__/';
-
-  Logger.log('Instagram URL: ' + instagramUrl);
-
-  const result = getInstagramImageUrl(instagramUrl);
-
-  if (result.imageUrl) {
-    Logger.log('✅ 画像URL取得成功:');
-    Logger.log(result.imageUrl);
-  } else {
-    Logger.log('❌ エラー: ' + result.error);
-  }
-
-  return result;
-}
-
-// ============================================
-// Instagram画像をGoogle Driveに保存
-// ============================================
-
-// Instagram画像をダウンロードしてGoogle Driveに保存
-function saveInstagramImageToDrive(instagramUrl, folderId) {
-  try {
-    // 1. 投稿IDを抽出
-    const urlMatch = instagramUrl.match(/\/p\/([A-Za-z0-9_-]+)/);
-    if (!urlMatch) {
-      return { success: false, error: 'Invalid Instagram URL format' };
-    }
-
-    const shortcode = urlMatch[1];
-    const imageUrl = `https://www.instagram.com/p/${shortcode}/media/?size=l`;
-
-    Logger.log('画像URLを生成: ' + imageUrl);
-
-    // 2. 画像をダウンロード（リダイレクトを追跡）
-    const response = UrlFetchApp.fetch(imageUrl, {
-      followRedirects: true,  // リダイレクトを自動追跡
-      muteHttpExceptions: true
-    });
-
-    const statusCode = response.getResponseCode();
-    Logger.log('HTTP Status: ' + statusCode);
-
-    if (statusCode !== 200) {
-      return { success: false, error: 'Failed to fetch image: HTTP ' + statusCode };
-    }
-
-    const imageBlob = response.getBlob();
-    Logger.log('画像ダウンロード成功');
-
-    // 3. Google Driveにアップロード
-    const folder = folderId ? DriveApp.getFolderById(folderId) : DriveApp.getRootFolder();
-
-    // ファイル名: instagram_{shortcode}_{timestamp}.jpg
-    const timestamp = new Date().getTime();
-    const fileName = 'instagram_' + shortcode + '_' + timestamp + '.jpg';
-
-    Logger.log('Driveにアップロード中...');
-    const file = folder.createFile(imageBlob.setName(fileName));
-
-    // 4. 公開設定
-    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-
-    // 5. 公開URLを生成
-    const fileId = file.getId();
-    const publicUrl = 'https://drive.google.com/uc?export=view&id=' + fileId;
-
-    Logger.log('✅ 成功!');
-    Logger.log('File ID: ' + fileId);
-    Logger.log('Public URL: ' + publicUrl);
-
-    return {
-      success: true,
-      driveUrl: publicUrl,
-      fileId: fileId,
-      fileName: fileName
-    };
-
-  } catch (error) {
-    Logger.log('❌ エラー: ' + error.toString());
-    return {
-      success: false,
-      error: error.toString()
-    };
-  }
-}
-
-// テスト用関数
-function testSaveInstagramImage() {
-  // テストするInstagram URL
-  const instagramUrl = 'https://www.instagram.com/pompuppysbright/p/DS_owBOEi__/';
-
-  Logger.log('=== Instagram画像 → Google Drive テスト ===');
-  Logger.log('Instagram URL: ' + instagramUrl);
-  Logger.log('');
-
-  // フォルダIDを指定（nullの場合はルートフォルダ）
-  const folderId = null;  // ここにフォルダIDを入力（例: '1ABC...XYZ'）
-
-  const result = saveInstagramImageToDrive(instagramUrl, folderId);
-
-  Logger.log('');
-  Logger.log('=== 結果 ===');
-  Logger.log(JSON.stringify(result, null, 2));
-
-  return result;
-}
-
 function testGetInstagramFeed() {
   const feed = getInstagramFeed();
   console.log(JSON.stringify(feed, null, 2));
 }
+
+function testGetInstagramFeedFromNotion() {
+  const feed = getInstagramFeedFromNotion();
+  console.log(JSON.stringify(feed, null, 2));
+}
+
+function testSyncInstagramImageFileIds() {
+  const result = syncInstagramImageFileIds();
+  console.log("同期結果:", JSON.stringify(result, null, 2));
+}
+// ============================================
+// 応援メッセージ（千羽鶴ページ用・カウント付き）
+// ============================================
+
+function getMessagesWithCount() {
+  const CONFIG = getConfig();
+  
+  // キャッシュをチェック（5分間有効）
+  const cache = CacheService.getScriptCache();
+  const cachedData = cache.get("messages_with_count_cache");
+  
+  if (cachedData) {
+    console.log("メッセージ（カウント付き）: キャッシュから取得");
+    return JSON.parse(cachedData);
+  }
+  
+  console.log("メッセージ（カウント付き）: Notion APIから取得");
+
+  try {
+    const url = `https://api.notion.com/v1/databases/${CONFIG.MESSAGES_DB_ID}/query`;
+
+    const payload = {
+      "filter": {
+        "property": "承認済み",
+        "checkbox": {
+          "equals": true
+        }
+      },
+      "sorts": [
+        {
+          "timestamp": "created_time",
+          "direction": "descending"
+        }
+      ],
+      "page_size": 100
+    };
+
+    const options = {
+      "method": "post",
+      "headers": {
+        "Authorization": `Bearer ${CONFIG.NOTION_TOKEN}`,
+        "Notion-Version": "2022-06-28",
+        "Content-Type": "application/json"
+      },
+      "payload": JSON.stringify(payload),
+      "muteHttpExceptions": true
+    };
+
+    const response = UrlFetchApp.fetch(url, options);
+    const data = JSON.parse(response.getContentText());
+
+    if (!data.results) {
+      return { success: false, messages: [], count: 0, pickupMessages: [] };
+    }
+
+    const allMessages = [];
+    const pickupMessages = [];
+
+    data.results.forEach((page, index) => {
+      const props = page.properties;
+      const createdTime = page.created_time || "";
+      const dateOnly = createdTime ? createdTime.split('T')[0] : "";
+
+      const message = {
+        id: page.id,
+        index: index,
+        date: dateOnly,
+        name: props["名前"]?.rich_text?.[0]?.plain_text || "匿名",
+        message: props["メッセージ"]?.rich_text?.[0]?.plain_text || "",
+        pickup: props["pickup"]?.checkbox || false,
+        category: props["category"]?.select?.name || "一般"
+      };
+
+      allMessages.push(message);
+
+      if (message.pickup) {
+        pickupMessages.push(message);
+      }
+    });
+
+    const result = {
+      success: true,
+      messages: allMessages,
+      pickupMessages: pickupMessages,
+      count: allMessages.length,
+      goal: 1000,
+      percentage: Math.min(Math.round((allMessages.length / 1000) * 100), 100)
+    };
+
+    // キャッシュに保存（300秒 = 5分間）
+    cache.put("messages_with_count_cache", JSON.stringify(result), 300);
+
+    return result;
+
+  } catch (e) {
+    console.error("Error in getMessagesWithCount: " + e.toString());
+    return { success: false, messages: [], count: 0, pickupMessages: [], error: e.toString() };
+  }
+}
+
+// 千羽鶴キャッシュをクリア
+function clearMessagesWithCountCache() {
+  const cache = CacheService.getScriptCache();
+  cache.remove("messages_with_count_cache");
+  console.log("千羽鶴キャッシュをクリアしました");
+}
+function testGetMessagesWithCount() {
+  var result = getMessagesWithCount();
+  Logger.log("総数: " + result.count + " / 目標: " + result.goal);
+  Logger.log("達成率: " + result.percentage + "%");
+  Logger.log("ピックアップ: " + result.pickupMessages.length + "件");
+  Logger.log(JSON.stringify(result, null, 2));
+}
+
