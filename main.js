@@ -597,8 +597,12 @@ function renderSponsors() {
   var container = document.getElementById('sponsorsGrid');
   if (!container) return;
   
-  var sponsors = config.sponsors || [];
-  if (sponsors.length === 0) return;
+  var sponsors = config.sponsors;
+  
+  // 配列でない場合は終了
+  if (!sponsors || !Array.isArray(sponsors) || sponsors.length === 0) {
+    return;
+  }
   
   var now = new Date();
   
@@ -630,6 +634,7 @@ function renderSponsors() {
   
   container.innerHTML = html;
 }
+
 
 // ===== マスコット表示 =====
 function initMascot() {
