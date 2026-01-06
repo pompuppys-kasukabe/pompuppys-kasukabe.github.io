@@ -287,6 +287,7 @@ function initTeamSwiper(memberCount) {
     slidesPerView: 'auto',
     centeredSlides: true,
     spaceBetween: 24,
+    slidesPerGroup: 1,  // ← この1行を追加
     loop: memberCount > 3,
     loopAdditionalSlides: 2,
     grabCursor: true,
