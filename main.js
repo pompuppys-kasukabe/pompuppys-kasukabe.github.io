@@ -248,7 +248,7 @@ async function renderMembers() {
     ? getDriveImageUrl(member.driveId)
     : member.src;
   var name = member.title || member.name || "Member";
-  var comment = member.comment || member.description || "";
+  var comment = member.comment || member.description || member.alt || "";
 
   // Swiper用にswiper-slideクラスを追加
   var slide = document.createElement("div");
