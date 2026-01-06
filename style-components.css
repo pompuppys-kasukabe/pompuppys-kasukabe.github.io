@@ -1932,3 +1932,463 @@ Copy.footer a {
 #photos {
   border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
+/* ============================================
+   Swiper 共通スタイル
+   ============================================ */
+
+.swiper {
+  width: 100%;
+  padding: 20px 0 50px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: var(--purple, #6b3fa0);
+  background: rgba(255, 255, 255, 0.95);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.swiper-pagination {
+  position: relative;
+  margin-top: 20px;
+}
+
+.swiper-pagination-bullet {
+  background: var(--purple, #6b3fa0);
+  opacity: 0.3;
+  width: 10px;
+  height: 10px;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  width: 28px;
+  border-radius: 5px;
+}
+
+/* モバイルでナビボタンを非表示（スワイプ推奨） */
+@media (max-width: 768px) {
+  .swiper-button-prev,
+  .swiper-button-next {
+    display: none;
+  }
+}
+
+/* ============================================
+   Team カルーセル
+   ============================================ */
+
+.teamSwiper {
+  padding: 40px 0 60px;
+  overflow: visible;
+}
+
+.teamSwiper .swiper-wrapper {
+  align-items: center;
+}
+
+.teamSwiper .swiper-slide {
+  width: 260px;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.teamSwiper .swiper-slide:not(.swiper-slide-active) {
+  transform: scale(0.85);
+  opacity: 0.5;
+}
+
+.teamSwiper .swiper-slide-active {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.teamSwiper .memberCard {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  cursor: default;
+}
+
+.teamSwiper .memberCard::after {
+  display: none;
+}
+
+.teamSwiper .swiper-slide-active .memberCard {
+  box-shadow: 0 20px 60px rgba(107, 63, 160, 0.25);
+}
+
+.teamSwiper .memberPhoto {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+}
+
+.teamSwiper .memberName {
+  padding: 20px 16px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--navy, #1a1a2e);
+  margin: 0;
+  background: #fff;
+}
+
+/* Team Swiper ナビゲーション位置調整 */
+.teamSwiper .swiper-button-prev {
+  left: 10px;
+}
+
+.teamSwiper .swiper-button-next {
+  right: 10px;
+}
+
+@media (max-width: 600px) {
+  .teamSwiper .swiper-slide {
+    width: 220px;
+  }
+  
+  .teamSwiper {
+    padding: 30px 0 50px;
+  }
+}
+
+/* ============================================
+   Photos カルーセル
+   ============================================ */
+
+.photosSwiper {
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 0 0 20px;
+}
+
+.photosSwiper .swiper-slide {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.photosSwiper .photoCard {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.photosSwiper .photoCard:hover {
+  transform: none;
+}
+
+.photosSwiper .photoImg {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+  height: auto;
+}
+
+.photosSwiper .photoCap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: #fff;
+  padding: 60px 24px 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* Photos Swiper ナビゲーション */
+.photosSwiper .swiper-button-prev,
+.photosSwiper .swiper-button-next {
+  top: 45%;
+}
+
+.photosSwiper .swiper-button-prev {
+  left: 16px;
+}
+
+.photosSwiper .swiper-button-next {
+  right: 16px;
+}
+
+/* サムネイルカルーセル */
+.photosThumbs {
+  margin-top: 16px;
+  padding: 10px 0;
+}
+
+.photosThumbs .swiper-slide {
+  width: 100px;
+  height: 70px;
+  border-radius: 8px;
+  overflow: hidden;
+  opacity: 0.4;
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.photosThumbs .swiper-slide:hover {
+  opacity: 0.7;
+}
+
+.photosThumbs .swiper-slide-thumb-active {
+  opacity: 1;
+  border-color: var(--purple, #6b3fa0);
+  box-shadow: 0 4px 16px rgba(107, 63, 160, 0.3);
+}
+
+.photosThumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .photosThumbs .swiper-slide {
+    width: 80px;
+    height: 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .photosThumbs .swiper-slide {
+    width: 60px;
+    height: 42px;
+  }
+}
+
+/* ============================================
+   Instagram カルーセル（ストーリーズ風）
+   ============================================ */
+
+#instagram {
+  background: linear-gradient(135deg, #fdf2f8 0%, #faf5ff 50%, #f0f9ff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+#instagram::before {
+  content: "";
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 350px;
+  height: 350px;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  opacity: 0.08;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+#instagram::after {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  left: -80px;
+  width: 250px;
+  height: 250px;
+  background: linear-gradient(45deg, #bc1888, #cc2366, #dc2743);
+  opacity: 0.06;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+#instagram .container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Instagramタイトルにアイコン追加 */
+#instagram .section-head h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#instagram .section-head h2::before {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  border-radius: 8px;
+  flex-shrink: 0;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+/* Instagramフォローボタン */
+.btn-instagram {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #fff !important;
+  border: none;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-instagram:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(188, 24, 136, 0.4);
+  color: #fff;
+}
+
+.btn-instagram i {
+  font-size: 1.1rem;
+}
+
+/* Instagram Swiper */
+.instagramSwiper {
+  padding: 20px 0 40px;
+  overflow: visible;
+}
+
+.instagramSwiper .swiper-wrapper {
+  align-items: center;
+}
+
+.instagramSwiper .swiper-slide {
+  width: 220px;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0.6;
+}
+
+.instagramSwiper .swiper-slide-active {
+  opacity: 1;
+}
+
+.instagramSwiper .swiper-slide-active .instagram-post {
+  transform: scale(1.08);
+}
+
+@media (max-width: 600px) {
+  .instagramSwiper .swiper-slide {
+    width: 180px;
+  }
+}
+
+/* Instagram投稿カード（カルーセル用） */
+.instagramSwiper .instagram-post {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  display: block;
+  text-decoration: none;
+}
+
+.instagramSwiper .instagram-post:hover {
+  box-shadow: 0 16px 48px rgba(188, 24, 136, 0.25);
+}
+
+.instagramSwiper .instagram-post img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.instagramSwiper .instagram-post:hover img {
+  transform: scale(1.05);
+}
+
+/* オーバーレイ */
+.instagramSwiper .instagram-post__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+  padding: 48px 16px 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.instagramSwiper .instagram-post:hover .instagram-post__overlay {
+  opacity: 1;
+}
+
+.instagramSwiper .instagram-post__overlay p {
+  color: #fff;
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Instagram プレースホルダー（カルーセル内） */
+.instagramSwiper .instagram-placeholder {
+  width: 100%;
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  border: 2px dashed rgba(188, 24, 136, 0.3);
+}
+
+.instagramSwiper .instagram-placeholder p {
+  color: var(--text-muted, #666);
+  margin: 0 0 16px;
+}
+
+/* ============================================
+   Photos セクション強調
+   ============================================ */
+
+#photos .section-head h2::before {
+  content: "📷 ";
+}
+
+#photos {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================
+   カルーセル ローディング状態
+   ============================================ */
+
+.swiper-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: var(--text-muted, #888);
+}
+
+.swiper-loading::after {
+  content: "読み込み中...";
+  font-size: 1rem;
+}
