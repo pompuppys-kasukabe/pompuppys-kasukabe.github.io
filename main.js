@@ -1,1003 +1,1459 @@
-/* ============================================
-   main.js - POM PUPPYS bright
-   Notion + Google Drive 連携版（Swiperカルーセル対応）
-   ============================================ */
+/* main.js - POM PUPPYS bright（Notion + Google Drive 連携版） */
 
-// ===== 定数 =====
+// ============================================
+// 写真API設定
+// ============================================
+
 var PHOTOS_API_URL = "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec";
-var CACHE_DURATION = 30 * 60 * 1000;
 
-// ===== ユーティリティ関数 =====
-function getConfig() {
-  return window.PUPPYS_CONFIG || {};
+// ============================================
+// ユーティリティ関数（utils.jsから読み込み）
+// ============================================
+// escapeHtml, formatDateLabel, yen, getConfig, getConfigValue は utils.js で定義
+
+// ============================================
+// 写真データ取得（GAS API経由）
+// ============================================
+
+var photosCache = null;
+
+async function fetchPhotos() {
+  // URLパラメータでキャッシュクリア（?reload=1 でキャッシュ削除）
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('reload') === '1') {
+    localStorage.removeItem('photos_data');
+    localStorage.removeItem('photos_time');
+    console.log('📸 写真キャッシュをクリアしました');
+  }
+
+  // メモリキャッシュチェック
+  if (photosCache) return photosCache;
+
+  // localStorageキャッシュチェック（30分有効）
+  var cachedData = localStorage.getItem('photos_data');
+  var cachedTime = localStorage.getItem('photos_time');
+  var now = Date.now();
+  var cacheMinutes = 30;
+
+  if (cachedData && cachedTime) {
+    var elapsed = (now - parseInt(cachedTime, 10)) / 1000 / 60;
+    if (elapsed < cacheMinutes) {
+      photosCache = JSON.parse(cachedData);
+      console.log('📸 写真データをキャッシュから取得（残り ' + Math.round(cacheMinutes - elapsed) + '分）');
+      return photosCache;
+    }
+  }
+
+  // APIから取得
+  try {
+    var url = PHOTOS_API_URL + "?action=getPhotos&t=" + now;
+    var res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    var data = await res.json();
+
+    // キャッシュに保存
+    photosCache = data;
+    localStorage.setItem('photos_data', JSON.stringify(data));
+    localStorage.setItem('photos_time', now.toString());
+    console.log('📸 写真データをAPIから取得してキャッシュ');
+
+    return photosCache;
+  } catch (e) {
+    console.error("写真データ取得失敗:", e);
+
+    // エラー時は古いキャッシュでも使用
+    if (cachedData) {
+      console.log('📸 エラーのため古いキャッシュを使用');
+      return JSON.parse(cachedData);
+    }
+
+    return { hero: null, gallery: [], members: [] };
+  }
 }
 
+// Google Drive画像URL生成
 function getDriveImageUrl(fileId, width) {
-  if (!fileId) return '';
-  var w = width || 800;
+  if (!fileId) return "";
+  var w = width || 1200;
   return "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w" + w;
 }
 
-function clearCacheOnReload() {
-  if (window.location.search.indexOf('reload=1') !== -1) {
-    localStorage.removeItem('photos_data');
-    localStorage.removeItem('photos_time');
-    localStorage.removeItem('instagram_data');
-    localStorage.removeItem('instagram_time');
-    console.log('キャッシュをクリアしました');
-  }
-}
+// ============================================
+// Hero画像
+// ============================================
 
-// ===== 写真データ取得 =====
-async function fetchPhotosData() {
-  var cached = localStorage.getItem('photos_data');
-  var cachedTime = localStorage.getItem('photos_time');
-  
-  if (cached && cachedTime) {
-    var age = Date.now() - parseInt(cachedTime, 10);
-    if (age < CACHE_DURATION) {
-      console.log('写真データ: キャッシュから取得');
-      return JSON.parse(cached);
-    }
-  }
-  
-  try {
-    var url = PHOTOS_API_URL + '?action=getPhotos&t=' + Date.now();
-    var response = await fetch(url);
-    if (!response.ok) throw new Error('API response not ok');
-    
-    var result = await response.json();
-    var data = result.data || result;
-    
-    if (data) {
-      localStorage.setItem('photos_data', JSON.stringify(data));
-      localStorage.setItem('photos_time', Date.now().toString());
-      console.log('写真データ: APIから取得');
-      return data;
-    }
-  } catch (error) {
-    console.error('写真データ取得エラー:', error);
-  }
-  
-  return null;
-}
+async function renderHeroMedia() {
+  var wrap = document.getElementById("heroPhotoWrap");
+  var video = document.getElementById("heroVideo");
+  var img = document.getElementById("heroPhoto");
 
-// ===== Instagram データ取得 =====
-async function fetchInstagramPosts() {
-  var config = getConfig();
-  var instagramConfig = config.instagram || {};
-  var apiUrl = instagramConfig.apiUrl || PHOTOS_API_URL;
-  
-  if (!apiUrl) {
-    console.error('Instagram API URLが設定されていません');
-    return [];
+  if (!wrap || !img) {
+    return;
   }
-  
-  var cached = localStorage.getItem('instagram_data');
-  var cachedTime = localStorage.getItem('instagram_time');
-  
-  if (cached && cachedTime) {
-    var age = Date.now() - parseInt(cachedTime, 10);
-    if (age < CACHE_DURATION) {
-      console.log('Instagram: キャッシュから取得');
-      return JSON.parse(cached);
-    }
-  }
-  
-  try {
-    var action = instagramConfig.useNotion ? 'getInstagramFeedFromNotion' : 'getInstagramFeed';
-    var url = apiUrl + '?action=' + action + '&t=' + Date.now();
-    
-    var response = await fetch(url);
-    if (!response.ok) throw new Error('Instagram API response not ok');
-    
-    var data = await response.json();
-    if (data.success && data.data) {
-      var posts = data.data.slice(0, instagramConfig.displayCount || 6);
-      localStorage.setItem('instagram_data', JSON.stringify(posts));
-      localStorage.setItem('instagram_time', Date.now().toString());
-      console.log('Instagram: APIから取得', posts.length + '件');
-      return posts;
-    } else {
-      console.error('Instagram APIエラー:', data.error || 'Unknown error');
-    }
-  } catch (error) {
-    console.error('Instagram取得エラー:', error);
-  }
-  
-  return [];
-}
 
-// ===== Hero レンダリング =====
-function renderHero(photos) {
-  var config = getConfig();
-  var heroPhoto = document.getElementById('heroPhoto');
-  var heroVideo = document.getElementById('heroVideo');
-  
-  if (!heroPhoto) return;
-  
-  var heroData = null;
-  var heroImage = null;
-  var heroVideoSrc = null;
-  
-  if (photos) {
-    if (photos.hero) {
-      heroData = photos.hero;
-    }
+  var cfg = getConfig();
+  var imgs = cfg.siteImages || {};
+  var videoCfg = imgs.heroVideo || {};
+
+  var photos = await fetchPhotos();
+  var hero = photos.hero;
+
+  // 画像ソースの決定
+  var imgSrc = "";
+  var imgAlt = "POM PUPPYS bright";
+
+  if (hero && hero.driveId) {
+    imgSrc = getDriveImageUrl(hero.driveId);
+    imgAlt = hero.alt || imgAlt;
+  } else if (imgs.heroImage) {
+    imgSrc = imgs.heroImage;
+    imgAlt = imgs.heroImageAlt || imgAlt;
   }
-  
-  if (heroData && heroData.driveId) {
-    heroImage = getDriveImageUrl(heroData.driveId, 1920);
-  } else if (config.siteImages && config.siteImages.heroImage) {
-    heroImage = config.siteImages.heroImage;
-  }
-  
-  if (config.siteImages && config.siteImages.heroVideo) {
-    heroVideoSrc = config.siteImages.heroVideo;
-  }
-  
-  if (heroVideoSrc && heroVideo) {
-    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
-    if (!reducedMotion) {
-      heroVideo.src = heroVideoSrc;
-      heroVideo.style.display = 'block';
-      heroPhoto.style.display = 'none';
-      
-      heroVideo.addEventListener('ended', function() {
-        heroVideo.style.opacity = '0';
-        setTimeout(function() {
-          heroVideo.style.display = 'none';
-          if (heroImage) {
-            heroPhoto.src = heroImage;
-          }
-          heroPhoto.style.display = 'block';
-          heroPhoto.style.opacity = '1';
-        }, 500);
-      });
-      
-      heroVideo.addEventListener('error', function() {
-        heroVideo.style.display = 'none';
-        if (heroImage) {
-          heroPhoto.src = heroImage;
+
+  // 動画が有効な場合
+  if (video && videoCfg.enabled) {
+    var mp4 = videoCfg.mp4 || "";
+    var webm = videoCfg.webm || "";
+
+    if (mp4 || webm) {
+      // ポスター画像の設定
+      var poster = videoCfg.poster || imgSrc || "";
+      if (poster) {
+        video.setAttribute("poster", poster);
+      }
+
+      // video要素のクリア
+      video.innerHTML = "";
+
+      // ソースの追加
+      if (webm) {
+        var sourceWebm = document.createElement("source");
+        sourceWebm.src = webm;
+        sourceWebm.type = "video/webm";
+        video.appendChild(sourceWebm);
+      }
+      if (mp4) {
+        var sourceMp4 = document.createElement("source");
+        sourceMp4.src = mp4;
+        sourceMp4.type = "video/mp4";
+        video.appendChild(sourceMp4);
+      }
+
+      // 動画属性の設定
+      video.muted = true;
+      video.playsInline = true;
+      video.loop = videoCfg.loop !== false;
+
+      // 動画を表示、画像を非表示
+      video.style.display = "block";
+      img.style.display = "none";
+      wrap.style.display = "block";
+
+      // エラー時は画像にフォールバック
+      video.onerror = function() {
+        video.style.display = "none";
+        if (imgSrc) {
+          img.src = imgSrc;
+          img.alt = imgAlt;
+          img.style.display = "block";
         }
-        heroPhoto.style.display = 'block';
-      });
+      };
+
+      // 自動再生（prefers-reduced-motion考慮）
+var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (!prefersReduced) {
+  // 動画終了時に静止画に切り替え
+  video.addEventListener('ended', function() {
+    video.style.opacity = '0';
+    video.style.transition = 'opacity 0.8s ease';
+    
+    setTimeout(function() {
+      video.style.display = 'none';
+      img.src = imgSrc;
+      img.alt = imgAlt;
+      img.style.display = 'block';
+      img.style.opacity = '0';
       
+      // 少し遅らせてフェードイン
+      setTimeout(function() {
+        img.style.transition = 'opacity 0.8s ease';
+        img.style.opacity = '1';
+      }, 50);
+    }, 800);
+  });
+  
+  video.play().catch(function() {
+    // 自動再生失敗時は静止画を表示
+    video.style.display = 'none';
+    img.src = imgSrc;
+    img.alt = imgAlt;
+    img.style.display = 'block';
+  });
+}
+
+return;
+
+    }
+  }
+
+  // 動画が無効または利用不可の場合は画像を表示
+  if (video) {
+    video.style.display = "none";
+  }
+
+  if (imgSrc) {
+    img.src = imgSrc;
+    img.alt = imgAlt;
+    img.style.display = "block";
+    wrap.style.display = "block";
+  } else {
+    wrap.style.display = "none";
+  }
+}
+
+// ============================================
+// メンバー写真
+// ============================================
+
+async function renderMembers() {
+  var container = document.getElementById("membersGrid");
+  if (!container) return;
+
+  var photos = await fetchPhotos();
+  var members = photos.members || [];
+
+  if (members.length === 0) {
+    var cfg = getConfig();
+    var imgs = cfg.siteImages || {};
+    members = imgs.members || [];
+  }
+
+  container.innerHTML = "";
+
+  members.forEach(function(member) {
+    var src = member.driveId
+      ? getDriveImageUrl(member.driveId)
+      : member.src;
+    var name = member.title || member.name || "Member";
+    var description = member.alt || "";
+
+    var card = document.createElement("div");
+    card.className = "memberCard";
+
+    // 説明文がある場合は展開可能にする
+    if (description) {
+      card.innerHTML =
+        '<div class="memberCard__content">' +
+        '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
+        '<p class="memberName">' + escapeHtml(name) + '</p>' +
+        '<div class="memberCard__description">' + escapeHtml(description) + '</div>' +
+        '</div>';
+
+      // クリックで展開/閉じる
+      card.addEventListener('click', function() {
+        this.classList.toggle('memberCard--expanded');
+      });
+    } else {
+      card.innerHTML =
+        '<div class="memberCard__content">' +
+        '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
+        '<p class="memberName">' + escapeHtml(name) + '</p>' +
+        '</div>';
+    }
+
+    container.appendChild(card);
+  });
+}
+
+// ============================================
+// フォトギャラリー
+// ============================================
+
+async function renderPhotos() {
+  var grid = document.getElementById("photoGrid");
+  var section = document.getElementById("photosSection");
+  if (!grid) return;
+
+  grid.innerHTML = '<p class="loadingText">読み込み中...</p>';
+
+  var photos = await fetchPhotos();
+  var gallery = (photos.gallery || []).slice().sort(function(a, b) {
+    return (a.slot || 0) - (b.slot || 0);
+  });
+
+  if (gallery.length === 0) {
+    var cfg = getConfig();
+    var imgs = cfg.siteImages || {};
+    var fallback = imgs.gallery || [];
+    if (fallback.length > 0) {
+      var html = "";
+      for (var i = 0; i < fallback.length; i++) {
+        var item = fallback[i];
+        if (!item.src) continue;
+        var title = escapeHtml(item.title || "");
+        var alt = escapeHtml(item.alt || item.title || "Photo");
+        var sizeClass = item.size || "third";
+        html += '<figure class="photoCard photoCard--' + sizeClass + '">' +
+          '<img class="photoImg" src="' + escapeHtml(item.src) + '" alt="' + alt + '" loading="lazy" decoding="async">' +
+          '<figcaption class="photoCap">' + title + '</figcaption>' +
+        '</figure>';
+      }
+      grid.innerHTML = html;
+      if (section) section.style.display = "";
       return;
     }
-  }
-  
-  if (heroImage) {
-    heroPhoto.src = heroImage;
-  }
-}
-
-// ===== メンバー レンダリング =====
-function renderMembers(photos) {
-  var config = getConfig();
-  var container = document.getElementById('membersGrid');
-  if (!container) return;
-  
-  var members = [];
-  
-  if (photos && photos.members && Array.isArray(photos.members)) {
-    members = photos.members;
-  } else if (config.siteImages && config.siteImages.members) {
-    members = config.siteImages.members;
-  }
-  
-  if (members.length === 0) {
-    console.log('メンバーデータがありません');
+    if (section) section.style.display = "none";
+    grid.innerHTML = '<p class="muted">写真は準備中です</p>';
     return;
   }
-  
-  var html = '';
-  members.forEach(function(member) {
-    var imageUrl = '';
-    if (member.driveId) {
-      imageUrl = getDriveImageUrl(member.driveId, 400);
-    } else if (member.image) {
-      imageUrl = member.image;
-    }
+
+  if (section) section.style.display = "";
+
+  var html = "";
+  for (var i = 0; i < gallery.length; i++) {
+    var item = gallery[i];
+    if (!item.driveId) continue;
     
-    html += '<div class="swiper-slide">';
-    html += '<div class="member-card">';
-    if (imageUrl) {
-      html += '<div class="member-card__image">';
-      html += '<img src="' + imageUrl + '" alt="' + (member.name || 'メンバー') + '" loading="lazy">';
-      html += '</div>';
-    }
-    html += '<div class="member-card__info">';
-    if (member.name) {
-      html += '<h3 class="member-card__name">' + member.name + '</h3>';
-    }
-    if (member.role) {
-      html += '<p class="member-card__role">' + member.role + '</p>';
-    }
-    html += '</div>';
-    html += '</div>';
-    html += '</div>';
-  });
-  
-  container.innerHTML = html;
-  console.log('メンバー描画完了:', members.length + '人');
+    var src = getDriveImageUrl(item.driveId);
+    var title = escapeHtml(item.title || "");
+    var alt = escapeHtml(item.alt || item.title || "Photo");
+    var sizeClass = item.size || "third";
+
+    html += '<figure class="photoCard photoCard--' + sizeClass + '">' +
+      '<img class="photoImg" src="' + src + '" alt="' + alt + '" loading="lazy" decoding="async" ' +
+        'onerror="this.parentElement.style.display=\'none\'">' +
+      '<figcaption class="photoCap">' + title + '</figcaption>' +
+    '</figure>';
+  }
+  grid.innerHTML = html || '<p class="muted">写真は準備中です</p>';
 }
 
-// ===== 写真ギャラリー レンダリング =====
-function renderPhotos(photos) {
-  var mainContainer = document.getElementById('photoGrid');
-  var thumbsContainer = document.getElementById('photoThumbs');
-  
-  if (!mainContainer) return;
-  
-  var gallery = [];
-  
-  if (photos && photos.gallery && Array.isArray(photos.gallery)) {
-    gallery = photos.gallery;
-  }
-  
-  if (gallery.length === 0) {
-    mainContainer.innerHTML = '<div class="swiper-slide"><p class="no-photos">写真を準備中です</p></div>';
-    if (thumbsContainer) thumbsContainer.innerHTML = '';
-    console.log('ギャラリーデータがありません');
-    return;
-  }
-  
-  gallery = gallery.slice().sort(function(a, b) {
-    return (a.slot || 999) - (b.slot || 999);
-  });
-  
-  var mainHtml = '';
-  var thumbsHtml = '';
-  
-  gallery.forEach(function(photo, index) {
-    var imageUrl = '';
-    if (photo.driveId) {
-      imageUrl = getDriveImageUrl(photo.driveId, 1200);
-    } else if (photo.url) {
-      imageUrl = photo.url;
-    }
-    
-    if (!imageUrl) return;
-    
-    var thumbUrl = photo.driveId ? getDriveImageUrl(photo.driveId, 200) : imageUrl;
-    var alt = photo.caption || photo.title || '写真 ' + (index + 1);
-    
-    mainHtml += '<div class="swiper-slide">';
-    mainHtml += '<img src="' + imageUrl + '" alt="' + alt + '" loading="lazy">';
-    mainHtml += '</div>';
-    
-    thumbsHtml += '<div class="swiper-slide">';
-    thumbsHtml += '<img src="' + thumbUrl + '" alt="' + alt + '" loading="lazy">';
-    thumbsHtml += '</div>';
-  });
-  
-  mainContainer.innerHTML = mainHtml;
-  if (thumbsContainer) thumbsContainer.innerHTML = thumbsHtml;
-  console.log('写真描画完了:', gallery.length + '枚');
-}
+// ============================================
+// Lightbox
+// ============================================
 
-// ===== Instagram レンダリング =====
-function renderInstagramFeed(posts) {
-  var container = document.getElementById('instagramFeed');
-  if (!container) return;
-  
-  if (!posts || !Array.isArray(posts) || posts.length === 0) {
-    container.innerHTML = '<div class="swiper-slide"><p class="instagram-placeholder">Instagram投稿を読み込み中...</p></div>';
-    return;
-  }
-  
-  var html = '';
-  posts.forEach(function(post) {
-    var imageUrl = '';
-    if (post.driveId) {
-      imageUrl = getDriveImageUrl(post.driveId, 600);
-    } else if (post.mediaUrl) {
-      imageUrl = post.mediaUrl;
-    } else if (post.thumbnail) {
-      imageUrl = post.thumbnail;
-    }
-    
-    if (!imageUrl) return;
-    
-    html += '<div class="swiper-slide">';
-    html += '<a href="' + (post.permalink || post.url || '#') + '" target="_blank" rel="noopener noreferrer" class="instagram-post">';
-    html += '<img src="' + imageUrl + '" alt="' + (post.caption || 'Instagram投稿').substring(0, 50) + '" loading="lazy">';
-    html += '</a>';
-    html += '</div>';
-  });
-  
-  container.innerHTML = html;
-  console.log('Instagram描画完了:', posts.length + '件');
-}
+function setupLightbox() {
+  var ui = getConfigValue("ui", {});
+  if (ui.enableLightbox === false) return;
 
-// ===== Swiper 初期化 =====
-function initSwipers() {
-  if (typeof Swiper === 'undefined') {
-    console.warn('Swiper が読み込まれていません');
-    return;
-  }
-  
-  // Team カルーセル
-  var teamSwiperEl = document.querySelector('.teamSwiper');
-  if (teamSwiperEl && teamSwiperEl.querySelectorAll('.swiper-slide').length > 0) {
-    new Swiper(teamSwiperEl, {
-      slidesPerView: 1.2,
-      slidesPerGroup: 1,
-      centeredSlides: true,
-      spaceBetween: 20,
-      loop: true,
-      navigation: {
-        nextEl: '.teamSwiper .swiper-button-next',
-        prevEl: '.teamSwiper .swiper-button-prev'
-      },
-      pagination: {
-        el: '.teamSwiper .swiper-pagination',
-        clickable: true
-      },
-      breakpoints: {
-        480: { slidesPerView: 1.5, spaceBetween: 24 },
-        768: { slidesPerView: 2.5, spaceBetween: 30 },
-        1024: { slidesPerView: 3, spaceBetween: 40 }
-      }
-    });
-    console.log('Team Swiper 初期化完了');
-  }
-  
-  // Photos カルーセル
-  var photosSwiperEl = document.querySelector('.photosSwiper');
-  var photosThumbsEl = document.querySelector('.photosThumbs');
-  
-  if (photosSwiperEl && photosSwiperEl.querySelectorAll('.swiper-slide').length > 0) {
-    var thumbsSwiper = null;
-    
-    if (photosThumbsEl && photosThumbsEl.querySelectorAll('.swiper-slide').length > 0) {
-      thumbsSwiper = new Swiper(photosThumbsEl, {
-        spaceBetween: 10,
-        slidesPerView: 4,
-        slidesPerGroup: 1,
-        freeMode: true,
-        watchSlidesProgress: true,
-        breakpoints: {
-          320: { slidesPerView: 3 },
-          480: { slidesPerView: 4 },
-          768: { slidesPerView: 5 },
-          1024: { slidesPerView: 6 }
-        }
-      });
-      console.log('Photos Thumbs Swiper 初期化完了');
-    }
-    
-    var photosConfig = {
-      spaceBetween: 0,
-      slidesPerView: 1,
-      slidesPerGroup: 1,
-      centeredSlides: true,
-      navigation: {
-        nextEl: '.photosSwiper .swiper-button-next',
-        prevEl: '.photosSwiper .swiper-button-prev'
-      }
-    };
-    
-    if (thumbsSwiper) {
-      photosConfig.thumbs = { swiper: thumbsSwiper };
-    }
-    
-    new Swiper(photosSwiperEl, photosConfig);
-    console.log('Photos Swiper 初期化完了');
-  }
-  
-  // Instagram カルーセル
-  var instaSwiperEl = document.querySelector('.instagramSwiper');
-  if (instaSwiperEl && instaSwiperEl.querySelectorAll('.swiper-slide').length > 0) {
-    new Swiper(instaSwiperEl, {
-      slidesPerView: 1.5,
-      slidesPerGroup: 1,
-      centeredSlides: true,
-      spaceBetween: 16,
-      loop: instaSwiperEl.querySelectorAll('.swiper-slide').length > 3,
-      autoplay: {
-        delay: 4000,
-        disableOnInteraction: false
-      },
-      breakpoints: {
-        480: { slidesPerView: 2, spaceBetween: 20 },
-        768: { slidesPerView: 3, spaceBetween: 24 },
-        1024: { slidesPerView: 4, spaceBetween: 30 }
-      }
-    });
-    console.log('Instagram Swiper 初期化完了');
-  }
-}
+  var lb = document.getElementById("lightbox");
+  var lbImg = document.getElementById("lightboxImg");
+  var cap = document.getElementById("lightboxCap");
+  var bg = document.getElementById("lightboxBg");
+  var closeBtn = document.getElementById("lightboxClose");
+  if (!lb || !lbImg || !cap || !bg || !closeBtn) return;
 
-// ===== ライトボックス =====
-function initLightbox() {
-  var lightbox = document.getElementById('lightbox');
-  var lightboxImg = document.getElementById('lightboxImg');
-  var lightboxClose = document.getElementById('lightboxClose');
-  var lightboxBg = document.getElementById('lightboxBg');
-  
-  if (!lightbox || !lightboxImg) return;
-  
+  function openLightbox(src, caption, alt) {
+    lbImg.src = src;
+    lbImg.alt = alt || caption || "";
+
+    // キャプションの改行を<br>に変換
+    if (caption) {
+      var formattedCaption = escapeHtml(caption).replace(/\n/g, '<br>');
+      cap.innerHTML = formattedCaption;
+    } else {
+      cap.textContent = "";
+    }
+
+    lb.classList.add("isOpen");
+    lb.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
   function closeLightbox() {
-    lightbox.classList.remove('is-active');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-    lightboxImg.src = '';
+    lb.classList.remove("isOpen");
+    lb.setAttribute("aria-hidden", "true");
+    lbImg.src = "";
+    document.body.style.overflow = "";
   }
-  
-  if (lightboxClose) {
-    lightboxClose.addEventListener('click', closeLightbox);
-  }
-  
-  if (lightboxBg) {
-    lightboxBg.addEventListener('click', closeLightbox);
-  }
-  
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && lightbox.classList.contains('is-active')) {
-      closeLightbox();
-    }
-  });
-  
-  document.addEventListener('click', function(e) {
-    var slide = e.target.closest('.photosSwiper .swiper-slide img');
-    if (slide) {
-      lightboxImg.src = slide.src;
-      lightbox.classList.add('is-active');
-      lightbox.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    }
-  });
-}
 
-// ===== ニュース レンダリング =====
-function renderNews() {
-  var config = getConfig();
-  var container = document.getElementById('newsGrid');
-  if (!container) return;
-  
-  var news = config.news;
-  if (!news || !Array.isArray(news) || news.length === 0) return;
-  
-  news.sort(function(a, b) {
-    return new Date(b.date) - new Date(a.date);
+  bg.addEventListener("click", closeLightbox);
+  closeBtn.addEventListener("click", closeLightbox);
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeLightbox();
   });
-  
-  var html = '';
-  news.forEach(function(item) {
-    html += '<article class="news-item">';
-    html += '<time class="news-item__date">' + item.date + '</time>';
-    html += '<div class="news-item__content">';
-    if (item.url) {
-      html += '<a href="' + item.url + '" class="news-item__title">' + item.title + '</a>';
-    } else {
-      html += '<span class="news-item__title">' + item.title + '</span>';
-    }
-    if (item.description) {
-      html += '<p class="news-item__desc">' + item.description + '</p>';
-    }
-    html += '</div>';
-    html += '</article>';
-  });
-  
-  container.innerHTML = html;
-}
 
-// ===== Hero コピー レンダリング =====
-function renderHeroCopy() {
-  var config = getConfig();
-  var copy = config.copy || {};
-  
-  var kicker = document.getElementById('heroKicker');
-  var headline = document.getElementById('heroHeadline');
-  var lead = document.getElementById('heroLead');
-  var sub = document.getElementById('heroSub');
-  
-  if (kicker && copy.kicker) kicker.textContent = copy.kicker;
-  if (headline && copy.headline) headline.innerHTML = copy.headline;
-  if (lead && copy.lead) lead.textContent = copy.lead;
-  if (sub && copy.sub) sub.textContent = copy.sub;
-}
+  document.addEventListener("click", function(e) {
+    var t = e.target;
+    if (!(t instanceof HTMLElement)) return;
 
-// ===== ストーリー レンダリング =====
-function renderStory() {
-  var config = getConfig();
-  var container = document.getElementById('storyBody');
-  if (!container) return;
-  
-  var story = config.story;
-  if (!story || !Array.isArray(story) || story.length === 0) return;
-  
-  var html = '';
-  story.forEach(function(block) {
-    if (block.type === 'heading') {
-      html += '<h3 class="story__heading">' + block.text + '</h3>';
-    } else if (block.type === 'paragraph') {
-      html += '<p class="story__paragraph">' + block.text + '</p>';
-    }
-  });
-  
-  container.innerHTML = html;
-}
-
-// ===== タイムライン レンダリング =====
-function renderTimeline() {
-  var config = getConfig();
-  var container = document.getElementById('timelineList');
-  if (!container) return;
-  
-  var timeline = config.timeline;
-  if (!timeline || !Array.isArray(timeline) || timeline.length === 0) return;
-  
-  var html = '';
-  timeline.forEach(function(item) {
-    var highlightClass = item.highlight ? ' timeline-item--highlight' : '';
-    html += '<li class="timeline-item' + highlightClass + '">';
-    html += '<span class="timeline-item__year">' + item.year + '</span>';
-    html += '<span class="timeline-item__event">' + item.event + '</span>';
-    html += '</li>';
-  });
-  
-  container.innerHTML = html;
-}
-
-// ===== 資金調達プログレス =====
-function renderProgress() {
-  var config = getConfig();
-  var project = config.project || {};
-  
-  var goalYen = project.goalYen || 0;
-  var raisedYen = project.raisedYen || 0;
-  
-  if (goalYen === 0) return;
-  
-  var percent = Math.min(100, Math.round((raisedYen / goalYen) * 100));
-  
-  var bar = document.getElementById('roadProgressBar');
-  var raisedText = document.getElementById('roadRaised');
-  var goalText = document.getElementById('roadGoal');
-  
-  if (bar) bar.style.width = percent + '%';
-  if (raisedText) raisedText.textContent = raisedYen.toLocaleString() + '円';
-  if (goalText) goalText.textContent = goalYen.toLocaleString() + '円';
-}
-
-// ===== 応援メッセージ プレビュー =====
-async function renderMessagePreview() {
-  var config = getConfig();
-  var container = document.getElementById('roadMessagesPreview');
-  if (!container) return;
-  
-  var messages = [];
-  
-  if (config.messagesApi) {
-    try {
-      var response = await fetch(config.messagesApi);
-      var data = await response.json();
-      if (data.success && data.data) {
-        messages = data.data;
+    // フォトギャラリーのライトボックスのみ
+    var card = t.closest(".photoCard");
+    if (card) {
+      var imgEl = card.querySelector("img.photoImg");
+      if (imgEl && imgEl.getAttribute("src")) {
+        var fig = t.closest("figure");
+        var caption = "";
+        if (fig) {
+          var capEl = fig.querySelector(".photoCap");
+          if (capEl) caption = capEl.textContent || "";
+        }
+        openLightbox(imgEl.getAttribute("src"), caption, imgEl.getAttribute("alt") || caption);
       }
-    } catch (error) {
-      console.error('メッセージ取得エラー:', error);
     }
-  }
-  
-  if (messages.length === 0 && config.messages && Array.isArray(config.messages)) {
-    messages = config.messages;
-  }
-  
-  if (Array.isArray(messages)) {
-    messages = messages.filter(function(m) {
-      return m.approved !== false;
-    });
-    
-    messages.sort(function(a, b) {
-      return new Date(b.date) - new Date(a.date);
-    });
-  }
-  
-  var preview = messages.slice(0, 3);
-  
-  if (preview.length === 0) {
-    container.innerHTML = '<p class="no-messages">応援メッセージを募集中です</p>';
+  });
+}
+
+// ============================================
+// News
+// ============================================
+
+function renderNews() {
+  var wrap = document.getElementById("newsGrid");
+  if (!wrap) return;
+
+  var cfg = getConfig();
+  var itemsRaw = cfg.news || [];
+  var items = itemsRaw.slice().sort(function(a, b) {
+    return String(b.date).localeCompare(String(a.date));
+  });
+
+  if (!items.length) {
+    wrap.innerHTML = '<div class="muted">現在お知らせはありません。</div>';
     return;
   }
-  
-  var html = '';
-  preview.forEach(function(msg) {
-    html += '<div class="message-card">';
-    html += '<p class="message-card__text">"' + msg.message + '"</p>';
-    html += '<p class="message-card__author">— ' + (msg.name || '匿名') + '</p>';
-    html += '</div>';
-  });
-  
-  container.innerHTML = html;
+
+  var html = "";
+  for (var i = 0; i < items.length; i++) {
+    var n = items[i];
+    var dateLabel = formatDateLabel(n.date);
+    var link = n.url
+      ? '<a class="newsLink" href="' + escapeHtml(n.url) + '" target="_blank" rel="noopener noreferrer">詳細を見る</a>'
+      : "";
+    html += '<article class="newsItem">' +
+      '<div class="newsTop">' +
+        '<span class="badge badge--' + escapeHtml((n.tag || "NEWS").toLowerCase()) + '">' + escapeHtml(n.tag || "NEWS") + '</span>' +
+        (dateLabel ? '<span class="newsDate">' + escapeHtml(dateLabel) + '</span>' : '') +
+      '</div>' +
+      '<h3 class="newsTitle">' + escapeHtml(n.title || "") + '</h3>' +
+      (n.body ? '<p class="newsBody">' + escapeHtml(n.body) + '</p>' : '') +
+      link +
+    '</article>';
+  }
+  wrap.innerHTML = html;
 }
 
-// ===== スポンサー レンダリング =====
+// ============================================
+// Copy（テキストコンテンツ）
+// ============================================
+
+function renderCopy() {
+  var cfg = getConfig();
+  var c = cfg.copy;
+  if (!c) return;
+
+  // Hero
+  var kicker = document.getElementById("heroKicker");
+  var h1 = document.getElementById("heroHeadline");
+  var lead = document.getElementById("heroLead");
+  var sub = document.getElementById("heroSub");
+  
+  if (kicker && c.hero) kicker.textContent = c.hero.kicker || "";
+  if (h1 && c.hero) h1.textContent = c.hero.headline || "";
+  if (lead && c.hero) lead.textContent = c.hero.lead || "";
+  if (sub && c.hero) sub.textContent = c.hero.sub || "";
+
+  // Key Facts
+  var kf = document.getElementById("keyFactsList");
+  if (kf && c.facts) {
+    var facts = c.facts;
+    var kfHtml = "";
+    for (var j = 0; j < facts.length; j++) {
+      var f = facts[j];
+      kfHtml += '<li><span class="keyFacts__label">' + escapeHtml(f.label) + '</span><span class="keyFacts__value">' + escapeHtml(f.value) + '</span></li>';
+    }
+    kf.innerHTML = kfHtml;
+  }
+
+  // Story
+  var st = document.getElementById("storyTitle");
+  if (st && c.story) st.textContent = c.story.title || "Our Story";
+
+  var sb = document.getElementById("storyBody");
+  if (sb && c.story && c.story.body) {
+    var storyLines = c.story.body;
+    var sbHtml = "";
+    for (var m = 0; m < storyLines.length; m++) {
+      sbHtml += '<p>' + storyLines[m] + '</p>';
+    }
+    sb.innerHTML = sbHtml;
+  }
+
+  // Timeline
+  var tl = document.getElementById("timelineList");
+  if (tl && c.timeline) {
+    var rows = c.timeline;
+    var tlHtml = "";
+    for (var p = 0; p < rows.length; p++) {
+      var r = rows[p];
+      var highlightClass = r.highlight ? ' class="timeline__item--highlight"' : '';
+      tlHtml += '<li' + highlightClass + '><span class="timeline__year">' + escapeHtml(r.year) + '</span><span class="timeline__text">' + escapeHtml(r.text) + '</span></li>';
+    }
+    tl.innerHTML = tlHtml;
+  }
+}
+
+// ============================================
+// Road to the World（進捗表示）
+// ============================================
+
+function renderRoadProgress() {
+  var cfg = getConfig();
+  var proj = cfg.project;
+  if (!proj) return;
+
+  var bar = document.getElementById("roadProgressBar");
+  var pct = document.getElementById("roadProgressPct");
+  var raised = document.getElementById("roadRaised");
+  var goal = document.getElementById("roadGoal");
+
+  var goalYen = proj.goalYen || 1000000;
+  var raisedYen = proj.raisedYen || 0;
+  var percent = Math.min(Math.round((raisedYen / goalYen) * 100), 100);
+
+  if (bar) bar.style.width = percent + "%";
+  if (pct) pct.textContent = percent + "%";
+  if (raised) raised.textContent = yen(raisedYen);
+  if (goal) goal.textContent = yen(goalYen);
+}
+
+// ============================================
+// 応援メッセージ
+// ============================================
+
+async function fetchMessages() {
+  var cfg = getConfig();
+  var msgCfg = cfg.supportMessages;
+  if (!msgCfg) return [];
+
+  try {
+    var url;
+
+    // Notion API連携を使用する場合
+    if (msgCfg.useNotionAPI) {
+      url = PHOTOS_API_URL + "?action=getMessages&t=" + Date.now();
+    }
+    // 従来のJSONファイルを使用する場合
+    else if (msgCfg.dataUrl) {
+      url = msgCfg.dataUrl + "?v=" + Date.now();
+    } else {
+      return [];
+    }
+
+    var res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    var data = await res.json();
+
+    // データ形式の統一（Notion APIは{messages: []}、JSONは配列）
+    var messages = data.messages || data;
+
+    return messages
+      .filter(function(m) { return m.approved !== false && m.message; })
+      .sort(function(a, b) { return String(b.date).localeCompare(String(a.date)); });
+  } catch (e) {
+    console.error("メッセージ取得失敗:", e);
+    return [];
+  }
+}
+
+async function renderMessagesPreview() {
+  var grid = document.getElementById("roadMessagesPreview");
+  if (!grid) return;
+
+  var cfg = getConfig();
+  var msgCfg = cfg.supportMessages || {};
+  
+  if (!msgCfg.enabled) {
+    grid.innerHTML = '';
+    return;
+  }
+
+  var messages = await fetchMessages();
+  var max = 3;
+  var items = messages.slice(0, max);
+
+  if (items.length === 0) {
+    grid.innerHTML = '<p class="muted">応援メッセージを募集中です</p>';
+    return;
+  }
+
+  var html = "";
+  for (var i = 0; i < items.length; i++) {
+    var m = items[i];
+    html += '<div class="msgCard msgCard--mini">' +
+      '<p class="msgBody">' + escapeHtml(m.message) + '</p>' +
+      '<div class="msgMeta">' + escapeHtml(m.name || "匿名") + '</div>' +
+    '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+// ============================================
+// スポンサー
+// ============================================
+
 function renderSponsors() {
-  var config = getConfig();
-  var container = document.getElementById('sponsorsGrid');
-  if (!container) return;
-  
-  var sponsors = config.sponsors;
-  if (!sponsors || !Array.isArray(sponsors) || sponsors.length === 0) return;
-  
-  var now = new Date();
-  
-  sponsors = sponsors.filter(function(s) {
-    if (s.approved === false) return false;
-    if (s.visible === false) return false;
-    if (s.expiry && new Date(s.expiry) < now) return false;
-    return true;
-  });
-  
-  if (sponsors.length === 0) return;
-  
-  var html = '';
-  sponsors.forEach(function(sponsor) {
-    html += '<div class="sponsor-card">';
-    if (sponsor.url) {
-      html += '<a href="' + sponsor.url + '" target="_blank" rel="noopener noreferrer">';
-    }
-    if (sponsor.logo) {
-      html += '<img src="' + sponsor.logo + '" alt="' + sponsor.name + '" class="sponsor-card__logo">';
+  var grid = document.getElementById("sponsorsGrid");
+  if (!grid) return;
+
+  var cfg = getConfig();
+  var s = cfg.sponsors;
+  var sec = document.getElementById("sponsorsSection");
+
+  if (!s || !s.enabled) {
+    if (sec) sec.style.display = "none";
+    return;
+  }
+
+  var titleEl = document.getElementById("sponsorsTitle");
+  if (titleEl) titleEl.textContent = s.title || "Sponsors";
+
+  var today = new Date();
+  var rawItems = Array.isArray(s.items) ? s.items : [];
+  var items = [];
+  for (var i = 0; i < rawItems.length; i++) {
+    var it = rawItems[i];
+    if (it.approved === false) continue;
+    if (it.showOnOfficial === false) continue;
+    var exp = new Date(String(it.expiresAt || ""));
+    if (isFinite(exp.getTime()) && exp.getTime() < today.getTime()) continue;
+    items.push(it);
+  }
+
+  if (!items.length) {
+    grid.innerHTML = '<p class="muted">スポンサーを募集しています</p>';
+    return;
+  }
+
+  var html = "";
+  for (var j = 0; j < items.length; j++) {
+    var item = items[j];
+    var inner = '<div class="sponsorCard">';
+    if (item.logo) {
+      inner += '<img src="' + escapeHtml(item.logo) + '" alt="' + escapeHtml(item.name || "Sponsor") + '" loading="lazy" decoding="async">';
     } else {
-      html += '<span class="sponsor-card__name">' + sponsor.name + '</span>';
+      inner += '<div class="sponsorName">' + escapeHtml(item.name || "") + '</div>';
     }
-    if (sponsor.url) {
-      html += '</a>';
+    inner += '</div>';
+
+    if (item.url) {
+      html += '<a class="sponsorLink" href="' + escapeHtml(item.url) + '" target="_blank" rel="nofollow sponsored noopener noreferrer">' + inner + '</a>';
+    } else {
+      html += inner;
     }
-    html += '</div>';
-  });
-  
-  container.innerHTML = html;
+  }
+  grid.innerHTML = html;
 }
 
-// ===== マスコット表示 =====
-function initMascot() {
-  var config = getConfig();
-  var mascot = document.getElementById('mascotFloat');
-  var mascotImg = document.getElementById('mascotFloatImg');
-  
-  if (!mascot) return;
-  
-  if (config.mascot && config.mascot.enabled && config.mascot.image) {
-    mascotImg.src = config.mascot.image;
-    mascot.style.display = 'block';
+// ============================================
+// マスコット
+// ============================================
+
+function renderMascot() {
+  var mf = document.getElementById("mascotFloat");
+  var mfImg = document.getElementById("mascotFloatImg");
+  if (!mf || !mfImg) return;
+
+  var cfg = getConfig();
+  var imgs = cfg.siteImages || {};
+  var m = imgs.mascot || {};
+
+  if (m.enabled && m.src) {
+    mfImg.src = m.src;
+    mfImg.alt = m.alt || "マスコット";
+    mf.style.display = "block";
+    mf.setAttribute("aria-hidden", "false");
   } else {
-    mascot.style.display = 'none';
+    mf.style.display = "none";
+    mf.setAttribute("aria-hidden", "true");
   }
 }
 
-// ===== シェア機能 =====
-function initShare() {
-  var shareBtn = document.getElementById('shareBtn');
-  if (!shareBtn) return;
-  
-  shareBtn.addEventListener('click', async function() {
-    var config = getConfig();
-    var shareData = {
-      title: config.siteName || 'POM PUPPYS bright',
-      text: config.siteDescription || '',
-      url: config.siteUrl || window.location.href
-    };
-    
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (error) {
-        if (error.name !== 'AbortError') {
-          copyToClipboard(shareData.url);
-        }
+// ============================================
+// シェアボタン
+// ============================================
+
+function wireWebShare() {
+  var ui = getConfigValue("ui", {});
+  var btn = document.getElementById("shareBtn");
+  if (!btn) return;
+
+  if (ui.showShareButton === false) {
+    btn.style.display = "none";
+    return;
+  }
+
+  var title = document.title;
+  var text = "POM PUPPYS bright 公式サイト";
+  var url = location.href;
+
+  btn.style.display = "inline-flex";
+
+  btn.addEventListener("click", async function() {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: title, text: text, url: url });
+      } else {
+        if (navigator.clipboard) await navigator.clipboard.writeText(url);
+        var prev = btn.textContent;
+        btn.textContent = "URLをコピーしました";
+        setTimeout(function() { btn.textContent = prev || "共有"; }, 1400);
       }
-    } else {
-      copyToClipboard(shareData.url);
-    }
+    } catch (e) {}
   });
 }
 
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(function() {
-    showToast('URLをコピーしました');
-  }).catch(function() {
-    var textarea = document.createElement('textarea');
-    textarea.value = text;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    showToast('URLをコピーしました');
-  });
+// ============================================
+// リンク設定
+// ============================================
+
+function wireLinks() {
+  var cfg = getConfig();
+  
+  var roadLink = document.getElementById("roadProjectLink");
+  if (roadLink) {
+    var projUrl = (cfg.pages && cfg.pages.project) || "./project-world-challenge.html";
+    roadLink.href = projUrl;
+  }
+
+  var mediaLink = document.getElementById("mediaPageLink");
+  if (mediaLink) {
+    var mediaUrl = (cfg.pages && cfg.pages.media) || "./media.html";
+    mediaLink.href = mediaUrl;
+  }
+
+  var sponsorLink = document.getElementById("sponsorPageLink");
+  if (sponsorLink) {
+    var sponsorUrl = (cfg.pages && cfg.pages.sponsor) || "./sponsor.html";
+    sponsorLink.href = sponsorUrl;
+  }
+
+  var contactLink = document.getElementById("contactMailLink");
+  if (contactLink && cfg.pressEmail) {
+    var subject = encodeURIComponent("【お問い合わせ】POM PUPPYS bright");
+    var body = encodeURIComponent("お問い合わせ内容をご記入ください。\n\n");
+    contactLink.href = "mailto:" + cfg.pressEmail + "?subject=" + subject + "&body=" + body;
+  }
 }
 
-function showToast(message) {
-  var existing = document.querySelector('.toast');
-  if (existing) existing.remove();
-  
-  var toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.textContent = message;
-  document.body.appendChild(toast);
-  
-  setTimeout(function() {
-    toast.classList.add('is-visible');
-  }, 10);
-  
-  setTimeout(function() {
-    toast.classList.remove('is-visible');
-    setTimeout(function() {
-      if (toast.parentNode) {
-        document.body.removeChild(toast);
-      }
-    }, 300);
-  }, 2000);
-}
+// ============================================
+// ハンバーガーメニュー
+// ============================================
 
-// ===== ハンバーガーメニュー =====
-function initHamburger() {
-  var toggle = document.getElementById('hamburger');
-  var nav = document.getElementById('nav');
-  
-  if (!toggle || !nav) return;
-  
-  toggle.addEventListener('click', function() {
-    var isOpen = toggle.classList.toggle('is-active');
-    nav.classList.toggle('is-open', isOpen);
-    toggle.setAttribute('aria-expanded', isOpen);
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  });
-  
-  nav.querySelectorAll('a').forEach(function(link) {
-    link.addEventListener('click', function() {
-      toggle.classList.remove('is-active');
-      nav.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    });
-  });
-}
+function setupHamburgerMenu() {
+  var hamburger = document.getElementById("hamburger");
+  var navList = document.querySelector(".nav-list");
 
-// ===== スクロールアニメーション =====
-function initScrollReveal() {
-  var reveals = document.querySelectorAll('.reveal');
-  if (reveals.length === 0) return;
-  
-  if ('IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(function(entries) {
-      entries.forEach(function(entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
-    
-    reveals.forEach(function(el) {
-      observer.observe(el);
-    });
-  } else {
-    reveals.forEach(function(el) {
-      el.classList.add('is-visible');
+  if (!hamburger || !navList) return;
+
+  hamburger.addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    navList.classList.toggle("is-open");
+    hamburger.classList.toggle("is-active");
+  });
+
+  // メニュー項目をクリックしたら閉じる
+  var navLinks = navList.querySelectorAll("a");
+  for (var i = 0; i < navLinks.length; i++) {
+    navLinks[i].addEventListener("click", function() {
+      navList.classList.remove("is-open");
+      hamburger.classList.remove("is-active");
     });
   }
 }
 
-// ===== FAQ アコーディオン =====
-function initFAQ() {
-  var faqItems = document.querySelectorAll('.faqItem');
-  if (faqItems.length === 0) return;
+// ============================================
+// スクロールアニメーション
+// ============================================
+
+function setupScrollAnimations() {
+  var targets = document.querySelectorAll(".section, .card, .photoCard, .memberCard, .newsItem");
   
-  faqItems.forEach(function(item) {
-    var question = item.querySelector('.faqItem__question');
-    if (!question) return;
-    
-    question.addEventListener('click', function() {
-      var isOpen = item.classList.contains('is-open');
-      
-      faqItems.forEach(function(otherItem) {
-        otherItem.classList.remove('is-open');
-        var otherQ = otherItem.querySelector('.faqItem__question');
-        if (otherQ) otherQ.setAttribute('aria-expanded', 'false');
-      });
-      
-      if (!isOpen) {
-        item.classList.add('is-open');
-        question.setAttribute('aria-expanded', 'true');
+  if (!("IntersectionObserver" in window)) {
+    for (var i = 0; i < targets.length; i++) {
+      targets[i].classList.add("isVisible");
+    }
+    return;
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    for (var j = 0; j < entries.length; j++) {
+      if (entries[j].isIntersecting) {
+        entries[j].target.classList.add("isVisible");
       }
-    });
-  });
+    }
+  }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+  for (var k = 0; k < targets.length; k++) {
+    observer.observe(targets[k]);
+  }
 }
 
-// ===== カウントダウン =====
+// ============================================
+// メディアページ用関数
+// ============================================
+
+function wireMediaKit() {
+  var cfg = getConfig();
+  var url = cfg.mediaKitUrl;
+  var btn = document.getElementById("mediaKitBtn");
+  if (!btn) return;
+  if (!url) {
+    btn.style.display = "none";
+    return;
+  }
+  btn.href = url;
+}
+
+function wirePressMail() {
+  var cfg = getConfig();
+  var email = cfg.pressEmail;
+  var btn = document.getElementById("pressMailBtn");
+  if (!btn || !email) return;
+  var subject = encodeURIComponent("POM PUPPYS bright 取材のご相談");
+  var body = encodeURIComponent("取材のご相談です。\n\n媒体名：\nご担当者名：\nご希望内容：\nご希望日時：\n\n");
+  btn.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
+}
+
+function renderMediaTexts() {
+  var cfg = getConfig();
+  var m = cfg.mediaTexts;
+  if (!m) return;
+
+  var credit = document.getElementById("mediaCredit");
+  var t100 = document.getElementById("text100");
+  var t200 = document.getElementById("text200");
+  var t400 = document.getElementById("text400");
+
+  if (credit) credit.textContent = m.credit || "";
+  if (t100) t100.textContent = m.short100 || "";
+  if (t200) t200.textContent = m.mid200 || "";
+  if (t400) t400.textContent = m.long400 || "";
+}
+
+async function copyText(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch (e) {}
+  try {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    ta.style.top = "0";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    var ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+    return ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+function wireCopyButtons() {
+  var buttons = document.querySelectorAll("[data-copy-target]");
+  for (var i = 0; i < buttons.length; i++) {
+    (function(btn) {
+      btn.addEventListener("click", async function() {
+        var id = btn.getAttribute("data-copy-target");
+        var el = document.getElementById(id);
+        if (!el) return;
+        var text = el.textContent || "";
+        var ok = await copyText(text.trim());
+        var prev = btn.textContent;
+        btn.textContent = ok ? "コピーしました" : "コピー失敗";
+        setTimeout(function() { btn.textContent = prev; }, 1300);
+      });
+    })(buttons[i]);
+  }
+}
+
+// ============================================
+// 応援メッセージフォーム
+// ============================================
+
+function setupMessageForm() {
+  var cfg = getConfig();
+  var msgCfg = cfg.supportMessages || {};
+  var btn = document.getElementById("sendMessageBtn");
+
+  if (!btn || !msgCfg.formUrl) return;
+
+  // TallyフォームIDを抽出（https://tally.so/r/Y50Z5v → Y50Z5v）
+  var formId = msgCfg.formUrl.split('/').pop();
+
+  // 現在の日付を取得（YYYY-MM-DD形式）
+  var today = new Date();
+  var dateStr = today.getFullYear() + '-' +
+                String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                String(today.getDate()).padStart(2, '0');
+
+  // Tallyポップアップ用の属性を設定（日付パラメータを追加）
+  btn.setAttribute("data-tally-open", formId);
+  btn.setAttribute("data-tally-hidden-fields", JSON.stringify({ date: dateStr }));
+  btn.setAttribute("data-tally-emoji-text", "👋");
+  btn.setAttribute("data-tally-emoji-animation", "wave");
+
+  btn.style.display = "inline-flex";
+}
+
+// ============================================
+// カウントダウンタイマー
+// ============================================
+
 function initCountdown() {
   var config = getConfig();
-  var countdown = config.countdown;
-  
-  if (!countdown || !countdown.enabled) return;
-  
-  var container = document.getElementById('countdownTimer');
-  if (!container) return;
-  
-  container.style.display = 'block';
-  
-  var titleEl = document.getElementById('countdownTitle');
-  if (titleEl && countdown.title) {
-    titleEl.textContent = countdown.title;
+  if (!config.danceSummit || !config.danceSummit.countdown || !config.danceSummit.countdown.enabled) {
+    return;
   }
-  
-  var targetDate = new Date(countdown.date);
-  
+
+  var timer = document.getElementById("countdownTimer");
+  if (!timer) return;
+
+  var targetDate = new Date(config.danceSummit.date);
+
+  // タイトル設定
+  var titleEl = document.getElementById("countdownTitle");
+  if (titleEl && config.danceSummit.countdown.title) {
+    titleEl.textContent = config.danceSummit.countdown.title;
+  }
+
   function updateCountdown() {
     var now = new Date();
     var diff = targetDate - now;
-    
+
     if (diff <= 0) {
-      container.innerHTML = '<p class="countdown__message">' + (countdown.endMessage || 'イベント開催中！') + '</p>';
+      // イベント終了
+      timer.style.display = "none";
       return;
     }
-    
+
     var days = Math.floor(diff / (1000 * 60 * 60 * 24));
     var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    
-    var daysEl = document.getElementById('countdownDays');
-    var hoursEl = document.getElementById('countdownHours');
-    var minutesEl = document.getElementById('countdownMinutes');
-    var secondsEl = document.getElementById('countdownSeconds');
-    
-    if (daysEl) daysEl.textContent = days;
-    if (hoursEl) hoursEl.textContent = hours;
-    if (minutesEl) minutesEl.textContent = minutes;
-    if (secondsEl) secondsEl.textContent = seconds;
+
+    document.getElementById("countdownDays").textContent = days;
+    document.getElementById("countdownHours").textContent = String(hours).padStart(2, "0");
+    document.getElementById("countdownMinutes").textContent = String(minutes).padStart(2, "0");
+    document.getElementById("countdownSeconds").textContent = String(seconds).padStart(2, "0");
+
+    timer.style.display = "block";
   }
-  
+
   updateCountdown();
   setInterval(updateCountdown, 1000);
 }
 
-// ===== リンク設定 =====
-function wireLinks() {
+// ============================================
+// Instagram埋め込みフィード
+// ============================================
+
+async function renderInstagramFeed() {
   var config = getConfig();
-  
-  var contactMailLink = document.getElementById('contactMailLink');
-  if (contactMailLink && config.contact && config.contact.email) {
-    contactMailLink.href = 'mailto:' + config.contact.email;
+  if (!config.instagram || !config.instagram.enabled) {
+    return;
+  }
+
+  var section = document.getElementById("instagram");
+  if (!section) return;
+
+  // セクションを表示
+  section.style.display = "block";
+
+  var feedContainer = document.getElementById("instagramFeed");
+  if (!feedContainer) return;
+
+  // Notion APIから投稿を取得
+  try {
+    var posts = await fetchInstagramPosts();
+    if (posts && posts.length > 0) {
+      displayInstagramPosts(posts, feedContainer, config);
+    } else {
+      showInstagramPlaceholder(feedContainer, config);
+    }
+  } catch (error) {
+    console.error("Instagram投稿の取得に失敗:", error);
+    showInstagramPlaceholder(feedContainer, config);
   }
 }
 
-// ===== メッセージフォーム =====
-function initMessageForm() {
-  var btn = document.getElementById('sendMessageBtn');
-  if (!btn) return;
-  
+async function fetchInstagramPosts() {
   var config = getConfig();
-  if (config.tallyFormId) {
-    btn.style.display = 'inline-block';
-    btn.addEventListener('click', function() {
-      var today = new Date().toISOString().split('T')[0];
-      var url = 'https://tally.so/r/' + config.tallyFormId + '?date=' + today;
-      window.open(url, '_blank');
-    });
+  var apiUrl = config.instagram.apiUrl;
+
+  if (!apiUrl) {
+    console.error("Instagram API URLが設定されていません");
+    return [];
+  }
+
+  try {
+    var url = apiUrl + "?action=getInstagramFeed&t=" + Date.now();
+    var res = await fetch(url);
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    var data = await res.json();
+
+    if (data.success && data.data) {
+      return data.data.slice(0, config.instagram.displayCount || 6);
+    }
+    return [];
+  } catch (error) {
+    console.error("Instagram API エラー:", error);
+    return [];
   }
 }
 
-// ===== メディアページ用 =====
-function initMedia() {
-  renderMediaTexts();
-  wireMediaKit();
-  wirePressMail();
-  initCopyButtons();
-  initHamburger();
+function showInstagramPlaceholder(container, config) {
+  container.innerHTML = '<div class="instagram-placeholder">' +
+    '<p style="margin-bottom: 16px;">📸 Instagramで最新の活動をチェック！</p>' +
+    '<a href="https://www.instagram.com/' + escapeHtml(config.instagram.username) + '" target="_blank" rel="noopener noreferrer" class="btn btn-primary">' +
+    '@' + escapeHtml(config.instagram.username) + ' をフォロー' +
+    '</a>' +
+    '</div>';
 }
 
-function renderMediaTexts() {
+function displayInstagramPosts(posts, container, config) {
+  var html = posts.map(function(post) {
+    var caption = post.caption ? escapeHtml(post.caption.substring(0, 100)) + (post.caption.length > 100 ? '...' : '') : '';
+
+    // Google DriveのIDから画像URLを生成、またはimage/mediaUrlを使用
+    var imageUrl = post.driveId
+      ? getDriveImageUrl(post.driveId, 600)
+      : (post.image || post.mediaUrl);
+
+    var postUrl = post.url || post.permalink || post.instagramUrl;
+
+    if (!imageUrl || !postUrl) {
+      console.warn("Instagram投稿に必要な情報が不足:", post);
+      return '';
+    }
+
+    return '<a href="' + escapeHtml(postUrl) + '" target="_blank" rel="noopener noreferrer" class="instagram-post">' +
+      '<img src="' + escapeHtml(imageUrl) + '" alt="Instagram post" loading="lazy">' +
+      (caption ? '<div class="instagram-post__overlay"><p>' + escapeHtml(caption) + '</p></div>' : '') +
+      '</a>';
+  }).join('');
+
+  container.innerHTML = html;
+}
+
+// ============================================
+// メディア掲載セクション
+// ============================================
+
+function renderMediaFeatures() {
   var config = getConfig();
-  var mediaTexts = config.mediaTexts || {};
-  
-  var shortText = document.getElementById('shortText');
-  var longText = document.getElementById('longText');
-  
-  if (shortText && mediaTexts.short) {
-    shortText.textContent = mediaTexts.short;
+  if (!config.mediaFeatures || config.mediaFeatures.length === 0) {
+    return;
   }
-  if (longText && mediaTexts.long) {
-    longText.textContent = mediaTexts.long;
-  }
+
+  var section = document.getElementById("media-features");
+  if (!section) return;
+
+  section.style.display = "block";
+
+  var grid = document.getElementById("mediaFeaturesGrid");
+  if (!grid) return;
+
+  var html = config.mediaFeatures.map(function(media) {
+    var url = media.url || "#";
+    var target = media.url ? ' target="_blank" rel="noopener noreferrer"' : '';
+    var date = media.date ? '<span class="mediaFeature__date">' + escapeHtml(media.date) + '</span>' : '';
+
+    return '<a href="' + escapeHtml(url) + '" class="mediaFeature"' + target + '>' +
+      '<img src="' + escapeHtml(media.logo) + '" alt="' + escapeHtml(media.name) + '">' +
+      date +
+      '</a>';
+  }).join("");
+
+  grid.innerHTML = html;
 }
 
-function wireMediaKit() {
+// ============================================
+// 活動カレンダー
+// ============================================
+
+function initActivityCalendar() {
   var config = getConfig();
-  var btn = document.getElementById('mediaKitBtn');
-  
-  if (btn && config.mediaKit && config.mediaKit.url) {
-    btn.href = config.mediaKit.url;
+  if (!config.activityCalendar || !config.activityCalendar.enabled) {
+    return;
   }
+
+  var section = document.getElementById("activity-calendar");
+  if (!section) return;
+
+  section.style.display = "block";
+
+  // API URLが設定されていない場合はプレースホルダー表示
+  if (!config.activityCalendar.apiUrl) {
+    var grid = document.getElementById("activityCalendarGrid");
+    if (grid) {
+      grid.innerHTML = '<div class="calendar-loading">' +
+        '<p>活動カレンダーを表示するには、Notion APIの設定が必要です。</p>' +
+        '<p style="margin-top: 8px; font-size: 0.9rem; color: var(--text-muted);">NOTION_ACTIVITY_CALENDAR_SETUP.md を参照してください。</p>' +
+        '</div>';
+    }
+    return;
+  }
+
+  fetchActivityData();
 }
 
-function wirePressMail() {
+function fetchActivityData() {
   var config = getConfig();
-  var btn = document.getElementById('pressMailBtn');
-  
-  if (btn && config.contact && config.contact.pressEmail) {
-    btn.href = 'mailto:' + config.contact.pressEmail;
-  }
-}
+  var grid = document.getElementById("activityCalendarGrid");
 
-function initCopyButtons() {
-  document.querySelectorAll('[data-copy]').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      var targetId = btn.getAttribute('data-copy');
-      var target = document.getElementById(targetId);
-      if (target) {
-        copyToClipboard(target.textContent);
+  if (!grid) return;
+
+  // ローディング表示
+  grid.innerHTML = '<div class="calendar-loading">読み込み中...</div>';
+
+  // キャッシュチェック
+  var cacheKey = 'activity_calendar_cache';
+  var cacheTimeKey = 'activity_calendar_cache_time';
+  var cachedData = localStorage.getItem(cacheKey);
+  var cacheTime = localStorage.getItem(cacheTimeKey);
+  var cacheMinutes = 30;
+  var now = new Date().getTime();
+
+  // キャッシュが有効な場合は使用
+  if (cachedData && cacheTime && (now - parseInt(cacheTime)) < cacheMinutes * 60 * 1000) {
+    try {
+      var activities = JSON.parse(cachedData);
+      renderActivityCalendar(activities);
+      renderActivityStats(activities);
+      return;
+    } catch (e) {
+      console.error('Activity calendar cache parse error:', e);
+    }
+  }
+
+  // APIからデータ取得
+  fetch(config.activityCalendar.apiUrl + '?action=getActivityData')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      if (data.success && data.data && data.data.length > 0) {
+        var activities = data.data;
+
+        // キャッシュに保存
+        try {
+          localStorage.setItem(cacheKey, JSON.stringify(activities));
+          localStorage.setItem(cacheTimeKey, now.toString());
+        } catch (e) {
+          console.error('Activity calendar cache save error:', e);
+        }
+
+        renderActivityCalendar(activities);
+        renderActivityStats(activities);
+      } else {
+        grid.innerHTML = '<div class="calendar-loading">' +
+          '<p>活動データがありません。</p>' +
+          '<p style="margin-top: 8px; font-size: 0.9rem; color: var(--text-muted);">Notionに活動を記録してください。</p>' +
+          '</div>';
       }
+    })
+    .catch(function(error) {
+      console.error('Activity calendar API error:', error);
+      grid.innerHTML = '<div class="calendar-loading">' +
+        '<p>データの読み込みに失敗しました。</p>' +
+        '<p style="margin-top: 8px; font-size: 0.9rem; color: var(--text-muted);">しばらくしてから再度お試しください。</p>' +
+        '</div>';
     });
+}
+
+function renderActivityCalendar(activities) {
+  var config = getConfig();
+  var grid = document.getElementById("activityCalendarGrid");
+
+  if (!grid) return;
+
+  var displayMonths = config.activityCalendar.displayMonths || 3;
+  var colorScheme = config.activityCalendar.colorScheme || {};
+
+  // アクティビティを日付でマッピング
+  var activityMap = {};
+  activities.forEach(function(activity) {
+    if (activity.date) {
+      var dateKey = activity.date.substring(0, 10); // YYYY-MM-DD
+      if (!activityMap[dateKey]) {
+        activityMap[dateKey] = [];
+      }
+      activityMap[dateKey].push(activity);
+    }
+  });
+
+  // カレンダーグリッド生成（11月〜4月の6ヶ月固定）
+  var now = new Date();
+  var currentYear = now.getFullYear();
+  var currentMonth = now.getMonth(); // 0-11
+
+  // シーズン開始年を決定（11月以降なら今年、10月以前なら前年）
+  var seasonStartYear = currentMonth >= 10 ? currentYear : currentYear - 1;
+
+  // 11月から6ヶ月間（11, 12, 1, 2, 3, 4月）を生成
+  var monthsHtml = [];
+  var months = [10, 11, 0, 1, 2, 3]; // 10=11月, 11=12月, 0=1月, 1=2月, 2=3月, 3=4月
+
+  for (var i = 0; i < months.length; i++) {
+    var monthIndex = months[i];
+    var year = monthIndex >= 10 ? seasonStartYear : seasonStartYear + 1;
+    var month = new Date(year, monthIndex, 1);
+    var monthHtml = renderMonth(month, activityMap, colorScheme);
+    monthsHtml.push(monthHtml);
+  }
+
+  grid.innerHTML = '<div class="calendar-grid">' +
+    '<div class="calendar-months">' + monthsHtml.join('') + '</div>' +
+    '</div>';
+}
+
+function renderMonth(month, activityMap, colorScheme) {
+  var monthLabel = (month.getMonth() + 1) + '月';
+  var year = month.getFullYear();
+  var monthIndex = month.getMonth();
+
+  var firstDay = new Date(year, monthIndex, 1);
+  var lastDay = new Date(year, monthIndex + 1, 0);
+  var daysInMonth = lastDay.getDate();
+
+  var weeks = [];
+  var currentWeek = [];
+
+  // 月の最初の週の空白を埋める
+  var startDayOfWeek = firstDay.getDay(); // 0=日曜
+  for (var i = 0; i < startDayOfWeek; i++) {
+    currentWeek.push('<div class="calendar-day" data-level="0"></div>');
+  }
+
+  // 日付を追加
+  for (var day = 1; day <= daysInMonth; day++) {
+    var date = new Date(year, monthIndex, day);
+    var dateKey = formatDateKey(date);
+    var activities = activityMap[dateKey] || [];
+    var level = Math.min(activities.length, 4);
+
+    // 優先順位に基づいて最高優先度の活動の色を使用
+    var highestActivity = getHighestPriorityActivity(activities);
+    var color = highestActivity ? getActivityColor(highestActivity, colorScheme) : '';
+    var tooltip = activities.length > 0 ? createTooltip(activities) : '';
+
+    var style = color ? ' style="background-color: ' + color + ';"' : '';
+
+    currentWeek.push(
+      '<div class="calendar-day" data-level="' + level + '"' + style + '>' +
+      (tooltip ? '<div class="calendar-tooltip">' + tooltip + '</div>' : '') +
+      '</div>'
+    );
+
+    // 週が完成したら追加
+    if (currentWeek.length === 7) {
+      weeks.push('<div class="calendar-weeks">' + currentWeek.join('') + '</div>');
+      currentWeek = [];
+    }
+  }
+
+  // 最後の週の空白を埋める
+  while (currentWeek.length > 0 && currentWeek.length < 7) {
+    currentWeek.push('<div class="calendar-day" data-level="0"></div>');
+  }
+  if (currentWeek.length > 0) {
+    weeks.push('<div class="calendar-weeks">' + currentWeek.join('') + '</div>');
+  }
+
+  return '<div class="calendar-month">' +
+    '<div class="calendar-month-label">' + monthLabel + '</div>' +
+    weeks.join('') +
+    '</div>';
+}
+
+function renderActivityStats(activities) {
+  var now = new Date();
+  var currentYear = now.getFullYear();
+  var currentMonth = now.getMonth(); // 0-11
+
+  // シーズン開始年を決定（11月以降なら今年、10月以前なら前年）
+  var seasonStartYear = currentMonth >= 10 ? currentYear : currentYear - 1;
+
+  // 11月1日から4月30日までの期間を設定
+  var startDate = new Date(seasonStartYear, 10, 1); // 11月1日
+  var endDate = new Date(seasonStartYear + 1, 4, 0); // 4月末（5月0日 = 4月末）
+
+  // 11月〜4月の活動をフィルタ
+  var periodActivities = activities.filter(function(a) {
+    if (!a.date) return false;
+    var date = new Date(a.date);
+    return date >= startDate && date <= endDate;
+  });
+
+  // 統計計算
+  var total = periodActivities.length;
+  var events = periodActivities.filter(function(a) {
+    return a.type === '大会' || a.type === 'イベント出演';
+  }).length;
+  var practice = periodActivities.filter(function(a) {
+    return a.type === '練習';
+  }).length;
+
+  // DOM更新
+  var totalEl = document.getElementById('statMonthlyTotal');
+  var eventsEl = document.getElementById('statEvents');
+  var practiceEl = document.getElementById('statPractice');
+
+  if (totalEl) totalEl.textContent = total + '日';
+  if (eventsEl) eventsEl.textContent = events + '回';
+  if (practiceEl) practiceEl.textContent = practice + '日';
+}
+
+function formatDateKey(date) {
+  var y = date.getFullYear();
+  var m = String(date.getMonth() + 1).padStart(2, '0');
+  var d = String(date.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + d;
+}
+
+function getActivityColor(activity, colorScheme) {
+  return colorScheme[activity.type] || '#bdc3c7';
+}
+
+function getHighestPriorityActivity(activities) {
+  if (!activities || activities.length === 0) return null;
+  if (activities.length === 1) return activities[0];
+
+  // 優先順位: 大会 > イベント > メディア取材 > 協賛 > 練習
+  var priority = {
+    '大会': 1,
+    'イベント': 2,
+    'メディア取材': 3,
+    '協賛': 4,
+    '練習': 5
+  };
+
+  // 最高優先度の活動を見つける
+  var highest = activities[0];
+  var highestPriority = priority[highest.type] || 999;
+
+  for (var i = 1; i < activities.length; i++) {
+    var activityPriority = priority[activities[i].type] || 999;
+    if (activityPriority < highestPriority) {
+      highest = activities[i];
+      highestPriority = activityPriority;
+    }
+  }
+
+  return highest;
+}
+
+function createTooltip(activities) {
+  var config = getConfig();
+  var typeIcons = config.activityCalendar.typeIcons || {};
+
+  return activities.map(function(a) {
+    var time = '';
+    if (a.startTime && a.endTime) {
+      time = a.startTime + ' - ' + a.endTime;
+    } else if (a.startTime) {
+      time = a.startTime + ' ~';
+    }
+
+    // アイコン取得
+    var iconClass = typeIcons[a.type] || typeIcons['その他'] || '';
+    var icon = iconClass ? '<i class="' + iconClass + '"></i> ' : '';
+
+    var parts = [a.name];
+    if (time) parts.push(time);
+    if (a.location) parts.push(a.location);
+
+    return icon + escapeHtml(parts.join(' / '));
+  }).join('<br>');
+}
+
+// renderUpcomingEvents() - 削除済み
+
+// ============================================
+// 初期化
+// ============================================
+
+// FAQ アコーディオン機能
+function initFAQ() {
+  const faqItems = document.querySelectorAll('.faqItem');
+
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faqItem__question');
+
+    if (question) {
+      question.addEventListener('click', function() {
+        const isOpen = item.classList.contains('is-open');
+
+        // 他の開いているFAQを閉じる（オプション）
+        faqItems.forEach(otherItem => {
+          if (otherItem !== item) {
+            otherItem.classList.remove('is-open');
+            const otherQuestion = otherItem.querySelector('.faqItem__question');
+            if (otherQuestion) {
+              otherQuestion.setAttribute('aria-expanded', 'false');
+            }
+          }
+        });
+
+        // クリックされたFAQの開閉を切り替え
+        if (isOpen) {
+          item.classList.remove('is-open');
+          question.setAttribute('aria-expanded', 'false');
+        } else {
+          item.classList.add('is-open');
+          question.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
   });
 }
 
-// ===== メイン初期化 =====
 async function initSite() {
-  clearCacheOnReload();
-  
-  // 基本UI初期化
-  initHamburger();
-  initScrollReveal();
-  initFAQ();
-  initLightbox();
-  initShare();
-  initMascot();
-  initCountdown();
-  initMessageForm();
-  wireLinks();
-  
-  // コンテンツレンダリング
-  renderHeroCopy();
-  renderStory();
-  renderTimeline();
+  renderCopy();
   renderNews();
-  renderProgress();
+  wireLinks();
+  wireWebShare();
+  renderRoadProgress();
   renderSponsors();
-  
-  // 非同期データ取得
-  try {
-    var photos = await fetchPhotosData();
-    console.log('取得した写真データ:', photos);
-    
-    if (photos) {
-      renderHero(photos);
-      renderMembers(photos);
-      renderPhotos(photos);
-    }
-    
-    var instaPosts = await fetchInstagramPosts();
-    renderInstagramFeed(instaPosts);
-    
-    await renderMessagePreview();
-    
-  } catch (error) {
-    console.error('データ取得エラー:', error);
-  }
-  
-  // Swiper 初期化（DOM更新後）
-  setTimeout(function() {
-    initSwipers();
-  }, 200);
-  
-  console.log('サイト初期化完了');
+  renderMascot();
+  setupHamburgerMenu();
+  setupMessageForm();
+
+  // 新機能の初期化
+  initCountdown();
+  renderInstagramFeed();
+  renderMediaFeatures();
+  initActivityCalendar();
+  initFAQ();
+
+  // 非同期処理
+  await renderHeroMedia();
+  await renderMembers();
+  await renderPhotos();
+  await renderMessagesPreview();
+
+  setupLightbox();
+  setupScrollAnimations();
 }
 
-// ===== DOMContentLoaded =====
-document.addEventListener('DOMContentLoaded', function() {
-  var page = document.body.getAttribute('data-page');
-  
-  if (page === 'media') {
+function initMedia() {
+  wireMediaKit();
+  wirePressMail();
+  renderMediaTexts();
+  wireCopyButtons();
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  var page = document.body.dataset.page || document.body.getAttribute("data-page");
+  if (page === "media") {
     initMedia();
   } else {
     initSite();
