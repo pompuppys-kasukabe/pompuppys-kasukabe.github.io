@@ -2392,3 +2392,35 @@ Copy.footer a {
   content: "読み込み中...";
   font-size: 1rem;
 }
+/* メンバーカード コメント展開 */
+.memberCard {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.memberComment {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 0 0 12px 12px;
+  padding: 0 16px;
+}
+
+.memberComment p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-body, #333);
+}
+
+.memberCard.is-expanded .memberComment {
+  max-height: 200px;
+  opacity: 1;
+  padding: 16px;
+}
+
+.memberCard.is-expanded {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
