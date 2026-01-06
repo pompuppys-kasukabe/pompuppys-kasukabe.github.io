@@ -144,14 +144,14 @@ window.PUPPYS_CONFIG = {
 
   // ===== サイト画像 =====
   siteImages: {
-    heroImage: "./assets/photos/team_main.jpg",
+    heroImage: "./assets/photos/team_main.JPG",
     heroImageAlt: "POM PUPPYS bright チーム写真",
 
     heroVideo: {
   enabled: true,
   mp4: "./assets/video/official_hero.mp4",
   webm: "",
-  poster: "./assets/photos/team_main.jpg",
+  poster: "./assets/photos/team_main.JPG",
   loop: false  // ← false に変更
 },
 
