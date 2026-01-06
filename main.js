@@ -694,18 +694,32 @@ async function renderMessagesPreview() {
 
   var cfg = getConfig();
   var msgCfg = cfg.supportMessages || {};
-  
+
   if (!msgCfg.enabled) {
     grid.innerHTML = '';
     return;
   }
 
   var messages = await fetchMessages();
-  var max = 4;
+  var max = 3;
   var items = messages.slice(0, max);
 
+  // 千羽鶴プロジェクトの進捗を更新
+  var messageCountEl = document.getElementById("messageCount");
+  var progressBarFillEl = document.getElementById("progressBarFill");
+  var goal = 1000;
+
+  if (messageCountEl) {
+    messageCountEl.textContent = messages.length.toLocaleString();
+  }
+
+  if (progressBarFillEl) {
+    var percentage = Math.min((messages.length / goal) * 100, 100);
+    progressBarFillEl.style.width = percentage + '%';
+  }
+
   if (items.length === 0) {
-    grid.innerHTML = '<p class="muted">応援メッセージを募集中です</p>';
+    grid.innerHTML = '<p class="muted" style="text-align: center;">応援メッセージを募集中です</p>';
     return;
   }
 
@@ -713,7 +727,7 @@ async function renderMessagesPreview() {
   for (var i = 0; i < items.length; i++) {
     var m = items[i];
     html += '<div class="msgCard msgCard--mini">' +
-      '<p class="msgBody">' + escapeHtml(m.message) + '</p>' +
+      '<p class="msgBody">' + escapeHtml(m.message.substring(0, 80)) + (m.message.length > 80 ? '...' : '') + '</p>' +
       '<div class="msgMeta">' + escapeHtml(m.name || "匿名") + '</div>' +
     '</div>';
   }
