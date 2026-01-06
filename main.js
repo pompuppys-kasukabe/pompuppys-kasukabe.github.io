@@ -160,39 +160,38 @@ async function renderHeroMedia() {
       };
 
       // 自動再生（prefers-reduced-motion考慮）
-var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (!prefersReduced) {
-  // 動画終了時に静止画に切り替え
-  video.addEventListener('ended', function() {
-    video.style.opacity = '0';
-    video.style.transition = 'opacity 0.8s ease';
-    
-    setTimeout(function() {
-      video.style.display = 'none';
-      img.src = imgSrc;
-      img.alt = imgAlt;
-      img.style.display = 'block';
-      img.style.opacity = '0';
-      
-      // 少し遅らせてフェードイン
-      setTimeout(function() {
-        img.style.transition = 'opacity 0.8s ease';
-        img.style.opacity = '1';
-      }, 50);
-    }, 800);
-  });
-  
-  video.play().catch(function() {
-    // 自動再生失敗時は静止画を表示
-    video.style.display = 'none';
-    img.src = imgSrc;
-    img.alt = imgAlt;
-    img.style.display = 'block';
-  });
-}
+      var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced) {
+        // 動画終了時に静止画に切り替え
+        video.addEventListener('ended', function() {
+          video.style.opacity = '0';
+          video.style.transition = 'opacity 0.8s ease';
+          
+          setTimeout(function() {
+            video.style.display = 'none';
+            img.src = imgSrc;
+            img.alt = imgAlt;
+            img.style.display = 'block';
+            img.style.opacity = '0';
+            
+            // 少し遅らせてフェードイン
+            setTimeout(function() {
+              img.style.transition = 'opacity 0.8s ease';
+              img.style.opacity = '1';
+            }, 50);
+          }, 800);
+        });
+        
+        video.play().catch(function() {
+          // 自動再生失敗時は静止画を表示
+          video.style.display = 'none';
+          img.src = imgSrc;
+          img.alt = imgAlt;
+          img.style.display = 'block';
+        });
+      }
 
-return;
-
+      return;
     }
   }
 
@@ -994,7 +993,10 @@ async function fetchInstagramPosts() {
   }
 
   try {
-    var url = apiUrl + "?action=getInstagramFeed&t=" + Date.now();
+    // useNotionがtrueならNotion連携版を使用、falseならInstagram API版を使用
+    var action = config.instagram.useNotion ? "getInstagramFeedFromNotion" : "getInstagramFeed";
+    var url = apiUrl + "?action=" + action + "&t=" + Date.now();
+    
     var res = await fetch(url);
     if (!res.ok) throw new Error("HTTP " + res.status);
     var data = await res.json();
@@ -1375,28 +1377,26 @@ function createTooltip(activities) {
   }).join('<br>');
 }
 
-// renderUpcomingEvents() - 削除済み
-
 // ============================================
 // 初期化
 // ============================================
 
 // FAQ アコーディオン機能
 function initFAQ() {
-  const faqItems = document.querySelectorAll('.faqItem');
+  var faqItems = document.querySelectorAll('.faqItem');
 
-  faqItems.forEach(item => {
-    const question = item.querySelector('.faqItem__question');
+  faqItems.forEach(function(item) {
+    var question = item.querySelector('.faqItem__question');
 
     if (question) {
       question.addEventListener('click', function() {
-        const isOpen = item.classList.contains('is-open');
+        var isOpen = item.classList.contains('is-open');
 
         // 他の開いているFAQを閉じる（オプション）
-        faqItems.forEach(otherItem => {
+        faqItems.forEach(function(otherItem) {
           if (otherItem !== item) {
             otherItem.classList.remove('is-open');
-            const otherQuestion = otherItem.querySelector('.faqItem__question');
+            var otherQuestion = otherItem.querySelector('.faqItem__question');
             if (otherQuestion) {
               otherQuestion.setAttribute('aria-expanded', 'false');
             }
