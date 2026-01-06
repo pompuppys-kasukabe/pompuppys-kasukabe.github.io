@@ -244,25 +244,56 @@ async function renderMembers() {
   container.innerHTML = "";
 
   members.forEach(function(member) {
-    var src = member.driveId
-      ? getDriveImageUrl(member.driveId)
-      : member.src;
-    var name = member.title || member.name || "Member";
+  var src = member.driveId
+    ? getDriveImageUrl(member.driveId)
+    : member.src;
+  var name = member.title || member.name || "Member";
+  var comment = member.comment || member.description || "";
 
-    // Swiper用にswiper-slideクラスを追加
-    var slide = document.createElement("div");
-    slide.className = "swiper-slide";
+  // Swiper用にswiper-slideクラスを追加
+  var slide = document.createElement("div");
+  slide.className = "swiper-slide";
 
-    var card = document.createElement("div");
-    card.className = "memberCard";
+  var card = document.createElement("div");
+  card.className = "memberCard";
 
-    card.innerHTML =
-      '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
-      '<p class="memberName">' + escapeHtml(name) + '</p>';
+  var cardHtml =
+    '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
+    '<p class="memberName">' + escapeHtml(name) + '</p>';
 
-    slide.appendChild(card);
-    container.appendChild(slide);
-  });
+  // コメントがある場合は追加（初期は非表示、下に伸びる）
+  if (comment) {
+    cardHtml += '<div class="memberComment">' +
+      '<p>' + escapeHtml(comment) + '</p>' +
+    '</div>';
+  }
+
+  card.innerHTML = cardHtml;
+
+  // クリックでコメント表示/非表示を切り替え（下に伸びる）
+  if (comment) {
+    card.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isExpanded = card.classList.contains('is-expanded');
+      
+      // 他のカードを閉じる
+      var allCards = document.querySelectorAll('.memberCard.is-expanded');
+      allCards.forEach(function(c) {
+        c.classList.remove('is-expanded');
+      });
+      
+      // クリックしたカードを開閉
+      if (!isExpanded) {
+        card.classList.add('is-expanded');
+      }
+    });
+    card.style.cursor = 'pointer';
+  }
+
+  slide.appendChild(card);
+  container.appendChild(slide);
+});
+
 
   // Swiperを初期化
   initTeamSwiper(members.length);
@@ -288,6 +319,7 @@ function initTeamSwiper(memberCount) {
     centeredSlides: true,
     spaceBetween: 24,
     slidesPerGroup: 1,  // ← この1行を追加
+    initialSlide: 0,  // ← この1行を追加
     loop: memberCount > 3,
     loopAdditionalSlides: 2,
     grabCursor: true,
