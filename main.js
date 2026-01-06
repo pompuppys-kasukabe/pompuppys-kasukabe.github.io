@@ -1637,3 +1637,72 @@ document.addEventListener("DOMContentLoaded", function() {
     initSite();
   }
 });
+// ========================================
+// 千羽鶴チャレンジ バナー更新
+// ========================================
+async function updateChallengeProgress() {
+  try {
+    const response = await fetch(CONFIG.instagram.apiUrl + "?action=getMessagesWithCount");
+    const data = await response.json();
+    
+    if (data.success) {
+      const countEl = document.getElementById("challengeCount");
+      const barEl = document.getElementById("challengeBar");
+      const remainingEl = document.getElementById("challengeRemaining");
+      
+      if (countEl) {
+        // カウントアップアニメーション
+        animateCount(countEl, 0, data.count, 1500);
+      }
+      
+      if (barEl) {
+        setTimeout(() => {
+          barEl.style.width = data.percentage + "%";
+        }, 300);
+      }
+      
+      if (remainingEl) {
+        const remaining = data.goal - data.count;
+        if (remaining > 0) {
+          remainingEl.textContent = `あと ${remaining.toLocaleString()} 件で目標達成！`;
+        } else {
+          remainingEl.textContent = "🎉 目標達成！ありがとうございます！";
+        }
+      }
+    }
+  } catch (e) {
+    console.error("Challenge progress error:", e);
+    const remainingEl = document.getElementById("challengeRemaining");
+    if (remainingEl) {
+      remainingEl.textContent = "目標: 1,000件の応援メッセージ";
+    }
+  }
+}
+
+// カウントアップアニメーション
+function animateCount(element, start, end, duration) {
+  const startTime = performance.now();
+  
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const easeOut = 1 - Math.pow(1 - progress, 3);
+    const current = Math.floor(start + (end - start) * easeOut);
+    
+    element.textContent = current.toLocaleString();
+    
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+  
+  requestAnimationFrame(update);
+}
+
+// ページ読み込み時に実行（既存のinitSite内または別途）
+document.addEventListener("DOMContentLoaded", function() {
+  // 千羽鶴バナーがあれば更新
+  if (document.getElementById("challengeCount")) {
+    updateChallengeProgress();
+  }
+});
