@@ -419,7 +419,7 @@ window.PUPPYS_CONFIG = {
       { label: "Day 7", title: "現地出発", body: "空路移動", meals: "機内食", hidden: false },
       { label: "Day 8", title: "日本到着・解散", body: "", meals: "機内食", hidden: false }
     ]
-  }
+  },
   // 千羽鶴チャレンジ（これを追加）
   messagesChallenge: {
     enabled: true,
