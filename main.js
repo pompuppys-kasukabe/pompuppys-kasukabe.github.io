@@ -5,7 +5,7 @@
 
 // ===== 定数 =====
 var PHOTOS_API_URL = "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec";
-var CACHE_DURATION = 30 * 60 * 1000; // 30分
+var CACHE_DURATION = 30 * 60 * 1000;
 
 // ===== ユーティリティ関数 =====
 function getConfig() {
@@ -46,12 +46,14 @@ async function fetchPhotosData() {
     var response = await fetch(url);
     if (!response.ok) throw new Error('API response not ok');
     
-    var data = await response.json();
-    if (data.success && data.data) {
-      localStorage.setItem('photos_data', JSON.stringify(data.data));
+    var result = await response.json();
+    var data = result.data || result;
+    
+    if (data) {
+      localStorage.setItem('photos_data', JSON.stringify(data));
       localStorage.setItem('photos_time', Date.now().toString());
       console.log('写真データ: APIから取得');
-      return data.data;
+      return data;
     }
   } catch (error) {
     console.error('写真データ取得エラー:', error);
@@ -114,11 +116,18 @@ function renderHero(photos) {
   
   if (!heroPhoto) return;
   
+  var heroData = null;
   var heroImage = null;
   var heroVideoSrc = null;
   
-  if (photos && photos.hero && photos.hero.driveId) {
-    heroImage = getDriveImageUrl(photos.hero.driveId, 1920);
+  if (photos) {
+    if (photos.hero) {
+      heroData = photos.hero;
+    }
+  }
+  
+  if (heroData && heroData.driveId) {
+    heroImage = getDriveImageUrl(heroData.driveId, 1920);
   } else if (config.siteImages && config.siteImages.heroImage) {
     heroImage = config.siteImages.heroImage;
   }
@@ -172,13 +181,16 @@ function renderMembers(photos) {
   
   var members = [];
   
-  if (photos && photos.members && photos.members.length > 0) {
+  if (photos && photos.members && Array.isArray(photos.members)) {
     members = photos.members;
   } else if (config.siteImages && config.siteImages.members) {
     members = config.siteImages.members;
   }
   
-  if (members.length === 0) return;
+  if (members.length === 0) {
+    console.log('メンバーデータがありません');
+    return;
+  }
   
   var html = '';
   members.forEach(function(member) {
@@ -209,6 +221,7 @@ function renderMembers(photos) {
   });
   
   container.innerHTML = html;
+  console.log('メンバー描画完了:', members.length + '人');
 }
 
 // ===== 写真ギャラリー レンダリング =====
@@ -218,13 +231,20 @@ function renderPhotos(photos) {
   
   if (!mainContainer) return;
   
-  if (!photos || !photos.gallery || photos.gallery.length === 0) {
+  var gallery = [];
+  
+  if (photos && photos.gallery && Array.isArray(photos.gallery)) {
+    gallery = photos.gallery;
+  }
+  
+  if (gallery.length === 0) {
     mainContainer.innerHTML = '<div class="swiper-slide"><p class="no-photos">写真を準備中です</p></div>';
     if (thumbsContainer) thumbsContainer.innerHTML = '';
+    console.log('ギャラリーデータがありません');
     return;
   }
   
-  var gallery = photos.gallery.slice().sort(function(a, b) {
+  gallery = gallery.slice().sort(function(a, b) {
     return (a.slot || 999) - (b.slot || 999);
   });
   
@@ -255,6 +275,7 @@ function renderPhotos(photos) {
   
   mainContainer.innerHTML = mainHtml;
   if (thumbsContainer) thumbsContainer.innerHTML = thumbsHtml;
+  console.log('写真描画完了:', gallery.length + '枚');
 }
 
 // ===== Instagram レンダリング =====
@@ -262,7 +283,7 @@ function renderInstagramFeed(posts) {
   var container = document.getElementById('instagramFeed');
   if (!container) return;
   
-  if (!posts || posts.length === 0) {
+  if (!posts || !Array.isArray(posts) || posts.length === 0) {
     container.innerHTML = '<div class="swiper-slide"><p class="instagram-placeholder">Instagram投稿を読み込み中...</p></div>';
     return;
   }
@@ -288,6 +309,7 @@ function renderInstagramFeed(posts) {
   });
   
   container.innerHTML = html;
+  console.log('Instagram描画完了:', posts.length + '件');
 }
 
 // ===== Swiper 初期化 =====
@@ -344,6 +366,7 @@ function initSwipers() {
           1024: { slidesPerView: 6 }
         }
       });
+      console.log('Photos Thumbs Swiper 初期化完了');
     }
     
     var photosConfig = {
@@ -373,7 +396,7 @@ function initSwipers() {
       slidesPerGroup: 1,
       centeredSlides: true,
       spaceBetween: 16,
-      loop: true,
+      loop: instaSwiperEl.querySelectorAll('.swiper-slide').length > 3,
       autoplay: {
         delay: 4000,
         disableOnInteraction: false
@@ -435,8 +458,8 @@ function renderNews() {
   var container = document.getElementById('newsGrid');
   if (!container) return;
   
-  var news = config.news || [];
-  if (news.length === 0) return;
+  var news = config.news;
+  if (!news || !Array.isArray(news) || news.length === 0) return;
   
   news.sort(function(a, b) {
     return new Date(b.date) - new Date(a.date);
@@ -484,8 +507,8 @@ function renderStory() {
   var container = document.getElementById('storyBody');
   if (!container) return;
   
-  var story = config.story || [];
-  if (story.length === 0) return;
+  var story = config.story;
+  if (!story || !Array.isArray(story) || story.length === 0) return;
   
   var html = '';
   story.forEach(function(block) {
@@ -505,8 +528,8 @@ function renderTimeline() {
   var container = document.getElementById('timelineList');
   if (!container) return;
   
-  var timeline = config.timeline || [];
-  if (timeline.length === 0) return;
+  var timeline = config.timeline;
+  if (!timeline || !Array.isArray(timeline) || timeline.length === 0) return;
   
   var html = '';
   timeline.forEach(function(item) {
@@ -561,17 +584,19 @@ async function renderMessagePreview() {
     }
   }
   
-  if (messages.length === 0 && config.messages) {
+  if (messages.length === 0 && config.messages && Array.isArray(config.messages)) {
     messages = config.messages;
   }
   
-  messages = messages.filter(function(m) {
-    return m.approved !== false;
-  });
-  
-  messages.sort(function(a, b) {
-    return new Date(b.date) - new Date(a.date);
-  });
+  if (Array.isArray(messages)) {
+    messages = messages.filter(function(m) {
+      return m.approved !== false;
+    });
+    
+    messages.sort(function(a, b) {
+      return new Date(b.date) - new Date(a.date);
+    });
+  }
   
   var preview = messages.slice(0, 3);
   
@@ -598,11 +623,7 @@ function renderSponsors() {
   if (!container) return;
   
   var sponsors = config.sponsors;
-  
-  // 配列でない場合は終了
-  if (!sponsors || !Array.isArray(sponsors) || sponsors.length === 0) {
-    return;
-  }
+  if (!sponsors || !Array.isArray(sponsors) || sponsors.length === 0) return;
   
   var now = new Date();
   
@@ -634,7 +655,6 @@ function renderSponsors() {
   
   container.innerHTML = html;
 }
-
 
 // ===== マスコット表示 =====
 function initMascot() {
@@ -948,6 +968,8 @@ async function initSite() {
   // 非同期データ取得
   try {
     var photos = await fetchPhotosData();
+    console.log('取得した写真データ:', photos);
+    
     if (photos) {
       renderHero(photos);
       renderMembers(photos);
@@ -966,7 +988,7 @@ async function initSite() {
   // Swiper 初期化（DOM更新後）
   setTimeout(function() {
     initSwipers();
-  }, 100);
+  }, 200);
   
   console.log('サイト初期化完了');
 }
