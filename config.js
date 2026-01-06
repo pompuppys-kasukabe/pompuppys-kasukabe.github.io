@@ -274,7 +274,7 @@ timeline: [
     enabled: true,
     formUrl: "https://tally.so/r/Y50Z5v",
     dataUrl: "./assets/messages.json", // ローカルJSONファイル
-    useNotionAPI: false, // Notion連携を使用しない（messages.jsonを使用）
+    useNotionAPI: true, // Notion連携を使用しない（messages.jsonを使用）
     maxOnOfficial: 12,
     maxOnProject: 24,
     note: "掲載は内容確認のうえ反映します。個人情報（学校名/住所/電話番号など）は記載しないでください。"
