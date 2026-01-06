@@ -701,7 +701,7 @@ async function renderMessagesPreview() {
   }
 
   var messages = await fetchMessages();
-  var max = 3;
+  var max = 4;
   var items = messages.slice(0, max);
 
   if (items.length === 0) {
