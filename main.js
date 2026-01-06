@@ -412,6 +412,7 @@ function initPhotosSwiper(photoCount) {
   if (mainElement) {
     photosSwiper = new Swiper('.photosSwiper', {
       spaceBetween: 10,
+      slidesPerGroup: 1,  // ← この1行を追加
       loop: photoCount > 1,
       grabCursor: true,
       speed: 500,
