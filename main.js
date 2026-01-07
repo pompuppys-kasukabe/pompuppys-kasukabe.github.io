@@ -1227,15 +1227,14 @@ function initInstagramSwiper(postCount) {
   if (!swiperElement) return;
 
   instagramSwiper = new Swiper('.instagramSwiper', {
-    slidesPerView: 1.2,
-    centeredSlides: true,
+    slidesPerView: 1,
+    slidesPerGroup: 1,
+    centeredSlides: false,
     spaceBetween: 20,
     loop: true,
-    loopedSlides: postCount * 2,
-    loopAdditionalSlides: 3,
+    loopFillGroupWithBlank: false,
     speed: 600,
     allowTouchMove: false,
-    watchSlidesProgress: true,
     autoplay: {
       delay: 4000,
       disableOnInteraction: false,
@@ -1247,24 +1246,24 @@ function initInstagramSwiper(postCount) {
     },
     breakpoints: {
       480: {
-        slidesPerView: 1.5,
+        slidesPerView: 1,
         spaceBetween: 24,
-        loopedSlides: postCount * 2,
       },
       768: {
-        slidesPerView: 2.2,
+        slidesPerView: 2,
         spaceBetween: 28,
-        loopedSlides: postCount * 2,
       },
       1024: {
-        slidesPerView: Math.min(postCount, 3),
+        slidesPerView: 3,
         spaceBetween: 32,
-        loopedSlides: postCount * 2,
       }
     },
     on: {
       init: function() {
-        console.log('Instagram carousel initialized with', postCount, 'posts');
+        console.log('Instagram carousel initialized: posts=' + postCount + ', loop=' + this.params.loop);
+      },
+      slideChange: function() {
+        console.log('Instagram slide changed to:', this.realIndex);
       }
     }
   });
