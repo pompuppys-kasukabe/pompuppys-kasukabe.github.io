@@ -489,6 +489,11 @@ async function fetchMessages(){
 
     console.log("Total messages before filter:", messages.length);
 
+    // デバッグ: pickupフィールドの値を確認
+    if(messages.length > 0){
+      console.log("First message pickup field:", messages[0].pickup, "type:", typeof messages[0].pickup);
+    }
+
     var filtered = messages.filter(function(m){
       // message が存在すればOK（approved チェックを削除）
       var hasMessage = m && m.message && String(m.message).trim().length > 0;
@@ -496,6 +501,7 @@ async function fetchMessages(){
       console.log("Filtering message:", {
         name: m.name,
         hasMessage: hasMessage,
+        pickup: m.pickup,
         message: m.message ? m.message.substring(0, 50) : null
       });
 
@@ -526,9 +532,12 @@ function openMessageModal(message){
 
   if(nameEl) nameEl.textContent = message.name || "匿名";
   if(dateEl) dateEl.textContent = message.date || "";
+
+  // カテゴリは非表示
   if(categoryEl){
-    categoryEl.textContent = message.category || "一般";
+    categoryEl.style.display = "none";
   }
+
   if(textEl) textEl.textContent = message.message || "";
 
   modal.style.display = "flex";
@@ -800,9 +809,19 @@ async function renderAllMessagesGrid(){
   var messages = await fetchMessages();
   console.log("All messages: fetched", messages.length, "messages");
 
+  // デバッグ: 最初のメッセージのpickup値を確認
+  if(messages.length > 0){
+    console.log("Sample message pickup value:", messages[0].pickup, "type:", typeof messages[0].pickup);
+    console.log("Sample message data:", messages[0]);
+  }
+
   // ピックアップメッセージのみをフィルター
   var pickupMessages = messages.filter(function(m){
-    return m.pickup === true || m.pickup === "true";
+    var isPickup = m.pickup === true || m.pickup === "true" || m.pickup === "TRUE" || m.pickup === 1 || m.pickup === "1";
+    if(isPickup){
+      console.log("Found pickup message:", m.name, "pickup value:", m.pickup);
+    }
+    return isPickup;
   });
 
   console.log("Pickup messages:", pickupMessages.length);
