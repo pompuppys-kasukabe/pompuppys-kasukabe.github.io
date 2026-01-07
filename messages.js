@@ -177,17 +177,20 @@
     // Swiper初期化（自動再生付き）
     setTimeout(() => {
       const pickupSwiper = new Swiper('.pickupSwiper', {
+        effect: 'slide',
         slidesPerView: 1,
+        slidesPerGroup: 1,
         centeredSlides: true,
         spaceBetween: 30,
         loop: true,
-        loopAdditionalSlides: 2,
+        loopedSlides: pickupMessages.length,
         speed: 600,
         allowTouchMove: false,
         autoplay: {
           delay: 4000,
           disableOnInteraction: false,
           pauseOnMouseEnter: false,
+          waitForTransition: true,
         },
         pagination: {
           el: '.pickupSwiper .swiper-pagination',
@@ -197,25 +200,13 @@
           nextEl: '.pickupSwiper .swiper-button-next',
           prevEl: '.pickupSwiper .swiper-button-prev',
         },
-        breakpoints: {
-          768: {
-            slidesPerView: 1.8,
-            spaceBetween: 40,
-          },
-          1024: {
-            slidesPerView: 1.5,
-            spaceBetween: 50,
-          }
-        },
         on: {
           init: function() {
-            console.log('Pickup carousel initialized with autoplay (4s delay)');
-            if (this.autoplay && this.autoplay.running) {
-              console.log('Autoplay is running');
-            } else {
-              console.log('Autoplay failed to start, restarting...');
-              this.autoplay.start();
-            }
+            console.log('Pickup carousel initialized:', pickupMessages.length, 'messages');
+            this.autoplay.start();
+          },
+          slideChange: function() {
+            console.log('Slide changed to:', this.realIndex);
           }
         }
       });

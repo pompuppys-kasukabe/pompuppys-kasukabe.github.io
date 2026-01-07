@@ -1227,16 +1227,13 @@ function initInstagramSwiper(postCount) {
   if (!swiperElement) return;
 
   instagramSwiper = new Swiper('.instagramSwiper', {
-    slidesPerView: 1,
+    slidesPerView: 1.2,
     centeredSlides: true,
     spaceBetween: 20,
     loop: true,
     loopAdditionalSlides: 2,
     speed: 600,
-    grabCursor: true,
-    touchRatio: 1,
-    resistance: true,
-    resistanceRatio: 0.85,
+    allowTouchMove: false,
     autoplay: {
       delay: 4000,
       disableOnInteraction: false,

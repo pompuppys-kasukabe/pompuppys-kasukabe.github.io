@@ -2054,12 +2054,29 @@ Copy.footer a {
 }
 
 /* Team Swiper ナビゲーション位置調整 */
+.teamSwiper .swiper-button-prev,
+.teamSwiper .swiper-button-next {
+  display: flex !important;
+  color: var(--primary-color);
+  background: rgba(255, 255, 255, 0.9);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
 .teamSwiper .swiper-button-prev {
   left: 10px;
 }
 
 .teamSwiper .swiper-button-next {
   right: 10px;
+}
+
+.teamSwiper .swiper-button-prev:after,
+.teamSwiper .swiper-button-next:after {
+  font-size: 20px;
+  font-weight: bold;
 }
 
 @media (max-width: 600px) {
