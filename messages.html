@@ -382,10 +382,20 @@
 
     /* レスポンシブ */
     @media (max-width: 768px) {
+      /* モバイルでも50列を維持（ドット絵パターンを崩さないため） */
       .mosaic-grid {
-        grid-template-columns: repeat(25, 1fr);
+        grid-template-columns: repeat(50, 1fr);
+        gap: 1px;
       }
-      
+
+      .mosaic-cell {
+        border-radius: 1px;
+      }
+
+      .mosaic-art {
+        aspect-ratio: 5 / 2;
+      }
+
       .progress-card__stats {
         flex-direction: column;
         gap: 16px;
