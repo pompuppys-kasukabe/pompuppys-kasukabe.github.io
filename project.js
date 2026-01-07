@@ -737,16 +737,21 @@ async function renderMosaicArt(){
       })(msg);
 
       cell.title = (msg.name || "匿名") + "さんからの応援";
-    } else {
-      // それ以外は全て紫色
+    } else if(hasMessage && !isTextCell){
+      // メッセージはあるが文字以外に当たった → 紫色
       cell.classList.add("purple");
-      if(hasMessage && !isTextCell){
-        // メッセージはあるが文字以外
-        var msg = messageMap[i];
-        cell.title = (msg.name || "匿名") + "さんからの応援（文字以外）";
-      } else {
-        cell.title = "メッセージ募集中";
-      }
+      var msg = messageMap[i];
+
+      (function(message){
+        cell.addEventListener("click", function(){
+          openMessageModal(message);
+        });
+      })(msg);
+
+      cell.title = (msg.name || "匿名") + "さんからの応援";
+    } else {
+      // メッセージなし → グレーの枠のみ
+      cell.title = "メッセージ募集中";
     }
 
     mosaicGrid.appendChild(cell);

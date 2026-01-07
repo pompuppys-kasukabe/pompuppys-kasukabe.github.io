@@ -257,19 +257,20 @@
     }
 
     .mosaic-cell {
-      background: #6b4c9a;
-      border: 0.5px solid rgba(200, 200, 200, 0.3);
+      background: transparent;
+      border: 0.5px solid rgba(150, 150, 150, 0.3);
       transition: all 0.3s ease;
-      cursor: pointer;
     }
 
     .mosaic-cell.purple {
       background: #6b4c9a;
+      cursor: pointer;
     }
 
     .mosaic-cell.filled {
       background: linear-gradient(135deg, #d4af37, #f4cf67);
       animation: cellFadeIn 0.5s ease;
+      cursor: pointer;
     }
 
     .mosaic-cell.filled:hover {
@@ -280,6 +281,7 @@
 
     .mosaic-cell.purple:hover {
       background: #7d5bb0;
+      transform: scale(1.05);
     }
 
     @keyframes cellFadeIn {
