@@ -145,9 +145,6 @@
     const grid = document.getElementById('pickupMessagesGrid');
 
     console.log('renderPickupMessages called with:', pickupMessages.length, 'messages');
-    pickupMessages.forEach((msg, index) => {
-      console.log(`Pickup ${index + 1}:`, msg.name);
-    });
 
     if (!config.showPickup || !pickupMessages || pickupMessages.length === 0) {
       section.style.display = 'none';
@@ -156,22 +153,48 @@
 
     section.style.display = 'block';
 
-    const html = pickupMessages.map((msg, index) => {
-      console.log(`Generating HTML for pickup message ${index + 1}:`, msg.name);
-      return `
-        <div class="pickup-message-card" onclick="window.showMessageDetail(${JSON.stringify(msg).replace(/"/g, '&quot;')})">
-          <div class="pickup-message-card__badge">Pick Up!</div>
-          <div class="pickup-message-card__header">
-            <p class="pickup-message-card__name">${escapeHtml(msg.name)}</p>
-            <p class="pickup-message-card__date">${escapeHtml(msg.date)}</p>
-          </div>
-          <p class="pickup-message-card__text">${escapeHtml(msg.message.substring(0, 100))}${msg.message.length > 100 ? '...' : ''}</p>
-        </div>
-      `;
-    }).join('');
+    // Swiperカルーセル用のHTML生成
+    let html = '<div class="swiper pickupSwiper" style="width: 100%; padding: 20px 0;">' +
+      '<div class="swiper-wrapper">';
+
+    pickupMessages.forEach((msg, index) => {
+      html += '<div class="swiper-slide">' +
+        '<div class="pickup-message-card" style="background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,168,75,0.05)); border: 2px solid rgba(212,175,55,0.3); border-radius: 16px; padding: 32px; min-height: 300px; display: flex; flex-direction: column; cursor: pointer;" onclick="window.showMessageDetail(' + JSON.stringify(msg).replace(/"/g, '&quot;') + ')">' +
+        '<p style="font-size: 0.9rem; color: #999; margin: 0 0 12px 0; text-align: center;">' + escapeHtml(msg.date || "") + '</p>' +
+        '<p style="font-size: 1.3rem; font-weight: 700; margin: 0 0 24px 0; color: #333; text-align: center;">' + escapeHtml(msg.name || "匿名") + '</p>' +
+        '<p style="font-size: 1.05rem; line-height: 1.9; color: #555; margin: 0; flex: 1; text-align: center;">' + escapeHtml(msg.message || "") + '</p>' +
+        '</div></div>';
+    });
+
+    html += '</div>' +
+      '<div class="swiper-pagination"></div>' +
+      '<div class="swiper-button-prev"></div>' +
+      '<div class="swiper-button-next"></div>' +
+      '</div>';
 
     grid.innerHTML = html;
-    console.log('Pickup messages HTML set. Children count:', grid.children.length);
+
+    // Swiper初期化（自動再生付き）
+    setTimeout(() => {
+      new Swiper('.pickupSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: pickupMessages.length > 1,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.pickupSwiper .swiper-pagination',
+          clickable: true,
+        },
+        navigation: {
+          nextEl: '.pickupSwiper .swiper-button-next',
+          prevEl: '.pickupSwiper .swiper-button-prev',
+        }
+      });
+      console.log('Pickup carousel initialized with autoplay');
+    }, 100);
   }
 
   // ============================================
