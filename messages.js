@@ -158,7 +158,7 @@
       '<div class="swiper-wrapper">';
 
     pickupMessages.forEach((msg, index) => {
-      html += '<div class="swiper-slide" style="width: 100%; max-width: 600px;">' +
+      html += '<div class="swiper-slide">' +
         '<div class="pickup-message-card" style="background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,168,75,0.05)); border: 2px solid rgba(212,175,55,0.3); border-radius: 16px; padding: 32px; min-height: 280px; display: flex; flex-direction: column; cursor: pointer;" onclick="window.showMessageDetail(' + JSON.stringify(msg).replace(/"/g, '&quot;') + ')">' +
         '<p style="font-size: 0.9rem; color: #999; margin: 0 0 12px 0; text-align: center;">' + escapeHtml(msg.date || "") + '</p>' +
         '<p style="font-size: 1.3rem; font-weight: 700; margin: 0 0 24px 0; color: #333; text-align: center;">' + escapeHtml(msg.name || "匿名") + '</p>' +
@@ -177,18 +177,15 @@
     // Swiper初期化（自動再生付き）
     setTimeout(() => {
       new Swiper('.pickupSwiper', {
-        slidesPerView: 'auto',
+        slidesPerView: 1,
         centeredSlides: true,
         spaceBetween: 30,
-        loop: pickupMessages.length > 1,
-        loopAdditionalSlides: 2,
+        loop: true,
+        loopAdditionalSlides: 1,
         speed: 600,
-        grabCursor: true,
-        touchRatio: 1,
-        resistance: true,
-        resistanceRatio: 0.85,
+        allowTouchMove: false,
         autoplay: {
-          delay: 5000,
+          delay: 3000,
           disableOnInteraction: false,
         },
         pagination: {
@@ -200,15 +197,17 @@
           prevEl: '.pickupSwiper .swiper-button-prev',
         },
         breakpoints: {
-          320: {
-            spaceBetween: 20,
-          },
           768: {
-            spaceBetween: 30,
+            slidesPerView: 1.8,
+            spaceBetween: 40,
+          },
+          1024: {
+            slidesPerView: 1.5,
+            spaceBetween: 50,
           }
         }
       });
-      console.log('Pickup carousel initialized with centered slides and autoplay');
+      console.log('Pickup carousel initialized with arrow navigation only');
     }, 100);
   }
 

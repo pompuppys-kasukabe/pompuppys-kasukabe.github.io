@@ -1227,21 +1227,34 @@ function initInstagramSwiper(postCount) {
   if (!swiperElement) return;
 
   instagramSwiper = new Swiper('.instagramSwiper', {
-    slidesPerView: 'auto',
+    slidesPerView: 1.2,
     centeredSlides: true,
     spaceBetween: 20,
-    loop: postCount > 1,
-    loopAdditionalSlides: 2,
-    grabCursor: true,
+    loop: true,
+    loopAdditionalSlides: 1,
+    allowTouchMove: false,
     speed: 600,
     autoplay: {
       delay: 4000,
       disableOnInteraction: false,
       pauseOnMouseEnter: true,
     },
+    navigation: {
+      nextEl: '.instagramSwiper .swiper-button-next',
+      prevEl: '.instagramSwiper .swiper-button-prev',
+    },
     breakpoints: {
+      480: {
+        slidesPerView: 1.5,
+        spaceBetween: 24,
+      },
       768: {
+        slidesPerView: 2.2,
         spaceBetween: 28,
+      },
+      1024: {
+        slidesPerView: 3,
+        spaceBetween: 32,
       }
     }
   });
