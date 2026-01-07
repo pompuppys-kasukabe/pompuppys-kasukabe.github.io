@@ -690,8 +690,22 @@ async function renderMosaicArt(){
 
   // 文字パターンを取得
   var textPattern = getTextPattern();
-  var textCells = Array.from(textPattern).sort(function(a, b){ return a - b; });
+  var textCells = Array.from(textPattern);
   console.log("Text pattern cells:", textCells.length);
+
+  // 文字部分のセルをシャッフル（ランダム配置）
+  for(var i = textCells.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = textCells[i];
+    textCells[i] = textCells[j];
+    textCells[j] = temp;
+  }
+
+  // ランダムに配置するメッセージのインデックスを記録
+  var filledCells = new Set();
+  for(var i = 0; i < Math.min(messages.length, textCells.length); i++){
+    filledCells.add(textCells[i]);
+  }
 
   var totalCells = 1000;
   var messageIndex = 0;
@@ -705,8 +719,8 @@ async function renderMosaicArt(){
     var isTextCell = textPattern.has(i);
 
     if(isTextCell){
-      // 文字部分：メッセージがあれば金色、なければ灰色
-      if(messageIndex < messages.length){
+      // 文字部分：ランダムに選ばれたセルなら金色、そうでなければ灰色
+      if(filledCells.has(i)){
         cell.classList.add("filled");
         var msg = messages[messageIndex];
         messageIndex++;
