@@ -1226,6 +1226,9 @@ function initInstagramSwiper(postCount) {
   var swiperElement = document.querySelector('.instagramSwiper');
   if (!swiperElement) return;
 
+  // slidesPerViewがpostCount未満になるように調整
+  var maxSlides = Math.min(postCount - 1, 2);
+
   instagramSwiper = new Swiper('.instagramSwiper', {
     slidesPerView: 1,
     slidesPerGroup: 1,
@@ -1250,17 +1253,17 @@ function initInstagramSwiper(postCount) {
         spaceBetween: 24,
       },
       768: {
-        slidesPerView: 2,
+        slidesPerView: Math.min(2, maxSlides),
         spaceBetween: 28,
       },
       1024: {
-        slidesPerView: 3,
+        slidesPerView: maxSlides,
         spaceBetween: 32,
       }
     },
     on: {
       init: function() {
-        console.log('Instagram carousel initialized: posts=' + postCount + ', loop=' + this.params.loop);
+        console.log('Instagram carousel: posts=' + postCount + ', maxSlides=' + maxSlides + ', loop=' + this.params.loop);
       },
       slideChange: function() {
         console.log('Instagram slide changed to:', this.realIndex);
