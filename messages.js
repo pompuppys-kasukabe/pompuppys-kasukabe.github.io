@@ -185,7 +185,7 @@
         speed: 600,
         allowTouchMove: false,
         autoplay: {
-          delay: 5000,
+          delay: 4000,
           disableOnInteraction: false,
           pauseOnMouseEnter: false,
         },
@@ -199,17 +199,17 @@
         },
         breakpoints: {
           768: {
-            slidesPerView: 1,
+            slidesPerView: 1.8,
             spaceBetween: 40,
           },
           1024: {
-            slidesPerView: 1,
+            slidesPerView: 1.5,
             spaceBetween: 50,
           }
         },
         on: {
           init: function() {
-            console.log('Pickup carousel initialized with autoplay');
+            console.log('Pickup carousel initialized with autoplay (4s delay)');
             if (this.autoplay && this.autoplay.running) {
               console.log('Autoplay is running');
             } else {

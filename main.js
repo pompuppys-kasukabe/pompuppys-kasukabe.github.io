@@ -322,14 +322,8 @@ function initTeamSwiper(memberCount) {
     initialSlide: 0,
     loop: memberCount > 3,
     loopAdditionalSlides: 2,
-    grabCursor: true,
+    allowTouchMove: false,
     speed: 500,
-    touchRatio: 1,
-    touchEventsTarget: 'container',
-    resistance: true,
-    resistanceRatio: 0.85,
-    longSwipesRatio: 0.3,
-    threshold: 10,
     pagination: {
       el: '.teamSwiper .swiper-pagination',
       clickable: true,
@@ -1249,8 +1243,8 @@ function initInstagramSwiper(postCount) {
       pauseOnMouseEnter: true,
     },
     navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
+      nextEl: '.instagramSwiper .swiper-button-next',
+      prevEl: '.instagramSwiper .swiper-button-prev',
     },
     breakpoints: {
       480: {
