@@ -178,8 +178,11 @@
     setTimeout(() => {
       new Swiper('.pickupSwiper', {
         slidesPerView: 1,
+        slidesPerGroup: 1,
         spaceBetween: 20,
         loop: pickupMessages.length > 1,
+        loopAdditionalSlides: 1,
+        speed: 500,
         autoplay: {
           delay: 5000,
           disableOnInteraction: false,

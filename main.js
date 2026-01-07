@@ -1230,7 +1230,8 @@ function initInstagramSwiper(postCount) {
     slidesPerView: 'auto',
     centeredSlides: true,
     spaceBetween: 20,
-    loop: postCount > 2,
+    loop: postCount > 1,
+    loopAdditionalSlides: 2,
     grabCursor: true,
     speed: 600,
     autoplay: {
