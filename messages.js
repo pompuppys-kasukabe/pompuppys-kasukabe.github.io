@@ -180,6 +180,12 @@
   function renderAllMessages(messages) {
     const grid = document.getElementById('allMessagesGrid');
 
+    // 要素が存在しない場合は何もしない（project-world-challenge.htmlでは削除済み）
+    if (!grid) {
+      console.log('allMessagesGrid not found - skipping renderAllMessages');
+      return;
+    }
+
     if (!messages || messages.length === 0) {
       grid.innerHTML = '<div class="empty-state"><p>まだメッセージがありません。<br>最初の応援メッセージを送りませんか？</p></div>';
       return;
