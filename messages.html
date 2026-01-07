@@ -155,34 +155,27 @@
       position: relative;
     }
 
-    .mosaic-cell--empty {
-      background: rgba(255,255,255,0.1);
-    }
-
-    .mosaic-cell--filled {
+    /* 紫色（背景部分） */
+    .mosaic-cell--purple {
       background: #6b3fa0;
     }
 
-    .mosaic-cell--pickup {
+    /* 金色（文字部分） */
+    .mosaic-cell--gold {
       background: #d4a84b;
-      box-shadow: 0 0 8px rgba(212, 168, 75, 0.6);
-      animation: glow 2s ease-in-out infinite;
     }
 
-    .mosaic-cell--vip {
-      background: linear-gradient(135deg, #d4a84b, #f0d78c);
-      box-shadow: 0 0 12px rgba(212, 168, 75, 0.8);
+    /* メッセージがあるセル（ホバー時にツールチップ表示） */
+    .mosaic-cell--has-message {
+      cursor: pointer;
     }
 
-    .mosaic-cell:hover {
-      transform: scale(1.5);
+    .mosaic-cell--has-message:hover {
+      transform: scale(1.8);
       z-index: 10;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
     }
 
-    @keyframes glow {
-      0%, 100% { box-shadow: 0 0 8px rgba(212, 168, 75, 0.6); }
-      50% { box-shadow: 0 0 16px rgba(212, 168, 75, 1); }
-    }
 
     /* ツールチップ */
     .mosaic-tooltip {
@@ -474,16 +467,12 @@
         </div>
         <div class="mosaic-legend">
           <div class="mosaic-legend__item">
-            <div class="mosaic-legend__color" style="background: rgba(255,255,255,0.1);"></div>
-            <span>あなたのメッセージを待っています</span>
+            <div class="mosaic-legend__color" style="background: #d4a84b;"></div>
+            <span>GO! BRIGHT!! の文字</span>
           </div>
           <div class="mosaic-legend__item">
             <div class="mosaic-legend__color" style="background: #6b3fa0;"></div>
-            <span>届いた想い</span>
-          </div>
-          <div class="mosaic-legend__item">
-            <div class="mosaic-legend__color" style="background: #d4a84b;"></div>
-            <span>ピックアップ</span>
+            <span>背景</span>
           </div>
         </div>
       </div>
@@ -556,18 +545,51 @@
     let pickupMessages = [];
     let displayedCount = 12;
 
-    // GO! BRIGHT!! の文字パターン（1 = 文字部分, 0 = 背景）
-    const TEXT_PATTERN = generateTextPattern();
-
-    function generateTextPattern() {
-      // 50x20 のグリッドで "GO! BRIGHT!!" を表現
-      // 簡略化のため、ランダムに文字部分を配置
-      const pattern = [];
-      for (let i = 0; i < TOTAL_CELLS; i++) {
-        pattern.push(1); // 全セルを使用
-      }
-      return pattern;
-    }
+    // GO! BRIGHT!! の文字パターン（1 = 文字部分=金色, 0 = 背景=紫色）
+    // 50x20 グリッドのドット絵パターン
+    // 上段: "GO!" 下段: "BRIGHT!!"
+    const TEXT_PATTERN = [
+      // Row 0 (上マージン)
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 1 - GO! 開始
+      0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 2
+      0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 3
+      0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 4
+      0,0,0,0,0,0,0,0,1,1,0,1,1,1,0,0,1,1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 5
+      0,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 6
+      0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 7 (区切り)
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 8 (区切り)
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 9 - BRIGHT!! 開始
+      0,1,1,1,1,0,0,1,1,1,1,0,0,1,1,0,0,1,1,1,1,1,0,1,1,0,0,1,1,0,1,1,1,1,1,1,0,0,1,1,0,0,1,1,0,0,0,0,0,0,
+      // Row 10
+      0,1,1,0,0,1,0,1,1,0,0,1,0,1,1,0,1,1,0,0,0,0,0,1,1,0,0,1,1,0,0,0,1,1,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,
+      // Row 11
+      0,1,1,1,1,0,0,1,1,1,1,0,0,1,1,0,1,1,0,1,1,1,0,1,1,1,1,1,1,0,0,0,1,1,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,
+      // Row 12
+      0,1,1,0,0,1,0,1,1,0,1,0,0,1,1,0,1,1,0,0,0,1,0,1,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 13
+      0,1,1,1,1,0,0,1,1,0,0,1,0,1,1,0,0,1,1,1,1,1,0,1,1,0,0,1,1,0,0,0,1,1,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,
+      // Row 14 (区切り)
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 15 (星装飾)
+      0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+      // Row 16
+      0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,
+      // Row 17
+      0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+      // Row 18
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+      // Row 19 (下マージン)
+      0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    ];
 
     // データ取得
     async function fetchMessages() {
@@ -600,41 +622,41 @@
     }
 
     // モザイクアート生成
+    // TEXT_PATTERNに基づいて色分け：1=金色（文字）、0=紫色（背景）
     function renderMosaicArt(messages) {
       const grid = document.getElementById("mosaicGrid");
-      const count = messages.length;
-      
+
       let html = "";
-      
+
       for (let i = 0; i < TOTAL_CELLS; i++) {
-        const message = messages[i];
-        
-        if (message) {
-          const isPickup = message.pickup;
-          const isVip = message.category === "VIP";
-          let cellClass = "mosaic-cell mosaic-cell--filled";
-          
-          if (isVip) {
-            cellClass += " mosaic-cell--vip";
-          } else if (isPickup) {
-            cellClass += " mosaic-cell--pickup";
-          }
-          
-          html += `<div class="${cellClass}" data-index="${i}"></div>`;
+        const isTextPart = TEXT_PATTERN[i] === 1;
+        const message = messages[i]; // メッセージがあればツールチップ用に関連付け
+
+        // 文字部分は金色、それ以外は紫色
+        let cellClass = "mosaic-cell";
+        if (isTextPart) {
+          cellClass += " mosaic-cell--gold"; // 金色（文字部分）
         } else {
-          html += `<div class="mosaic-cell mosaic-cell--empty" data-index="${i}"></div>`;
+          cellClass += " mosaic-cell--purple"; // 紫色（背景部分）
         }
+
+        // メッセージがある場合はホバー可能にする
+        if (message) {
+          cellClass += " mosaic-cell--has-message";
+        }
+
+        html += `<div class="${cellClass}" data-index="${i}"></div>`;
       }
-      
+
       grid.innerHTML = html;
-      
+
       // ホバーイベント設定
       setupMosaicHover();
     }
 
-    // モザイクホバー
+    // モザイクホバー（メッセージがあるセルのみ）
     function setupMosaicHover() {
-      const cells = document.querySelectorAll(".mosaic-cell--filled");
+      const cells = document.querySelectorAll(".mosaic-cell--has-message");
       const tooltip = document.getElementById("mosaicTooltip");
       
       cells.forEach(cell => {
