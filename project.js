@@ -690,64 +690,69 @@ async function renderMosaicArt(){
 
   // 文字パターンを取得
   var textPattern = getTextPattern();
-  var textCells = Array.from(textPattern);
-  console.log("Text pattern cells:", textCells.length);
-
-  // 文字部分のセルをシャッフル（ランダム配置）
-  for(var i = textCells.length - 1; i > 0; i--){
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = textCells[i];
-    textCells[i] = textCells[j];
-    textCells[j] = temp;
-  }
-
-  // ランダムに配置するメッセージのインデックスを記録
-  var filledCells = new Set();
-  for(var i = 0; i < Math.min(messages.length, textCells.length); i++){
-    filledCells.add(textCells[i]);
-  }
+  console.log("Text pattern cells:", textPattern.size);
 
   var totalCells = 1000;
-  var messageIndex = 0;
+
+  // 1,000セル全体からランダムに選ぶ
+  var allCells = [];
+  for(var i = 0; i < totalCells; i++){
+    allCells.push(i);
+  }
+
+  // シャッフル（完全ランダム配置）
+  for(var i = allCells.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = allCells[i];
+    allCells[i] = allCells[j];
+    allCells[j] = temp;
+  }
+
+  // メッセージが配置されるセル
+  var filledCells = new Set();
+  var messageMap = {};
+  for(var i = 0; i < Math.min(messages.length, totalCells); i++){
+    var cellIndex = allCells[i];
+    filledCells.add(cellIndex);
+    messageMap[cellIndex] = messages[i];
+  }
 
   // 1,000セルを生成
   for(var i = 0; i < totalCells; i++){
     var cell = document.createElement("div");
     cell.className = "mosaic-cell";
 
-    // このセルが文字パターンに含まれるか
     var isTextCell = textPattern.has(i);
+    var hasMessage = filledCells.has(i);
 
-    if(isTextCell){
-      // 文字部分：ランダムに選ばれたセルなら金色、そうでなければ灰色
-      if(filledCells.has(i)){
-        cell.classList.add("filled");
-        var msg = messages[messageIndex];
-        messageIndex++;
+    if(hasMessage && isTextCell){
+      // メッセージがあり、文字部分に当たった → 金色
+      cell.classList.add("filled");
+      var msg = messageMap[i];
 
-        // クリック時にモーダルを開く
-        (function(message){
-          cell.addEventListener("click", function(){
-            openMessageModal(message);
-          });
-        })(msg);
+      (function(message){
+        cell.addEventListener("click", function(){
+          openMessageModal(message);
+        });
+      })(msg);
 
-        cell.title = (msg.name || "匿名") + "さんからの応援";
+      cell.title = (msg.name || "匿名") + "さんからの応援";
+    } else {
+      // それ以外は全て紫色
+      cell.classList.add("purple");
+      if(hasMessage && !isTextCell){
+        // メッセージはあるが文字以外
+        var msg = messageMap[i];
+        cell.title = (msg.name || "匿名") + "さんからの応援（文字以外）";
       } else {
-        // メッセージ不足分は灰色
-        cell.classList.add("empty");
         cell.title = "メッセージ募集中";
       }
-    } else {
-      // 文字以外の部分：常に透明
-      cell.style.opacity = "0";
-      cell.style.pointerEvents = "none";
     }
 
     mosaicGrid.appendChild(cell);
   }
 
-  console.log("Mosaic rendering complete. Messages used:", messageIndex, "out of", messages.length);
+  console.log("Mosaic rendering complete. Messages placed:", filledCells.size);
 }
 
 async function renderAllMessagesGrid(){

@@ -254,14 +254,17 @@
       display: grid;
       grid-template-columns: repeat(50, 1fr);
       grid-template-rows: repeat(20, 1fr);
-      gap: 1px;
     }
 
     .mosaic-cell {
-      background: #e0e0e0;
-      border-radius: 2px;
+      background: #6b4c9a;
+      border: 0.5px solid rgba(200, 200, 200, 0.3);
       transition: all 0.3s ease;
       cursor: pointer;
+    }
+
+    .mosaic-cell.purple {
+      background: #6b4c9a;
     }
 
     .mosaic-cell.filled {
@@ -270,13 +273,13 @@
     }
 
     .mosaic-cell.filled:hover {
-      transform: scale(1.2);
+      transform: scale(1.1);
       box-shadow: 0 4px 12px rgba(212, 175, 55, 0.5);
       z-index: 10;
     }
 
-    .mosaic-cell.empty:hover {
-      background: #d0d0d0;
+    .mosaic-cell.purple:hover {
+      background: #7d5bb0;
     }
 
     @keyframes cellFadeIn {
@@ -296,8 +299,8 @@
         min-height: 250px;
       }
 
-      .mosaic-grid {
-        gap: 0.5px;
+      .mosaic-cell {
+        border: 0.3px solid rgba(200, 200, 200, 0.2);
       }
     }
 
@@ -307,8 +310,8 @@
         min-height: 200px;
       }
 
-      .mosaic-grid {
-        gap: 0.5px;
+      .mosaic-cell {
+        border: 0.3px solid rgba(200, 200, 200, 0.2);
       }
     }
 
