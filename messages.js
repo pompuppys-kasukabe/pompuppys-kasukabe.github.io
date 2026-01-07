@@ -158,8 +158,8 @@
       '<div class="swiper-wrapper">';
 
     pickupMessages.forEach((msg, index) => {
-      html += '<div class="swiper-slide">' +
-        '<div class="pickup-message-card" style="background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,168,75,0.05)); border: 2px solid rgba(212,175,55,0.3); border-radius: 16px; padding: 32px; min-height: 300px; display: flex; flex-direction: column; cursor: pointer;" onclick="window.showMessageDetail(' + JSON.stringify(msg).replace(/"/g, '&quot;') + ')">' +
+      html += '<div class="swiper-slide" style="width: 100%; max-width: 600px;">' +
+        '<div class="pickup-message-card" style="background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,168,75,0.05)); border: 2px solid rgba(212,175,55,0.3); border-radius: 16px; padding: 32px; min-height: 280px; display: flex; flex-direction: column; cursor: pointer;" onclick="window.showMessageDetail(' + JSON.stringify(msg).replace(/"/g, '&quot;') + ')">' +
         '<p style="font-size: 0.9rem; color: #999; margin: 0 0 12px 0; text-align: center;">' + escapeHtml(msg.date || "") + '</p>' +
         '<p style="font-size: 1.3rem; font-weight: 700; margin: 0 0 24px 0; color: #333; text-align: center;">' + escapeHtml(msg.name || "匿名") + '</p>' +
         '<p style="font-size: 1.05rem; line-height: 1.9; color: #555; margin: 0; flex: 1; text-align: center;">' + escapeHtml(msg.message || "") + '</p>' +
@@ -177,12 +177,16 @@
     // Swiper初期化（自動再生付き）
     setTimeout(() => {
       new Swiper('.pickupSwiper', {
-        slidesPerView: 1,
-        slidesPerGroup: 1,
-        spaceBetween: 20,
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        spaceBetween: 30,
         loop: pickupMessages.length > 1,
-        loopAdditionalSlides: 1,
-        speed: 500,
+        loopAdditionalSlides: 2,
+        speed: 600,
+        grabCursor: true,
+        touchRatio: 1,
+        resistance: true,
+        resistanceRatio: 0.85,
         autoplay: {
           delay: 5000,
           disableOnInteraction: false,
@@ -194,9 +198,17 @@
         navigation: {
           nextEl: '.pickupSwiper .swiper-button-next',
           prevEl: '.pickupSwiper .swiper-button-prev',
+        },
+        breakpoints: {
+          320: {
+            spaceBetween: 20,
+          },
+          768: {
+            spaceBetween: 30,
+          }
         }
       });
-      console.log('Pickup carousel initialized with autoplay');
+      console.log('Pickup carousel initialized with centered slides and autoplay');
     }, 100);
   }
 
