@@ -176,17 +176,18 @@
 
     // Swiper初期化（自動再生付き）
     setTimeout(() => {
-      new Swiper('.pickupSwiper', {
+      const pickupSwiper = new Swiper('.pickupSwiper', {
         slidesPerView: 1,
         centeredSlides: true,
         spaceBetween: 30,
         loop: true,
-        loopAdditionalSlides: 1,
+        loopAdditionalSlides: 2,
         speed: 600,
         allowTouchMove: false,
         autoplay: {
-          delay: 3000,
+          delay: 5000,
           disableOnInteraction: false,
+          pauseOnMouseEnter: false,
         },
         pagination: {
           el: '.pickupSwiper .swiper-pagination',
@@ -198,16 +199,26 @@
         },
         breakpoints: {
           768: {
-            slidesPerView: 1.8,
+            slidesPerView: 1,
             spaceBetween: 40,
           },
           1024: {
-            slidesPerView: 1.5,
+            slidesPerView: 1,
             spaceBetween: 50,
+          }
+        },
+        on: {
+          init: function() {
+            console.log('Pickup carousel initialized with autoplay');
+            if (this.autoplay && this.autoplay.running) {
+              console.log('Autoplay is running');
+            } else {
+              console.log('Autoplay failed to start, restarting...');
+              this.autoplay.start();
+            }
           }
         }
       });
-      console.log('Pickup carousel initialized with arrow navigation only');
     }, 100);
   }
 

@@ -324,6 +324,12 @@ function initTeamSwiper(memberCount) {
     loopAdditionalSlides: 2,
     grabCursor: true,
     speed: 500,
+    touchRatio: 1,
+    touchEventsTarget: 'container',
+    resistance: true,
+    resistanceRatio: 0.85,
+    longSwipesRatio: 0.3,
+    threshold: 10,
     pagination: {
       el: '.teamSwiper .swiper-pagination',
       clickable: true,
@@ -1227,21 +1233,24 @@ function initInstagramSwiper(postCount) {
   if (!swiperElement) return;
 
   instagramSwiper = new Swiper('.instagramSwiper', {
-    slidesPerView: 1.2,
+    slidesPerView: 1,
     centeredSlides: true,
     spaceBetween: 20,
     loop: true,
-    loopAdditionalSlides: 1,
-    allowTouchMove: false,
+    loopAdditionalSlides: 2,
     speed: 600,
+    grabCursor: true,
+    touchRatio: 1,
+    resistance: true,
+    resistanceRatio: 0.85,
     autoplay: {
       delay: 4000,
       disableOnInteraction: false,
       pauseOnMouseEnter: true,
     },
     navigation: {
-      nextEl: '.instagramSwiper .swiper-button-next',
-      prevEl: '.instagramSwiper .swiper-button-prev',
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
     },
     breakpoints: {
       480: {
@@ -1253,7 +1262,7 @@ function initInstagramSwiper(postCount) {
         spaceBetween: 28,
       },
       1024: {
-        slidesPerView: 3,
+        slidesPerView: Math.min(postCount, 3),
         spaceBetween: 32,
       }
     }
