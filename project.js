@@ -543,6 +543,36 @@ function closeMessageModal(){
   }
 }
 
+// シード付き乱数生成器
+function seededRandom(seed){
+  var x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+}
+
+function shuffleWithSeed(array, seed){
+  var shuffled = array.slice();
+  for(var i = shuffled.length - 1; i > 0; i--){
+    var j = Math.floor(seededRandom(seed + i) * (i + 1));
+    var temp = shuffled[i];
+    shuffled[i] = shuffled[j];
+    shuffled[j] = temp;
+  }
+  return shuffled;
+}
+
+// メッセージからシード値を生成
+function generateSeed(messages){
+  var seed = 0;
+  for(var i = 0; i < messages.length; i++){
+    var msg = messages[i];
+    var str = (msg.id || "") + (msg.timestamp || "") + (msg.name || "") + (msg.date || "");
+    for(var j = 0; j < str.length; j++){
+      seed += str.charCodeAt(j) * (j + 1);
+    }
+  }
+  return seed;
+}
+
 // "GO! BRIGHT!!"のドット絵パターンを定義（50x20グリッド）
 function getTextPattern(){
   var pattern = new Set();
@@ -700,13 +730,12 @@ async function renderMosaicArt(){
     allCells.push(i);
   }
 
-  // シャッフル（完全ランダム配置）
-  for(var i = allCells.length - 1; i > 0; i--){
-    var j = Math.floor(Math.random() * (i + 1));
-    var temp = allCells[i];
-    allCells[i] = allCells[j];
-    allCells[j] = temp;
-  }
+  // メッセージからシード値を生成（同じメッセージセット = 同じ配置）
+  var seed = generateSeed(messages);
+  console.log("Using seed:", seed);
+
+  // シャッフル（シード付きランダム配置で固定）
+  allCells = shuffleWithSeed(allCells, seed);
 
   // メッセージが配置されるセル
   var filledCells = new Set();
