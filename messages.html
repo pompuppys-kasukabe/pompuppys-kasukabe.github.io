@@ -150,17 +150,21 @@
     .mosaic-cell {
       aspect-ratio: 1;
       border-radius: 2px;
-      cursor: pointer;
       transition: all 0.2s ease;
       position: relative;
     }
 
-    /* 紫色（背景部分） */
+    /* 未埋めセル（薄いグレー） */
+    .mosaic-cell--empty {
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* 紫色（背景部分・埋まった状態） */
     .mosaic-cell--purple {
       background: #6b3fa0;
     }
 
-    /* 金色（文字部分） */
+    /* 金色（文字部分・埋まった状態） */
     .mosaic-cell--gold {
       background: #d4a84b;
     }
@@ -477,14 +481,21 @@
         </div>
         <div class="mosaic-legend">
           <div class="mosaic-legend__item">
+            <div class="mosaic-legend__color" style="background: rgba(255,255,255,0.08);"></div>
+            <span>あなたの想いを待っています</span>
+          </div>
+          <div class="mosaic-legend__item">
             <div class="mosaic-legend__color" style="background: #d4a84b;"></div>
-            <span>GO! BRIGHT!! の文字</span>
+            <span>届いた想い（文字）</span>
           </div>
           <div class="mosaic-legend__item">
             <div class="mosaic-legend__color" style="background: #6b3fa0;"></div>
-            <span>背景</span>
+            <span>届いた想い（背景）</span>
           </div>
         </div>
+        <p style="text-align: center; color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 12px;">
+          1,000件達成で「GO! BRIGHT!!」の文字が完成します ✨
+        </p>
       </div>
     </section>
 
@@ -601,6 +612,32 @@
       0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     ];
 
+    // ランダム配置用のシャッフル済みインデックス配列を生成
+    // シード値を使って毎回同じ順序になるようにする
+    function generateShuffledIndices(seed) {
+      const indices = [];
+      for (let i = 0; i < TOTAL_CELLS; i++) {
+        indices.push(i);
+      }
+
+      // シード付き疑似乱数生成器（同じシードなら同じ結果）
+      function seededRandom(seed) {
+        let x = Math.sin(seed) * 10000;
+        return x - Math.floor(x);
+      }
+
+      // Fisher-Yatesシャッフル
+      for (let i = indices.length - 1; i > 0; i--) {
+        const j = Math.floor(seededRandom(seed + i) * (i + 1));
+        [indices[i], indices[j]] = [indices[j], indices[i]];
+      }
+
+      return indices;
+    }
+
+    // 固定シードでシャッフル済みインデックスを生成
+    const SHUFFLED_INDICES = generateShuffledIndices(12345);
+
     // データ取得
     async function fetchMessages() {
       try {
@@ -632,27 +669,35 @@
     }
 
     // モザイクアート生成
-    // TEXT_PATTERNに基づいて色分け：1=金色（文字）、0=紫色（背景）
-    function renderMosaicArt(messages) {
+    // メッセージ数に応じてランダムな位置のセルが埋まり、文字が浮かび上がる
+    function renderMosaicArt(messageCount) {
       const grid = document.getElementById("mosaicGrid");
+
+      // 埋まったセルのインデックスをSetで管理（高速検索用）
+      const filledIndices = new Set();
+      for (let i = 0; i < Math.min(messageCount, TOTAL_CELLS); i++) {
+        filledIndices.add(SHUFFLED_INDICES[i]);
+      }
 
       let html = "";
 
       for (let i = 0; i < TOTAL_CELLS; i++) {
         const isTextPart = TEXT_PATTERN[i] === 1;
-        const message = messages[i]; // メッセージがあればツールチップ用に関連付け
+        const isFilled = filledIndices.has(i);
 
-        // 文字部分は金色、それ以外は紫色
         let cellClass = "mosaic-cell";
-        if (isTextPart) {
-          cellClass += " mosaic-cell--gold"; // 金色（文字部分）
-        } else {
-          cellClass += " mosaic-cell--purple"; // 紫色（背景部分）
-        }
 
-        // メッセージがある場合はホバー可能にする
-        if (message) {
+        if (isFilled) {
+          // 埋まったセル：文字部分は金色、背景部分は紫色
+          if (isTextPart) {
+            cellClass += " mosaic-cell--gold";
+          } else {
+            cellClass += " mosaic-cell--purple";
+          }
           cellClass += " mosaic-cell--has-message";
+        } else {
+          // 未埋めセル：薄いグレー
+          cellClass += " mosaic-cell--empty";
         }
 
         html += `<div class="${cellClass}" data-index="${i}"></div>`;
@@ -818,8 +863,8 @@
       // 進捗更新
       updateProgress(count);
       
-      // モザイクアート
-      renderMosaicArt(allMessages);
+      // モザイクアート（メッセージ数を渡す）
+      renderMosaicArt(count);
       
       // ピックアップ
       renderPickupMessages(pickupMessages);
