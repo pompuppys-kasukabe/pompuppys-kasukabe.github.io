@@ -144,6 +144,11 @@
     const section = document.getElementById('pickupMessages');
     const grid = document.getElementById('pickupMessagesGrid');
 
+    console.log('renderPickupMessages called with:', pickupMessages.length, 'messages');
+    pickupMessages.forEach((msg, index) => {
+      console.log(`Pickup ${index + 1}:`, msg.name);
+    });
+
     if (!config.showPickup || !pickupMessages || pickupMessages.length === 0) {
       section.style.display = 'none';
       return;
@@ -151,7 +156,8 @@
 
     section.style.display = 'block';
 
-    const html = pickupMessages.map(msg => {
+    const html = pickupMessages.map((msg, index) => {
+      console.log(`Generating HTML for pickup message ${index + 1}:`, msg.name);
       return `
         <div class="pickup-message-card" onclick="window.showMessageDetail(${JSON.stringify(msg).replace(/"/g, '&quot;')})">
           <div class="pickup-message-card__badge">Pick Up!</div>
@@ -165,6 +171,7 @@
     }).join('');
 
     grid.innerHTML = html;
+    console.log('Pickup messages HTML set. Children count:', grid.children.length);
   }
 
   // ============================================
