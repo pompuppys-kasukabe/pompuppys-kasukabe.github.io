@@ -798,109 +798,12 @@ async function renderMosaicArt(){
   console.log("Mosaic rendering complete. Messages placed:", filledCells.size);
 }
 
-async function renderAllMessagesGrid(){
-  var grid = document.getElementById("allMessagesGrid");
-  if(!grid){
-    console.log("All messages grid element not found");
-    return;
-  }
-
-  console.log("Rendering pickup messages carousel...");
-  var messages = await fetchMessages();
-  console.log("All messages: fetched", messages.length, "messages");
-
-  // デバッグ: 最初のメッセージのpickup値を確認
-  if(messages.length > 0){
-    console.log("Sample message pickup value:", messages[0].pickup, "type:", typeof messages[0].pickup);
-    console.log("Sample message data:", messages[0]);
-  }
-
-  // ピックアップメッセージのみをフィルター
-  var pickupMessages = messages.filter(function(m){
-    var isPickup = m.pickup === true || m.pickup === "true" || m.pickup === "TRUE" || m.pickup === 1 || m.pickup === "1";
-    if(isPickup){
-      console.log("Found pickup message:", m.name, "pickup value:", m.pickup);
-    }
-    return isPickup;
-  });
-
-  console.log("Pickup messages:", pickupMessages.length);
-
-  if(!pickupMessages || pickupMessages.length === 0){
-    console.log("No pickup messages to display");
-    grid.innerHTML = '<div style="text-align: center; padding: 60px 20px; color: #999;"><p>ピックアップメッセージはまだありません。</p></div>';
-    return;
-  }
-
-  // Swiperカルーセル用のHTML生成
-  var html = '<div class="swiper pickupSwiper" style="width: 100%; padding: 20px 0;">' +
-    '<div class="swiper-wrapper">';
-
-  for(var i = 0; i < pickupMessages.length; i++){
-    var msg = pickupMessages[i];
-
-    html += '<div class="swiper-slide">' +
-      '<div class="pickup-message-card" style="background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,168,75,0.05)); border: 2px solid rgba(212,175,55,0.3); border-radius: 16px; padding: 24px; min-height: 250px; display: flex; flex-direction: column; cursor: pointer;" onclick="openMessageModal(' + JSON.stringify(msg).replace(/"/g, '&quot;') + ')">' +
-      '<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">' +
-        '<div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #f4cf67); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.4rem; flex-shrink: 0;">' + escapeHtml((msg.name && msg.name.charAt(0)) || "匿") + '</div>' +
-        '<div style="flex: 1; min-width: 0;">' +
-          '<p style="font-size: 1rem; font-weight: 700; margin: 0 0 4px 0; color: #333;">' + escapeHtml(msg.name || "匿名") + '</p>' +
-          '<p style="font-size: 0.85rem; color: #999; margin: 0;">' + escapeHtml(msg.date || "") + '</p>' +
-        '</div>' +
-      '</div>' +
-      '<div style="flex: 1; overflow: hidden;">' +
-        '<p style="font-size: 0.95rem; line-height: 1.7; color: #555; margin: 0; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden;">' + escapeHtml(msg.message || "") + '</p>' +
-      '</div>' +
-      '<div style="margin-top: 12px; text-align: right;">' +
-        '<span style="color: #d4af37; font-size: 0.85rem; font-weight: 700;"><i class="fas fa-star" style="margin-right: 4px;"></i>Pick Up!</span>' +
-      '</div>' +
-    '</div></div>';
-  }
-
-  html += '</div>' +
-    '<div class="swiper-pagination"></div>' +
-    '<div class="swiper-button-prev"></div>' +
-    '<div class="swiper-button-next"></div>' +
-    '</div>';
-
-  grid.innerHTML = html;
-
-  // Swiper初期化
-  setTimeout(function(){
-    new Swiper('.pickupSwiper', {
-      slidesPerView: 1,
-      spaceBetween: 20,
-      loop: pickupMessages.length > 1,
-      pagination: {
-        el: '.pickupSwiper .swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.pickupSwiper .swiper-button-next',
-        prevEl: '.pickupSwiper .swiper-button-prev',
-      },
-      breakpoints: {
-        768: {
-          slidesPerView: 2,
-          spaceBetween: 30,
-        },
-        1024: {
-          slidesPerView: 3,
-          spaceBetween: 30,
-        }
-      }
-    });
-    console.log("Pickup carousel initialized");
-  }, 100);
-}
-
 document.addEventListener("DOMContentLoaded", function(){
   try{
     renderProject();
     renderSupportMessagesProject();
     wireProjectShare();
     renderMosaicArt();
-    renderAllMessagesGrid();
 
     // モーダルクローズイベント
     var modalClose = document.getElementById("modalClose");

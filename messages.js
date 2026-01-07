@@ -87,7 +87,21 @@
     const vipCategories = config.vipCategories || ['VIP', '市長・政治家', 'スポンサー', 'クラファン支援者'];
 
     const vip = messages.filter(m => vipCategories.includes(m.category));
-    const pickup = messages.filter(m => m.pickup && !vipCategories.includes(m.category));
+
+    // pickupフィールドを厳密にチェック
+    const pickup = messages.filter(m => {
+      const isPickup = m.pickup === true || m.pickup === 'true';
+      const isNotVIP = !vipCategories.includes(m.category);
+
+      // デバッグログ
+      if (isPickup && isNotVIP) {
+        console.log('Pickup message found:', m.name, 'pickup value:', m.pickup, 'type:', typeof m.pickup);
+      }
+
+      return isPickup && isNotVIP;
+    });
+
+    console.log('Total messages:', messages.length, 'VIP:', vip.length, 'Pickup:', pickup.length);
 
     return { vip, pickup };
   }

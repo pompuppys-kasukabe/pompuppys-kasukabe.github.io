@@ -317,13 +317,6 @@
       }
     }
 
-    /* All Messages Grid */
-    .messages-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
-    }
 
     .message-tile:hover {
       transform: translateY(-4px);
@@ -750,16 +743,6 @@
         <div id="pickupMessages" style="display: none; margin-top: 40px;">
           <h3 style="text-align: center; margin-bottom: 24px;">Pickup Messages</h3>
           <div id="pickupMessagesGrid" class="pickup-messages-grid"></div>
-        </div>
-
-        <!-- All Messages Grid -->
-        <div style="margin-top: 40px;">
-          <h3 style="text-align: center; margin-bottom: 24px;">All Messages</h3>
-          <div id="allMessagesGrid" class="messages-grid">
-            <div class="loading">
-              <p>メッセージを読み込み中...</p>
-            </div>
-          </div>
         </div>
 
         <div class="card" style="margin-top: 24px;">

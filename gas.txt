@@ -361,10 +361,14 @@ function getMessages() {
 
       // ピックアップ取得（チェックボックス）
       let pickup = false;
-      if (props["pickup"] && props["pickup"].checkbox !== undefined) {
-        pickup = props["pickup"].checkbox;
-      } else if (props["ピックアップ"] && props["ピックアップ"].checkbox !== undefined) {
-        pickup = props["ピックアップ"].checkbox;
+      if (props["pickup"]) {
+        pickup = props["pickup"].checkbox || false;
+        Logger.log("Pickup found: " + pickup + " for message: " + (props["名前"]?.rich_text?.[0]?.plain_text || "匿名"));
+      } else if (props["ピックアップ"]) {
+        pickup = props["ピックアップ"].checkbox || false;
+        Logger.log("ピックアップ found: " + pickup);
+      } else {
+        Logger.log("No pickup field found for: " + (props["名前"]?.rich_text?.[0]?.plain_text || "匿名"));
       }
 
       return {
