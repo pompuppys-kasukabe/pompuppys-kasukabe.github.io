@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Config Test</title>
+</head>
+<body>
+  <h1>Config Test</h1>
+  <div id="output"></div>
+
+  <script>
+    // エラーをキャッチ
+    window.addEventListener('error', function(e) {
+      document.getElementById('output').innerHTML +=
+        '<p style="color:red;"><strong>JavaScript Error:</strong><br>' +
+        e.message + '<br>File: ' + e.filename + '<br>Line: ' + e.lineno + '</p>';
+    });
+  </script>
+
+  <script src="./config.js"></script>
+
+  <script>
+    const output = document.getElementById('output');
+
+    if (typeof window.PUPPYS_CONFIG === 'undefined') {
+      output.innerHTML += '<p style="color:red;">❌ ERROR: PUPPYS_CONFIG is undefined!</p>';
+      output.innerHTML += '<p>This usually means there is a syntax error in config.js</p>';
+    } else {
+      const cfg = window.PUPPYS_CONFIG;
+      let html = '<p style="color:green;">✅ Config loaded successfully</p>';
+
+      // Test copy object
+      if (cfg.copy) {
+        html += '<p>✅ copy exists</p>';
+
+        if (cfg.copy.story) {
+          html += '<p>✅ copy.story exists</p>';
+          html += '<pre>' + JSON.stringify(cfg.copy.story, null, 2) + '</pre>';
+        } else {
+          html += '<p style="color:red;">❌ copy.story NOT FOUND</p>';
+        }
+
+        if (cfg.copy.timeline) {
+          html += '<p>✅ copy.timeline exists</p>';
+          html += '<pre>' + JSON.stringify(cfg.copy.timeline, null, 2) + '</pre>';
+        } else {
+          html += '<p style="color:red;">❌ copy.timeline NOT FOUND</p>';
+        }
+      } else {
+        html += '<p style="color:red;">❌ copy object NOT FOUND</p>';
+      }
+
+      // Test news
+      if (cfg.news && cfg.news.length > 0) {
+        html += '<p>✅ news exists (' + cfg.news.length + ' items)</p>';
+      } else {
+        html += '<p style="color:red;">❌ news NOT FOUND or empty</p>';
+      }
+
+      output.innerHTML += html;
+    }
+  </script>
+</body>
+</html>

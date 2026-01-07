@@ -621,30 +621,83 @@ async function renderAllMessagesGrid(){
     return;
   }
 
-  console.log("Rendering all messages grid...");
+  console.log("Rendering pickup messages carousel...");
   var messages = await fetchMessages();
-  console.log("All messages grid: fetched", messages.length, "messages");
+  console.log("All messages: fetched", messages.length, "messages");
 
-  if(!messages || messages.length === 0){
-    console.log("No messages to display");
-    grid.innerHTML = '<div style="text-align: center; padding: 60px 20px; color: #999;"><p>まだメッセージがありません。<br>最初の応援メッセージを送りませんか？</p></div>';
+  // ピックアップメッセージのみをフィルター
+  var pickupMessages = messages.filter(function(m){
+    return m.pickup === true || m.pickup === "true";
+  });
+
+  console.log("Pickup messages:", pickupMessages.length);
+
+  if(!pickupMessages || pickupMessages.length === 0){
+    console.log("No pickup messages to display");
+    grid.innerHTML = '<div style="text-align: center; padding: 60px 20px; color: #999;"><p>ピックアップメッセージはまだありません。</p></div>';
     return;
   }
 
-  var html = "";
-  for(var i = 0; i < messages.length; i++){
-    var msg = messages[i];
-    var initial = (msg.name && msg.name.charAt(0)) || "匿";
+  // Swiperカルーセル用のHTML生成
+  var html = '<div class="swiper pickupSwiper" style="width: 100%; padding: 20px 0;">' +
+    '<div class="swiper-wrapper">';
 
-    html += '<div class="message-tile" onclick="openMessageModal(' + JSON.stringify(msg).replace(/"/g, '&quot;') + ')" style="cursor: pointer; background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.2); border-radius: 8px; padding: 12px; text-align: center; transition: all 0.3s ease;">' +
-      '<div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #f4cf67); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.2rem; margin: 0 auto 8px;">' + escapeHtml(initial) + '</div>' +
-      '<p style="font-size: 0.85rem; font-weight: 700; margin: 0; color: #333;">' + escapeHtml(msg.name || "匿名") + '</p>' +
-      '<p style="font-size: 0.75rem; color: #999; margin: 4px 0 0;">' + escapeHtml(msg.date || "") + '</p>' +
-    '</div>';
+  for(var i = 0; i < pickupMessages.length; i++){
+    var msg = pickupMessages[i];
+
+    html += '<div class="swiper-slide">' +
+      '<div class="pickup-message-card" style="background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,168,75,0.05)); border: 2px solid rgba(212,175,55,0.3); border-radius: 16px; padding: 24px; min-height: 250px; display: flex; flex-direction: column; cursor: pointer;" onclick="openMessageModal(' + JSON.stringify(msg).replace(/"/g, '&quot;') + ')">' +
+      '<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">' +
+        '<div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #f4cf67); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 1.4rem; flex-shrink: 0;">' + escapeHtml((msg.name && msg.name.charAt(0)) || "匿") + '</div>' +
+        '<div style="flex: 1; min-width: 0;">' +
+          '<p style="font-size: 1rem; font-weight: 700; margin: 0 0 4px 0; color: #333;">' + escapeHtml(msg.name || "匿名") + '</p>' +
+          '<p style="font-size: 0.85rem; color: #999; margin: 0;">' + escapeHtml(msg.date || "") + '</p>' +
+        '</div>' +
+      '</div>' +
+      '<div style="flex: 1; overflow: hidden;">' +
+        '<p style="font-size: 0.95rem; line-height: 1.7; color: #555; margin: 0; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden;">' + escapeHtml(msg.message || "") + '</p>' +
+      '</div>' +
+      '<div style="margin-top: 12px; text-align: right;">' +
+        '<span style="color: #d4af37; font-size: 0.85rem; font-weight: 700;"><i class="fas fa-star" style="margin-right: 4px;"></i>Pick Up!</span>' +
+      '</div>' +
+    '</div></div>';
   }
 
+  html += '</div>' +
+    '<div class="swiper-pagination"></div>' +
+    '<div class="swiper-button-prev"></div>' +
+    '<div class="swiper-button-next"></div>' +
+    '</div>';
+
   grid.innerHTML = html;
-  console.log("All messages grid rendering complete");
+
+  // Swiper初期化
+  setTimeout(function(){
+    new Swiper('.pickupSwiper', {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      loop: pickupMessages.length > 1,
+      pagination: {
+        el: '.pickupSwiper .swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.pickupSwiper .swiper-button-next',
+        prevEl: '.pickupSwiper .swiper-button-prev',
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 30,
+        },
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 30,
+        }
+      }
+    });
+    console.log("Pickup carousel initialized");
+  }, 100);
 }
 
 document.addEventListener("DOMContentLoaded", function(){
