@@ -1185,7 +1185,6 @@ function displayInstagramPosts(posts, container, config) {
   var html = posts.map(function(post) {
     var caption = post.caption ? escapeHtml(post.caption.substring(0, 100)) + (post.caption.length > 100 ? '...' : '') : '';
 
-    // Google DriveのIDから画像URLを生成、またはimage/mediaUrlを使用
     var imageUrl = post.driveId
       ? getDriveImageUrl(post.driveId, 600)
       : (post.image || post.mediaUrl);
@@ -1193,7 +1192,6 @@ function displayInstagramPosts(posts, container, config) {
     var postUrl = post.url || post.permalink || post.instagramUrl;
 
     if (!imageUrl || !postUrl) {
-      console.warn("Instagram投稿に必要な情報が不足:", post);
       return '';
     }
 
@@ -1206,10 +1204,9 @@ function displayInstagramPosts(posts, container, config) {
   }).join('');
 
   container.innerHTML = html;
-
-  // Swiperを初期化
   initInstagramSwiper(posts.length);
 }
+
 
 function initInstagramSwiper(postCount) {
   if (typeof Swiper === 'undefined') {
@@ -1228,7 +1225,7 @@ function initInstagramSwiper(postCount) {
   instagramSwiper = new Swiper('.instagramSwiper', {
     slidesPerView: 1,
     spaceBetween: 16,
-    loop: true,
+    rewind: true,
     grabCursor: true,
     speed: 500,
     navigation: {
@@ -1251,6 +1248,7 @@ function initInstagramSwiper(postCount) {
     }
   });
 }
+
 
 
 
