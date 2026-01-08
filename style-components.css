@@ -2319,22 +2319,25 @@ Copy.footer a {
 }
 
 .instagramSwiper .swiper-slide {
-  width: 220px;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-  opacity: 0.6;
-}
-
-.instagramSwiper .swiper-slide-active {
-  opacity: 1;
-}
-
-.instagramSwiper .swiper-slide-active .instagram-post {
-  transform: scale(1.08);
+  width: 280px;
+  transition: transform 0.3s ease;
 }
 
 @media (max-width: 600px) {
   .instagramSwiper .swiper-slide {
-    width: 180px;
+    width: 85%;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1023px) {
+  .instagramSwiper .swiper-slide {
+    width: 45%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .instagramSwiper .swiper-slide {
+    width: 32%;
   }
 }
 

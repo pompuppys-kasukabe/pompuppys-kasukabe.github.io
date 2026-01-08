@@ -1226,23 +1226,16 @@ function initInstagramSwiper(postCount) {
   var swiperElement = document.querySelector('.instagramSwiper');
   if (!swiperElement) return;
 
-  // slidesPerViewがpostCount未満になるように調整
-  var maxSlides = Math.min(postCount - 1, 2);
-
+  // Team sectionと同じ設定を適用
   instagramSwiper = new Swiper('.instagramSwiper', {
-    slidesPerView: 1,
+    slidesPerView: 'auto',
     slidesPerGroup: 1,
     centeredSlides: false,
     spaceBetween: 20,
-    loop: true,
-    loopedSlides: postCount,
-    loopAdditionalSlides: postCount,
-    loopFillGroupWithBlank: false,
-    observer: true,
-    observeParents: true,
-    watchSlidesProgress: true,
-    speed: 600,
+    loop: postCount >= 3,
+    loopAdditionalSlides: 2,
     allowTouchMove: false,
+    speed: 500,
     autoplay: {
       delay: 4000,
       disableOnInteraction: false,
@@ -1252,29 +1245,27 @@ function initInstagramSwiper(postCount) {
       nextEl: '.instagramSwiper .swiper-button-next',
       prevEl: '.instagramSwiper .swiper-button-prev',
     },
+    pagination: {
+      el: '.instagramSwiper .swiper-pagination',
+      clickable: true,
+    },
     breakpoints: {
-      480: {
-        slidesPerView: 1,
-        spaceBetween: 24,
+      320: {
+        slidesPerGroup: 1,
+        spaceBetween: 16,
       },
       768: {
-        slidesPerView: Math.min(2, maxSlides),
+        slidesPerGroup: 1,
         spaceBetween: 28,
       },
       1024: {
-        slidesPerView: maxSlides,
+        slidesPerGroup: 1,
         spaceBetween: 32,
       }
     },
     on: {
       init: function() {
-        console.log('Instagram: posts=' + postCount + ', loopedSlides=' + this.params.loopedSlides);
-      },
-      slideChange: function() {
-        console.log('Slide:', this.realIndex, 'activeIndex:', this.activeIndex);
-      },
-      reachEnd: function() {
-        console.log('Reached end, should loop');
+        console.log('Instagram initialized: posts=' + postCount + ', loop=' + this.params.loop);
       }
     }
   });
