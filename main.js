@@ -1226,14 +1226,12 @@ function initInstagramSwiper(postCount) {
   var swiperElement = document.querySelector('.instagramSwiper');
   if (!swiperElement) return;
 
-  // Team sectionと同じ設定を適用
+  // 整数値のslidesPerViewでシンプルに設定
   instagramSwiper = new Swiper('.instagramSwiper', {
-    slidesPerView: 'auto',
+    slidesPerView: 1,
     slidesPerGroup: 1,
-    centeredSlides: false,
     spaceBetween: 20,
-    loop: postCount >= 3,
-    loopAdditionalSlides: 2,
+    loop: true,
     allowTouchMove: false,
     speed: 500,
     autoplay: {
@@ -1250,22 +1248,21 @@ function initInstagramSwiper(postCount) {
       clickable: true,
     },
     breakpoints: {
-      320: {
-        slidesPerGroup: 1,
-        spaceBetween: 16,
-      },
       768: {
-        slidesPerGroup: 1,
+        slidesPerView: 2,
         spaceBetween: 28,
       },
       1024: {
-        slidesPerGroup: 1,
+        slidesPerView: 2,
         spaceBetween: 32,
       }
     },
     on: {
       init: function() {
-        console.log('Instagram initialized: posts=' + postCount + ', loop=' + this.params.loop);
+        console.log('Instagram: posts=' + postCount + ', slidesPerView=' + this.params.slidesPerView);
+      },
+      slideChange: function() {
+        console.log('Changed to slide:', this.realIndex);
       }
     }
   });

@@ -2319,26 +2319,7 @@ Copy.footer a {
 }
 
 .instagramSwiper .swiper-slide {
-  width: 280px;
   transition: transform 0.3s ease;
-}
-
-@media (max-width: 600px) {
-  .instagramSwiper .swiper-slide {
-    width: 280px;
-  }
-}
-
-@media (min-width: 601px) and (max-width: 1023px) {
-  .instagramSwiper .swiper-slide {
-    width: 320px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .instagramSwiper .swiper-slide {
-    width: 360px;
-  }
 }
 
 /* Instagram投稿カード（カルーセル用） */
