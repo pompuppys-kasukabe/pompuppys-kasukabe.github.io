@@ -489,6 +489,11 @@
 
         <!-- 右：クラファン進捗 -->
         <div class="roadCard">
+          <!-- メインビジュアル -->
+          <div style="margin-bottom: 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+            <img src="./assets/photos/award_flag.jpg" alt="表彰後、フラッグを掲げるPOM PUPPYS bright" style="width: 100%; height: auto; display: block;">
+          </div>
+
           <h3 class="roadCard__title" style="margin-bottom: 8px; font-size: 1.4rem; line-height: 1.4;">クラウドファンディング</h3>
           <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 16px;">2026年1月〜2月頃開始予定</p>
           <div class="progressBar">
@@ -499,15 +504,32 @@
             <span class="progressBar__goal">目標: <span id="roadGoal">1,000,000円</span></span>
           </div>
 
-          <!-- 使い道 -->
-          <div style="margin: 24px 0; padding: 18px; background: rgba(107,63,160,0.05); border-radius: 12px; border-left: 4px solid #d4af37;">
-            <p style="font-weight: 700; margin: 0 0 14px 0; color: #d4af37; font-size: 1rem;">支援金の使い道</p>
+          <!-- CAMPFIRE限定公開のお知らせ -->
+          <div style="margin-bottom: 20px; padding: 16px; background: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(255,154,139,0.1)); border-radius: 12px; border: 2px solid rgba(255,107,107,0.4);">
+            <p style="margin: 0 0 8px 0; font-size: 1rem; color: #fff; font-weight: 700;">
+              <i class="fas fa-heart" style="margin-right: 6px; color: #ff6b6b;"></i>CAMPFIREで限定公開中
+            </p>
+            <p style="margin: 0 0 12px 0; font-size: 0.9rem; color: rgba(255,255,255,0.9); line-height: 1.6;">
+              現在、クラウドファンディングページを<strong style="color: #ff6b6b;">限定公開</strong>しています。<br>
+              公開前に「お気に入り登録」していただけると、開始時にお知らせが届きます。
+            </p>
+            <a id="campfireFavoriteBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; text-align: center;">
+              <i class="fas fa-heart" style="margin-right: 6px;"></i>お気に入り登録する（CAMPFIRE）
+            </a>
+          </div>
+
+          <!-- 使い道（特設ページと整合性を取った内容） -->
+          <div style="margin: 20px 0; padding: 18px; background: rgba(107,63,160,0.05); border-radius: 12px; border-left: 4px solid #d4af37;">
+            <p style="font-weight: 700; margin: 0 0 14px 0; color: #d4af37; font-size: 1rem;">ご支援の使い道</p>
             <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; color: #fff; line-height: 1.9;">
-              <li>渡航費・宿泊費（15名分）</li>
-              <li>大会エントリー費用</li>
-              <li>衣装・音源制作費</li>
-              <li>練習会場費・移動費</li>
+              <li>渡航パッケージ費用（8名分：選手7名+コーチ1名）</li>
+              <li>別途必要経費（燃油サーチャージ等、ESTA、海外旅行保険）</li>
+              <li>不足分・現地移動費等</li>
             </ul>
+            <p style="margin: 14px 0 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
+              <i class="fas fa-info-circle" style="margin-right: 4px;"></i>
+              All-In方式（目標未達でも実施）/ 固定配分ではなく出場に必要な支払いを優先
+            </p>
           </div>
 
           <!-- スポンサー募集 -->

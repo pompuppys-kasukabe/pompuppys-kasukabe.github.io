@@ -920,6 +920,12 @@ function wireLinks() {
     var body = encodeURIComponent("お問い合わせ内容をご記入ください。\n\n");
     contactLink.href = "mailto:" + cfg.pressEmail + "?subject=" + subject + "&body=" + body;
   }
+
+  // CAMPFIRE お気に入り登録ボタン
+  var campfireBtn = document.getElementById("campfireFavoriteBtn");
+  if (campfireBtn && cfg.project && cfg.project.crowdfundingUrl) {
+    campfireBtn.href = cfg.project.crowdfundingUrl;
+  }
 }
 
 // ============================================
