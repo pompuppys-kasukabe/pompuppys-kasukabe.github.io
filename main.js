@@ -95,10 +95,23 @@ async function fetchPhotos() {
   }
 }
 
+// iPad/iOS Safari検出（Google Driveサムネイルがブロックされる環境）
+function isIOSSafari() {
+  var ua = navigator.userAgent;
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isSafari = /Safari/.test(ua) && !/Chrome|CriOS|FxiOS/.test(ua);
+  return isIOS && isSafari;
+}
+
 // Google Drive画像URL生成
 function getDriveImageUrl(fileId, width) {
   if (!fileId) return "";
-  var w = width || 600; // 1200pxから600pxに変更（読み込み速度向上）
+  // iOS SafariではGoogle Driveサムネイルがブロックされるためスキップ
+  if (isIOSSafari()) {
+    console.log('[DEBUG] iOS Safari detected, skipping Google Drive URL');
+    return "";
+  }
+  var w = width || 600;
   return "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w" + w;
 }
 
@@ -287,12 +300,17 @@ async function renderMembers() {
   var fallbackMembers = (cfg.siteImages && cfg.siteImages.members) || [];
 
   members.forEach(function(member, index) {
-  var src = member.driveId
-    ? getDriveImageUrl(member.driveId)
-    : member.src;
+  var driveUrl = member.driveId ? getDriveImageUrl(member.driveId) : '';
   var fallbackSrc = fallbackMembers[index] ? fallbackMembers[index].src : '';
+  // Google Drive URLが空（iOS Safari等）の場合はフォールバックを使用
+  var src = driveUrl || member.src || fallbackSrc;
   var name = member.title || member.name || "Member";
   var comment = member.comment || member.description || member.alt || "";
+
+  if (!src) {
+    console.log('[DEBUG] No image source for member:', name);
+    return;
+  }
 
   // Swiper用にswiper-slideクラスを追加
   var slide = document.createElement("div");
@@ -307,7 +325,8 @@ async function renderMembers() {
   img.alt = name;
   img.className = "memberPhoto";
   img.loading = "lazy";
-  if (fallbackSrc) {
+  // srcがフォールバックでない場合のみonerrorを設定
+  if (fallbackSrc && src !== fallbackSrc) {
     img.onerror = function() {
       console.log('[DEBUG] Image failed, using fallback:', fallbackSrc);
       this.onerror = null;
@@ -1291,16 +1310,17 @@ function displayInstagramPosts(posts, container, config) {
   posts.forEach(function(post) {
     var caption = post.caption ? escapeHtml(post.caption.substring(0, 100)) + (post.caption.length > 100 ? '...' : '') : '';
 
-    var imageUrl = post.driveId
-      ? getDriveImageUrl(post.driveId, 600)
-      : (post.image || post.mediaUrl);
-
-    // Instagram直接URLをフォールバックとして使用
+    // Google Drive URLを取得（iOS Safariでは空になる）
+    var driveUrl = post.driveId ? getDriveImageUrl(post.driveId, 600) : '';
+    // フォールバック用Instagram直接URL
     var fallbackUrl = post.mediaUrl || post.image || '';
+    // driveUrlが空の場合はフォールバックを使用
+    var imageUrl = driveUrl || post.image || post.mediaUrl || '';
 
     var postUrl = post.url || post.permalink || post.instagramUrl;
 
     if (!imageUrl || !postUrl) {
+      console.log('[DEBUG] Instagram post skipped - no image or URL');
       return;
     }
 
