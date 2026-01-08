@@ -27,30 +27,37 @@ var instagramSwiper = null;
 var photosCache = null;
 
 async function fetchPhotos() {
-  // URLパラメータでキャッシュクリア（?reload=1 でキャッシュ削除）
-  var urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('reload') === '1') {
-    localStorage.removeItem('photos_data');
-    localStorage.removeItem('photos_time');
-    console.log('📸 写真キャッシュをクリアしました');
-  }
-
   // メモリキャッシュチェック
   if (photosCache) return photosCache;
 
-  // localStorageキャッシュチェック（30分有効）
-  var cachedData = localStorage.getItem('photos_data');
-  var cachedTime = localStorage.getItem('photos_time');
+  var cachedData = null;
+  var cachedTime = null;
   var now = Date.now();
   var cacheMinutes = 30;
 
-  if (cachedData && cachedTime) {
-    var elapsed = (now - parseInt(cachedTime, 10)) / 1000 / 60;
-    if (elapsed < cacheMinutes) {
-      photosCache = JSON.parse(cachedData);
-      console.log('📸 写真データをキャッシュから取得（残り ' + Math.round(cacheMinutes - elapsed) + '分）');
-      return photosCache;
+  // localStorage アクセス（Safari/iPad でブロックされる可能性があるためtry-catch）
+  try {
+    // URLパラメータでキャッシュクリア（?reload=1 でキャッシュ削除）
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('reload') === '1') {
+      localStorage.removeItem('photos_data');
+      localStorage.removeItem('photos_time');
+      console.log('📸 写真キャッシュをクリアしました');
     }
+
+    cachedData = localStorage.getItem('photos_data');
+    cachedTime = localStorage.getItem('photos_time');
+
+    if (cachedData && cachedTime) {
+      var elapsed = (now - parseInt(cachedTime, 10)) / 1000 / 60;
+      if (elapsed < cacheMinutes) {
+        photosCache = JSON.parse(cachedData);
+        console.log('📸 写真データをキャッシュから取得（残り ' + Math.round(cacheMinutes - elapsed) + '分）');
+        return photosCache;
+      }
+    }
+  } catch (storageError) {
+    console.warn('📸 localStorage アクセス不可（プライベートモード等）:', storageError);
   }
 
   // APIから取得
@@ -60,11 +67,15 @@ async function fetchPhotos() {
     if (!res.ok) throw new Error("HTTP " + res.status);
     var data = await res.json();
 
-    // キャッシュに保存
+    // キャッシュに保存（可能な場合のみ）
     photosCache = data;
-    localStorage.setItem('photos_data', JSON.stringify(data));
-    localStorage.setItem('photos_time', now.toString());
-    console.log('📸 写真データをAPIから取得してキャッシュ');
+    try {
+      localStorage.setItem('photos_data', JSON.stringify(data));
+      localStorage.setItem('photos_time', now.toString());
+      console.log('📸 写真データをAPIから取得してキャッシュ');
+    } catch (e) {
+      console.log('📸 写真データをAPIから取得（キャッシュ保存不可）');
+    }
 
     return photosCache;
   } catch (e) {
@@ -73,7 +84,11 @@ async function fetchPhotos() {
     // エラー時は古いキャッシュでも使用
     if (cachedData) {
       console.log('📸 エラーのため古いキャッシュを使用');
-      return JSON.parse(cachedData);
+      try {
+        return JSON.parse(cachedData);
+      } catch (parseErr) {
+        console.error('キャッシュ解析失敗:', parseErr);
+      }
     }
 
     return { hero: null, gallery: [], members: [] };
@@ -1711,12 +1726,12 @@ async function initSite() {
   initActivityCalendar();
   initFAQ();
 
-  // 非同期処理（Swiper対応版）
-  await renderHeroMedia();
-  await renderMembers();
-  await renderPhotos();
-  await renderInstagramFeed();
-  await renderMessagesPreview();
+  // 非同期処理（Swiper対応版）- 各処理を独立してエラーハンドリング
+  try { await renderHeroMedia(); } catch (e) { console.error("renderHeroMedia failed:", e); }
+  try { await renderMembers(); } catch (e) { console.error("renderMembers failed:", e); }
+  try { await renderPhotos(); } catch (e) { console.error("renderPhotos failed:", e); }
+  try { await renderInstagramFeed(); } catch (e) { console.error("renderInstagramFeed failed:", e); }
+  try { await renderMessagesPreview(); } catch (e) { console.error("renderMessagesPreview failed:", e); }
 
   setupLightbox();
   setupScrollAnimations();
