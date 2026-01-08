@@ -466,13 +466,13 @@
           <div class="progress-card__fill" id="progressFill" style="width: 0%;"></div>
         </div>
         <div class="progress-card__deadline">
-          🎯 目標: 1,000件 ｜ 📅 期限: 2026年5月1日（The Dance Summit 予選日）
+          目標: 1,000件 ｜ 期限: 2026年5月1日（The Dance Summit 予選日）
         </div>
       </div>
 
       <div class="messages-hero__cta">
         <button id="sendMessageBtn" class="btn btn-primary btn-large">
-          ✉️ 応援メッセージを送る
+          応援メッセージを送る
         </button>
       </div>
     </section>
@@ -508,7 +508,7 @@
     <!-- ピックアップセクション -->
     <section class="pickup-section" id="pickupSection" style="display: none;">
       <div class="container">
-        <h2 class="pickup-section__title">⭐ Special Messages ⭐</h2>
+        <h2 class="pickup-section__title">Special Messages</h2>
         <div class="pickup-grid" id="pickupGrid">
           <!-- JavaScriptで動的生成 -->
         </div>
@@ -755,9 +755,9 @@
 
     function getCategoryLabel(category) {
       const labels = {
-        "VIP": "🏆 VIP",
-        "スポンサー": "⭐ スポンサー",
-        "支援者": "💝 支援者",
+        "VIP": "VIP",
+        "スポンサー": "スポンサー",
+        "支援者": "支援者",
         "一般": ""
       };
       return labels[category] || "";
@@ -797,13 +797,8 @@
     }
 
     function getMessageIcon(category) {
-      const icons = {
-        "VIP": "👑",
-        "スポンサー": "⭐",
-        "支援者": "💖",
-        "一般": "💌"
-      };
-      return icons[category] || "💌";
+      // アイコンは使用しない
+      return "";
     }
 
     // 全メッセージ表示
