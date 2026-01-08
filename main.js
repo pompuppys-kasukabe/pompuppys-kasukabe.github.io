@@ -1226,12 +1226,15 @@ function initInstagramSwiper(postCount) {
   var swiperElement = document.querySelector('.instagramSwiper');
   if (!swiperElement) return;
 
-  // 整数値のslidesPerViewでシンプルに設定
+  // TeamSwiperと同じ方式で設定
   instagramSwiper = new Swiper('.instagramSwiper', {
-    slidesPerView: 1,
+    slidesPerView: 'auto',
+    centeredSlides: false,
+    spaceBetween: 24,
     slidesPerGroup: 1,
-    spaceBetween: 20,
-    loop: true,
+    initialSlide: 0,
+    loop: postCount > 1,
+    loopAdditionalSlides: 2,
     allowTouchMove: false,
     speed: 500,
     autoplay: {
@@ -1248,12 +1251,16 @@ function initInstagramSwiper(postCount) {
       clickable: true,
     },
     breakpoints: {
+      320: {
+        slidesPerGroup: 1,
+        spaceBetween: 16,
+      },
       768: {
-        slidesPerView: 2,
-        spaceBetween: 28,
+        slidesPerGroup: 1,
+        spaceBetween: 24,
       },
       1024: {
-        slidesPerView: 2,
+        slidesPerGroup: 1,
         spaceBetween: 32,
       }
     },
