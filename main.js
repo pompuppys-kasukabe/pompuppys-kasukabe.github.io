@@ -83,7 +83,7 @@ async function fetchPhotos() {
 // Google Drive画像URL生成
 function getDriveImageUrl(fileId, width) {
   if (!fileId) return "";
-  var w = width || 1200;
+  var w = width || 600; // 1200pxから600pxに変更（読み込み速度向上）
   return "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w" + w;
 }
 
@@ -376,6 +376,22 @@ async function renderPhotos() {
 
   grid.innerHTML = '<div class="swiper-slide swiper-loading"></div>';
 
+  // Intersection Observerでスマートプリロード
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        observer.disconnect();
+        loadPhotosContent(grid, thumbsContainer, section);
+      }
+    });
+  }, {
+    rootMargin: '500px'
+  });
+
+  observer.observe(section || grid);
+}
+
+async function loadPhotosContent(grid, thumbsContainer, section) {
   var photos = await fetchPhotos();
   var gallery = (photos.gallery || []).slice().sort(function(a, b) {
     return (a.slot || 0) - (b.slot || 0);
@@ -1134,16 +1150,29 @@ async function renderInstagramFeed() {
   var section = document.getElementById("instagram");
   if (!section) return;
 
-  // セクションを表示
   section.style.display = "block";
 
   var feedContainer = document.getElementById("instagramFeed");
   if (!feedContainer) return;
 
-  // ローディング表示
   feedContainer.innerHTML = '<div class="swiper-slide swiper-loading"></div>';
 
-  // Notion APIから投稿を取得
+  // Intersection Observerでスマートプリロード（ビューポート500px手前で読み込み開始）
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        observer.disconnect();
+        loadInstagramPosts(feedContainer, config);
+      }
+    });
+  }, {
+    rootMargin: '500px' // ビューポートの500px手前で読み込み開始
+  });
+
+  observer.observe(section);
+}
+
+async function loadInstagramPosts(feedContainer, config) {
   try {
     var posts = await fetchInstagramPosts();
     if (posts && posts.length > 0) {
