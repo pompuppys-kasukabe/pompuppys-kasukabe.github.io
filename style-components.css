@@ -2325,19 +2325,19 @@ Copy.footer a {
 
 @media (max-width: 600px) {
   .instagramSwiper .swiper-slide {
-    width: 85%;
+    width: 280px;
   }
 }
 
 @media (min-width: 601px) and (max-width: 1023px) {
   .instagramSwiper .swiper-slide {
-    width: 45%;
+    width: 320px;
   }
 }
 
 @media (min-width: 1024px) {
   .instagramSwiper .swiper-slide {
-    width: 32%;
+    width: 360px;
   }
 }
 
