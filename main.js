@@ -1226,22 +1226,13 @@ function initInstagramSwiper(postCount) {
   var swiperElement = document.querySelector('.instagramSwiper');
   if (!swiperElement) return;
 
-  // TeamSwiperと同じ方式で設定
+  // Photos/Teamと同じシンプルな設定
   instagramSwiper = new Swiper('.instagramSwiper', {
-    slidesPerView: 'auto',
-    centeredSlides: false,
-    spaceBetween: 24,
-    slidesPerGroup: 1,
-    initialSlide: 0,
+    slidesPerView: 1,
+    spaceBetween: 20,
     loop: postCount > 1,
-    loopAdditionalSlides: 2,
-    allowTouchMove: false,
+    grabCursor: true,
     speed: 500,
-    autoplay: {
-      delay: 4000,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: true,
-    },
     navigation: {
       nextEl: '.instagramSwiper .swiper-button-next',
       prevEl: '.instagramSwiper .swiper-button-prev',
@@ -1251,29 +1242,18 @@ function initInstagramSwiper(postCount) {
       clickable: true,
     },
     breakpoints: {
-      320: {
-        slidesPerGroup: 1,
-        spaceBetween: 16,
-      },
       768: {
-        slidesPerGroup: 1,
+        slidesPerView: 2,
         spaceBetween: 24,
       },
       1024: {
-        slidesPerGroup: 1,
-        spaceBetween: 32,
-      }
-    },
-    on: {
-      init: function() {
-        console.log('Instagram: posts=' + postCount + ', slidesPerView=' + this.params.slidesPerView);
-      },
-      slideChange: function() {
-        console.log('Changed to slide:', this.realIndex);
+        slidesPerView: 3,
+        spaceBetween: 28,
       }
     }
   });
 }
+
 
 // ============================================
 // メディア掲載セクション
