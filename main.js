@@ -1235,7 +1235,12 @@ function initInstagramSwiper(postCount) {
     centeredSlides: false,
     spaceBetween: 20,
     loop: true,
+    loopedSlides: postCount,
+    loopAdditionalSlides: postCount,
     loopFillGroupWithBlank: false,
+    observer: true,
+    observeParents: true,
+    watchSlidesProgress: true,
     speed: 600,
     allowTouchMove: false,
     autoplay: {
@@ -1263,10 +1268,13 @@ function initInstagramSwiper(postCount) {
     },
     on: {
       init: function() {
-        console.log('Instagram carousel: posts=' + postCount + ', maxSlides=' + maxSlides + ', loop=' + this.params.loop);
+        console.log('Instagram: posts=' + postCount + ', loopedSlides=' + this.params.loopedSlides);
       },
       slideChange: function() {
-        console.log('Instagram slide changed to:', this.realIndex);
+        console.log('Slide:', this.realIndex, 'activeIndex:', this.activeIndex);
+      },
+      reachEnd: function() {
+        console.log('Reached end, should loop');
       }
     }
   });
