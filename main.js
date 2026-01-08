@@ -95,7 +95,7 @@ async function fetchPhotos() {
   }
 }
 
-// iPad/iOS Safari検出（Google Driveサムネイルがブロックされる環境）
+// iPad/iOS Safari検出
 function isIOSSafari() {
   var ua = navigator.userAgent;
   var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -106,11 +106,14 @@ function isIOSSafari() {
 // Google Drive画像URL生成
 function getDriveImageUrl(fileId, width) {
   if (!fileId) return "";
-  // iOS SafariではGoogle Driveサムネイルがブロックされるためスキップ
+
+  // iOS Safariでは別のURL形式を使用（thumbnailがブロックされるため）
   if (isIOSSafari()) {
-    console.log('[DEBUG] iOS Safari detected, skipping Google Drive URL');
-    return "";
+    console.log('[DEBUG] iOS Safari detected, using alternative Google Drive URL');
+    // Google CDN形式を試す
+    return "https://lh3.googleusercontent.com/d/" + fileId;
   }
+
   var w = width || 600;
   return "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w" + w;
 }
