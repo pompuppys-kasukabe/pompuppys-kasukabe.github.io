@@ -685,7 +685,7 @@ function renderRoadProgress() {
 
   if (bar) bar.style.width = percent + "%";
   if (pct) pct.textContent = percent + "%";
-  if (raised) raised.textContent = yen(raisedYen);
+  if (raised) raised.textContent = raisedYen > 0 ? yen(raisedYen) : "準備中";
   if (goal) goal.textContent = yen(goalYen);
 }
 
