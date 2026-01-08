@@ -282,10 +282,15 @@ async function renderMembers() {
 
   container.innerHTML = "";
 
-  members.forEach(function(member) {
+  // config.jsのフォールバック画像を取得
+  var cfg = getConfig();
+  var fallbackMembers = (cfg.siteImages && cfg.siteImages.members) || [];
+
+  members.forEach(function(member, index) {
   var src = member.driveId
     ? getDriveImageUrl(member.driveId)
     : member.src;
+  var fallbackSrc = fallbackMembers[index] ? fallbackMembers[index].src : '';
   var name = member.title || member.name || "Member";
   var comment = member.comment || member.description || member.alt || "";
 
@@ -296,18 +301,34 @@ async function renderMembers() {
   var card = document.createElement("div");
   card.className = "memberCard";
 
-  var cardHtml =
-    '<img src="' + escapeHtml(src) + '" alt="' + escapeHtml(name) + '" class="memberPhoto" loading="lazy">' +
-    '<p class="memberName">' + escapeHtml(name) + '</p>';
+  // 画像要素を作成（onerrorでフォールバック）
+  var img = document.createElement("img");
+  img.src = src;
+  img.alt = name;
+  img.className = "memberPhoto";
+  img.loading = "lazy";
+  if (fallbackSrc) {
+    img.onerror = function() {
+      console.log('[DEBUG] Image failed, using fallback:', fallbackSrc);
+      this.onerror = null;
+      this.src = fallbackSrc;
+    };
+  }
+
+  var nameP = document.createElement("p");
+  nameP.className = "memberName";
+  nameP.textContent = name;
+
+  card.appendChild(img);
+  card.appendChild(nameP);
 
   // コメントがある場合は追加（初期は非表示、下に伸びる）
   if (comment) {
-    cardHtml += '<div class="memberComment">' +
-      '<p>' + escapeHtml(comment) + '</p>' +
-    '</div>';
+    var commentDiv = document.createElement("div");
+    commentDiv.className = "memberComment";
+    commentDiv.innerHTML = '<p>' + escapeHtml(comment) + '</p>';
+    card.appendChild(commentDiv);
   }
-
-  card.innerHTML = cardHtml;
 
   // クリックでコメント表示/非表示を切り替え（下に伸びる）
   if (comment) {
@@ -1265,28 +1286,59 @@ function showInstagramPlaceholder(container, config) {
 }
 
 function displayInstagramPosts(posts, container, config) {
-  var html = posts.map(function(post) {
+  container.innerHTML = '';
+
+  posts.forEach(function(post) {
     var caption = post.caption ? escapeHtml(post.caption.substring(0, 100)) + (post.caption.length > 100 ? '...' : '') : '';
 
     var imageUrl = post.driveId
       ? getDriveImageUrl(post.driveId, 600)
       : (post.image || post.mediaUrl);
 
+    // Instagram直接URLをフォールバックとして使用
+    var fallbackUrl = post.mediaUrl || post.image || '';
+
     var postUrl = post.url || post.permalink || post.instagramUrl;
 
     if (!imageUrl || !postUrl) {
-      return '';
+      return;
     }
 
-    return '<div class="swiper-slide">' +
-      '<a href="' + escapeHtml(postUrl) + '" target="_blank" rel="noopener noreferrer" class="instagram-post">' +
-        '<img src="' + escapeHtml(imageUrl) + '" alt="Instagram post" loading="lazy">' +
-        (caption ? '<div class="instagram-post__overlay"><p>' + caption + '</p></div>' : '') +
-      '</a>' +
-    '</div>';
-  }).join('');
+    var slide = document.createElement('div');
+    slide.className = 'swiper-slide';
 
-  container.innerHTML = html;
+    var link = document.createElement('a');
+    link.href = postUrl;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.className = 'instagram-post';
+
+    var img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = 'Instagram post';
+    img.loading = 'lazy';
+    // Google Drive画像が失敗したらInstagram直接URLにフォールバック
+    if (fallbackUrl && fallbackUrl !== imageUrl) {
+      img.onerror = function() {
+        console.log('[DEBUG] Instagram image failed, using fallback');
+        this.onerror = null;
+        this.src = fallbackUrl;
+      };
+    }
+
+    link.appendChild(img);
+
+    if (caption) {
+      var overlay = document.createElement('div');
+      overlay.className = 'instagram-post__overlay';
+      overlay.innerHTML = '<p>' + caption + '</p>';
+      link.appendChild(overlay);
+    }
+
+    slide.appendChild(link);
+    container.appendChild(slide);
+  });
+
   initInstagramSwiper(posts.length);
 }
 
