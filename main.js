@@ -1217,7 +1217,6 @@ function initInstagramSwiper(postCount) {
     return;
   }
 
-  // 既存のSwiperを破棄
   if (instagramSwiper) {
     instagramSwiper.destroy(true, true);
     instagramSwiper = null;
@@ -1230,7 +1229,6 @@ function initInstagramSwiper(postCount) {
     slidesPerView: 1,
     spaceBetween: 16,
     loop: true,
-    loopAdditionalSlides: postCount,
     grabCursor: true,
     speed: 500,
     navigation: {
@@ -1253,6 +1251,7 @@ function initInstagramSwiper(postCount) {
     }
   });
 }
+
 
 
 
