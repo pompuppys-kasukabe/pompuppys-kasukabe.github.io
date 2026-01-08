@@ -1226,11 +1226,11 @@ function initInstagramSwiper(postCount) {
   var swiperElement = document.querySelector('.instagramSwiper');
   if (!swiperElement) return;
 
-  // Photos/Teamと同じシンプルな設定
   instagramSwiper = new Swiper('.instagramSwiper', {
     slidesPerView: 1,
-    spaceBetween: 20,
-    loop: postCount > 1,
+    spaceBetween: 16,
+    loop: true,
+    loopAdditionalSlides: postCount,
     grabCursor: true,
     speed: 500,
     navigation: {
@@ -1244,15 +1244,16 @@ function initInstagramSwiper(postCount) {
     breakpoints: {
       768: {
         slidesPerView: 2,
-        spaceBetween: 24,
+        spaceBetween: 20,
       },
       1024: {
-        slidesPerView: 3,
-        spaceBetween: 28,
+        slidesPerView: 2,
+        spaceBetween: 24,
       }
     }
   });
 }
+
 
 
 // ============================================
