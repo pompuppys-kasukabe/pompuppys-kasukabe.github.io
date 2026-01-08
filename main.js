@@ -152,14 +152,17 @@ async function renderHeroMedia() {
       video.muted = true;
       video.playsInline = true;
       video.loop = videoCfg.loop !== false;
+      video.removeAttribute('loop'); // loop属性を明示的に削除
 
       // 動画を表示、画像を非表示
       video.style.display = "block";
+      video.style.opacity = "1";
       img.style.display = "none";
       wrap.style.display = "block";
 
       // エラー時は画像にフォールバック
       video.onerror = function() {
+        console.log('Hero video error - switching to image');
         video.style.display = "none";
         if (imgSrc) {
           img.src = imgSrc;
@@ -171,32 +174,44 @@ async function renderHeroMedia() {
       // 自動再生（prefers-reduced-motion考慮）
       var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!prefersReduced) {
-        // 動画終了時に静止画に切り替え
-        video.addEventListener('ended', function() {
+        // 動画終了時に静止画に切り替え（一度だけ実行）
+        var switchedToImage = false;
+        var switchToImage = function() {
+          if (switchedToImage) return;
+          switchedToImage = true;
+
+          console.log('Hero video ended - switching to image');
           video.style.opacity = '0';
           video.style.transition = 'opacity 0.8s ease';
-          
+
           setTimeout(function() {
             video.style.display = 'none';
+            if (imgSrc) {
+              img.src = imgSrc;
+              img.alt = imgAlt;
+              img.style.display = 'block';
+              img.style.opacity = '0';
+
+              // 少し遅らせてフェードイン
+              setTimeout(function() {
+                img.style.transition = 'opacity 0.8s ease';
+                img.style.opacity = '1';
+              }, 50);
+            }
+          }, 800);
+        };
+
+        video.addEventListener('ended', switchToImage, { once: true });
+
+        video.play().catch(function(error) {
+          // 自動再生失敗時は静止画を表示
+          console.log('Hero video autoplay failed:', error);
+          video.style.display = 'none';
+          if (imgSrc) {
             img.src = imgSrc;
             img.alt = imgAlt;
             img.style.display = 'block';
-            img.style.opacity = '0';
-            
-            // 少し遅らせてフェードイン
-            setTimeout(function() {
-              img.style.transition = 'opacity 0.8s ease';
-              img.style.opacity = '1';
-            }, 50);
-          }, 800);
-        });
-        
-        video.play().catch(function() {
-          // 自動再生失敗時は静止画を表示
-          video.style.display = 'none';
-          img.src = imgSrc;
-          img.alt = imgAlt;
-          img.style.display = 'block';
+          }
         });
       }
 
