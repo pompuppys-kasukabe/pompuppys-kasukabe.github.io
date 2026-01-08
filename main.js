@@ -1207,7 +1207,6 @@ function displayInstagramPosts(posts, container, config) {
   initInstagramSwiper(posts.length);
 }
 
-
 function initInstagramSwiper(postCount) {
   if (typeof Swiper === 'undefined') {
     console.warn('Swiper is not loaded');
@@ -1222,16 +1221,12 @@ function initInstagramSwiper(postCount) {
   var swiperElement = document.querySelector('.instagramSwiper');
   if (!swiperElement) return;
 
+  // シンプルな設定（loopもrewindも使わない）
   instagramSwiper = new Swiper('.instagramSwiper', {
     slidesPerView: 1,
     spaceBetween: 16,
-    rewind: true,
     grabCursor: true,
-    speed: 500,
-    navigation: {
-      nextEl: '.instagramSwiper .swiper-button-next',
-      prevEl: '.instagramSwiper .swiper-button-prev',
-    },
+    speed: 400,
     pagination: {
       el: '.instagramSwiper .swiper-pagination',
       clickable: true,
@@ -1247,10 +1242,35 @@ function initInstagramSwiper(postCount) {
       }
     }
   });
+
+  // カスタムナビゲーション（手動で制御）
+  var prevBtn = document.querySelector('.instagramSwiper .swiper-button-prev');
+  var nextBtn = document.querySelector('.instagramSwiper .swiper-button-next');
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (instagramSwiper.isBeginning) {
+        instagramSwiper.slideTo(instagramSwiper.slides.length - 1);
+      } else {
+        instagramSwiper.slidePrev();
+      }
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (instagramSwiper.isEnd) {
+        instagramSwiper.slideTo(0);
+      } else {
+        instagramSwiper.slideNext();
+      }
+    });
+  }
 }
-
-
-
 
 
 // ============================================
