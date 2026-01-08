@@ -109,7 +109,7 @@ function getDriveImageUrl(fileId, width) {
 
   // iOS Safariでは別のURL形式を使用（thumbnailがブロックされるため）
   if (isIOSSafari()) {
-    console.log('[DEBUG] iOS Safari detected, using alternative Google Drive URL');
+    // console.log('[DEBUG] iOS Safari detected, using alternative Google Drive URL');
     // Google CDN形式を試す
     return "https://lh3.googleusercontent.com/d/" + fileId;
   }
@@ -270,31 +270,31 @@ async function renderHeroMedia() {
 // ============================================
 
 async function renderMembers() {
-  console.log('[DEBUG] renderMembers started');
+  // console.log('[DEBUG] renderMembers started');
   var container = document.getElementById("membersGrid");
   if (!container) {
-    console.log('[DEBUG] membersGrid container not found');
+    // console.log('[DEBUG] membersGrid container not found');
     return;
   }
 
   var photos = await fetchPhotos();
-  console.log('[DEBUG] fetchPhotos result:', photos);
+  // console.log('[DEBUG] fetchPhotos result:', photos);
   var members = photos.members || [];
-  console.log('[DEBUG] members from API:', members.length);
+  // console.log('[DEBUG] members from API:', members.length);
 
   if (members.length === 0) {
     var cfg = getConfig();
     var imgs = cfg.siteImages || {};
     members = imgs.members || [];
-    console.log('[DEBUG] members from config fallback:', members.length);
+    // console.log('[DEBUG] members from config fallback:', members.length);
   }
 
   if (members.length === 0) {
-    console.log('[DEBUG] No members found, showing placeholder');
+    // console.log('[DEBUG] No members found, showing placeholder');
     container.innerHTML = '<div class="swiper-slide"><p class="muted">メンバー情報は準備中です</p></div>';
     return;
   }
-  console.log('[DEBUG] Rendering', members.length, 'members');
+  // console.log('[DEBUG] Rendering', members.length, 'members');
 
   container.innerHTML = "";
 
@@ -311,7 +311,7 @@ async function renderMembers() {
   var comment = member.comment || member.description || member.alt || "";
 
   if (!src) {
-    console.log('[DEBUG] No image source for member:', name);
+    // console.log('[DEBUG] No image source for member:', name);
     return;
   }
 
@@ -331,7 +331,7 @@ async function renderMembers() {
   // srcがフォールバックでない場合のみonerrorを設定
   if (fallbackSrc && src !== fallbackSrc) {
     img.onerror = function() {
-      console.log('[DEBUG] Image failed, using fallback:', fallbackSrc);
+      // console.log('[DEBUG] Image failed, using fallback:', fallbackSrc);
       this.onerror = null;
       this.src = fallbackSrc;
     };
@@ -1215,16 +1215,16 @@ function initCountdown() {
 // ============================================
 
 async function renderInstagramFeed() {
-  console.log('[DEBUG] renderInstagramFeed started');
+  // console.log('[DEBUG] renderInstagramFeed started');
   var config = getConfig();
   if (!config.instagram || !config.instagram.enabled) {
-    console.log('[DEBUG] Instagram disabled in config');
+    // console.log('[DEBUG] Instagram disabled in config');
     return;
   }
 
   var section = document.getElementById("instagram");
   if (!section) {
-    console.log('[DEBUG] Instagram section not found');
+    // console.log('[DEBUG] Instagram section not found');
     return;
   }
 
@@ -1232,10 +1232,10 @@ async function renderInstagramFeed() {
 
   var feedContainer = document.getElementById("instagramFeed");
   if (!feedContainer) {
-    console.log('[DEBUG] instagramFeed container not found');
+    // console.log('[DEBUG] instagramFeed container not found');
     return;
   }
-  console.log('[DEBUG] Instagram containers found, setting up observer');
+  // console.log('[DEBUG] Instagram containers found, setting up observer');
 
   feedContainer.innerHTML = '<div class="swiper-slide swiper-loading"></div>';
 
@@ -1323,7 +1323,7 @@ function displayInstagramPosts(posts, container, config) {
     var postUrl = post.url || post.permalink || post.instagramUrl;
 
     if (!imageUrl || !postUrl) {
-      console.log('[DEBUG] Instagram post skipped - no image or URL');
+      // console.log('[DEBUG] Instagram post skipped - no image or URL');
       return;
     }
 
@@ -1343,7 +1343,7 @@ function displayInstagramPosts(posts, container, config) {
     // Google Drive画像が失敗したらInstagram直接URLにフォールバック
     if (fallbackUrl && fallbackUrl !== imageUrl) {
       img.onerror = function() {
-        console.log('[DEBUG] Instagram image failed, using fallback');
+        // console.log('[DEBUG] Instagram image failed, using fallback');
         this.onerror = null;
         this.src = fallbackUrl;
       };
@@ -1803,7 +1803,7 @@ function initFAQ() {
 }
 
 async function initSite() {
-  console.log('[DEBUG] initSite started');
+  // console.log('[DEBUG] initSite started');
   renderCopy();
   renderNews();
   wireLinks();
