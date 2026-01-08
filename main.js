@@ -254,22 +254,31 @@ async function renderHeroMedia() {
 // ============================================
 
 async function renderMembers() {
+  console.log('[DEBUG] renderMembers started');
   var container = document.getElementById("membersGrid");
-  if (!container) return;
+  if (!container) {
+    console.log('[DEBUG] membersGrid container not found');
+    return;
+  }
 
   var photos = await fetchPhotos();
+  console.log('[DEBUG] fetchPhotos result:', photos);
   var members = photos.members || [];
+  console.log('[DEBUG] members from API:', members.length);
 
   if (members.length === 0) {
     var cfg = getConfig();
     var imgs = cfg.siteImages || {};
     members = imgs.members || [];
+    console.log('[DEBUG] members from config fallback:', members.length);
   }
 
   if (members.length === 0) {
+    console.log('[DEBUG] No members found, showing placeholder');
     container.innerHTML = '<div class="swiper-slide"><p class="muted">メンバー情報は準備中です</p></div>';
     return;
   }
+  console.log('[DEBUG] Rendering', members.length, 'members');
 
   container.innerHTML = "";
 
@@ -1163,18 +1172,27 @@ function initCountdown() {
 // ============================================
 
 async function renderInstagramFeed() {
+  console.log('[DEBUG] renderInstagramFeed started');
   var config = getConfig();
   if (!config.instagram || !config.instagram.enabled) {
+    console.log('[DEBUG] Instagram disabled in config');
     return;
   }
 
   var section = document.getElementById("instagram");
-  if (!section) return;
+  if (!section) {
+    console.log('[DEBUG] Instagram section not found');
+    return;
+  }
 
   section.style.display = "block";
 
   var feedContainer = document.getElementById("instagramFeed");
-  if (!feedContainer) return;
+  if (!feedContainer) {
+    console.log('[DEBUG] instagramFeed container not found');
+    return;
+  }
+  console.log('[DEBUG] Instagram containers found, setting up observer');
 
   feedContainer.innerHTML = '<div class="swiper-slide swiper-loading"></div>';
 
@@ -1710,6 +1728,7 @@ function initFAQ() {
 }
 
 async function initSite() {
+  console.log('[DEBUG] initSite started');
   renderCopy();
   renderNews();
   wireLinks();
