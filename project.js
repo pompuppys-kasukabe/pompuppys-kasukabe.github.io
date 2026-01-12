@@ -510,8 +510,11 @@ async function fetchMessages(){
 
     console.log("Filtered messages:", filtered.length);
 
+    // 日付＋IDでソート（安定した順序を保証）
     var sorted = filtered.sort(function(a, b){
-      return String(b.date).localeCompare(String(a.date));
+      var dateCompare = String(b.date).localeCompare(String(a.date));
+      if(dateCompare \!== 0) return dateCompare;
+      return String(a.id || '').localeCompare(String(b.id || ''));
     });
 
     return sorted;
@@ -739,9 +742,9 @@ async function renderMosaicArt(){
     allCells.push(i);
   }
 
-  // メッセージからシード値を生成（同じメッセージセット = 同じ配置）
-  var seed = generateSeed(messages);
-  console.log("Using seed:", seed);
+  // 固定シードを使用（メッセージが追加されても位置が変わらない）
+  var seed = 20260112; // 固定値
+  console.log("Using fixed seed:", seed);
 
   // シャッフル（シード付きランダム配置で固定）
   allCells = shuffleWithSeed(allCells, seed);
