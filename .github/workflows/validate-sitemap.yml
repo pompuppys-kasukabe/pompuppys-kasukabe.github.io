@@ -1,0 +1,96 @@
+name: サイトマップ検証
+
+on:
+  # プッシュ時に検証
+  push:
+    paths:
+      - 'sitemap.xml'
+      - '**.html'
+
+  # 毎日午前9時（JST）に定期チェック
+  schedule:
+    - cron: '0 0 * * *'  # 0:00 UTC = 9:00 JST
+
+  # 手動実行
+  workflow_dispatch:
+
+jobs:
+  validate-sitemap:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: チェックアウト
+        uses: actions/checkout@v4
+
+      - name: サイトマップXML検証
+        run: |
+          echo "## サイトマップ検証" >> $GITHUB_STEP_SUMMARY
+
+          # XMLの構文チェック
+          if xmllint --noout sitemap.xml 2>/dev/null; then
+            echo "✅ XML構文: 正常" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ XML構文: エラー" >> $GITHUB_STEP_SUMMARY
+            xmllint --noout sitemap.xml
+            exit 1
+          fi
+
+          # URL数をカウント
+          url_count=$(grep -c '<loc>' sitemap.xml || echo "0")
+          echo "📄 登録URL数: ${url_count}" >> $GITHUB_STEP_SUMMARY
+
+      - name: デプロイ待機
+        if: github.event_name == 'push'
+        run: sleep 60
+
+      - name: 公開サイトマップ確認
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 公開URL確認" >> $GITHUB_STEP_SUMMARY
+
+          # サイトマップのHTTPステータス確認
+          status=$(curl -s -o /dev/null -w "%{http_code}" "https://pompuppys-kasukabe.github.io/sitemap.xml")
+
+          if [ "$status" = "200" ]; then
+            echo "✅ サイトマップ: アクセス可能 (HTTP $status)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ サイトマップ: アクセス不可 (HTTP $status)" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+          # Content-Type確認
+          content_type=$(curl -s -I "https://pompuppys-kasukabe.github.io/sitemap.xml" | grep -i "content-type" | head -1)
+          echo "📋 $content_type" >> $GITHUB_STEP_SUMMARY
+
+      - name: 各ページのアクセス確認
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## ページ別ステータス" >> $GITHUB_STEP_SUMMARY
+
+          # サイトマップからURLを抽出してチェック
+          urls=$(grep -oP '(?<=<loc>)[^<]+' sitemap.xml)
+
+          all_ok=true
+          for url in $urls; do
+            status=$(curl -s -o /dev/null -w "%{http_code}" "$url")
+            if [ "$status" = "200" ]; then
+              echo "✅ $url" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "❌ $url (HTTP $status)" >> $GITHUB_STEP_SUMMARY
+              all_ok=false
+            fi
+          done
+
+          if [ "$all_ok" = false ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ 一部ページにアクセスできません" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+      - name: 検証完了通知
+        if: success()
+        run: |
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "✅ **全ての検証に合格しました**" >> $GITHUB_STEP_SUMMARY
+          echo "検証日時: $(TZ=Asia/Tokyo date +'%Y-%m-%d %H:%M:%S JST')" >> $GITHUB_STEP_SUMMARY
