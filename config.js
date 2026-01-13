@@ -321,7 +321,7 @@ window.PUPPYS_CONFIG = {
     heroImage: "./assets/photos/award_flag.jpg",
     heroImageAlt: "表彰後、フラッグを掲げるPOM PUPPYS bright",
 
-    costPerPersonYen: 680000,
+    costPerPersonYen: 580000,
     extrasPerPersonEstimateYen: 100000,
     nights: 6,
     mealPlanNote: "現地は物価高の影響もあり、費用が読みやすく結果的に総額を抑えやすい食事付プランを選択しています。",
