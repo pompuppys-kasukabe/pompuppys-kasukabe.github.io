@@ -240,7 +240,7 @@ function renderProject(){
   var perPackage = Number(p.costPerPersonYen || 0);
   var perExtras = Number(p.extrasPerPersonEstimateYen || 0);
   var perTotal = perPackage + perExtras;
-  var totalCost = perPackage * ppl;
+  var totalCost = perTotal * ppl;  // 680,000 × 8 = 5,440,000
 
   setText("perPerson", yen(perPackage));
   setText("extrasPerPerson", yen(perExtras) + "（目安）");
