@@ -513,7 +513,7 @@ async function fetchMessages(){
     // 日付＋IDでソート（安定した順序を保証）
     var sorted = filtered.sort(function(a, b){
       var dateCompare = String(b.date).localeCompare(String(a.date));
-      if(dateCompare \!== 0) return dateCompare;
+      if(dateCompare !== 0) return dateCompare;
       return String(a.id || '').localeCompare(String(b.id || ''));
     });
 
