@@ -22,6 +22,11 @@ jobs:
       - name: チェックアウト
         uses: actions/checkout@v4
 
+      - name: 必要なツールをインストール
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils
+
       - name: サイトマップXML検証
         run: |
           echo "## サイトマップ検証" >> $GITHUB_STEP_SUMMARY
@@ -68,7 +73,7 @@ jobs:
           echo "## ページ別ステータス" >> $GITHUB_STEP_SUMMARY
 
           # サイトマップからURLを抽出してチェック
-          urls=$(grep -oP '(?<=<loc>)[^<]+' sitemap.xml)
+          urls=$(grep '<loc>' sitemap.xml | sed 's/.*<loc>\(.*\)<\/loc>.*/\1/')
 
           all_ok=true
           for url in $urls; do
