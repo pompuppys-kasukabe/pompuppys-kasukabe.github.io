@@ -655,7 +655,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-lg);
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
 }
 
 .heroPhotoWrap::before {
