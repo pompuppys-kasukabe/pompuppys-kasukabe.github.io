@@ -304,7 +304,7 @@ window.PUPPYS_CONFIG = {
   // ===== クラファン特設 =====
   project: {
     title: "Road to the World - Special Project",
-    crowdfundingUrl: "https://camp-fire.jp/projects/905863/preview?token=um9e0t9o&utm_campaign=cp_po_share_c_msg_projects_show",
+    crowdfundingUrl: "https://camp-fire.jp/projects/920355/preview?token=3ur64yhu&utm_campaign=cp_po_share_c_msg_projects_show",
     
     goalYen: 1000000,
     raisedYen: 0,
