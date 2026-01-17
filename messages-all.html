@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DHBBC2W9HN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DHBBC2W9HN');
+  </script>
+
+  <title>全メッセージ一覧｜#BrightWings1000｜POM PUPPYS bright</title>
+  <meta name="description" content="POM PUPPYS brightへ届いた全ての応援メッセージを一覧で見ることができます。1,000の想いを、世界へ届ける。" />
+  <meta name="keywords" content="応援メッセージ,BrightWings1000,POM PUPPYS bright,チアダンス,The Dance Summit" />
+
+  <link rel="canonical" href="https://pompuppys-kasukabe.github.io/messages-all.html" />
+  <meta name="robots" content="index,follow" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="POM PUPPYS bright" />
+  <meta property="og:title" content="全メッセージ一覧｜#BrightWings1000" />
+  <meta property="og:description" content="届いた全ての応援メッセージを一覧で見ることができます。" />
+  <meta property="og:url" content="https://pompuppys-kasukabe.github.io/messages-all.html" />
+  <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" type="image/png" href="./assets/logo_emblem_white.png" />
+  <link rel="apple-touch-icon" href="./assets/logo_emblem_white.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="stylesheet" href="./style-core.css" />
+  <link rel="stylesheet" href="./style-layout.css" />
+  <link rel="stylesheet" href="./style-components.css" />
+  <link rel="stylesheet" href="./style-utils.css" />
+
+  <style>
+    /* ========== 全メッセージ一覧ページ専用スタイル ========== */
+
+    :root {
+      --item-height: 120px;
+      --item-height-mobile: 140px;
+      --gold: #d4af37;
+      --purple: #6b3fa0;
+      --dark: #1a1a1a;
+    }
+
+    body {
+      background: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* ヘッダー */
+    .page-header {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d1f3d 100%);
+      padding: 40px 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .page-header__kicker {
+      color: var(--gold);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .page-header__title {
+      color: #fff;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      margin: 0 0 8px 0;
+    }
+
+    .page-header__count {
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem;
+    }
+
+    .page-header__count strong {
+      color: var(--gold);
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    /* 検索セクション */
+    .search-section {
+      background: rgba(255,255,255,0.03);
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: sticky;
+      top: 60px;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+
+    .search-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-input-wrapper {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+
+    .search-input-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.4);
+      font-size: 0.9rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 12px 12px 40px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--gold);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .search-input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+
+    .date-input {
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.95rem;
+      min-width: 150px;
+    }
+
+    .date-input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .search-clear {
+      padding: 12px 20px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 8px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .search-clear:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .search-results-info {
+      width: 100%;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .search-results-info strong {
+      color: var(--gold);
+    }
+
+    /* 仮想スクロールコンテナ */
+    .virtual-scroll-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: calc(100vh - 300px);
+    }
+
+    .virtual-scroll-viewport {
+      height: calc(100vh - 350px);
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .virtual-scroll-content {
+      position: relative;
+    }
+
+    .virtual-scroll-spacer {
+      width: 100%;
+    }
+
+    .virtual-scroll-items {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    /* メッセージカード */
+    .message-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 12px;
+      transition: all 0.2s;
+      height: calc(var(--item-height) - 12px);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .message-item:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .message-item--vip {
+      background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(107,63,160,0.1));
+      border-color: rgba(212, 175, 55, 0.3);
+    }
+
+    .message-item__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .message-item__name {
+      font-weight: 700;
+      color: var(--gold);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .message-item__name i {
+      font-size: 0.85rem;
+    }
+
+    .message-item__date {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .message-item__text {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ローディング */
+    .loading-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* 空状態 */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .empty-state p {
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    /* ナビゲーションリンク */
+    .nav-links {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    /* スクロールトップボタン */
+    .scroll-top-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+      z-index: 100;
+    }
+
+    .scroll-top-btn.is-visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scroll-top-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 24px rgba(212, 175, 55, 0.5);
+    }
+
+    /* メッセージ詳細モーダル */
+    .message-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .message-modal.is-open {
+      display: flex;
+    }
+
+    .message-modal__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+    }
+
+    .message-modal__content {
+      position: relative;
+      background: #2a2a2a;
+      border-radius: 16px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    .message-modal__close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .message-modal__close:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .message-modal__body {
+      padding: 32px;
+    }
+
+    .message-modal__name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin: 0 0 8px 0;
+    }
+
+    .message-modal__date {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+      margin: 0 0 24px 0;
+    }
+
+    .message-modal__text {
+      color: rgba(255,255,255,0.9);
+      font-size: 1.05rem;
+      line-height: 2;
+      white-space: pre-wrap;
+    }
+
+    /* レスポンシブ */
+    @media (max-width: 768px) {
+      .search-section {
+        top: 56px;
+      }
+
+      .search-container {
+        flex-direction: column;
+      }
+
+      .search-input-wrapper,
+      .date-input {
+        width: 100%;
+      }
+
+      .virtual-scroll-viewport {
+        height: calc(100vh - 420px);
+      }
+
+      .message-item {
+        height: calc(var(--item-height-mobile) - 12px);
+        padding: 16px;
+      }
+
+      .message-item__text {
+        -webkit-line-clamp: 3;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ヘッダー -->
+  <header class="header">
+    <div class="container header__inner">
+      <div class="brand">
+        <img src="./assets/logo_emblem_white.png" alt="" class="brand__emblem">
+        <span>All Messages</span>
+      </div>
+      <nav class="nav">
+        <a href="./index.html">公式サイト</a>
+        <a href="./project-world-challenge.html">プロジェクト</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ページヘッダー -->
+    <section class="page-header">
+      <p class="page-header__kicker">#BrightWings1000</p>
+      <h1 class="page-header__title">全メッセージ一覧</h1>
+      <p class="page-header__count">
+        現在 <strong id="totalCount">-</strong> 件の想いが届いています
+      </p>
+    </section>
+
+    <!-- 検索セクション -->
+    <section class="search-section">
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <i class="fas fa-search"></i>
+          <input type="text" class="search-input" id="searchKeyword" placeholder="名前・メッセージで検索...">
+        </div>
+        <input type="date" class="date-input" id="searchDateFrom" title="開始日">
+        <span style="color: rgba(255,255,255,0.4);">〜</span>
+        <input type="date" class="date-input" id="searchDateTo" title="終了日">
+        <button class="search-clear" id="searchClear">
+          <i class="fas fa-times"></i> クリア
+        </button>
+        <div class="search-results-info" id="searchResultsInfo" style="display: none;">
+          <span><strong id="filteredCount">0</strong> 件がヒット</span>
+          <span id="searchQuery"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ナビゲーションリンク -->
+    <div class="nav-links">
+      <a href="./messages.html"><i class="fas fa-arrow-left"></i> モザイクアートに戻る</a>
+      <a href="./project-world-challenge.html#messages"><i class="fas fa-paper-plane"></i> メッセージを送る</a>
+    </div>
+
+    <!-- 仮想スクロールコンテナ -->
+    <div class="virtual-scroll-container">
+      <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>メッセージを読み込んでいます...</p>
+      </div>
+
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <i class="fas fa-inbox"></i>
+        <p>メッセージが見つかりませんでした</p>
+      </div>
+
+      <div class="virtual-scroll-viewport" id="viewport" style="display: none;">
+        <div class="virtual-scroll-content" id="content">
+          <div class="virtual-scroll-spacer" id="spacer"></div>
+          <div class="virtual-scroll-items" id="items"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- スクロールトップボタン -->
+  <button class="scroll-top-btn" id="scrollTopBtn">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- メッセージ詳細モーダル -->
+  <div class="message-modal" id="messageModal">
+    <div class="message-modal__overlay" id="modalOverlay"></div>
+    <div class="message-modal__content">
+      <button class="message-modal__close" id="modalClose">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="message-modal__body">
+        <h2 class="message-modal__name" id="modalName"></h2>
+        <p class="message-modal__date" id="modalDate"></p>
+        <p class="message-modal__text" id="modalText"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div>&copy; POM PUPPYS bright</div>
+      <div class="muted" style="margin-top:6px;">
+        <a href="./index.html">公式サイト</a> ｜
+        <a href="./project-world-challenge.html">プロジェクトページ</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================
+    // 全メッセージ一覧 - 仮想スクロール実装
+    // ============================================
+
+    const API_URL = "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec";
+
+    // 設定
+    const ITEM_HEIGHT = window.innerWidth <= 768 ? 140 : 120;
+    const BUFFER_SIZE = 5; // 画面外にレンダリングするアイテム数
+
+    // 状態管理
+    let allMessages = [];
+    let filteredMessages = [];
+    let visibleStartIndex = 0;
+    let visibleEndIndex = 0;
+
+    // DOM要素
+    const viewport = document.getElementById('viewport');
+    const content = document.getElementById('content');
+    const spacer = document.getElementById('spacer');
+    const items = document.getElementById('items');
+    const loadingState = document.getElementById('loadingState');
+    const emptyState = document.getElementById('emptyState');
+    const totalCountEl = document.getElementById('totalCount');
+    const filteredCountEl = document.getElementById('filteredCount');
+    const searchResultsInfo = document.getElementById('searchResultsInfo');
+    const searchKeyword = document.getElementById('searchKeyword');
+    const searchDateFrom = document.getElementById('searchDateFrom');
+    const searchDateTo = document.getElementById('searchDateTo');
+    const searchClear = document.getElementById('searchClear');
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+    // ============================================
+    // データ取得
+    // ============================================
+    async function fetchMessages() {
+      try {
+        const response = await fetch(API_URL + "?action=getMessages&t=" + Date.now());
+        const data = await response.json();
+
+        if (data.messages) {
+          // 日付で降順ソート（新しい順）
+          allMessages = data.messages.sort((a, b) => {
+            return new Date(b.date) - new Date(a.date);
+          });
+          return true;
+        }
+        return false;
+      } catch (e) {
+        console.error("メッセージ取得エラー:", e);
+        return false;
+      }
+    }
+
+    // ============================================
+    // 検索・フィルター
+    // ============================================
+    function filterMessages() {
+      const keyword = searchKeyword.value.toLowerCase().trim();
+      const dateFrom = searchDateFrom.value;
+      const dateTo = searchDateTo.value;
+
+      filteredMessages = allMessages.filter(msg => {
+        // キーワード検索（名前 or メッセージ）
+        if (keyword) {
+          const nameMatch = (msg.name || '').toLowerCase().includes(keyword);
+          const textMatch = (msg.message || '').toLowerCase().includes(keyword);
+          if (!nameMatch && !textMatch) return false;
+        }
+
+        // 日付範囲
+        if (dateFrom || dateTo) {
+          const msgDate = msg.date ? new Date(msg.date) : null;
+          if (!msgDate) return false;
+
+          if (dateFrom && msgDate < new Date(dateFrom)) return false;
+          if (dateTo && msgDate > new Date(dateTo + 'T23:59:59')) return false;
+        }
+
+        return true;
+      });
+
+      // 検索結果情報を更新
+      const isFiltering = keyword || dateFrom || dateTo;
+      searchResultsInfo.style.display = isFiltering ? 'flex' : 'none';
+
+      if (isFiltering) {
+        filteredCountEl.textContent = filteredMessages.length.toLocaleString();
+
+        let queryParts = [];
+        if (keyword) queryParts.push(`"${keyword}"`);
+        if (dateFrom) queryParts.push(`${dateFrom}から`);
+        if (dateTo) queryParts.push(`${dateTo}まで`);
+        document.getElementById('searchQuery').textContent = queryParts.join(' / ');
+      }
+
+      // 表示を更新
+      updateVirtualScroll();
+    }
+
+    // ============================================
+    // 仮想スクロール
+    // ============================================
+    function updateVirtualScroll() {
+      const messages = filteredMessages.length > 0 || isFiltering() ? filteredMessages : allMessages;
+
+      if (messages.length === 0) {
+        viewport.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      viewport.style.display = 'block';
+      emptyState.style.display = 'none';
+
+      // 総高さを設定
+      const totalHeight = messages.length * ITEM_HEIGHT;
+      spacer.style.height = totalHeight + 'px';
+
+      // 表示範囲を計算
+      calculateVisibleRange();
+      renderVisibleItems();
+    }
+
+    function calculateVisibleRange() {
+      const messages = filteredMessages.length > 0 || isFiltering() ? filteredMessages : allMessages;
+      const scrollTop = viewport.scrollTop;
+      const viewportHeight = viewport.clientHeight;
+
+      visibleStartIndex = Math.max(0, Math.floor(scrollTop / ITEM_HEIGHT) - BUFFER_SIZE);
+      visibleEndIndex = Math.min(
+        messages.length - 1,
+        Math.ceil((scrollTop + viewportHeight) / ITEM_HEIGHT) + BUFFER_SIZE
+      );
+    }
+
+    function renderVisibleItems() {
+      const messages = filteredMessages.length > 0 || isFiltering() ? filteredMessages : allMessages;
+
+      let html = '';
+      for (let i = visibleStartIndex; i <= visibleEndIndex; i++) {
+        const msg = messages[i];
+        if (!msg) continue;
+
+        const isVip = msg.category === 'VIP' || msg.category === 'スポンサー';
+        const vipClass = isVip ? 'message-item--vip' : '';
+        const icon = isVip ? '<i class="fas fa-crown"></i>' : '';
+
+        html += `
+          <div class="message-item ${vipClass}"
+               style="position: absolute; top: ${i * ITEM_HEIGHT}px; left: 0; right: 0;"
+               data-index="${i}"
+               onclick="showMessageDetail(${i})">
+            <div class="message-item__header">
+              <div class="message-item__name">${icon}${escapeHtml(msg.name || '匿名')}</div>
+              <div class="message-item__date">${escapeHtml(msg.date || '')}</div>
+            </div>
+            <div class="message-item__text">${escapeHtml(msg.message || '')}</div>
+          </div>
+        `;
+      }
+
+      items.innerHTML = html;
+    }
+
+    function isFiltering() {
+      return searchKeyword.value || searchDateFrom.value || searchDateTo.value;
+    }
+
+    // ============================================
+    // モーダル
+    // ============================================
+    function showMessageDetail(index) {
+      const messages = filteredMessages.length > 0 || isFiltering() ? filteredMessages : allMessages;
+      const msg = messages[index];
+      if (!msg) return;
+
+      document.getElementById('modalName').textContent = msg.name || '匿名';
+      document.getElementById('modalDate').textContent = msg.date || '';
+      document.getElementById('modalText').textContent = msg.message || '';
+
+      document.getElementById('messageModal').classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('messageModal').classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    // ============================================
+    // ユーティリティ
+    // ============================================
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // ============================================
+    // イベントリスナー
+    // ============================================
+    function setupEventListeners() {
+      // スクロールイベント（デバウンスなしでスムーズに）
+      viewport.addEventListener('scroll', () => {
+        calculateVisibleRange();
+        renderVisibleItems();
+      });
+
+      // 検索イベント（デバウンス付き）
+      const debouncedFilter = debounce(filterMessages, 300);
+      searchKeyword.addEventListener('input', debouncedFilter);
+      searchDateFrom.addEventListener('change', filterMessages);
+      searchDateTo.addEventListener('change', filterMessages);
+
+      // クリアボタン
+      searchClear.addEventListener('click', () => {
+        searchKeyword.value = '';
+        searchDateFrom.value = '';
+        searchDateTo.value = '';
+        filteredMessages = [];
+        filterMessages();
+      });
+
+      // スクロールトップボタン
+      viewport.addEventListener('scroll', () => {
+        if (viewport.scrollTop > 500) {
+          scrollTopBtn.classList.add('is-visible');
+        } else {
+          scrollTopBtn.classList.remove('is-visible');
+        }
+      });
+
+      scrollTopBtn.addEventListener('click', () => {
+        viewport.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // モーダル
+      document.getElementById('modalOverlay').addEventListener('click', closeModal);
+      document.getElementById('modalClose').addEventListener('click', closeModal);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+      });
+
+      // ウィンドウリサイズ
+      window.addEventListener('resize', debounce(() => {
+        updateVirtualScroll();
+      }, 200));
+    }
+
+    // ============================================
+    // 初期化
+    // ============================================
+    async function init() {
+      setupEventListeners();
+
+      const success = await fetchMessages();
+
+      loadingState.style.display = 'none';
+
+      if (success && allMessages.length > 0) {
+        totalCountEl.textContent = allMessages.length.toLocaleString();
+        filteredMessages = [...allMessages];
+        updateVirtualScroll();
+      } else {
+        emptyState.style.display = 'block';
+        totalCountEl.textContent = '0';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
