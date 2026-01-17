@@ -1239,19 +1239,8 @@ async function renderInstagramFeed() {
 
   feedContainer.innerHTML = '<div class="swiper-slide swiper-loading"></div>';
 
-  // Intersection Observerでスマートプリロード（ビューポート500px手前で読み込み開始）
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        observer.disconnect();
-        loadInstagramPosts(feedContainer, config);
-      }
-    });
-  }, {
-    rootMargin: '500px' // ビューポートの500px手前で読み込み開始
-  });
-
-  observer.observe(section);
+  // ページ読み込み直後にAPI取得開始（遅延なし）
+  loadInstagramPosts(feedContainer, config);
 }
 
 async function loadInstagramPosts(feedContainer, config) {
