@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAMPFIRE プレビュー｜POM PUPPYS bright</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.8;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    /* プレビュー注記 */
+    .preview-note {
+      background: #ff6b6b;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      font-size: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* ヘッダー */
+    .cf-header {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* 画像 */
+    .full-image {
+      width: 100%;
+      display: block;
+    }
+
+    .full-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* 帯（セクションタイトル画像） */
+    .section-banner {
+      width: 100%;
+      margin: 40px 0 0 0;
+    }
+
+    .section-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* 帯プレースホルダー（実画像がない場合） */
+    .banner-placeholder {
+      background: linear-gradient(135deg, #1a1a1a, #333);
+      color: #fff;
+      padding: 16px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      margin: 40px 0 0 0;
+      letter-spacing: 0.1em;
+    }
+
+    .banner-placeholder.gold {
+      background: linear-gradient(135deg, #d4af37, #b8960c);
+    }
+
+    .banner-placeholder.purple {
+      background: linear-gradient(135deg, #6b4c9a, #4a3570);
+    }
+
+    /* 本文エリア */
+    .content-area {
+      padding: 24px;
+    }
+
+    /* キャプション（左揃え基本） */
+    .caption {
+      font-size: 16px;
+      line-height: 2;
+      margin: 20px 0;
+    }
+
+    /* 強調一文（中央） */
+    .impact-line {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 24px 0;
+      line-height: 1.6;
+    }
+
+    /* 区切り */
+    .spacer {
+      height: 40px;
+    }
+
+    .spacer-small {
+      height: 20px;
+    }
+
+    /* 千羽鶴ボックス */
+    .senbazuru-box {
+      background: linear-gradient(135deg, #fff8f0, #fff);
+      border: 2px solid #d4af37;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .senbazuru-box h3 {
+      color: #d4af37;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .senbazuru-box .btn {
+      display: inline-block;
+      background: #d4af37;
+      color: #fff;
+      padding: 12px 32px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 16px;
+    }
+
+    /* スポンサーカード */
+    .sponsor-card {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+
+    .sponsor-card.gold {
+      border-color: #d4af37;
+      background: linear-gradient(135deg, #fffdf5, #fff);
+    }
+
+    .sponsor-card.silver {
+      border-color: #a0a0a0;
+      background: linear-gradient(135deg, #fafafa, #fff);
+    }
+
+    .sponsor-card.bronze {
+      border-color: #cd7f32;
+      background: linear-gradient(135deg, #fff9f5, #fff);
+    }
+
+    .sponsor-card h4 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .sponsor-card .price {
+      font-size: 24px;
+      font-weight: bold;
+      color: #d4af37;
+      margin-bottom: 12px;
+    }
+
+    .sponsor-card ul {
+      margin-left: 20px;
+      font-size: 14px;
+    }
+
+    /* テーブル */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    .info-table th,
+    .info-table td {
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    .info-table th {
+      background: #f8f8f8;
+      font-weight: bold;
+      width: 100px;
+    }
+
+    /* スケジュール */
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    .schedule-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .schedule-table td:first-child {
+      width: 120px;
+      font-weight: bold;
+      color: #d4af37;
+    }
+
+    /* 動画 */
+    .video-placeholder {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 60px 20px;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .video-placeholder .icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    /* 最後のメッセージ */
+    .final-message {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 40px 24px;
+      text-align: center;
+      line-height: 2.2;
+    }
+
+    .final-message .signature {
+      margin-top: 30px;
+      font-size: 18px;
+      color: #d4af37;
+    }
+
+    /* フッター */
+    .cf-footer {
+      background: #f0f0f0;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+    }
+
+    /* セクションインデックス */
+    .section-index {
+      background: #f8f8f8;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+
+    .section-index h3 {
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .section-index ol {
+      margin-left: 20px;
+      font-size: 14px;
+    }
+
+    .section-index li {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="preview-note">
+  これはCAMPFIREプレビュー用HTMLです。実際の投稿時はCAMPFIRE管理画面から入力してください。
+</div>
+
+<div class="container">
+
+  <!-- ヘッダー -->
+  <div class="cf-header">
+    CAMPFIRE プレビュー
+  </div>
+
+  <!-- セクション構成インデックス -->
+  <div class="content-area">
+    <div class="section-index">
+      <h3>【セクション構成】</h3>
+      <ol>
+        <li>トップ画像 + 挨拶</li>
+        <li>帯：私たちの挑戦 → ストーリー（写真6枚）</li>
+        <li>帯：The Dance Summit とは → 大会説明</li>
+        <li>帯：資金の使い道 → 費用内訳</li>
+        <li>帯：みんなで応援プロジェクト → 千羽鶴</li>
+        <li>帯：企業・団体スポンサー枠 → スポンサー</li>
+        <li>帯：リターン一覧 → リターン表</li>
+        <li>帯：スケジュール → 日程表</li>
+        <li>帯：メンバー紹介 → 動画</li>
+        <li>最後のメッセージ</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- セクション1: トップ画像 + 挨拶 -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <div class="full-image">
+    <img src="１.png" alt="トップ画像">
+  </div>
+
+  <div class="content-area">
+    <p class="caption">
+はじめまして。
+埼玉県春日部市で活動するチアダンスチーム「POM PUPPYS bright」です。
+    </p>
+    <p class="caption">
+私たちの物語を、聞いてください。
+    </p>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- セクション2: 帯「私たちの挑戦」→ ストーリー -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <!-- 帯画像：私たちの挑戦 -->
+  <div class="banner-placeholder">私たちの挑戦</div>
+  <!-- ↓実画像ができたらこちらに差し替え↓
+  <div class="section-banner">
+    <img src="帯_私たちの挑戦.png" alt="私たちの挑戦">
+  </div>
+  -->
+
+  <!-- ２.png: 惨敗 -->
+  <div class="full-image">
+    <img src="２.png" alt="関東予選">
+  </div>
+  <div class="content-area">
+    <p class="caption">
+2024年秋、全国大会出場をかけた関東予選。
+    </p>
+    <p class="impact-line">
+結果は——11位。
+    </p>
+    <p class="caption">
+悔しくて、悔しくて、涙が止まりませんでした。
+    </p>
+  </div>
+
+  <!-- ３.png: 原点回帰 -->
+  <div class="full-image">
+    <img src="３.png" alt="話し合い">
+  </div>
+  <div class="content-area">
+    <p class="caption">
+このままじゃダメだ。
+練習を止めて、みんなで話し合いました。
+    </p>
+    <p class="caption">
+「なんでチアを始めたんだっけ？」
+「踊るのが、好きだったから。」
+    </p>
+    <p class="caption">
+私たちは、"楽しむ"を取り戻すことにしました。
+    </p>
+  </div>
+
+  <!-- 4.png: 楽しむ -->
+  <div class="full-image">
+    <img src="4.png" alt="イベント">
+  </div>
+  <div class="content-area">
+    <p class="caption">
+地域のお祭り、イベント、どこでも全力で踊りました。
+勝ち負けじゃない。届けたいのは、笑顔。
+    </p>
+    <p class="caption">
+気づけば、チームの空気が変わっていました。
+    </p>
+  </div>
+
+  <!-- ５.png: 全国1位 -->
+  <div class="full-image">
+    <img src="５.png" alt="全国1位">
+  </div>
+  <div class="content-area">
+    <p class="caption">
+関東予選から、わずか2週間後。
+JAMfest Japan vol.23。
+    </p>
+    <p class="impact-line">
+結果は——全国1位。
+    </p>
+    <p class="caption">
+11位から頂点へ。信じられませんでした。
+    </p>
+  </div>
+
+  <!-- ６.png: 世界大会 -->
+  <div class="full-image">
+    <img src="６.png" alt="世界大会出場権">
+  </div>
+  <div class="content-area">
+    <p class="caption">
+そして同時に、もう一つの夢が叶いました。
+    </p>
+    <p class="caption">
+「The Dance Summit」——世界最高峰のダンス大会への出場権。
+    </p>
+    <p class="caption">
+先輩たちが何年も届かなかった舞台。
+私たちが、チーム初の出場者になります。
+    </p>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- セクション3: 帯「The Dance Summit とは」 -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <!-- 帯画像：The Dance Summit とは -->
+  <div class="banner-placeholder">The Dance Summit とは</div>
+
+  <div class="full-image">
+    <img src="ダンスサミット.png" alt="The Dance Summit">
+  </div>
+  <div class="content-area">
+    <p class="caption">
+2026年5月、アメリカ・フロリダ州オーランドで開催される世界最高峰のダンス競技大会。
+    </p>
+    <p class="caption">
+世界30カ国以上から選抜されたチームが集結。
+チアダンス界の「オリンピック」とも呼ばれています。
+    </p>
+    <p class="caption">
+私たちは日本代表として、この舞台に挑みます。
+    </p>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- セクション4: 帯「資金の使い道」 -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <!-- 帯画像：資金の使い道 -->
+  <div class="banner-placeholder">資金の使い道</div>
+
+  <div class="full-image">
+    <img src="費用内訳.png" alt="費用内訳">
+  </div>
+  <div class="content-area">
+    <p class="caption">
+正直にお伝えします。
+    </p>
+    <p class="caption">
+1人あたりの渡航費用は約68万円。
+選手7名＋コーチ1名、計8名分で総額544万円が必要です。
+    </p>
+    <p class="caption">
+中学生の私たちだけでは、とても用意できる金額ではありません。
+    </p>
+    <p class="impact-line">
+目標金額：100万円
+    </p>
+    <p class="caption">
+皆さまからのご支援は、渡航費用の一部として大切に使わせていただきます。
+    </p>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- セクション5: 帯「みんなで応援プロジェクト」 -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <!-- 帯画像：みんなで応援プロジェクト -->
+  <div class="banner-placeholder gold">みんなで応援プロジェクト</div>
+
+  <div class="content-area">
+    <div class="senbazuru-box">
+      <h3>#BrightWings1000</h3>
+      <p>
+金額に関わらず、応援してくださる全ての方へお願いがあります。
+      </p>
+      <p style="margin-top: 16px;">
+私たちに「応援メッセージ」を届けてください。
+      </p>
+      <p style="margin-top: 16px;">
+いただいたメッセージは横断幕に刻み、<br>
+世界大会の舞台へ一緒に連れていきます。
+      </p>
+      <a href="https://pompuppys-kasukabe.github.io/project-world-challenge.html" class="btn">メッセージを送る →</a>
+      <p style="font-size: 12px; color: #888; margin-top: 16px;">
+※ 支援の有無に関わらず、どなたでも参加できます
+      </p>
+    </div>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- セクション6: 帯「企業・団体スポンサー枠」 -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <!-- 帯画像：企業・団体スポンサー枠 -->
+  <div class="banner-placeholder purple">企業・団体スポンサー枠</div>
+
+  <div class="content-area">
+    <p class="caption">
+世界大会に持参する応援横断幕に、御社ロゴを掲載いたします。
+    </p>
+
+    <div class="sponsor-card gold">
+      <h4>ゴールドスポンサー（限定1社）</h4>
+      <div class="price">300,000円</div>
+      <ul>
+        <li>横断幕に大きくロゴ掲載</li>
+        <li>「Presented by ○○」表記</li>
+        <li>公式SNS・Webサイトでご紹介</li>
+        <li>大会後、横断幕を贈呈</li>
+      </ul>
+    </div>
+
+    <div class="sponsor-card silver">
+      <h4>シルバースポンサー（限定3社）</h4>
+      <div class="price" style="color: #666;">100,000円</div>
+      <ul>
+        <li>横断幕にロゴ掲載（中サイズ）</li>
+        <li>公式SNSでご紹介</li>
+      </ul>
+    </div>
+
+    <div class="sponsor-card bronze">
+      <h4>ブロンズスポンサー（限定5社）</h4>
+      <div class="price" style="color: #cd7f32;">50,000円</div>
+      <ul>
+        <li>横断幕にロゴ掲載（小サイズ）</li>
+      </ul>
+    </div>
+
+    <p style="text-align: center; font-size: 14px; color: #666; margin-top: 16px;">
+※ 地元春日部の企業様、大歓迎です
+    </p>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- セクション7: 帯「リターン一覧」 -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <!-- 帯画像：リターン一覧 -->
+  <div class="banner-placeholder">リターン一覧</div>
+
+  <div class="content-area">
+    <table class="info-table">
+      <tr><th>1,000円</th><td>感謝のメール＋活動報告</td></tr>
+      <tr><th>3,000円</th><td>上記＋オリジナルステッカー</td></tr>
+      <tr><th>5,000円</th><td>上記＋お礼のポストカード</td></tr>
+      <tr><th>10,000円</th><td>上記＋横断幕にお名前掲載</td></tr>
+      <tr><th>30,000円</th><td>上記＋オリジナルTシャツ</td></tr>
+      <tr><th>50,000円</th><td>上記＋メンバーからのお礼動画</td></tr>
+      <tr><th>100,000円</th><td>上記＋帰国報告会ご招待＋写真集</td></tr>
+    </table>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- セクション8: 帯「スケジュール」 -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <!-- 帯画像：スケジュール -->
+  <div class="banner-placeholder">スケジュール</div>
+
+  <div class="content-area">
+    <table class="schedule-table">
+      <tr><td>2025年1月</td><td>クラウドファンディング開始</td></tr>
+      <tr><td>2025年3月</td><td>クラウドファンディング終了</td></tr>
+      <tr><td>2025年4月〜</td><td>世界大会に向けた強化練習</td></tr>
+      <tr><td>2026年5月</td><td>The Dance Summit 2026 出場</td></tr>
+      <tr><td>2026年6月</td><td>活動報告・リターン発送</td></tr>
+    </table>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- セクション9: 帯「メンバー紹介」 -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <!-- 帯画像：メンバー紹介 -->
+  <div class="banner-placeholder">メンバー紹介</div>
+
+  <div class="content-area">
+    <p class="caption">
+最後に、私たちを紹介させてください。
+    </p>
+    <div class="video-placeholder">
+      <div class="icon">▶</div>
+      <p>メンバー紹介動画</p>
+      <p style="font-size: 12px; margin-top: 8px;">brightメンバー紹介.mp4</p>
+    </div>
+  </div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- セクション10: 最後のメッセージ -->
+  <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+  <!-- 帯画像：最後に -->
+  <div class="section-banner">
+    <img src="帯_最後に.png" alt="最後に">
+  </div>
+
+  <div class="final-message">
+    <h3 style="font-size: 20px; margin-bottom: 24px; color: #d4af37;">【奇跡の裏側にあった、仲間との約束】</h3>
+    
+    <p>
+正直に言います。<br>
+技術だけで言えば、私たちはまだ全国1位の実力ではありませんでした。
+    </p>
+    
+    <p style="margin-top: 20px;">
+2025年秋、私たちは一度崩れかけました。<br>
+「結果」を求めるあまり、子供たちの心はバラバラになり、本来の実力さえ出せず惨敗。<br>
+そこからの2週間、私たちは一度立ち止まり、原点に帰る決断をしました。
+    </p>
+    
+    <p style="margin-top: 20px; font-style: italic; color: #d4af37;">
+「点数よりも、まず私たちが一番楽しもう」<br>
+「誰かが辛い時は、名前を呼んで支え合おう」
+    </p>
+    
+    <p style="margin-top: 20px;">
+そして迎えた本番。<br>
+演技中、苦しい場面で彼女たちは、お互いの名前を叫び合い、鼓舞し合っていました。<br>
+技術や点数を超えた、魂のダンス。<br>
+「楽しむ勇気」と「仲間の絆」が爆発したその瞬間、審査員の心が動き、奇跡の全国1位を掴み取ったのです。
+    </p>
+    
+    <p style="margin-top: 20px;">
+しかし今、その先に待っていたのは「円安と物価高」という、彼女たちの力だけではどうにもならない現実の壁でした。<br>
+子供たちが自分たちの力でこじ開けた世界の扉を、大人の事情で閉ざすわけにはいきません。
+    </p>
+    
+    <p style="margin-top: 24px; padding: 16px; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+そして、もうひとつだけお伝えさせてください。<br>
+<strong style="color: #d4af37; font-size: 18px;">この7人で踊れるのは、この世界大会が「最初で最後」なのです。</strong>
+    </p>
+    
+    <p style="margin-top: 20px;">
+メンバーの中学3年生は、来春には高校生になります。<br>
+本来であれば、チームを引退し、それぞれの道へ進んでいるはずの時期です。<br>
+それでも彼女たちは、「このメンバーで世界へ行きたい」という夢のために、高校生活のスタートと並行して、5月の大会まで走り続けることを決めました。
+    </p>
+    
+    <p style="margin-top: 24px; font-size: 20px; font-weight: bold; color: #d4af37;">
+次はありません。これが本当のラストダンスです。
+    </p>
+    
+    <p style="margin-top: 24px;">
+春日部の小さなチームが、世界一楽しんで踊る姿で、世界中の観客を笑顔にする。<br>
+7人の少女たちが完結させる青春のラストページに、どうか皆様のお力を貸してください。
+    </p>
+    
+    <div class="signature" style="margin-top: 30px;">
+      <img src="最後のメッセージ.png" alt="POM PUPPYS 代表" style="max-width: 280px; margin: 0 auto;">
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <div class="cf-footer">
+    これはプレビュー用HTMLです。実際のCAMPFIREページとはデザインが異なります。
+  </div>
+
+</div>
+
+</body>
+</html>
