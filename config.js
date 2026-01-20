@@ -296,6 +296,7 @@ window.PUPPYS_CONFIG = {
     apiUrl: "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec", // GASエンドポイント
     vipCategories: ["VIP", "市長・政治家", "スポンサー", "クラファン支援者"], // VIP表示するカテゴリ
     showPickup: true, // ピックアップメッセージを表示
+    pickupCount: 20, // ピックアップ表示件数（日付順で最新N件を自動選択）
     gridColumns: {
       desktop: 10,
       tablet: 6,

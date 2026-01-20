@@ -85,25 +85,35 @@
   // ============================================
   function categorizeMessages(messages) {
     const vipCategories = config.vipCategories || ['VIP', '市長・政治家', 'スポンサー', 'クラファン支援者'];
+    const pickupCount = config.pickupCount || 20; // デフォルト20件
 
     const vip = messages.filter(m => vipCategories.includes(m.category));
 
-    // pickupフィールドを厳密にチェック
-    const pickup = messages.filter(m => {
-      const isPickup = m.pickup === true || m.pickup === 'true';
-      const isNotVIP = !vipCategories.includes(m.category);
+    // VIP以外のメッセージを日付順（新しい順）にソートして最新N件をピックアップ
+    const nonVipMessages = messages.filter(m => !vipCategories.includes(m.category));
 
-      // デバッグログ
-      if (isPickup && isNotVIP) {
-        console.log('Pickup message found:', m.name, 'pickup value:', m.pickup, 'type:', typeof m.pickup);
-      }
-
-      return isPickup && isNotVIP;
+    // 日付でソート（新しい順）
+    const sortedByDate = nonVipMessages.slice().sort((a, b) => {
+      const dateA = parseDate(a.date);
+      const dateB = parseDate(b.date);
+      return dateB - dateA; // 降順（新しい順）
     });
 
-    console.log('Total messages:', messages.length, 'VIP:', vip.length, 'Pickup:', pickup.length);
+    // 最新N件をピックアップとして取得
+    const pickup = sortedByDate.slice(0, pickupCount);
+
+    console.log('Total messages:', messages.length, 'VIP:', vip.length, 'Pickup (latest ' + pickupCount + '):', pickup.length);
 
     return { vip, pickup };
+  }
+
+  // 日付文字列をDateオブジェクトに変換
+  function parseDate(dateStr) {
+    if (!dateStr) return new Date(0); // 日付がない場合は最古扱い
+    // 様々な日付フォーマットに対応（YYYY-MM-DD, YYYY/MM/DD, YYYY.MM.DD等）
+    const normalized = dateStr.replace(/[./]/g, '-');
+    const parsed = new Date(normalized);
+    return isNaN(parsed.getTime()) ? new Date(0) : parsed;
   }
 
   // ============================================
