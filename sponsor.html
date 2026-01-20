@@ -57,6 +57,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700;900&family=Poppins:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <link rel="stylesheet" href="./style-core.css" />
   <link rel="stylesheet" href="./style-layout.css" />
@@ -243,51 +244,132 @@
 
         <div style="height:32px;"></div>
 
-        <!-- 横断幕スポンサー募集 -->
-        <div class="card" style="border: 2px solid #d4af37; background: linear-gradient(135deg, rgba(212,175,55,0.05), rgba(107,63,160,0.03));">
-          <div class="section-head" style="margin-bottom:16px;">
-            <h2 style="color: #d4af37;">#BrightWings1000 横断幕スポンサー</h2>
+        <!-- ========== 横断幕スポンサー募集 ========== -->
+        <div id="banner-sponsor">
+          <div class="section-head" style="margin-top: 16px;">
+            <h2>#BrightWings1000 横断幕スポンサー募集</h2>
             <p class="muted">あなたの想いを、世界の舞台へ</p>
           </div>
 
-          <p style="color: #555; line-height: 1.9; margin-bottom: 16px;">
-            世界大会 The Dance Summit 2026 の会場で掲げる横断幕に、企業・団体様のロゴを掲載いたします。<br>
-            大会中継（過去実績：ESPN放映）、国内メディア取材、報告会等でも使用されます。
-          </p>
+          <!-- コンセプト説明 -->
+          <div class="card" style="text-align: center; margin-bottom: 24px;">
+            <div style="max-width: 700px; margin: 0 auto;">
+              <div style="font-size: 3rem; margin-bottom: 16px;">🏳️</div>
+              <h3 style="font-size: 1.4rem; margin-bottom: 16px; color: #1a1a1a;">
+                皆さまからのメッセージと企業ロゴを刻んだ横断幕を<br>
+                世界大会の会場で掲げます
+              </h3>
+              <p style="color: #666; line-height: 1.9; font-size: 1rem;">
+                #BrightWings1000で届いた応援メッセージと、スポンサー企業・団体様のロゴを<br class="pc-only">
+                横断幕にデザインし、The Dance Summit 2026の会場で子どもたちと共に戦います。
+              </p>
+            </div>
 
-          <p style="background: rgba(212,175,55,0.1); padding: 12px 16px; border-radius: 8px; color: #555; font-size: 0.9rem; margin-bottom: 24px;">
-            <i class="fas fa-info-circle" style="color: #d4af37; margin-right: 6px;"></i>
-            HP限定募集・クラファンリターンとは別枠です（手数料なし・全額活動費に充当）
-          </p>
-
-          <!-- スポンサープラン -->
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px;">
-            <div style="background: rgba(229,228,226,0.2); padding: 16px; border-radius: 12px; text-align: center; border: 2px solid #e5e4e2;">
-              <div style="font-weight: 700; color: #666; margin-bottom: 4px; font-size: 0.85rem;">PLATINUM</div>
-              <div style="font-size: 1.3rem; font-weight: 900; color: #1a1a1a;">30万円</div>
-              <div style="font-size: 0.8rem; color: #e74c3c; margin-top: 4px;">限定1社</div>
-            </div>
-            <div style="background: rgba(212,175,55,0.1); padding: 16px; border-radius: 12px; text-align: center; border: 1px solid rgba(212,175,55,0.3);">
-              <div style="font-weight: 700; color: #d4af37; margin-bottom: 4px; font-size: 0.85rem;">GOLD</div>
-              <div style="font-size: 1.3rem; font-weight: 900; color: #1a1a1a;">10万円</div>
-              <div style="font-size: 0.8rem; color: #e74c3c; margin-top: 4px;">限定2社</div>
-            </div>
-            <div style="background: rgba(160,160,160,0.1); padding: 16px; border-radius: 12px; text-align: center; border: 1px solid rgba(160,160,160,0.3);">
-              <div style="font-weight: 700; color: #666; margin-bottom: 4px; font-size: 0.85rem;">SILVER</div>
-              <div style="font-size: 1.3rem; font-weight: 900; color: #1a1a1a;">5万円</div>
-              <div style="font-size: 0.8rem; color: #e74c3c; margin-top: 4px;">限定3社</div>
-            </div>
-            <div style="background: rgba(205,127,50,0.1); padding: 16px; border-radius: 12px; text-align: center; border: 1px solid rgba(205,127,50,0.3);">
-              <div style="font-weight: 700; color: #cd7f32; margin-bottom: 4px; font-size: 0.85rem;">BRONZE</div>
-              <div style="font-size: 1.3rem; font-weight: 900; color: #1a1a1a;">3万円</div>
-              <div style="font-size: 0.8rem; color: #e74c3c; margin-top: 4px;">限定5社</div>
+            <!-- メディア露出の可能性 -->
+            <div style="margin-top: 24px; padding: 20px; background: rgba(26,26,26,0.03); border-radius: 12px; max-width: 600px; margin-left: auto; margin-right: auto;">
+              <p style="font-weight: 700; color: #1a1a1a; margin-bottom: 12px; font-size: 0.95rem;">
+                <i class="fas fa-tv" style="margin-right: 8px; color: #6b3fa0;"></i>横断幕の露出機会（予定・可能性）
+              </p>
+              <ul style="margin: 0; padding: 0 0 0 20px; color: #555; font-size: 0.9rem; line-height: 1.9; text-align: left;">
+                <li><strong>The Dance Summit 2026 会場</strong>（米国オーランド）</li>
+                <li>大会中継に映り込む可能性（※過去大会ではESPN放映実績あり）</li>
+                <li>国内メディア取材時に使用される可能性（TV・新聞・WEB等）</li>
+                <li>帰国後報告会・イベントでの掲示</li>
+              </ul>
+              <p style="margin: 12px 0 0 0; color: #888; font-size: 0.8rem;">
+                ※放映・取材等は確約ではありません
+              </p>
             </div>
           </div>
 
-          <div style="text-align: center;">
-            <a href="./project-world-challenge.html#banner-sponsor" class="btn btn-primary" style="background: linear-gradient(135deg, #d4af37, #b8960c); color: #1a1a1a;">
-              詳細を見る
-            </a>
+          <!-- スポンサープラン -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 24px;">
+
+            <!-- PLATINUM -->
+            <div class="card" style="border: 3px solid #e5e4e2; position: relative; overflow: hidden; background: linear-gradient(135deg, rgba(229,228,226,0.1), rgba(192,192,192,0.05));">
+              <div style="position: absolute; top: 0; left: 0; right: 0; height: 5px; background: linear-gradient(90deg, #e5e4e2, #c0c0c0, #e5e4e2);"></div>
+              <div style="text-align: center; padding-top: 16px;">
+                <span style="background: linear-gradient(135deg, #e5e4e2, #a8a8a8); color: #1a1a1a; padding: 6px 20px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">PLATINUM</span>
+                <div style="font-size: 2rem; font-weight: 900; color: #666; margin: 16px 0 4px;">300,000<span style="font-size: 1rem;">円</span></div>
+                <p style="color: #e74c3c; font-size: 0.85rem; font-weight: 700; margin-bottom: 16px;">限定1社</p>
+              </div>
+              <ul style="margin: 0; padding: 0 0 0 20px; color: #555; line-height: 2; font-size: 0.9rem;">
+                <li><strong style="color: #6b3fa0;">ロゴ掲載（最大・左下）</strong></li>
+                <li>公式WEBサイトにロゴ掲載</li>
+                <li>公式Instagramでご紹介</li>
+                <li><strong style="color: #6b3fa0;">専用インタビュー記事</strong></li>
+              </ul>
+            </div>
+
+            <!-- GOLD -->
+            <div class="card" style="border: 2px solid #d4af37; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #d4af37, #f4cf67);"></div>
+              <div style="text-align: center; padding-top: 16px;">
+                <span style="background: linear-gradient(135deg, #d4af37, #f4cf67); color: #1a1a1a; padding: 6px 20px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">GOLD</span>
+                <div style="font-size: 2rem; font-weight: 900; color: #d4af37; margin: 16px 0 4px;">100,000<span style="font-size: 1rem;">円</span></div>
+                <p style="color: #e74c3c; font-size: 0.85rem; font-weight: 700; margin-bottom: 16px;">限定2社</p>
+              </div>
+              <ul style="margin: 0; padding: 0 0 0 20px; color: #555; line-height: 2; font-size: 0.9rem;">
+                <li><strong style="color: #d4af37;">ロゴ掲載（大）</strong></li>
+                <li>公式WEBサイトにロゴ掲載</li>
+                <li>公式Instagramでご紹介</li>
+              </ul>
+            </div>
+
+            <!-- SILVER -->
+            <div class="card" style="border: 2px solid #a0a0a0; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #a0a0a0, #d0d0d0);"></div>
+              <div style="text-align: center; padding-top: 16px;">
+                <span style="background: linear-gradient(135deg, #a0a0a0, #d0d0d0); color: #fff; padding: 6px 20px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">SILVER</span>
+                <div style="font-size: 2rem; font-weight: 900; color: #666; margin: 16px 0 4px;">50,000<span style="font-size: 1rem;">円</span></div>
+                <p style="color: #e74c3c; font-size: 0.85rem; font-weight: 700; margin-bottom: 16px;">限定3社</p>
+              </div>
+              <ul style="margin: 0; padding: 0 0 0 20px; color: #555; line-height: 2; font-size: 0.9rem;">
+                <li><strong>ロゴ掲載（中）</strong></li>
+                <li>公式WEBサイトにロゴ掲載</li>
+                <li>公式Instagramでご紹介</li>
+              </ul>
+            </div>
+
+            <!-- BRONZE -->
+            <div class="card" style="border: 2px solid #cd7f32; position: relative; overflow: hidden;">
+              <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #cd7f32, #e6a86e);"></div>
+              <div style="text-align: center; padding-top: 16px;">
+                <span style="background: linear-gradient(135deg, #cd7f32, #e6a86e); color: #fff; padding: 6px 20px; border-radius: 20px; font-size: 0.85rem; font-weight: 700;">BRONZE</span>
+                <div style="font-size: 2rem; font-weight: 900; color: #cd7f32; margin: 16px 0 4px;">30,000<span style="font-size: 1rem;">円</span></div>
+                <p style="color: #e74c3c; font-size: 0.85rem; font-weight: 700; margin-bottom: 16px;">限定5社</p>
+              </div>
+              <ul style="margin: 0; padding: 0 0 0 20px; color: #555; line-height: 2; font-size: 0.9rem;">
+                <li><strong>ロゴ掲載（小）</strong></li>
+                <li>公式WEBサイトにロゴ掲載</li>
+                <li>公式Instagramでご紹介</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 注意事項 -->
+          <div style="background: rgba(212,175,55,0.08); padding: 16px 20px; border-radius: 12px; margin-bottom: 24px; border-left: 4px solid #d4af37;">
+            <p style="margin: 0; color: #555; font-size: 0.9rem; line-height: 1.8;">
+              <i class="fas fa-info-circle" style="color: #d4af37; margin-right: 8px;"></i>
+              <strong>本プログラムはHP限定の横断幕スポンサー募集です。</strong>クラウドファンディングのリターンとは別枠となります。
+            </p>
+          </div>
+
+          <!-- CTA -->
+          <div class="card" style="background: linear-gradient(135deg, rgba(107,63,160,0.05), rgba(212,168,75,0.08)); text-align: center; padding: 40px 24px;">
+            <h3 style="font-size: 1.3rem; margin-bottom: 12px;">スポンサーに関するお問い合わせ</h3>
+            <p style="color: #666; margin-bottom: 24px; line-height: 1.8;">
+              プランの詳細やご要望など、お気軽にご相談ください。<br>
+              ロゴデータ（透過PNG推奨）のご準備についてもご案内いたします。
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+              <a href="mailto:pompuppys.kasukabe@gmail.com?subject=横断幕スポンサーについて" class="btn btn-primary">
+                <i class="fas fa-envelope" style="margin-right: 8px;"></i>メールで問い合わせ
+              </a>
+              <a href="./project-world-challenge.html#wings1000" class="btn btn-ghost">
+                <i class="fas fa-comments" style="margin-right: 8px;"></i>応援メッセージを見る
+              </a>
+            </div>
           </div>
         </div>
 
