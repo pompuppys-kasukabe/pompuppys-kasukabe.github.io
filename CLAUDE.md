@@ -177,6 +177,55 @@ with open('ファイル名', 'w', encoding='utf-8') as f:
 
 ---
 
+## テスト環境（Cloudflare Pages）
+
+### 概要
+- **本番**: GitHub Pages (https://pompuppys-kasukabe.github.io/)
+- **テスト**: Cloudflare Pages（GitHub連携済み）
+- ブランチをプッシュすると自動でプレビュー環境が作成される
+
+### テスト手順
+
+1. **フィーチャーブランチを作成**
+```bash
+cd /Users/satmba/pompuppys-kasukabe.github.io
+git checkout -b feature/機能名
+```
+
+2. **変更をコミット**
+```bash
+git add 変更ファイル
+git commit -m "変更内容の説明"
+```
+
+3. **プッシュ（Cloudflareが自動ビルド）**
+```bash
+git push -u origin feature/機能名
+```
+
+4. **プレビューURLを確認**
+- Cloudflareダッシュボード: https://dash.cloudflare.com/
+- プロジェクト → Deployments タブ
+- プレビューURL形式: `https://feature-機能名.プロジェクト名.pages.dev`
+
+5. **確認後、mainにマージ**
+```bash
+git checkout main
+git merge feature/機能名
+git push origin main
+git branch -d feature/機能名
+git push origin --delete feature/機能名
+```
+
+### ローカルテスト（簡易）
+```bash
+cd /Users/satmba/pompuppys-kasukabe.github.io
+python3 -m http.server 8000
+# → http://localhost:8000/
+```
+
+---
+
 ## 連絡先
 - Email: pompuppys.kasukabe@gmail.com
 - Instagram: @pompuppysbright
