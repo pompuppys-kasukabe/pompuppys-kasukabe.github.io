@@ -484,70 +484,7 @@
       </div>
 
       <div class="roadSection__grid">
-        <!-- 左：千羽鶴プロジェクト -->
-        <div class="roadCard">
-          <!-- メインビジュアル -->
-          <div style="margin-bottom: 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
-            <img src="./assets/1000.jpg" alt="1000の想いを翼に乗せて世界に羽ばたきます" style="width: 100%; height: auto; display: block;">
-          </div>
-
-          <!-- メインコピー -->
-          <h3 class="roadCard__title" style="margin-bottom: 8px; font-size: 1.4rem; line-height: 1.4;">
-            あなたの言葉が、<br>彼女たちの翼になる
-          </h3>
-
-          <!-- サブコピー -->
-          <p style="color: #d4af37; font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; line-height: 1.5;">
-            1,000の想いと共に、世界へ。
-          </p>
-
-          <!-- 説明文（控えめ） -->
-          <p style="color: rgba(255,255,255,0.85); font-size: 0.85rem; line-height: 1.6; margin-bottom: 16px;">
-            #BrightWings1000 は、応援メッセージで彼女たちを世界の舞台へ送り出すプロジェクトです
-          </p>
-
-          <!-- 進捗カウンター -->
-          <div style="background: rgba(212,175,55,0.08); padding: 16px; border-radius: 12px; text-align: center; margin-bottom: 16px; border: 1px solid rgba(212,175,55,0.2);">
-            <div style="display: flex; align-items: baseline; justify-content: center; gap: 6px; margin-bottom: 8px;">
-              <span id="messageCount" style="font-size: 2.5rem; font-weight: 900; color: #d4af37;">0</span>
-              <span style="font-size: 1.2rem; color: rgba(255,255,255,0.8);">/</span>
-              <span style="font-size: 1.2rem; font-weight: 700; color: #fff;">1,000</span>
-              <span style="font-size: 1rem; margin-left: 4px; color: rgba(255,255,255,0.9);">件</span>
-            </div>
-            <div style="height: 8px; background: #e0e0e0; border-radius: 999px; overflow: hidden;">
-              <div id="progressBarFill" style="height: 100%; background: linear-gradient(90deg, #d4af37, #f4cf67); border-radius: 999px; transition: width 1s ease; width: 0%;"></div>
-            </div>
-          </div>
-
-          <!-- 直近のメッセージ -->
-          <div id="roadMessagesPreview" class="messagesPreview" style="margin-bottom: 16px;"></div>
-
-          <!-- CTA -->
-          <div style="text-align: center;">
-            <p style="color: #d4af37; font-size: 0.95rem; font-weight: 700; margin-bottom: 12px;">
-              さぁ、一緒に世界へ旅立とう
-            </p>
-            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-              <button id="sendMessageBtn" class="btn btn-primary" data-tally-open="Y50Z5v" data-tally-emoji-text="👋" data-tally-emoji-animation="wave">
-                応援メッセージを送る
-              </button>
-              <a href="./project-world-challenge.html#messages" class="btn btn-secondary" style="display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 14px 28px;">
-                <span style="font-size: 0.75rem; opacity: 0.8; font-weight: 600;">#BrightWings1000</span>
-                <span style="font-size: 1rem; font-weight: 700;">メッセージを見る</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- 横断幕告知 -->
-          <div style="margin-top: 20px; padding: 16px; background: rgba(212,175,55,0.1); border-radius: 12px; text-align: center;">
-            <p style="color: #d4af37; font-size: 0.9rem; font-weight: 700; margin: 0;">
-              <i class="fas fa-flag" style="margin-right: 6px;"></i>
-              いただいた全てのメッセージを横断幕に刻み、世界大会で共に戦います
-            </p>
-          </div>
-        </div>
-
-        <!-- 右：クラファン進捗 -->
+        <!-- 上：クラファン（メイン） -->
         <div class="roadCard">
           <!-- メインビジュアル -->
           <div style="margin-bottom: 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
@@ -600,8 +537,59 @@
 
           <p class="roadCard__note">応援いただいた皆様、ありがとうございます</p>
         </div>
+
+        <!-- 下：#BrightWings1000 -->
+        <div class="roadCard">
+          <!-- メインビジュアル -->
+          <div style="margin-bottom: 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+            <img src="./assets/1000.jpg" alt="1000の想いを翼に乗せて世界に羽ばたきます" style="width: 100%; height: auto; display: block;">
+          </div>
+
+          <!-- メインコピー -->
+          <h3 class="roadCard__title" style="margin-bottom: 8px; font-size: 1.4rem; line-height: 1.4;">
+            あなたの言葉が、彼女たちの翼になる
+          </h3>
+
+          <!-- サブコピー -->
+          <p style="color: #d4af37; font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; line-height: 1.5;">
+            1,000の想いと共に、世界へ。
+          </p>
+
+          <!-- 説明文 -->
+          <p style="color: rgba(255,255,255,0.85); font-size: 0.9rem; line-height: 1.6; margin-bottom: 16px;">
+            #BrightWings1000 は、応援メッセージで彼女たちを世界の舞台へ送り出すプロジェクトです。いただいた全てのメッセージを横断幕に刻み、世界大会で共に戦います。
+          </p>
+
+          <!-- 進捗カウンター -->
+          <div style="background: rgba(212,175,55,0.08); padding: 16px; border-radius: 12px; text-align: center; margin-bottom: 16px; border: 1px solid rgba(212,175,55,0.2);">
+            <div style="display: flex; align-items: baseline; justify-content: center; gap: 6px; margin-bottom: 8px;">
+              <span id="messageCount" style="font-size: 2.5rem; font-weight: 900; color: #d4af37;">0</span>
+              <span style="font-size: 1.2rem; color: rgba(255,255,255,0.8);">/</span>
+              <span style="font-size: 1.2rem; font-weight: 700; color: #fff;">1,000</span>
+              <span style="font-size: 1rem; margin-left: 4px; color: rgba(255,255,255,0.9);">件</span>
+            </div>
+            <div style="height: 8px; background: #e0e0e0; border-radius: 999px; overflow: hidden;">
+              <div id="progressBarFill" style="height: 100%; background: linear-gradient(90deg, #d4af37, #f4cf67); border-radius: 999px; transition: width 1s ease; width: 0%;"></div>
+            </div>
+          </div>
+
+          <!-- 直近のメッセージ -->
+          <div id="roadMessagesPreview" class="messagesPreview" style="margin-bottom: 16px;"></div>
+
+          <!-- CTA -->
+          <div style="text-align: center;">
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+              <button id="sendMessageBtn" class="btn btn-primary" data-tally-open="Y50Z5v" data-tally-emoji-text="👋" data-tally-emoji-animation="wave">
+                応援メッセージを送る
+              </button>
+              <a href="./project-world-challenge.html#messages" class="btn btn-secondary">
+                メッセージ一覧を見る
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
-      
+
       <div class="roadSection__cta">
         <a id="roadProjectLink" href="./project-world-challenge.html" class="btn btn-gold btn-outlined">特設ページを見る</a>
       </div>
