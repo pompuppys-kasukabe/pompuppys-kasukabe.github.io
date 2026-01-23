@@ -253,7 +253,14 @@ window.PUPPYS_CONFIG = {
     enabled: true,
     title: "Sponsors",
     note: "掲載は活動支援への謝意として行っています（原則1年更新・審査あり）",
-    items: []
+    items: [
+      {
+        name: "東武朝日新聞",
+        logo: "./campfire/東武朝日ロゴ.png",
+        url: "",
+        tier: "media"
+      }
+    ]
   },
 
   // ===== 協賛ページ設定 =====
