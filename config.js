@@ -106,6 +106,13 @@ window.PUPPYS_CONFIG = {
   // ===== ニュース =====
   news: [
     {
+      date: "2026-01-23",
+      tag: "INFO",
+      title: "クラウドファンディング開始！",
+      body: "CAMPFIREにてクラウドファンディングを開始しました。春日部の子どもたちを世界の舞台へ。3月31日まで、皆様のご支援をお待ちしています。",
+      url: "https://camp-fire.jp/projects/920355/view"
+    },
+    {
       date: "2025-12-29",
       tag: "RESULT",
       title: "USA Regionals で好成績、USA Nationals 2026 出場決定！",
