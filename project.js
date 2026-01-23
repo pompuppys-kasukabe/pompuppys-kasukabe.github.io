@@ -220,8 +220,8 @@ function renderProject(){
   var pct = goal > 0 ? (raised / goal) * 100 : 0;
 
   setText("goalYen", yen(goal));
-  setText("raisedYen", raised > 0 ? yen(raised) : "準備中");
-  setText("pct", raised > 0 ? Math.round(pct) + "%" : "-%");
+  setText("raisedYen", yen(raised));
+  setText("pct", Math.round(pct) + "%");
 
   var dl = daysLeft(p.endDate);
   if(dl === null){
