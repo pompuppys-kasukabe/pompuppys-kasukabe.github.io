@@ -332,9 +332,9 @@ window.PUPPYS_CONFIG = {
     crowdfundingUrl: "https://camp-fire.jp/projects/920355/view",
 
     goalYen: 1000000,
-    raisedYen: 28000,
+    raisedYen: 48000,
     endDate: "2026-03-31",
-    updatedAt: "2026-01-24",
+    updatedAt: "2026-01-27",
 
     heroVideo: {
       enabled: false,
