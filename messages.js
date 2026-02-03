@@ -54,7 +54,7 @@
   // ============================================
   async function fetchAndDisplayMessages() {
     try {
-      const url = config.apiUrl + '?action=getMessages&t=' + Date.now();
+      const url = config.apiUrl + '?action=getMessages&limit=1000&t=' + Date.now();
       const response = await fetch(url, { cache: 'no-store' });
 
       if (!response.ok) {

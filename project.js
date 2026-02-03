@@ -126,7 +126,7 @@ async function renderSupportMessagesProject(){
     // Notion API連携を使用する場合
     if(msgCfg.useNotionAPI){
       var photosApiUrl = "https://script.google.com/macros/s/AKfycbzh1RHhRg0MJY0sdkm3QKDdEijEFkWHSKggZQoS7-vQk4sQmD9rK6r5ThqT1MDnKVgYkw/exec";
-      var url = photosApiUrl + "?action=getMessages&t=" + Date.now();
+      var url = photosApiUrl + "?action=getMessages&limit=1000&t=" + Date.now();
       var res = await fetch(url, { cache: "no-store" });
       if(!res.ok) throw new Error("HTTP " + res.status);
       data = await res.json();
@@ -472,7 +472,7 @@ async function fetchMessages(){
       return [];
     }
 
-    var url = cfg.apiUrl + "?action=getMessages&t=" + Date.now();
+    var url = cfg.apiUrl + "?action=getMessages&limit=1000&t=" + Date.now();
     console.log("Fetching messages from:", url);
 
     var res = await fetch(url, { cache: "no-store" });

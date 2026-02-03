@@ -631,7 +631,7 @@
     // ============================================
     async function fetchMessages() {
       try {
-        const response = await fetch(API_URL + "?action=getMessages&t=" + Date.now());
+        const response = await fetch(API_URL + "?action=getMessages&limit=1000&t=" + Date.now());
         const data = await response.json();
 
         if (data.messages) {

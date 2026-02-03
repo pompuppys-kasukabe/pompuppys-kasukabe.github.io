@@ -770,7 +770,7 @@ async function fetchMessages() {
 
     // Notion API連携を使用する場合
     if (msgCfg.useNotionAPI) {
-      url = PHOTOS_API_URL + "?action=getMessages&t=" + Date.now();
+      url = PHOTOS_API_URL + "?action=getMessages&limit=1000&t=" + Date.now();
     }
     // 従来のJSONファイルを使用する場合
     else if (msgCfg.dataUrl) {
