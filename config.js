@@ -254,11 +254,21 @@ window.PUPPYS_CONFIG = {
     title: "Sponsors",
     note: "掲載は活動支援への謝意として行っています（原則1年更新・審査あり）",
     items: [
+      // スポンサーが決まったらここに追加
+    ]
+  },
+
+  // ===== メディア掲載 =====
+  media: {
+    enabled: true,
+    title: "Media",
+    note: "取材・掲載いただいたメディア",
+    items: [
       {
         name: "東武朝日新聞",
         logo: "./campfire/東武朝日ロゴ.png",
         url: "",
-        tier: "media"
+        date: "2026年1月"
       }
     ]
   },

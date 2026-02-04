@@ -899,6 +899,56 @@ function renderSponsors() {
 }
 
 // ============================================
+// メディア掲載
+// ============================================
+
+function renderMedia() {
+  var grid = document.getElementById("mediaGrid");
+  if (!grid) return;
+
+  var cfg = getConfig();
+  var m = cfg.media;
+  var sec = document.getElementById("mediaSection");
+
+  if (!m || !m.enabled) {
+    if (sec) sec.style.display = "none";
+    return;
+  }
+
+  var titleEl = document.getElementById("mediaTitle");
+  if (titleEl) titleEl.textContent = m.title || "Media";
+
+  var items = Array.isArray(m.items) ? m.items : [];
+
+  if (!items.length) {
+    if (sec) sec.style.display = "none";
+    return;
+  }
+
+  var html = "";
+  for (var j = 0; j < items.length; j++) {
+    var item = items[j];
+    var inner = '<div class="mediaCard">';
+    if (item.logo) {
+      inner += '<img src="' + escapeHtml(item.logo) + '" alt="' + escapeHtml(item.name || "Media") + '" loading="lazy" decoding="async">';
+    } else {
+      inner += '<div class="mediaName">' + escapeHtml(item.name || "") + '</div>';
+    }
+    if (item.date) {
+      inner += '<span class="mediaDate">' + escapeHtml(item.date) + '</span>';
+    }
+    inner += '</div>';
+
+    if (item.url) {
+      html += '<a class="mediaLink" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener noreferrer">' + inner + '</a>';
+    } else {
+      html += inner;
+    }
+  }
+  grid.innerHTML = html;
+}
+
+// ============================================
 // マスコット
 // ============================================
 
@@ -1799,6 +1849,7 @@ async function initSite() {
   wireWebShare();
   renderRoadProgress();
   renderSponsors();
+  renderMedia();
   renderMascot();
   setupHamburgerMenu();
   setupMessageForm();
