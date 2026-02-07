@@ -986,7 +986,7 @@
 }
 
 .sponsorLink {
-  display: block;
+  display: block !important;
   text-decoration: none;
   color: inherit;
 }
