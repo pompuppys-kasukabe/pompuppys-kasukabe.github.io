@@ -949,6 +949,53 @@ function renderMedia() {
 }
 
 // ============================================
+// サポーター
+// ============================================
+
+function renderSupporters() {
+  var grid = document.getElementById("supportersGrid");
+  if (!grid) return;
+
+  var cfg = getConfig();
+  var s = cfg.supporters;
+  var sec = document.getElementById("supportersSection");
+
+  if (!s || !s.enabled) {
+    if (sec) sec.style.display = "none";
+    return;
+  }
+
+  var titleEl = document.getElementById("supportersTitle");
+  if (titleEl) titleEl.textContent = s.title || "Supporters";
+
+  var items = Array.isArray(s.items) ? s.items : [];
+
+  if (!items.length) {
+    if (sec) sec.style.display = "none";
+    return;
+  }
+
+  var html = "";
+  for (var j = 0; j < items.length; j++) {
+    var item = items[j];
+    var inner = '<div class="supporterCard">';
+    if (item.logo) {
+      inner += '<img src="' + escapeHtml(item.logo) + '" alt="' + escapeHtml(item.name || "Supporter") + '" loading="lazy" decoding="async">';
+    } else {
+      inner += '<div class="supporterName">' + escapeHtml(item.name || "") + '</div>';
+    }
+    inner += '</div>';
+
+    if (item.url) {
+      html += '<a class="supporterLink" href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener noreferrer">' + inner + '</a>';
+    } else {
+      html += inner;
+    }
+  }
+  grid.innerHTML = html;
+}
+
+// ============================================
 // マスコット
 // ============================================
 
@@ -1849,6 +1896,7 @@ async function initSite() {
   wireWebShare();
   renderRoadProgress();
   renderSponsors();
+  renderSupporters();
   renderMedia();
   renderMascot();
   setupHamburgerMenu();

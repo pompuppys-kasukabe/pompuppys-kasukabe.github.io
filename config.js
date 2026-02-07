@@ -254,7 +254,20 @@ window.PUPPYS_CONFIG = {
     title: "Sponsors",
     note: "掲載は活動支援への謝意として行っています（原則1年更新・審査あり）",
     items: [
-      // スポンサーが決まったらここに追加
+      { name: "大成ホールディングス株式会社", logo: "./assets/sponsors/taisei.png", url: "https://taisei-hd.com/" }
+    ]
+  },
+
+  // ===== サポーター =====
+  supporters: {
+    enabled: true,
+    title: "Supporters",
+    note: "応援いただいている企業・団体",
+    items: [
+      { name: "コネコノヒタイ", logo: "./assets/supporters/koneko.jpg", url: "https://konekonohitai.jimdofree.com/" },
+      { name: "Tumboo55", logo: "./assets/supporters/tumbo55.jpg", url: "https://www.instagram.com/tumboo55" },
+      { name: "山崎麻矢モダンバレエスタジオ", logo: "./assets/supporters/yamazaki.jpg", url: "https://www.instagram.com/yamazakimaya.mbs" }
+      // { name: "〇〇ダンススタジオ", logo: "./path/to/logo.png", url: "https://..." }
     ]
   },
 
@@ -342,9 +355,9 @@ window.PUPPYS_CONFIG = {
     crowdfundingUrl: "https://camp-fire.jp/projects/920355/view",
 
     goalYen: 1000000,
-    raisedYen: 212000,
+    raisedYen: 235000,
     endDate: "2026-03-31",
-    updatedAt: "2026-02-05",
+    updatedAt: "2026-02-06",
 
     heroVideo: {
       enabled: false,
