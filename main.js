@@ -846,12 +846,10 @@ async function renderMessagesPreview() {
 // ============================================
 
 function renderSponsors() {
-  console.log('[DEBUG] renderSponsors called');
   var grid = document.getElementById("sponsorsGrid");
-  if (!grid) { console.log('[DEBUG] sponsorsGrid not found'); return; }
+  if (!grid) return;
 
   var cfg = getConfig();
-  console.log('[DEBUG] sponsors config:', cfg.sponsors);
   var s = cfg.sponsors;
   var sec = document.getElementById("sponsorsSection");
 
