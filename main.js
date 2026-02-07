@@ -890,7 +890,7 @@ function renderSponsors() {
     inner += '</div>';
 
     if (item.url) {
-      html += '<a class="sponsorLink" style="display:block;" href="' + escapeHtml(item.url) + '" target="_blank" rel="nofollow sponsored noopener noreferrer">' + inner + '</a>';
+      html += '<a class="sponsor-item-link" style="display:block;" href="' + escapeHtml(item.url) + '" target="_blank" rel="nofollow sponsored noopener noreferrer">' + inner + '</a>';
     } else {
       html += inner;
     }
