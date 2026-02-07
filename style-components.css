@@ -982,6 +982,11 @@
   white-space: nowrap;
 }
 
+.sponsorLink {
+  text-decoration: none;
+  color: inherit;
+}
+
 /* ===== Media Grid ===== */
 .mediaGrid {
   display: grid;
