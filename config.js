@@ -106,6 +106,13 @@ window.PUPPYS_CONFIG = {
   // ===== ニュース =====
   news: [
     {
+      date: "2026-02-14",
+      tag: "EVENT",
+      title: "かすかべバレンタインマルシェに出演",
+      body: "春日部市役所イベントに出演します。皆様のご来場をお待ちしています。",
+      url: "https://www.city.kasukabe.lg.jp/eventjoho/eventjoho_kanko_omatsuri/35310.html"
+    },
+    {
       date: "2026-01-23",
       tag: "MEDIA",
       title: "東武朝日新聞に掲載されました",
