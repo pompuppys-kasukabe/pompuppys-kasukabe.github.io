@@ -113,6 +113,13 @@ window.PUPPYS_CONFIG = {
       url: "https://www.city.kasukabe.lg.jp/eventjoho/eventjoho_kanko_omatsuri/35310.html"
     },
     {
+      date: "2026-02-04",
+      tag: "INFO",
+      title: "春日部市長を表敬訪問",
+      body: "岩谷一弘春日部市長にJAMfest JAPAN全国1位獲得と世界大会出場を報告しました。",
+      url: "./news-mayor-visit.html"
+    },
+    {
       date: "2026-01-23",
       tag: "MEDIA",
       title: "東武朝日新聞に掲載されました",
