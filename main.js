@@ -637,7 +637,11 @@ function setupLightbox() {
 // News
 // ============================================
 
-function renderNews() {
+function renderNews(options) {
+  options = options || {};
+  var limit = options.limit || 0; // 0 = 全件表示
+  var showAllButton = options.showAllButton !== false; // デフォルトtrue
+
   var wrap = document.getElementById("newsGrid");
   if (!wrap) return;
 
@@ -652,12 +656,18 @@ function renderNews() {
     return;
   }
 
+  var totalCount = items.length;
+  var displayItems = limit > 0 ? items.slice(0, limit) : items;
+  var hasMore = limit > 0 && totalCount > limit;
+
   var html = "";
-  for (var i = 0; i < items.length; i++) {
-    var n = items[i];
+  for (var i = 0; i < displayItems.length; i++) {
+    var n = displayItems[i];
     var dateLabel = formatDateLabel(n.date);
+    // 内部リンク（./で始まる）の場合はtarget="_blank"を付けない
+    var isInternal = n.url && (n.url.indexOf('./') === 0 || n.url.indexOf('/') === 0);
     var link = n.url
-      ? '<a class="newsLink" href="' + escapeHtml(n.url) + '" target="_blank" rel="noopener noreferrer">詳細を見る</a>'
+      ? '<a class="newsLink" href="' + escapeHtml(n.url) + '"' + (isInternal ? '' : ' target="_blank" rel="noopener noreferrer"') + '>詳細を見る</a>'
       : "";
     html += '<article class="newsItem">' +
       '<div class="newsTop">' +
@@ -670,6 +680,14 @@ function renderNews() {
     '</article>';
   }
   wrap.innerHTML = html;
+
+  // 「ニュース一覧を見る」ボタン
+  var moreWrap = document.getElementById("newsMoreWrap");
+  if (moreWrap && hasMore && showAllButton) {
+    moreWrap.innerHTML = '<a href="./news.html" class="btn btn--outline">ニュース一覧を見る <span class="newsMoreCount">(' + totalCount + '件)</span></a>';
+  } else if (moreWrap) {
+    moreWrap.innerHTML = '';
+  }
 }
 
 // ============================================
@@ -1891,7 +1909,10 @@ function initFAQ() {
 async function initSite() {
   // console.log('[DEBUG] initSite started');
   renderCopy();
-  renderNews();
+  // ニュース表示：newsGridにdata-limit属性があれば制限、なければ全件
+  var newsGrid = document.getElementById("newsGrid");
+  var newsLimit = newsGrid && newsGrid.dataset.limit ? parseInt(newsGrid.dataset.limit, 10) : 0;
+  renderNews({ limit: newsLimit, showAllButton: newsLimit > 0 });
   wireLinks();
   wireWebShare();
   renderRoadProgress();

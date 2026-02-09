@@ -839,6 +839,20 @@
   }
 }
 
+.newsMoreWrap {
+  text-align: center;
+  margin-top: 32px;
+}
+
+.newsMoreWrap .btn {
+  min-width: 200px;
+}
+
+.newsMoreCount {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
 .newsItem {
   background: #fff;
   border: 1px solid var(--line);

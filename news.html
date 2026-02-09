@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DHBBC2W9HN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DHBBC2W9HN');
+  </script>
+
+  <title>ニュース一覧｜POM PUPPYS bright</title>
+  <meta name="description" content="POM PUPPYS brightのニュース・お知らせ一覧。大会結果、イベント出演情報、メディア掲載など最新情報をお届けします。" />
+
+  <link rel="canonical" href="https://pompuppys-kasukabe.github.io/news.html" />
+  <meta name="robots" content="index,follow" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="POM PUPPYS bright" />
+  <meta property="og:title" content="ニュース一覧｜POM PUPPYS bright" />
+  <meta property="og:description" content="POM PUPPYS brightのニュース・お知らせ一覧。最新情報をお届けします。" />
+  <meta property="og:url" content="https://pompuppys-kasukabe.github.io/news.html" />
+  <meta property="og:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
+  <meta property="og:locale" content="ja_JP" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ニュース一覧｜POM PUPPYS bright" />
+  <meta name="twitter:description" content="POM PUPPYS brightのニュース・お知らせ一覧。最新情報をお届けします。" />
+  <meta name="twitter:image" content="https://pompuppys-kasukabe.github.io/assets/ogp.jpg" />
+
+  <link rel="icon" type="image/png" href="./assets/logo_emblem_white.png" />
+  <link rel="apple-touch-icon" href="./assets/logo_emblem_white.png" />
+
+  <link rel="stylesheet" href="./base.css" />
+  <link rel="stylesheet" href="./style-components.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    .news-page-header {
+      padding: 60px 0 40px;
+      background: var(--surface);
+      text-align: center;
+    }
+    .news-page-header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .news-page-header p {
+      color: var(--text-muted);
+    }
+    .news-page-content {
+      padding: 40px 0 80px;
+    }
+    .news-back-top {
+      text-align: center;
+      margin-top: 48px;
+    }
+    .news-back-top a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .news-back-top a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header class="siteHeader">
+    <div class="container headerInner">
+      <a href="./index.html" class="logoLink">
+        <img src="./assets/logo_emblem_white.png" alt="POM PUPPYS bright ロゴ" class="logoImage" />
+        <span class="logoText">POM PUPPYS<span class="logoBright">bright</span></span>
+      </a>
+      <nav class="headerNav">
+        <a href="./index.html">Top</a>
+        <a href="./news.html" class="active">News</a>
+        <a href="./project-world-challenge.html">World Challenge</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ページヘッダー -->
+  <div class="news-page-header">
+    <div class="container">
+      <h1>News</h1>
+      <p>お知らせ・活動報告</p>
+    </div>
+  </div>
+
+  <!-- ニュース一覧 -->
+  <main class="news-page-content">
+    <div class="container">
+      <div id="newsGrid" class="newsGrid">
+        <!-- config.jsから動的生成（全件表示） -->
+      </div>
+      <div class="news-back-top">
+        <a href="./index.html"><i class="fas fa-arrow-left"></i> トップページに戻る</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer class="siteFooter">
+    <div class="container footerInner">
+      <p class="footerLogo">POM PUPPYS bright</p>
+      <p class="footerCopy">&copy; 2026 POM PUPPYS bright</p>
+    </div>
+  </footer>
+
+  <script src="./config.js"></script>
+  <script src="./main.js"></script>
+</body>
+</html>
