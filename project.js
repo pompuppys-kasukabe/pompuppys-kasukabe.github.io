@@ -572,6 +572,18 @@ function shuffleWithSeed(array, seed){
   return shuffled;
 }
 
+// メッセージIDからセル位置を計算（同じIDは常に同じセルに配置）
+function getMessageCellIndex(messageId, totalCells, seed){
+  var hash = 0;
+  var str = String(messageId || '') + String(seed);
+  for(var i = 0; i < str.length; i++){
+    var char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash) % totalCells;
+}
+
 // メッセージからシード値を生成
 function generateSeed(messages){
   var seed = 0;
@@ -735,28 +747,33 @@ async function renderMosaicArt(){
   console.log("Text pattern cells:", textPattern.size);
 
   var totalCells = 1000;
-
-  // 1,000セル全体からランダムに選ぶ
-  var allCells = [];
-  for(var i = 0; i < totalCells; i++){
-    allCells.push(i);
-  }
-
-  // 固定シードを使用（メッセージが追加されても位置が変わらない）
   var seed = 20260112; // 固定値
-  console.log("Using fixed seed:", seed);
 
-  // シャッフル（シード付きランダム配置で固定）
-  allCells = shuffleWithSeed(allCells, seed);
-
-  // メッセージが配置されるセル
+  // メッセージIDをハッシュ化してセル位置を決定
+  // これにより、新しいメッセージが追加されても既存メッセージの位置は変わらない
   var filledCells = new Set();
   var messageMap = {};
-  for(var i = 0; i < Math.min(messages.length, totalCells); i++){
-    var cellIndex = allCells[i];
-    filledCells.add(cellIndex);
-    messageMap[cellIndex] = messages[i];
+
+  for(var i = 0; i < messages.length; i++){
+    var msg = messages[i];
+    // メッセージIDからセル位置を計算（衝突時は空きセルを探す）
+    var baseIndex = getMessageCellIndex(msg.id || msg.date + msg.name, totalCells, seed);
+    var cellIndex = baseIndex;
+    var attempts = 0;
+
+    // 衝突時は次の空きセルを探す
+    while(filledCells.has(cellIndex) && attempts < totalCells){
+      cellIndex = (cellIndex + 1) % totalCells;
+      attempts++;
+    }
+
+    if(attempts < totalCells){
+      filledCells.add(cellIndex);
+      messageMap[cellIndex] = msg;
+    }
   }
+
+  console.log("Messages placed with hash-based positioning:", filledCells.size);
 
   // 1,000セルを生成
   for(var i = 0; i < totalCells; i++){
