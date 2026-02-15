@@ -280,8 +280,8 @@ window.PUPPYS_CONFIG = {
     items: [
       { name: "コネコノヒタイ", logo: "./assets/supporters/koneko.png", url: "https://konekonohitai.jimdofree.com/" },
       { name: "Tumboo55", logo: "./assets/supporters/tumboo55.png", url: "https://www.instagram.com/tumboo55" },
-      { name: "山崎麻矢モダンバレエスタジオ", logo: "./assets/supporters/yamazaki.jpg", url: "https://www.instagram.com/yamazakimaya.mbs" }
-      // { name: "〇〇ダンススタジオ", logo: "./path/to/logo.png", url: "https://..." }
+      { name: "山崎麻矢モダンバレエスタジオ", logo: "./assets/supporters/yamazaki.jpg", url: "https://www.instagram.com/yamazakimaya.mbs" },
+      { name: "味亭", logo: "./assets/supporters/ajitei.png", url: "https://ajiwaitei.polus.co.jp/" }
     ]
   },
 
