@@ -282,7 +282,8 @@ window.PUPPYS_CONFIG = {
       { name: "Tumboo55", logo: "./assets/supporters/tumboo55.png", url: "https://www.instagram.com/tumboo55" },
       { name: "山崎麻矢モダンバレエスタジオ", logo: "./assets/supporters/yamazaki.jpg", url: "https://www.instagram.com/yamazakimaya.mbs" },
       { name: "味亭", logo: "./assets/supporters/ajitei.png", url: "https://ajiwaitei.polus.co.jp/" },
-      { name: "maison", logo: "./assets/supporters/maison.png", url: "https://www.instagram.com/194maison" }
+      { name: "maison", logo: "./assets/supporters/maison.png", url: "https://www.instagram.com/194maison" },
+      { name: "teng", logo: "./assets/supporters/teng.jpg", url: null }
     ]
   },
 
@@ -370,9 +371,9 @@ window.PUPPYS_CONFIG = {
     crowdfundingUrl: "https://camp-fire.jp/projects/920355/view",
 
     goalYen: 1000000,
-    raisedYen: 292000,
+    raisedYen: 308000,
     endDate: "2026-03-31",
-    updatedAt: "2026-02-15",
+    updatedAt: "2026-02-18",
 
     heroVideo: {
       enabled: false,
