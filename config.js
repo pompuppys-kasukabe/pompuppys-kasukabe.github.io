@@ -106,6 +106,13 @@ window.PUPPYS_CONFIG = {
   // ===== ニュース =====
   news: [
     {
+      date: "2026-02-19",
+      tag: "INFO",
+      title: "クラファン30%・30人突破！ありがとうございます",
+      body: "クラウドファンディングの支援率が30%、支援者数が30人を突破しました。温かいご支援に心より感謝申し上げます。引き続き、世界大会への挑戦を応援よろしくお願いいたします。",
+      url: "https://camp-fire.jp/projects/920355/view"
+    },
+    {
       date: "2026-02-14",
       tag: "EVENT",
       title: "かすかべバレンタインマルシェに出演",
@@ -283,7 +290,8 @@ window.PUPPYS_CONFIG = {
       { name: "山崎麻矢モダンバレエスタジオ", logo: "./assets/supporters/yamazaki.jpg", url: "https://www.instagram.com/yamazakimaya.mbs" },
       { name: "味亭", logo: "./assets/supporters/ajitei.png", url: "https://ajiwaitei.polus.co.jp/" },
       { name: "maison", logo: "./assets/supporters/maison.png", url: "https://www.instagram.com/194maison" },
-      { name: "teng", logo: "./assets/supporters/teng.jpg", url: null }
+      { name: "teng", logo: "./assets/supporters/teng.jpg", url: null },
+      { name: "ムラヤマ産業", logo: "./assets/supporters/murayama.png", url: "https://murayama100.com/index.html" }
     ]
   },
 
@@ -371,9 +379,9 @@ window.PUPPYS_CONFIG = {
     crowdfundingUrl: "https://camp-fire.jp/projects/920355/view",
 
     goalYen: 1000000,
-    raisedYen: 308000,
+    raisedYen: 321000,
     endDate: "2026-03-31",
-    updatedAt: "2026-02-18",
+    updatedAt: "2026-02-19",
 
     heroVideo: {
       enabled: false,
