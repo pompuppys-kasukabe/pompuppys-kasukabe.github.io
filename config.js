@@ -293,7 +293,8 @@ window.PUPPYS_CONFIG = {
       { name: "teng", logo: "./assets/supporters/teng.jpg", url: null },
       { name: "ムラヤマ産業", logo: "./assets/supporters/murayama.png", url: "https://murayama100.com/index.html" },
       { name: "sosiji", logo: "./assets/supporters/sosiji.png", url: "https://www.instagram.com/soshiji114/" },
-      { name: "simamura", logo: "./assets/supporters/simamura.jpg", url: "https://shimamuraindustry.com/" }
+      { name: "simamura", logo: "./assets/supporters/simamura.jpg", url: "https://shimamuraindustry.com/" },
+      { name: "goofy", logo: "./assets/supporters/goofy.png", url: "https://www.instagram.com/diningbar_goofy.s1997" }
     ]
   },
 
