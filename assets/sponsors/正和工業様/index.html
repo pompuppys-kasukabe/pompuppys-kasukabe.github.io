@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>POM PUPPYS bright × 正和工業株式会社 ─ ご提案資料一覧</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#f7f7f5;
+  font-family:'Noto Sans JP',sans-serif;
+  color:#333;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ─── ヒーロー ─── */
+.hero{
+  background:linear-gradient(135deg,#0b1a3a 0%,#1a3060 50%,#0b1a3a 100%);
+  padding:60px 24px 52px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(200,168,78,.12),transparent 70%);
+}
+.hero .badge{
+  display:inline-block;
+  font-size:10px;font-weight:700;color:#c8a84e;
+  letter-spacing:4px;
+  border:1px solid rgba(200,168,78,.4);
+  padding:6px 20px;border-radius:4px;
+  margin-bottom:20px;
+  position:relative;
+}
+.hero h1{
+  font-size:26px;font-weight:900;color:#fff;
+  line-height:1.7;letter-spacing:1px;
+  position:relative;
+}
+.hero h1 span{color:#c8a84e;}
+.hero .sub{
+  font-size:13px;color:rgba(255,255,255,.5);
+  margin-top:16px;letter-spacing:1px;
+  position:relative;
+}
+
+/* ─── メインコンテンツ ─── */
+.container{
+  max-width:800px;
+  margin:0 auto;
+  padding:40px 24px 60px;
+}
+
+/* ─── PDF セクション ─── */
+.pdf-section{
+  margin-bottom:32px;
+}
+.pdf-section h2{
+  font-size:15px;font-weight:900;color:#1a1a1a;
+  margin-bottom:16px;padding-left:14px;
+  border-left:4px solid #1a5a9e;
+}
+.pdf-card{
+  display:flex;align-items:center;gap:20px;
+  background:#fff;
+  border:1px solid #e8e8e8;
+  border-radius:12px;
+  padding:24px 28px;
+  margin-bottom:12px;
+  transition:box-shadow .2s,border-color .2s;
+  text-decoration:none;color:inherit;
+}
+.pdf-card:hover{
+  box-shadow:0 4px 20px rgba(0,0,0,.08);
+  border-color:#1a5a9e;
+}
+.pdf-icon{
+  flex-shrink:0;
+  width:52px;height:52px;
+  background:linear-gradient(135deg,#e74c3c,#c0392b);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:12px;font-weight:900;letter-spacing:1px;
+}
+.pdf-info .pdf-title{
+  font-size:14px;font-weight:700;color:#1a1a1a;
+  line-height:1.6;margin-bottom:4px;
+}
+.pdf-info .pdf-desc{
+  font-size:11px;color:#999;line-height:1.6;
+}
+
+/* ─── ページプレビューセクション ─── */
+.preview-section{
+  margin-bottom:32px;
+}
+.preview-section h2{
+  font-size:15px;font-weight:900;color:#1a1a1a;
+  margin-bottom:16px;padding-left:14px;
+  border-left:4px solid #c8a84e;
+}
+.preview-section .desc{
+  font-size:12px;color:#888;line-height:1.8;
+  margin-bottom:20px;
+}
+.preview-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+.preview-card{
+  background:#fff;
+  border:1px solid #e8e8e8;
+  border-radius:12px;
+  overflow:hidden;
+  transition:box-shadow .2s,border-color .2s;
+  text-decoration:none;color:inherit;
+  display:block;
+}
+.preview-card:hover{
+  box-shadow:0 4px 20px rgba(0,0,0,.08);
+  border-color:#c8a84e;
+}
+.preview-card-inner{
+  display:flex;align-items:center;gap:24px;
+  padding:24px 28px;
+}
+.preview-num{
+  flex-shrink:0;
+  width:44px;height:44px;
+  background:linear-gradient(135deg,#1a5a9e,#2a7ac9);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:16px;font-weight:900;
+}
+.preview-num.gold{
+  background:linear-gradient(135deg,#c8a84e,#e0c87a);
+}
+.preview-num.pink{
+  background:linear-gradient(135deg,#e91e90,#f06baf);
+}
+.preview-text .preview-title{
+  font-size:14px;font-weight:700;color:#1a1a1a;
+  line-height:1.6;margin-bottom:4px;
+}
+.preview-text .preview-desc{
+  font-size:11px;color:#999;line-height:1.6;
+}
+.preview-text .preview-tag{
+  display:inline-block;
+  font-size:9px;font-weight:700;
+  color:#1a5a9e;background:rgba(26,90,158,.08);
+  padding:3px 10px;border-radius:3px;
+  margin-top:6px;letter-spacing:.5px;
+}
+.preview-text .preview-tag.mock{
+  color:#c8a84e;background:rgba(200,168,78,.1);
+}
+
+/* ─── 公式サイト ─── */
+.official-section{
+  margin-bottom:32px;
+}
+.official-section h2{
+  font-size:15px;font-weight:900;color:#1a1a1a;
+  margin-bottom:16px;padding-left:14px;
+  border-left:4px solid #2ecc71;
+}
+.official-link{
+  display:flex;align-items:center;gap:20px;
+  background:#fff;
+  border:1px solid #e8e8e8;
+  border-radius:12px;
+  padding:20px 28px;
+  margin-bottom:12px;
+  transition:box-shadow .2s,border-color .2s;
+  text-decoration:none;color:inherit;
+}
+.official-link:hover{
+  box-shadow:0 4px 20px rgba(0,0,0,.08);
+  border-color:#2ecc71;
+}
+.link-icon{
+  flex-shrink:0;
+  width:40px;height:40px;
+  background:linear-gradient(135deg,#2ecc71,#27ae60);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:16px;
+}
+.link-text .link-title{
+  font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:2px;
+}
+.link-text .link-url{
+  font-size:11px;color:#999;
+}
+
+/* ─── フッター ─── */
+.footer{
+  text-align:center;
+  padding:32px 24px 48px;
+  font-size:11px;color:#bbb;
+  line-height:1.8;
+}
+.footer a{color:#1a5a9e;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<!-- ━━ ヒーロー ━━ -->
+<div class="hero">
+  <div class="badge">SPECIAL SPONSOR PROPOSAL</div>
+  <h1>POM PUPPYS bright × <span>正和工業株式会社</span></h1>
+  <div class="sub">世界大会出場プロジェクト ─ ご提案資料一覧</div>
+</div>
+
+<div class="container">
+
+  <!-- ━━ PDF資料 ━━ -->
+  <div class="pdf-section">
+    <h2>ご提案資料（PDF）</h2>
+
+    <a class="pdf-card" href="./POM PUPPYS bright 世界大会出場プロジェクト 企画書.pdf" target="_blank">
+      <div class="pdf-icon">PDF</div>
+      <div class="pdf-info">
+        <div class="pdf-title">POM PUPPYS bright 世界大会出場プロジェクト 企画書</div>
+        <div class="pdf-desc">チーム紹介・大会概要・費用内訳・協賛メニューなど</div>
+      </div>
+    </a>
+
+    <a class="pdf-card" href="./POM_PUPPYS_bright_×_正和工業株式会社_─_スペシャルスポンサー提案資料_(Rev.3).pdf" target="_blank">
+      <div class="pdf-icon">PDF</div>
+      <div class="pdf-info">
+        <div class="pdf-title">POM PUPPYS bright × 正和工業株式会社 ─ スペシャルスポンサー提案資料（Rev.3）</div>
+        <div class="pdf-desc">御社向けスポンサーシッププラン・露出イメージ・スケジュール</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- ━━ ページプレビュー ━━ -->
+  <div class="preview-section">
+    <h2>露出イメージ・掲載ページ（プレビュー）</h2>
+    <div class="desc">スポンサー就任時に公開予定のページイメージです。クリックで各ページをご確認いただけます。</div>
+
+    <div class="preview-grid">
+
+      <a class="preview-card" href="./poster.html" target="_blank">
+        <div class="preview-card-inner">
+          <div class="preview-num gold">1</div>
+          <div class="preview-text">
+            <div class="preview-title">スポンサー帯付きポスター</div>
+            <div class="preview-desc">正和工業ロゴ入りスポンサー帯を配した公式ポスターのデザインイメージ</div>
+            <span class="preview-tag mock">DESIGN MOCK-UP</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="preview-card" href="./news.html" target="_blank">
+        <div class="preview-card-inner">
+          <div class="preview-num">2</div>
+          <div class="preview-text">
+            <div class="preview-title">御社ニュースページ掲載イメージ</div>
+            <div class="preview-desc">正和工業様コーポレートサイトへの掲載を想定したプレスリリース形式のニュース記事</div>
+            <span class="preview-tag mock">DESIGN MOCK-UP</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="preview-card" href="./bright.html" target="_blank">
+        <div class="preview-card-inner">
+          <div class="preview-num pink">3</div>
+          <div class="preview-text">
+            <div class="preview-title">POM PUPPYS bright 公式サイト掲載ページ</div>
+            <div class="preview-desc">スポンサー就任のご報告・企業紹介・感謝メッセージを掲載するページ</div>
+            <span class="preview-tag mock">DESIGN MOCK-UP</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ━━ 公式サイトリンク ━━ -->
+  <div class="official-section">
+    <h2>POM PUPPYS bright 公式サイト</h2>
+
+    <a class="official-link" href="https://pompuppys-kasukabe.github.io/" target="_blank">
+      <div class="link-icon">🏠</div>
+      <div class="link-text">
+        <div class="link-title">公式サイト トップ</div>
+        <div class="link-url">pompuppys-kasukabe.github.io</div>
+      </div>
+    </a>
+
+    <a class="official-link" href="https://pompuppys-kasukabe.github.io/project-world-challenge.html" target="_blank">
+      <div class="link-icon">🌍</div>
+      <div class="link-text">
+        <div class="link-title">世界大会挑戦 特設ページ（クラウドファンディング）</div>
+        <div class="link-url">pompuppys-kasukabe.github.io/project-world-challenge.html</div>
+      </div>
+    </a>
+
+    <a class="official-link" href="https://camp-fire.jp/projects/920355/view" target="_blank">
+      <div class="link-icon">🔥</div>
+      <div class="link-text">
+        <div class="link-title">CAMPFIRE クラウドファンディングページ</div>
+        <div class="link-url">camp-fire.jp/projects/920355/view</div>
+      </div>
+    </a>
+
+    <a class="official-link" href="https://www.instagram.com/pompuppysbright" target="_blank">
+      <div class="link-icon">📷</div>
+      <div class="link-text">
+        <div class="link-title">公式Instagram</div>
+        <div class="link-url">@pompuppysbright</div>
+      </div>
+    </a>
+  </div>
+
+</div>
+
+<!-- ━━ フッター ━━ -->
+<div class="footer">
+  本ページは正和工業株式会社様へのご提案用に作成された限定公開ページです。<br>
+  お問い合わせ：<a href="mailto:pompuppys.kasukabe@gmail.com">pompuppys.kasukabe@gmail.com</a><br>
+  &copy; POM PUPPYS bright
+</div>
+
+</body>
+</html>

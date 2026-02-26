@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POM PUPPYS bright ポスター ─ 正和工業版</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:#2a2a2a;
+    display:flex;flex-direction:column;align-items:center;
+    padding:40px 20px;font-family:'Noto Sans JP',sans-serif;
+  }
+  .label{text-align:center;color:#777;font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:14px;}
+  .poster{
+    width:595px;overflow:hidden;background:#000;
+    border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,.6);
+  }
+  .banner{
+    width:100%;
+    background:linear-gradient(90deg,#0c0c0c 0%,#181410 50%,#0c0c0c 100%);
+    padding:16px 28px;display:flex;align-items:center;
+    border-bottom:2.5px solid #c8a84e;
+  }
+  .banner-left{
+    flex-shrink:0;display:flex;flex-direction:column;
+    align-items:center;gap:3px;width:105px;
+  }
+  .banner-left .badge{font-size:6px;font-weight:700;color:rgba(200,168,78,.55);letter-spacing:2.5px;}
+  .banner-left img{height:28px;width:auto;display:block;margin:2px 0;}
+  .banner-left .company{font-size:6.5px;color:rgba(255,255,255,.28);letter-spacing:.3px;text-align:center;}
+  .banner-divider{
+    width:1px;height:56px;
+    background:linear-gradient(to bottom,transparent,rgba(200,168,78,.35),transparent);
+    margin:0 24px;flex-shrink:0;
+  }
+  .banner-right{flex:1;display:flex;flex-direction:column;justify-content:center;}
+  .banner-right .slogan{
+    font-size:18px;font-weight:900;color:#c8a84e;
+    letter-spacing:3px;line-height:1.2;
+  }
+  .banner-right .copy{
+    font-size:11px;font-weight:500;
+    color:rgba(255,255,255,.6);letter-spacing:.8px;
+    line-height:1.4;margin-top:7px;
+  }
+  .banner-right .copy em{font-style:normal;color:rgba(200,168,78,.75);font-weight:700;}
+  .poster-image{width:100%;line-height:0;}
+  .poster-image img{width:100%;height:auto;display:block;}
+</style>
+</head>
+<body>
+<div class="label">正和工業版 ─ スポンサー帯</div>
+<div class="poster">
+  <div class="banner">
+    <div class="banner-left">
+      <div class="badge">SPECIAL SPONSOR</div>
+      <img src="showa.png" alt="正和工業株式会社">
+      <div class="company">正和工業株式会社</div>
+    </div>
+    <div class="banner-divider"></div>
+    <div class="banner-right">
+      <div class="slogan">笑顔を生む。</div>
+      <div class="copy"><em>同じ街</em>から世界に挑む子どもたちの、<em>再生と挑戦</em>の物語</div>
+    </div>
+  </div>
+  <div class="poster-image">
+    <img src="poster-main.jpg" alt="POM PUPPYS bright ポスター">
+  </div>
+</div>
+</body>
+</html>
