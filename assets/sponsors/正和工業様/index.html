@@ -28,7 +28,7 @@ body{
 .hero-bg{
   position:absolute;inset:0;
   background:
-    linear-gradient(135deg,rgba(8,16,40,.92) 0%,rgba(15,30,65,.85) 50%,rgba(8,16,40,.92) 100%);
+    linear-gradient(135deg,rgba(8,16,40,.95) 0%,rgba(10,20,50,.93) 50%,rgba(8,16,40,.95) 100%);
   z-index:1;
 }
 .hero-bg::before{
@@ -59,22 +59,35 @@ body{
   background:rgba(200,168,78,.06);
   animation:fadeDown .8s ease-out;
 }
+.hero-logos{
+  display:flex;align-items:center;justify-content:center;gap:24px;
+  margin-bottom:32px;
+  animation:fadeDown .9s ease-out .05s both;
+}
+.hero-logos img{height:56px;width:auto;filter:brightness(0) invert(1);opacity:.9;}
+.hero-logos .x-mark{
+  font-family:'Poppins',sans-serif;
+  font-size:18px;font-weight:700;color:rgba(200,168,78,.6);
+  letter-spacing:2px;
+}
+.hero-logos .showa-logo{filter:none;height:48px;background:rgba(255,255,255,.95);padding:8px 16px;border-radius:8px;}
 .hero h1{
   font-size:32px;font-weight:900;color:#fff;
   line-height:1.8;letter-spacing:2px;
-  animation:fadeDown 1s ease-out .15s both;
+  animation:fadeDown 1s ease-out .2s both;
+  text-shadow:0 2px 20px rgba(0,0,0,.5);
 }
-.hero h1 .gold{color:#c8a84e;}
+.hero h1 .gold{color:#c8a84e;text-shadow:0 2px 16px rgba(200,168,78,.3);}
 .hero-sub{
   font-size:14px;color:rgba(255,255,255,.55);
   margin-top:20px;letter-spacing:2px;
   font-weight:300;
-  animation:fadeDown 1s ease-out .3s both;
+  animation:fadeDown 1s ease-out .4s both;
 }
 .hero-divider{
   width:60px;height:2px;margin:28px auto 0;
   background:linear-gradient(90deg,transparent,#c8a84e,transparent);
-  animation:fadeDown 1s ease-out .45s both;
+  animation:fadeDown 1s ease-out .55s both;
 }
 
 /* ─── セクション共通 ─── */
@@ -303,7 +316,12 @@ body{
   <div class="hero-bg"></div>
   <div class="hero-content">
     <div class="hero-badge"><i class="fas fa-handshake" style="font-size:12px;"></i> SPECIAL SPONSOR PROPOSAL</div>
-    <h1>POM PUPPYS bright<br><span class="gold">× 正和工業株式会社</span></h1>
+    <div class="hero-logos">
+      <img src="../../logo_emblem_white.png" alt="POM PUPPYS bright">
+      <span class="x-mark">&times;</span>
+      <img class="showa-logo" src="./showa.png" alt="正和工業株式会社">
+    </div>
+    <h1>POM PUPPYS bright<br><span class="gold">&times; 正和工業株式会社</span></h1>
     <div class="hero-sub">世界大会出場プロジェクト ─ ご提案資料一覧</div>
     <div class="hero-divider"></div>
   </div>
