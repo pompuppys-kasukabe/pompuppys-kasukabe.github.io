@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>POM PUPPYS bright × 株式会社レジデンシャル不動産 ─ スポンサーシップ ご提案</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Noto Sans JP','Hiragino Sans',sans-serif;
+  color:#333;background:#f8f8f6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ─── ヒーロー ─── */
+.hero{
+  position:relative;
+  min-height:520px;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(135deg,rgba(5,10,30,.97) 0%,rgba(8,16,40,.96) 50%,rgba(5,10,30,.97) 100%);
+  z-index:1;
+}
+.hero-bg::before{
+  content:'';position:absolute;inset:0;
+  background-image:url('./hanabi-stage.jpg');
+  background-size:cover;background-position:center 30%;
+  z-index:-1;
+}
+.hero-bg::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:120px;
+  background:linear-gradient(to top,#f8f8f6,transparent);
+  z-index:2;
+}
+.hero-content{
+  position:relative;z-index:3;
+  padding:80px 24px 100px;
+  max-width:900px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Poppins',sans-serif;
+  font-size:11px;font-weight:700;color:#c8a84e;
+  letter-spacing:5px;text-transform:uppercase;
+  border:1.5px solid rgba(200,168,78,.35);
+  padding:8px 24px;border-radius:50px;
+  margin-bottom:28px;
+  backdrop-filter:blur(8px);
+  background:rgba(200,168,78,.06);
+  animation:fadeDown .8s ease-out;
+}
+.hero-logos{
+  display:flex;align-items:center;justify-content:center;gap:24px;
+  margin-bottom:32px;
+  animation:fadeDown .9s ease-out .05s both;
+}
+.hero-logos img{height:56px;width:auto;opacity:.95;}
+.hero-logos .x-mark{
+  font-family:'Poppins',sans-serif;
+  font-size:18px;font-weight:700;color:rgba(200,168,78,.6);
+  letter-spacing:2px;
+}
+.hero-logos .resi-logo{height:48px;background:rgba(255,255,255,.95);padding:8px 16px;border-radius:8px;}
+.hero h1{
+  font-size:32px;font-weight:900;color:#fff;
+  line-height:1.8;letter-spacing:2px;
+  animation:fadeDown 1s ease-out .2s both;
+  text-shadow:0 2px 20px rgba(0,0,0,.5);
+}
+.hero h1 .gold{color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.4);}
+.hero h1 .gold em{font-style:normal;color:#c8a84e;}
+.hero-sub{
+  font-size:14px;color:rgba(255,255,255,.55);
+  margin-top:20px;letter-spacing:2px;
+  font-weight:300;
+  animation:fadeDown 1s ease-out .4s both;
+}
+.hero-divider{
+  width:60px;height:2px;margin:28px auto 0;
+  background:linear-gradient(90deg,transparent,#c8a84e,transparent);
+  animation:fadeDown 1s ease-out .55s both;
+}
+
+/* ─── セクション共通 ─── */
+.container{max-width:880px;margin:0 auto;padding:0 24px;}
+.section{padding:56px 0;}
+.section-label{
+  font-family:'Poppins',sans-serif;
+  font-size:10px;font-weight:700;color:#c8a84e;
+  letter-spacing:4px;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.section-title{
+  font-size:20px;font-weight:900;color:#1a1a1a;
+  letter-spacing:1px;margin-bottom:8px;
+}
+.section-desc{
+  font-size:13px;color:#888;line-height:1.9;
+  margin-bottom:28px;
+}
+.section-divider{
+  width:40px;height:3px;border-radius:2px;
+  background:#c8a84e;margin-bottom:32px;
+}
+
+/* ─── PDF カード ─── */
+.pdf-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+@media(max-width:640px){.pdf-grid{grid-template-columns:1fr;}}
+.pdf-card{
+  background:#fff;
+  border:1px solid #ebebeb;
+  border-radius:16px;
+  padding:32px 28px;
+  text-decoration:none;color:inherit;
+  display:flex;flex-direction:column;
+  transition:all .3s ease;
+  position:relative;overflow:hidden;
+}
+.pdf-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,#c0392b,#e74c3c);
+  opacity:0;transition:opacity .3s;
+}
+.pdf-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(0,0,0,.08);
+  border-color:#ddd;
+}
+.pdf-card:hover::before{opacity:1;}
+.pdf-card-icon{
+  width:56px;height:56px;
+  background:linear-gradient(135deg,#e74c3c,#c0392b);
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+  box-shadow:0 4px 16px rgba(231,76,60,.25);
+}
+.pdf-card-icon i{color:#fff;font-size:22px;}
+.pdf-card-title{
+  font-size:14px;font-weight:700;color:#1a1a1a;
+  line-height:1.7;margin-bottom:8px;
+}
+.pdf-card-desc{
+  font-size:11.5px;color:#999;line-height:1.7;flex:1;
+}
+.pdf-card-action{
+  margin-top:16px;
+  font-size:11px;font-weight:700;color:#c0392b;
+  letter-spacing:1px;
+  display:flex;align-items:center;gap:6px;
+}
+.pdf-card-action i{font-size:10px;transition:transform .2s;}
+.pdf-card:hover .pdf-card-action i{transform:translateX(4px);}
+
+/* ─── プレビューカード ─── */
+.preview-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+.preview-card{
+  background:#fff;border:1px solid #ebebeb;
+  border-radius:16px;overflow:hidden;
+  text-decoration:none;color:inherit;
+  display:block;
+  transition:all .3s ease;
+}
+.preview-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(0,0,0,.08);
+}
+.preview-card-inner{
+  display:flex;align-items:center;gap:20px;
+  padding:24px 28px;
+}
+.preview-icon{
+  flex-shrink:0;
+  width:50px;height:50px;
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+}
+.preview-icon.poster{background:linear-gradient(135deg,#c8a84e,#e0c87a);color:#fff;}
+.preview-icon.csr{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff;}
+.preview-icon.bright{background:linear-gradient(135deg,#e91e90,#f06baf);color:#fff;}
+.preview-icon.reji{background:linear-gradient(135deg,#1a5a9e,#2a7ac9);color:#fff;}
+.preview-icon.hosoku{background:linear-gradient(135deg,#8e44ad,#9b59b6);color:#fff;}
+.preview-title{font-size:14px;font-weight:700;color:#1a1a1a;line-height:1.6;margin-bottom:3px;}
+.preview-desc{font-size:11.5px;color:#999;line-height:1.6;}
+.preview-tag{
+  display:inline-block;
+  font-size:9px;font-weight:700;
+  color:#c8a84e;background:rgba(200,168,78,.08);
+  padding:3px 10px;border-radius:20px;
+  margin-top:6px;letter-spacing:1px;
+}
+.preview-arrow{
+  flex-shrink:0;margin-left:auto;
+  color:#ccc;font-size:14px;
+  transition:color .2s,transform .2s;
+}
+.preview-card:hover .preview-arrow{color:#c8a84e;transform:translateX(4px);}
+
+/* ─── 動画セクション ─── */
+.video-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+@media(max-width:640px){.video-grid{grid-template-columns:1fr;}}
+.video-card{
+  background:#fff;border:1px solid #ebebeb;
+  border-radius:16px;overflow:hidden;
+  transition:box-shadow .3s;
+}
+.video-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.06);}
+.video-card video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover;background:#000;}
+.video-card-info{padding:16px 20px;}
+.video-card-title{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:4px;}
+.video-card-desc{font-size:11px;color:#999;}
+
+/* ─── リンクセクション ─── */
+.links-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;
+}
+@media(max-width:640px){.links-grid{grid-template-columns:1fr;}}
+.link-card{
+  background:#fff;border:1px solid #ebebeb;
+  border-radius:16px;
+  padding:24px;
+  text-decoration:none;color:inherit;
+  display:flex;align-items:center;gap:16px;
+  transition:all .3s ease;
+}
+.link-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(0,0,0,.06);
+  border-color:#ddd;
+}
+.link-card-icon{
+  flex-shrink:0;
+  width:44px;height:44px;
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:#fff;
+}
+.link-card-icon.home{background:linear-gradient(135deg,#1a5a9e,#2a7ac9);}
+.link-card-icon.world{background:linear-gradient(135deg,#c8a84e,#e0c87a);}
+.link-card-icon.cf{background:linear-gradient(135deg,#e74c3c,#ff6b6b);}
+.link-card-icon.ig{background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);}
+.link-card-title{font-size:12.5px;font-weight:700;color:#1a1a1a;margin-bottom:2px;}
+.link-card-url{font-size:10px;color:#bbb;word-break:break-all;}
+
+/* ─── CTA ─── */
+.cta{
+  background:linear-gradient(135deg,#0b1a3a,#1a3060);
+  border-radius:20px;
+  padding:48px 40px;
+  text-align:center;
+  margin-top:8px;
+  position:relative;overflow:hidden;
+}
+.cta::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 100%,rgba(200,168,78,.1),transparent 60%);
+}
+.cta *{position:relative;}
+.cta h3{font-size:18px;font-weight:900;color:#fff;margin-bottom:12px;line-height:1.8;}
+.cta p{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:28px;line-height:1.8;}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,#c8a84e,#dbb960);
+  color:#0b1a3a;
+  font-size:13px;font-weight:700;letter-spacing:1px;
+  padding:16px 40px;border-radius:50px;
+  text-decoration:none;
+  transition:all .3s;
+  box-shadow:0 4px 20px rgba(200,168,78,.3);
+}
+.cta-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(200,168,78,.45);
+}
+
+/* ─── フッター ─── */
+.footer{
+  text-align:center;
+  padding:40px 24px 56px;
+  font-size:11px;color:#bbb;line-height:2;
+}
+.footer a{color:#1a5a9e;text-decoration:none;}
+.footer-logo{
+  font-family:'Poppins',sans-serif;
+  font-size:10px;font-weight:700;
+  letter-spacing:3px;color:#ccc;
+  margin-bottom:12px;
+}
+
+/* ─── アニメーション ─── */
+@keyframes fadeDown{
+  from{opacity:0;transform:translateY(-20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.fade-in{
+  opacity:0;transform:translateY(30px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- ━━ ヒーロー ━━ -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><i class="fas fa-handshake" style="font-size:12px;"></i> SPECIAL SPONSOR PROPOSAL</div>
+    <div class="hero-logos">
+      <img src="/assets/logo_emblem_white.png" alt="POM PUPPYS bright">
+      <span class="x-mark">&times;</span>
+      <img class="resi-logo" src="./residential-logo.png" alt="株式会社レジデンシャル不動産">
+    </div>
+    <h1>POM PUPPYS bright<br><span class="gold"><em>&times;</em> 株式会社レジデンシャル不動産</span></h1>
+    <div class="hero-sub">世界大会出場プロジェクト ─ ご提案資料一覧</div>
+    <div class="hero-divider"></div>
+  </div>
+</div>
+
+<!-- ━━ PDF資料 ━━ -->
+<div class="section fade-in">
+  <div class="container">
+    <div class="section-label">Documents</div>
+    <div class="section-title">ご提案資料</div>
+    <div class="section-divider"></div>
+
+    <div class="pdf-grid">
+      <a class="pdf-card" href="./view-proposal.html" target="_blank">
+        <div class="pdf-card-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="pdf-card-title">世界大会出場プロジェクト<br>企画書</div>
+        <div class="pdf-card-desc">チーム紹介・大会概要・費用内訳・協賛メニューをまとめた企画書</div>
+        <div class="pdf-card-action"><span>PDFを開く</span><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="pdf-card" href="./view-plan.html" target="_blank">
+        <div class="pdf-card-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="pdf-card-title">レジデンシャル不動産様向け<br>ご提案資料</div>
+        <div class="pdf-card-desc">御社向けスポンサーシッププラン・露出イメージ</div>
+        <div class="pdf-card-action"><span>PDFを開く</span><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="pdf-card" href="./view-hosoku.html" target="_blank">
+        <div class="pdf-card-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="pdf-card-title">補足資料<br>（資金計画）</div>
+        <div class="pdf-card-desc">全体必要資金544万円の調達計画・スポンサープラン概要</div>
+        <div class="pdf-card-action"><span>PDFを開く</span><i class="fas fa-arrow-right"></i></div>
+      </a>
+
+      <a class="pdf-card" href="./view-hosoku2.html" target="_blank">
+        <div class="pdf-card-icon"><i class="fas fa-file-pdf"></i></div>
+        <div class="pdf-card-title">補足資料２</div>
+        <div class="pdf-card-desc">追加の補足情報</div>
+        <div class="pdf-card-action"><span>PDFを開く</span><i class="fas fa-arrow-right"></i></div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ━━ 動画 ━━ -->
+<div class="section fade-in">
+  <div class="container">
+    <div class="section-label">Movies</div>
+    <div class="section-title">動画資料</div>
+    <div class="section-divider"></div>
+
+    <div class="video-grid">
+      <div class="video-card">
+        <video controls playsinline poster="./hero2.jpg">
+          <source src="./jamfest.mp4" type="video/mp4">
+        </video>
+        <div class="video-card-info">
+          <div class="video-card-title">JAMfest JAPAN vol.23 全国大会</div>
+          <div class="video-card-desc">全国優勝を決めた演技映像</div>
+        </div>
+      </div>
+      <div class="video-card">
+        <video controls playsinline>
+          <source src="./brighr.mp4" type="video/mp4">
+        </video>
+        <div class="video-card-info">
+          <div class="video-card-title">bright メンバー紹介</div>
+          <div class="video-card-desc">世界大会に挑むメンバーたち</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ━━ ページプレビュー ━━ -->
+<div class="section fade-in">
+  <div class="container">
+    <div class="section-label">Preview</div>
+    <div class="section-title">露出イメージ・掲載ページ</div>
+    <div class="section-desc">スポンサー就任時に公開予定のページイメージです。クリックで各ページをご確認いただけます。</div>
+
+    <div class="preview-grid">
+      <a class="preview-card" href="./poster.html" target="_blank">
+        <div class="preview-card-inner">
+          <div class="preview-icon poster"><i class="fas fa-image"></i></div>
+          <div style="flex:1;">
+            <div class="preview-title">スポンサー帯付きポスター</div>
+            <div class="preview-desc">レジデンシャル不動産ロゴ入りスポンサー帯を配した公式ポスターのデザインイメージ</div>
+            <span class="preview-tag">DESIGN MOCK-UP</span>
+          </div>
+          <div class="preview-arrow"><i class="fas fa-chevron-right"></i></div>
+        </div>
+      </a>
+
+      <a class="preview-card" href="./reji.html" target="_blank">
+        <div class="preview-card-inner">
+          <div class="preview-icon reji"><i class="fas fa-desktop"></i></div>
+          <div style="flex:1;">
+            <div class="preview-title">御社向けプレゼンテーション資料（HTML版）</div>
+            <div class="preview-desc">花火大会でのつながり・大会概要をまとめたスライド形式の資料</div>
+            <span class="preview-tag">PRESENTATION</span>
+          </div>
+          <div class="preview-arrow"><i class="fas fa-chevron-right"></i></div>
+        </div>
+      </a>
+
+      <a class="preview-card" href="./csr.html" target="_blank">
+        <div class="preview-card-inner">
+          <div class="preview-icon csr"><i class="fas fa-leaf"></i></div>
+          <div style="flex:1;">
+            <div class="preview-title">CSRページ掲載イメージ</div>
+            <div class="preview-desc">レジデンシャル不動産様のCSR・サステナビリティページへの掲載を想定した記事イメージ</div>
+            <span class="preview-tag">DESIGN MOCK-UP</span>
+          </div>
+          <div class="preview-arrow"><i class="fas fa-chevron-right"></i></div>
+        </div>
+      </a>
+
+      <a class="preview-card" href="./bright.html" target="_blank">
+        <div class="preview-card-inner">
+          <div class="preview-icon bright"><i class="fas fa-heart"></i></div>
+          <div style="flex:1;">
+            <div class="preview-title">POM PUPPYS bright 公式サイト掲載ページ</div>
+            <div class="preview-desc">スポンサー就任のご報告・企業紹介・感謝メッセージを掲載するページ</div>
+            <span class="preview-tag">DESIGN MOCK-UP</span>
+          </div>
+          <div class="preview-arrow"><i class="fas fa-chevron-right"></i></div>
+        </div>
+      </a>
+
+      <a class="preview-card" href="./補足.html" target="_blank">
+        <div class="preview-card-inner">
+          <div class="preview-icon hosoku"><i class="fas fa-chart-pie"></i></div>
+          <div style="flex:1;">
+            <div class="preview-title">補足資料（資金計画 HTML版）</div>
+            <div class="preview-desc">資金計画のインタラクティブ版・スポンサープラン概要</div>
+            <span class="preview-tag">INTERACTIVE</span>
+          </div>
+          <div class="preview-arrow"><i class="fas fa-chevron-right"></i></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ━━ 公式リンク ━━ -->
+<div class="section fade-in">
+  <div class="container">
+    <div class="section-label">Links</div>
+    <div class="section-title">POM PUPPYS bright について</div>
+    <div class="section-divider"></div>
+
+    <div class="links-grid">
+      <a class="link-card" href="https://pompuppys-kasukabe.github.io/" target="_blank">
+        <div class="link-card-icon home"><i class="fas fa-home"></i></div>
+        <div>
+          <div class="link-card-title">公式サイト</div>
+          <div class="link-card-url">pompuppys-kasukabe.github.io</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://pompuppys-kasukabe.github.io/project-world-challenge.html" target="_blank">
+        <div class="link-card-icon world"><i class="fas fa-globe"></i></div>
+        <div>
+          <div class="link-card-title">世界大会挑戦 特設ページ</div>
+          <div class="link-card-url">クラウドファンディング情報</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://camp-fire.jp/projects/920355/view" target="_blank">
+        <div class="link-card-icon cf"><i class="fas fa-fire"></i></div>
+        <div>
+          <div class="link-card-title">CAMPFIRE</div>
+          <div class="link-card-url">クラウドファンディング</div>
+        </div>
+      </a>
+      <a class="link-card" href="https://www.instagram.com/pompuppysbright" target="_blank">
+        <div class="link-card-icon ig"><i class="fab fa-instagram"></i></div>
+        <div>
+          <div class="link-card-title">公式Instagram</div>
+          <div class="link-card-url">@pompuppysbright</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ━━ CTA ━━ -->
+<div class="section fade-in">
+  <div class="container">
+    <div class="cta">
+      <h3>ご不明な点がございましたら<br>お気軽にお問い合わせください</h3>
+      <p>ご検討いただき、誠にありがとうございます。</p>
+      <a class="cta-btn" href="mailto:pompuppys.kasukabe@gmail.com?subject=レジデンシャル不動産様スポンサーシップについて">
+        <i class="fas fa-envelope"></i>メールでお問い合わせ
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ━━ フッター ━━ -->
+<div class="footer">
+  <div class="footer-logo">POM PUPPYS BRIGHT</div>
+  本ページは株式会社レジデンシャル不動産様へのご提案用に作成された限定公開ページです。<br>
+  &copy; POM PUPPYS bright
+</div>
+
+<!-- ━━ スクロールアニメーション ━━ -->
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var els=document.querySelectorAll('.fade-in');
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}
+    });
+  },{threshold:0.1});
+  els.forEach(function(el){io.observe(el);});
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>POM PUPPYS bright × レジデンシャル不動産様 ご提案資料</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html{font-family:'Noto Sans JP',sans-serif;background:#0a0a12;}
+  .slide{
+    width:1280px;height:720px;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,#0b1628 0%,#101d35 40%,#0b1628 100%);
+    color:#fff;page-break-after:always;margin:0 auto 40px;
+  }
+  .slide-number{position:absolute;top:24px;right:32px;font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.5px;}
+  .footer-bar{
+    position:absolute;bottom:0;left:0;width:100%;height:38px;
+    background:linear-gradient(90deg,#c8a84e 0%,#a8893a 100%);
+    display:flex;align-items:center;justify-content:space-between;padding:0 36px;
+  }
+  .footer-bar span{font-size:10px;font-weight:500;color:#0b1628;letter-spacing:.3px;}
+  .ic{width:18px;height:18px;flex-shrink:0;vertical-align:middle;margin-right:5px;}
+  .ic-lg{width:24px;height:24px;}
+  .ic-xl{width:32px;height:32px;}
+
+  /* ===== SLIDE 1 ===== */
+  .s1-photo-area{
+    position:absolute;left:0;top:0;width:500px;height:720px;overflow:hidden;
+    background:#000;display:flex;align-items:flex-start;justify-content:center;
+  }
+  .s1-photo-area img{width:500px;height:auto;object-fit:contain;display:block;}
+  .s1-photo-overlay-right{
+    position:absolute;top:0;right:0;width:80px;height:100%;
+    background:linear-gradient(to right,transparent,#0b1628);
+  }
+  .s1-photo-overlay-bottom{
+    position:absolute;bottom:0;left:0;width:100%;height:200px;
+    background:linear-gradient(to top,#0b1628 10%,transparent);
+  }
+  .s1-caption{
+    position:absolute;bottom:52px;left:20px;font-size:10.5px;
+    color:rgba(255,255,255,.6);line-height:1.6;z-index:2;
+  }
+  .s1-content{position:absolute;left:520px;top:0;width:760px;height:720px;padding:48px 40px 60px 20px;}
+  .s1-label{font-size:11px;color:#c8a84e;letter-spacing:2px;font-weight:700;margin-bottom:8px;}
+  .s1-headline{font-size:22px;font-weight:900;line-height:1.5;margin-bottom:4px;color:#fff;}
+  .s1-headline em{font-style:normal;color:#c8a84e;font-size:28px;}
+  .s1-bridge{
+    margin:16px 0 18px;padding:14px 16px;font-size:13px;line-height:1.8;
+    border-left:3px solid #c8a84e;color:rgba(255,255,255,.85);background:rgba(200,168,78,.06);
+  }
+  .s1-fact-grid{display:grid;grid-template-columns:110px 1fr;row-gap:6px;column-gap:8px;margin-bottom:18px;}
+  .s1-fact-grid dt{font-size:10px;color:rgba(255,255,255,.5);font-weight:500;padding-top:2px;}
+  .s1-fact-grid dd{font-size:12.5px;font-weight:700;color:#fff;}
+  .s1-fact-grid dd.gold{color:#c8a84e;}
+  .s1-support-title{font-size:11px;color:#c8a84e;font-weight:700;letter-spacing:1px;margin-bottom:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.1);}
+  .s1-support-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .s1-support-box{
+    flex:1 1 160px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+    border-radius:6px;padding:12px 12px;
+  }
+  .s1-support-box strong{display:block;font-size:12px;font-weight:700;margin-bottom:3px;color:#c8a84e;}
+  .s1-support-box span{font-size:10.5px;color:rgba(255,255,255,.6);line-height:1.5;}
+
+  /* ===== SLIDE 2 ===== */
+  .s2-top{display:flex;align-items:flex-start;padding:36px 40px 0;gap:28px;}
+  .s2-logo{width:160px;flex-shrink:0;}
+  .s2-logo img{width:100%;height:auto;}
+  .s2-title-block{flex:1;}
+  .s2-event-name{font-size:26px;font-weight:900;letter-spacing:1px;line-height:1.3;}
+  .s2-event-name span{color:#c8a84e;}
+  .s2-sub{font-size:12.5px;color:rgba(255,255,255,.7);margin-top:6px;line-height:1.6;}
+  .s2-sub strong{color:#fff;}
+  .s2-summit-bar{
+    margin:18px 40px 0;padding:12px 20px;border-radius:6px;
+    background:rgba(200,168,78,.1);border:1px solid rgba(200,168,78,.25);
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
+  }
+  .s2-summit-bar .item{font-size:11.5px;color:rgba(255,255,255,.8);}
+  .s2-summit-bar .item strong{color:#c8a84e;font-size:16px;font-weight:900;margin-right:3px;}
+  .s2-highlight{
+    margin:14px 40px 0;padding:14px 20px;border-radius:6px;
+    background:linear-gradient(90deg,rgba(200,168,78,.12),rgba(200,168,78,.04));
+    border-left:4px solid #c8a84e;
+  }
+  .s2-highlight-title{font-size:14px;font-weight:900;color:#c8a84e;margin-bottom:4px;}
+  .s2-highlight-text{font-size:11.5px;color:rgba(255,255,255,.75);line-height:1.7;}
+  .s2-stats{display:flex;gap:14px;margin:16px 40px 0;}
+  .s2-stat-card{
+    flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+    border-radius:8px;padding:16px 12px;text-align:center;
+  }
+  .s2-stat-card .num{font-size:26px;font-weight:900;color:#c8a84e;line-height:1;}
+  .s2-stat-card .lbl{font-size:10px;color:rgba(255,255,255,.55);margin-top:4px;}
+  .s2-details{display:flex;gap:16px;margin:14px 40px 0;}
+  .s2-detail-box{flex:1;background:rgba(255,255,255,.03);border-radius:6px;padding:14px 16px;}
+  .s2-detail-box h4{font-size:11px;color:#c8a84e;font-weight:700;margin-bottom:6px;letter-spacing:.5px;}
+  .s2-detail-box p{font-size:11px;color:rgba(255,255,255,.7);line-height:1.7;}
+  .s2-bid{
+    display:inline-flex;align-items:center;gap:6px;margin:14px 40px 0;
+    background:linear-gradient(90deg,#c8a84e,#a8893a);color:#0b1628;
+    padding:8px 18px;border-radius:20px;font-size:12px;font-weight:900;
+  }
+
+  /* ===== SLIDE 3 ===== */
+  .s3-header{padding:28px 40px 0;}
+  .s3-label{font-size:11px;color:#c8a84e;letter-spacing:2px;font-weight:700;margin-bottom:6px;}
+  .s3-headline{font-size:22px;font-weight:900;line-height:1.4;}
+  .s3-headline span{color:#c8a84e;}
+  .s3-two-area{display:flex;gap:14px;padding:12px 40px 0;}
+  .s3-past{
+    width:340px;flex-shrink:0;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+    border-radius:8px;padding:16px 16px;display:flex;flex-direction:column;
+  }
+  .s3-past-tag{
+    display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;
+    padding:3px 12px;border-radius:14px;margin-bottom:10px;
+    background:rgba(200,168,78,.12);color:#c8a84e;border:1px solid rgba(200,168,78,.3);align-self:flex-start;
+  }
+  .s3-past h3{font-size:12px;font-weight:900;color:#c8a84e;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+  .s3-past ul{list-style:none;padding:0;margin-bottom:10px;}
+  .s3-past li{font-size:10px;color:rgba(255,255,255,.7);line-height:1.65;padding:2px 0 2px 14px;position:relative;}
+  .s3-past li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:#c8a84e;}
+  .s3-past li strong{color:#fff;}
+  .s3-past-note{
+    font-size:9px;color:rgba(255,255,255,.4);line-height:1.5;
+    padding:8px 10px;background:rgba(255,255,255,.02);border-radius:6px;margin-top:auto;
+  }
+  .s3-future{flex:1;display:flex;flex-direction:column;gap:10px;}
+  .s3-future-tag{
+    display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;
+    padding:3px 12px;border-radius:14px;
+    background:rgba(200,168,78,.2);color:#fff;border:1px solid rgba(200,168,78,.45);
+  }
+  .s3-future-cols{display:flex;gap:12px;flex:1;}
+  .s3-fcol{
+    flex:1;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+    border-radius:8px;padding:14px 14px;
+  }
+  .s3-fcol h3{font-size:12px;font-weight:900;color:#c8a84e;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+  .s3-fcol ul{list-style:none;padding:0;}
+  .s3-fcol li{font-size:10px;color:rgba(255,255,255,.75);line-height:1.65;padding:2px 0 2px 14px;position:relative;}
+  .s3-fcol li::before{content:"";position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:#c8a84e;}
+  .s3-fcol li strong{color:#fff;}
+  .s3-badge{
+    display:inline-block;background:#c8a84e;color:#0b1628;font-size:9px;font-weight:700;
+    padding:2px 7px;border-radius:3px;margin-left:4px;vertical-align:middle;
+  }
+  .s3-station-bar{
+    margin:10px 40px 0;padding:10px 20px;border-radius:6px;
+    background:rgba(200,168,78,.1);border:1px solid rgba(200,168,78,.25);
+    display:flex;align-items:center;gap:16px;
+  }
+  .s3-station-bar .big-num{font-size:26px;font-weight:900;color:#c8a84e;line-height:1;}
+  .s3-station-bar .big-label{font-size:9px;color:rgba(255,255,255,.6);}
+  .s3-station-bar .detail{font-size:10px;color:rgba(255,255,255,.7);line-height:1.6;flex:1;}
+  .s3-station-bar .detail strong{color:#fff;}
+  .s3-station-bar .source{font-size:8px;color:rgba(255,255,255,.3);margin-top:2px;}
+  .s3-qualitative{
+    margin:8px 40px 0;padding:10px 20px;
+    background:rgba(200,168,78,.06);border:1px solid rgba(200,168,78,.15);border-radius:8px;
+  }
+  .s3-qualitative h4{font-size:10px;font-weight:700;color:#c8a84e;margin-bottom:6px;letter-spacing:.5px;}
+  .s3-qual-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .s3-qual-item{
+    flex:1 1 180px;display:flex;gap:6px;align-items:flex-start;
+    font-size:9.5px;color:rgba(255,255,255,.7);line-height:1.5;
+  }
+
+  /* ===== SLIDE 4 ===== */
+  .s4-header{padding:32px 40px 0;}
+  .s4-label{font-size:11px;color:#c8a84e;letter-spacing:2px;font-weight:700;margin-bottom:6px;}
+  .s4-headline{font-size:22px;font-weight:900;line-height:1.4;}
+  .s4-headline span{color:#c8a84e;}
+  .s4-sub{font-size:11.5px;color:rgba(255,255,255,.5);margin-top:4px;}
+  .s4-sections{display:flex;gap:16px;padding:16px 40px 0;}
+  .s4-section{flex:1;display:flex;flex-direction:column;gap:12px;}
+  .s4-card{
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+    border-radius:8px;padding:16px 14px;
+  }
+  .s4-card.hl{
+    border-color:rgba(200,168,78,.3);background:rgba(200,168,78,.06);
+  }
+  .s4-card h3{font-size:13px;font-weight:900;color:#c8a84e;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+  .s4-card p{font-size:10.5px;color:rgba(255,255,255,.7);line-height:1.75;}
+  .s4-card .item-row{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;}
+  .s4-item{
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+    border-radius:6px;padding:10px 12px;flex:1 1 110px;text-align:center;
+  }
+  .s4-item .label{font-size:10px;color:#c8a84e;font-weight:700;margin-top:4px;}
+  .s4-item .desc{font-size:9.5px;color:rgba(255,255,255,.55);margin-top:2px;line-height:1.4;}
+  .s4-exposure-note{
+    margin:6px 0 0;padding:8px 12px;
+    background:rgba(200,168,78,.06);border:1px solid rgba(200,168,78,.2);
+    border-radius:6px;font-size:9.5px;color:rgba(255,255,255,.7);line-height:1.65;
+    display:flex;align-items:center;gap:6px;
+  }
+  .s4-platinum{
+    margin:10px 40px 0;padding:14px 20px;border-radius:6px;
+    background:linear-gradient(90deg,rgba(200,168,78,.15),rgba(200,168,78,.05));
+    border:1px solid rgba(200,168,78,.35);
+    display:flex;align-items:center;gap:14px;
+  }
+  .s4-platinum-text{flex:1;}
+  .s4-platinum-text h4{font-size:12px;font-weight:900;color:#c8a84e;margin-bottom:3px;}
+  .s4-platinum-text p{font-size:10.5px;color:rgba(255,255,255,.7);line-height:1.7;}
+  .s4-closing{
+    margin:12px 40px 0;padding:16px 24px;
+    background:linear-gradient(90deg,rgba(200,168,78,.1),rgba(200,168,78,.03));
+    border:1px solid rgba(200,168,78,.2);border-radius:8px;
+    display:flex;gap:16px;align-items:center;
+  }
+  .s4-closing-text h4{font-size:13px;font-weight:900;color:#c8a84e;margin-bottom:3px;}
+  .s4-closing-text p{font-size:11px;color:rgba(255,255,255,.65);line-height:1.7;}
+
+  @media print{
+    body{margin:0;background:#fff;}
+    .slide{margin:0;box-shadow:none;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+
+<div style="max-width:1280px;margin:12px auto;padding:0 24px;">
+  <a href="./index.html" style="color:#c8a84e;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:1px;display:inline-flex;align-items:center;gap:6px;">&larr; 資料一覧に戻る</a>
+</div>
+
+<!-- ============================== SLIDE 1 ============================== -->
+<div class="slide" id="slide1">
+  <div class="s1-photo-area">
+    <img src="hanabi-stage.jpg" alt="2025年8月30日 春日部大凧花火大会 レジデンシャルパークSHOWAにて">
+    <div class="s1-photo-overlay-right"></div>
+    <div class="s1-photo-overlay-bottom"></div>
+    <div class="s1-caption">2025.8.30 春日部大凧花火大会<br>レジデンシャルパークSHOWA</div>
+  </div>
+  <div class="s1-content">
+    <div class="s1-label">AFFINITY</div>
+    <div class="s1-headline">
+      御社が支えたステージに、<br><em>私たちは立っていました。</em>
+    </div>
+    <dl class="s1-fact-grid">
+      <dt>開催日</dt><dd>2025年8月30日（土）</dd>
+      <dt>イベント</dt><dd>春日部市市制施行20周年記念<br>春日部大凧花火大会</dd>
+      <dt>会場</dt><dd class="gold">レジデンシャルパークSHOWA</dd>
+      <dt>来場者数</dt><dd>約 18,000 人</dd>
+      <dt>特別協賛</dt><dd class="gold">株式会社レジデンシャル不動産</dd>
+      <dt>出演</dt><dd>POM PUPPYS bright（キッズダンス枠）</dd>
+    </dl>
+    <div class="s1-bridge">
+      あの日ステージに立った子どもたちが、<strong>3ヶ月後に全国優勝</strong>。<br>
+      そして今、<strong>世界大会</strong>へ ——
+    </div>
+    <div class="s1-support-title">▍ レジデンシャル不動産様の地域・スポーツ支援実績</div>
+    <div class="s1-support-row">
+      <div class="s1-support-box">
+        <strong>レジデンシャルスタジアム大宮</strong>
+        <span>ネーミングライツ取得<br>子ども野球教室を開催</span>
+      </div>
+      <div class="s1-support-box">
+        <strong>こども食堂応援PJ</strong>
+        <span>全国の子ども食堂へ<br>継続的な寄付活動</span>
+      </div>
+      <div class="s1-support-box">
+        <strong>東京レジデンシャル</strong>
+        <span>プロ野球チーム設立<br>（2025年10月〜）</span>
+      </div>
+      <div class="s1-support-box">
+        <strong>15周年「挑戦を続ける」</strong>
+        <span>基本理念「出会いに感謝」<br>POMの挑戦と共鳴</span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">01 / 04</div>
+  <div class="footer-bar">
+    <span>POM PUPPYS bright × 株式会社レジデンシャル不動産</span>
+    <span>CONFIDENTIAL</span>
+  </div>
+</div>
+
+<!-- ============================== SLIDE 2 ============================== -->
+<div class="slide" id="slide2">
+  <div class="s2-top">
+    <div class="s2-logo"><img src="summit-logo.png" alt="The Dance Summit Logo"></div>
+    <div class="s2-title-block">
+      <div class="s2-event-name">The <span>Dance Summit</span> 2026</div>
+      <div class="s2-sub">
+        クラブチーム部門で<strong>世界最大</strong>かつ<strong>最も権威ある招待制チャンピオンシップ</strong>。
+      </div>
+    </div>
+  </div>
+  <div class="s2-summit-bar">
+    <div class="item"><strong>4/30</strong>–<strong>5/10</strong>　開催期間 約10日間・3大会連続</div>
+    <div class="item">総勢 <strong>2,300+</strong> チーム</div>
+    <div class="item"><strong>45,000+</strong> アスリート</div>
+    <div class="item"><strong>18</strong> カ国以上</div>
+  </div>
+  <div class="s2-highlight">
+    <div class="s2-highlight-title">POM PUPPYS bright が出場</div>
+    <div class="s2-highlight-text">
+      The Dance Summit は Varsity Spirit 公認大会の優勝チームのみが招待される最高峰の舞台。<br>
+      POM PUPPYS bright は JAMfest JAPAN vol.23 にて <strong>全国1位</strong> を獲得し、出場権（Bid）を取得。
+    </div>
+  </div>
+  <div class="s2-stats">
+    <div class="s2-stat-card">
+      <div class="num">ESPN</div>
+      <div class="lbl">Wide World of Sports Complex<br>Orlando, FL</div>
+    </div>
+    <div class="s2-stat-card">
+      <div class="num">LIVE</div>
+      <div class="lbl">Varsity TV にて<br>全世界ライブ配信</div>
+    </div>
+    <div class="s2-stat-card">
+      <div class="num">5/1–2</div>
+      <div class="lbl">POM PUPPYS<br>競技日程</div>
+    </div>
+    <div class="s2-stat-card">
+      <div class="num">1974</div>
+      <div class="lbl">Varsity Spirit<br>創設年</div>
+    </div>
+  </div>
+  <div class="s2-details">
+    <div class="s2-detail-box">
+      <h4>主催</h4>
+      <p>Varsity Spirit（1974年創設）<br>全米最大のチア・ダンス統括団体</p>
+    </div>
+    <div class="s2-detail-box">
+      <h4>会場</h4>
+      <p>ESPN Wide World of Sports Complex<br>フロリダ州オーランド（Walt Disney World 内）</p>
+    </div>
+    <div class="s2-detail-box">
+      <h4>渡航スケジュール</h4>
+      <p>4月28日 出発 → 5月1‑2日 競技 → 5月上旬 帰国</p>
+    </div>
+  </div>
+  <div class="s2-bid">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#0b1628" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    全国1位で Bid 獲得済
+  </div>
+  <div class="slide-number">02 / 04</div>
+  <div class="footer-bar">
+    <span>POM PUPPYS bright × 株式会社レジデンシャル不動産</span>
+    <span>※チーム数・アスリート数は2025年実績</span>
+  </div>
+</div>
+
+<!-- ============================== SLIDE 3 ============================== -->
+<div class="slide" id="slide3">
+  <div class="s3-header">
+    <div class="s3-label">SPONSOR EXPOSURE — BASIC</div>
+    <div class="s3-headline">協賛企業様の<span>露出チャネル</span></div>
+  </div>
+
+  <div class="s3-two-area">
+    <!-- 左: これまでの実績 -->
+    <div class="s3-past">
+      <div class="s3-past-tag">これまでの実績（信頼性の証明）</div>
+      <h3>
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        メディア掲載
+      </h3>
+      <ul>
+        <li><strong>JCOM</strong> ─ テレビ取材・放送済み（春日部エリア）</li>
+        <li><strong>東武朝日新聞</strong> ─ 記事掲載（2026.01.23）</li>
+        <li><strong>@Press プレスリリース</strong> ─ <strong>10媒体以上</strong>に転載<br>
+          <span style="font-size:9px;color:rgba(255,255,255,.45)">日経COMPASS / ニコニコニュース / サンケイスポーツ / mapion 等</span></li>
+      </ul>
+      <h3 style="margin-top:8px;">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        地域連携
+      </h3>
+      <ul>
+        <li><strong>春日部市長 表敬訪問</strong>（2026.02.04）</li>
+        <li>チラシ設置：埼玉トヨペット3店舗・埼玉りそな銀行・川口信用金庫 ほか</li>
+      </ul>
+      <div class="s3-past-note">
+        ※ 上記は実施済みの実績です。スポンサーとして関わることで、このストーリーの延長線上で御社名が間接的に関連付けられます。
+      </div>
+    </div>
+
+    <!-- 右: 今後確定の露出 -->
+    <div class="s3-future">
+      <div class="s3-future-tag">今後確定している露出（直接恩恵）</div>
+      <div class="s3-future-cols">
+        <div class="s3-fcol">
+          <h3>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
+            ONLINE
+          </h3>
+          <ul>
+            <li><strong>公式サイト全ページにロゴ</strong><br><span class="s3-badge">+137.9%</span> PV 3,526/月 ｜858ユーザー</li>
+            <li><strong>Instagram</strong>（1,273フォロワー）<br>投稿・ストーリーズでスポンサー紹介</li>
+            <li><strong>CAMPFIRE</strong><br>活動報告でスポンサー名掲出</li>
+          </ul>
+        </div>
+        <div class="s3-fcol">
+          <h3>
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            OFFLINE
+          </h3>
+          <ul>
+            <li><strong>駅ポスター 11駅に掲出確定</strong><br>
+              <span style="font-size:9px;color:rgba(255,255,255,.5)">東武10駅＋JR南越谷</span></li>
+            <li><strong>A3ポスター 200枚</strong><br>埼玉トヨペット等 地域店舗に配布</li>
+            <li><strong>世界大会 日の丸横断幕</strong><br>ロゴ掲出 → Varsity TV配信で全世界に露出</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="s3-station-bar">
+    <div style="text-align:center;">
+      <div class="big-num">11</div>
+      <div class="big-label">駅</div>
+    </div>
+    <div style="text-align:center;">
+      <div class="big-num">57.4万</div>
+      <div class="big-label">人/日（延べ）</div>
+    </div>
+    <div class="detail">
+      御社の商圏である<strong>越谷市〜春日部市</strong>を南北に貫く東武スカイツリーライン10駅＋JR武蔵野線 南越谷駅にポスターを掲出。<br>
+      新越谷・南越谷は<strong>埼玉県内有数のターミナル（各駅約14万人/日）</strong>。
+      <div class="source">※東武鉄道・JR東日本 2024年度公式データ。乗換重複含む延べ人数。</div>
+    </div>
+  </div>
+
+  <div class="s3-qualitative">
+    <h4>定性的メリット</h4>
+    <div class="s3-qual-row">
+      <div class="s3-qual-item">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
+        <div>春日部市長 表敬訪問済<br>公的なお墨付き</div>
+      </div>
+      <div class="s3-qual-item">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        <div>レジデンシャルパークSHOWA →<br>世界大会へのストーリー連続性</div>
+      </div>
+      <div class="s3-qual-item">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+        <div>野球に続くスポーツ支援<br>の多様化</div>
+      </div>
+      <div class="s3-qual-item">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/></svg>
+        <div>"世界大会スポンサー"<br>希少なブランディング機会</div>
+      </div>
+      <div class="s3-qual-item">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <div>平均年齢 30.7歳の社員へ<br>採用ブランディング効果</div>
+      </div>
+      <div class="s3-qual-item">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <div>15周年「挑戦を続ける」と<br>子どもたちの世界挑戦が共鳴</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-number">03 / 04</div>
+  <div class="footer-bar">
+    <span>POM PUPPYS bright × 株式会社レジデンシャル不動産</span>
+    <span>※乗降人員：東武鉄道・JR東日本 2024年度公式データ</span>
+  </div>
+</div>
+
+<!-- ============================== SLIDE 4 ============================== -->
+<div class="slide" id="slide4">
+  <div class="s4-header">
+    <div class="s4-label">PREMIUM EXPOSURE &amp; COLLABORATION</div>
+    <div class="s4-headline">さらに広がる<span>露出オプション</span></div>
+    <div class="s4-sub">基本プランに加え、以下の展開が可能です（いずれも要相談）</div>
+  </div>
+  <div class="s4-sections">
+    <!-- 左カラム: オプション -->
+    <div class="s4-section">
+      <div class="s4-card hl" style="flex:1;display:flex;flex-direction:column;">
+        <h3>
+          <svg class="ic ic-lg" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+          ロゴ掲出オプション（要相談）
+        </h3>
+        <p>日の丸横断幕に加え、以下のアイテムにもロゴ掲出が可能です。<br>デザイン・費用は個別にご相談のうえ決定します。</p>
+        <div class="item-row">
+          <div class="s4-item">
+            <svg class="ic ic-lg" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="1"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+            <div class="label">追加横断幕</div>
+            <div class="desc">日の丸以外の応援幕にも<br>企業ロゴを掲載</div>
+          </div>
+          <div class="s4-item">
+            <svg class="ic ic-lg" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2 12 3.46 8 2 3.62 3.46A2 2 0 002 5.41v13.18a2 2 0 001.62 1.96L8 22l4-1.46L16 22l4.38-1.46A2 2 0 0022 18.59V5.41a2 2 0 00-1.62-1.95z"/></svg>
+            <div class="label">チームジャージ</div>
+            <div class="desc">練習着・移動着に<br>ロゴを掲載</div>
+          </div>
+          <div class="s4-item">
+            <svg class="ic ic-lg" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <div class="label">チームバッグ</div>
+            <div class="desc">遠征用バッグに<br>ロゴを大きくプリント</div>
+          </div>
+        </div>
+        <div class="s4-exposure-note" style="margin-top:auto;">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          世界大会だけでなく、<strong style="color:#c8a84e">年に数回の国内大会・地域イベントでも継続的に露出</strong>されます。
+        </div>
+      </div>
+    </div>
+
+    <!-- 右カラム: その他提案 -->
+    <div class="s4-section">
+      <div class="s4-card" style="flex:1">
+        <h3>
+          <svg class="ic ic-lg" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          その他、考えられるコラボレーション
+        </h3>
+        <p style="margin-bottom:10px;color:rgba(255,255,255,.5);font-size:10px;">ご興味がございましたらお打ち合わせの際にご相談ください。</p>
+
+        <div style="display:flex;gap:6px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <div style="font-size:10px;color:rgba(255,255,255,.65);line-height:1.65;">
+            <strong style="color:rgba(255,255,255,.85)">選手による物件体感レポート</strong><br>
+            Instagram・HPで選手がリフォーム前後の物件を体感・紹介。若年層ファミリーへの自然な物件PR。
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21h18M7 21v-2a2 2 0 012-2h6a2 2 0 012 2v2"/></svg>
+          <div style="font-size:10px;color:rgba(255,255,255,.65);line-height:1.65;">
+            <strong style="color:rgba(255,255,255,.85)">東京レジデンシャルとのクロスプロモーション</strong><br>
+            プロ野球チームとのコラボイベント・SNS相互露出で新しいファン層にリーチ。
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:flex-start;padding:8px 0;">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+          <div style="font-size:10px;color:rgba(255,255,255,.65);line-height:1.65;">
+            <strong style="color:rgba(255,255,255,.85)">市役所・地域イベントでのスポンサーアピール</strong><br>
+            イベント出演時に御社をスポンサーとして紹介。地域密着のブランドイメージを強化。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- プラチナスポンサー特典 -->
+  <div class="s4-platinum">
+    <svg class="ic ic-xl" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <div class="s4-platinum-text">
+      <h4>Platinum スポンサー特典：御社のスポンサー就任をプレスリリース配信</h4>
+      <p>プラチナスポンサーにご就任いただいた場合、@Press にて<strong>御社のスポンサー就任をプレスリリース配信</strong>いたします。前回同様 <strong>10媒体以上</strong>（日経COMPASS・ニコニコニュース・サンケイスポーツ等）への転載が見込まれ、御社名が全国のニュースサイトに掲載されます。</p>
+    </div>
+  </div>
+
+  <div class="s4-closing">
+    <svg class="ic ic-xl" viewBox="0 0 24 24" fill="none" stroke="#c8a84e" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
+    <div class="s4-closing-text">
+      <h4>レジデンシャルパークSHOWA から、世界へ。そして、その先へ。</h4>
+      <p>御社の冠する公園で踊った子どもたちが、全国優勝を経て世界大会に挑みます。<br>
+      この物語を一緒に届けていただけないでしょうか。</p>
+    </div>
+  </div>
+
+  <div class="slide-number">04 / 04</div>
+  <div class="footer-bar">
+    <span>POM PUPPYS bright × 株式会社レジデンシャル不動産</span>
+    <span>CONFIDENTIAL</span>
+  </div>
+</div>
+
+</body>
+</html>

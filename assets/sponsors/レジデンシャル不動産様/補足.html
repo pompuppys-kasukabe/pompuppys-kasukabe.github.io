@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POM PUPPYS bright 資金計画</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif; color: #333; background: #fff; }
+  
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* ========== COVER ========== */
+  .cover {
+    background: linear-gradient(160deg, #0b1628 0%, #122044 40%, #1a3060 70%, #0b1628 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    padding: 60px 50px;
+    page-break-after: always;
+  }
+  .cover-top-line { width: 60px; height: 2px; background: #c8a84e; margin-bottom: 48px; }
+  .cover-label { font-size: 11px; letter-spacing: 6px; color: rgba(255,255,255,0.4); margin-bottom: 40px; }
+  .cover h1 { font-size: 32px; font-weight: 300; letter-spacing: 6px; margin-bottom: 8px; line-height: 1.5; }
+  .cover h1 strong { color: #c8a84e; font-weight: 700; }
+  .cover .cover-sub { font-size: 14px; color: rgba(255,255,255,0.5); letter-spacing: 2px; margin-bottom: 48px; }
+  .cover-gold-line { width: 40px; height: 2px; background: #c8a84e; margin: 0 auto 48px; }
+  .cover-team { font-size: 18px; font-weight: 700; letter-spacing: 4px; margin-bottom: 6px; }
+  .cover-team-sub { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 2px; margin-bottom: 48px; }
+  .cover-meta { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+  .cover-logo-area { position: absolute; bottom: 40px; left: 0; right: 0; text-align: center; }
+
+  /* ========== CONTENT PAGE ========== */
+  .content-page {
+    background: #fff;
+    padding: 44px 50px 60px;
+  }
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #eee;
+  }
+  .page-header .page-num { font-size: 11px; color: #c8a84e; font-weight: 700; letter-spacing: 3px; }
+  .page-header .page-team { font-size: 10px; color: #999; letter-spacing: 2px; }
+  .section-title { font-size: 22px; font-weight: 700; color: #0b1628; margin-bottom: 6px; padding-left: 16px; border-left: 4px solid #c8a84e; }
+  .section-subtitle { font-size: 12px; color: #999; margin-bottom: 24px; padding-left: 20px; }
+
+  /* Chart */
+  .chart-area {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .chart-svg-wrap { flex-shrink: 0; }
+  .chart-legend { flex: 1; }
+  .legend-item { display: flex; align-items: flex-start; margin-bottom: 16px; }
+  .legend-dot { width: 14px; height: 14px; border-radius: 4px; margin-right: 12px; flex-shrink: 0; margin-top: 2px; }
+  .legend-label { font-size: 13px; color: #333; font-weight: 600; margin-right: 8px; }
+  .legend-amount { font-size: 13px; color: #c8a84e; font-weight: 700; }
+  .legend-detail { font-size: 10px; color: #999; margin-top: 2px; }
+
+  /* Sponsor Slots */
+  .sponsor-slots { margin-bottom: 24px; }
+  .sponsor-slots h4 { font-size: 14px; color: #0b1628; font-weight: 700; margin-bottom: 14px; padding-left: 12px; border-left: 3px solid #c8a84e; }
+  .slot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .slot-card { border-radius: 10px; padding: 16px 12px; text-align: center; border: 2px solid #eee; }
+  .slot-card.platinum { border-color: #c8a84e; background: linear-gradient(135deg, rgba(200,168,78,0.06), rgba(200,168,78,0.02)); }
+  .slot-card .slot-tier { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #999; margin-bottom: 4px; }
+  .slot-card.platinum .slot-tier { color: #c8a84e; }
+  .slot-card .slot-price { font-size: 22px; font-weight: 700; color: #0b1628; margin-bottom: 2px; }
+  .slot-card .slot-price small { font-size: 11px; color: #999; }
+  .slot-card .slot-count { font-size: 11px; color: #888; }
+  .slot-card .slot-subtotal { font-size: 10px; color: #c8a84e; font-weight: 600; margin-top: 4px; }
+
+  /* Summary */
+  .summary-bar {
+    background: linear-gradient(135deg, #0b1628, #1a3060);
+    border-radius: 12px;
+    padding: 22px 28px;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .summary-bar h4 { font-size: 13px; color: #c8a84e; margin-bottom: 14px; letter-spacing: 1px; }
+  .progress-row { margin-bottom: 10px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; color: rgba(255,255,255,0.7); }
+  .progress-bar { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; }
+  .fill-family { background: #c8a84e; }
+  .fill-crowd { background: #5b9bd5; }
+  .fill-sponsor { background: #70c1b3; }
+  .stacked-bar-wrap { margin-top: 14px; }
+  .stacked-bar-label { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 5px; }
+  .stacked-bar { height: 20px; border-radius: 6px; overflow: hidden; display: flex; }
+  .stacked-segment { height: 100%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
+
+  /* Message */
+  .message-box {
+    background: #f8f9fb;
+    border-radius: 12px;
+    padding: 22px 26px;
+    border-left: 4px solid #c8a84e;
+  }
+  .message-box h4 { font-size: 13px; color: #0b1628; font-weight: 700; margin-bottom: 8px; }
+  .message-box p { font-size: 12px; color: #666; line-height: 1.9; }
+
+  .page-footer {
+    position: absolute;
+    bottom: 24px;
+    left: 50px;
+    right: 50px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: #ccc;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div style="max-width:210mm;margin:12px auto;padding:0 24px;">
+  <a href="./index.html" style="color:#c8a84e;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:1px;display:inline-flex;align-items:center;gap:6px;">&larr; 資料一覧に戻る</a>
+</div>
+
+<!-- ========== PAGE 1: COVER ========== -->
+<div class="page cover">
+  <div class="cover-top-line"></div>
+  <div class="cover-label">Supplementary Materials</div>
+  <h1>春日部から、<strong>世界</strong>へ。</h1>
+  <div class="cover-sub">── The Dance Summit 2026 ──</div>
+  <div class="cover-gold-line"></div>
+  <div class="cover-team">POM PUPPYS bright</div>
+  <div class="cover-team-sub">チアダンス世界大会 日本代表 ─ 埼玉県春日部市</div>
+  <div style="height: 40px;"></div>
+  <div class="cover-meta">
+    補足資料｜資金計画<br>
+    2026年2月
+  </div>
+  <div class="cover-logo-area">
+    <img src="logo.png" alt="POM PUPPYS bright" style="height: 60px;">
+  </div>
+</div>
+
+<!-- ========== PAGE 2: FUNDING PLAN ========== -->
+<div class="page content-page">
+  <div class="page-header">
+    <div class="page-num">01 ── FUNDING PLAN</div>
+    <div class="page-team">POM PUPPYS bright</div>
+  </div>
+
+  <h2 class="section-title">資金計画</h2>
+  <p class="section-subtitle">全体必要資金 544万円の調達計画</p>
+
+  <!-- Chart + Legend -->
+  <div class="chart-area">
+    <div class="chart-svg-wrap">
+      <svg width="220" height="220" viewBox="0 0 220 220">
+        <circle cx="110" cy="110" r="90" fill="none" stroke="#f0f0f0" stroke-width="32"/>
+        <!-- Family: 364/544 = 66.9% -->
+        <circle cx="110" cy="110" r="90" fill="none" 
+                stroke="#c8a84e" stroke-width="32"
+                stroke-dasharray="378.3 566.4"
+                stroke-dashoffset="0"
+                transform="rotate(-90 110 110)"/>
+        <!-- Crowdfunding: 100/544 = 18.4% -->
+        <circle cx="110" cy="110" r="90" fill="none" 
+                stroke="#5b9bd5" stroke-width="32"
+                stroke-dasharray="104.1 566.4"
+                stroke-dashoffset="-378.3"
+                transform="rotate(-90 110 110)"/>
+        <!-- Sponsor: 80/544 = 14.7% -->
+        <circle cx="110" cy="110" r="90" fill="none" 
+                stroke="#70c1b3" stroke-width="32"
+                stroke-dasharray="83.2 566.4"
+                stroke-dashoffset="-482.4"
+                transform="rotate(-90 110 110)"/>
+        <text x="110" y="102" text-anchor="middle" font-size="11" fill="#999" font-family="Noto Sans JP, sans-serif">全体必要資金</text>
+        <text x="110" y="126" text-anchor="middle" font-size="26" fill="#0b1628" font-weight="700" font-family="Noto Sans JP, sans-serif">544<tspan font-size="14">万円</tspan></text>
+      </svg>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #c8a84e;"></div>
+        <div>
+          <div><span class="legend-label">家庭負担（自己資金）</span><span class="legend-amount">364万円（67%）</span></div>
+          <div class="legend-detail">選手1人あたり約52万円 × 7名 ＝ 364万円</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #5b9bd5;"></div>
+        <div>
+          <div><span class="legend-label">クラウドファンディング</span><span class="legend-amount">100万円（18%）</span></div>
+          <div class="legend-detail">目標100万円｜現在約35万円達成（35%）</div>
+        </div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #70c1b3;"></div>
+        <div>
+          <div><span class="legend-label">企業スポンサーシップ</span><span class="legend-amount">80万円（15%）</span></div>
+          <div class="legend-detail">プラチナ〜ブロンズの4プラン × 計11枠</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sponsor Slots -->
+  <div class="sponsor-slots">
+    <h4>スポンサープラン（目安） ── 金額・内容は柔軟に対応いたします</h4>
+    <div class="slot-grid">
+      <div class="slot-card platinum">
+        <div class="slot-tier">PLATINUM</div>
+        <div class="slot-price">30<small>万円</small></div>
+        <div class="slot-count">1 社限定</div>
+        <div class="slot-subtotal">小計 30万円</div>
+      </div>
+      <div class="slot-card">
+        <div class="slot-tier">GOLD</div>
+        <div class="slot-price">10<small>万円</small></div>
+        <div class="slot-count">2 社限定</div>
+        <div class="slot-subtotal">小計 20万円</div>
+      </div>
+      <div class="slot-card">
+        <div class="slot-tier">SILVER</div>
+        <div class="slot-price">5<small>万円</small></div>
+        <div class="slot-count">3 社</div>
+        <div class="slot-subtotal">小計 15万円</div>
+      </div>
+      <div class="slot-card">
+        <div class="slot-tier">BRONZE</div>
+        <div class="slot-price">3<small>万円</small></div>
+        <div class="slot-count">5 社</div>
+        <div class="slot-subtotal">小計 15万円</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-bar">
+    <h4>調達状況サマリー</h4>
+    <div class="progress-row">
+      <div class="progress-label">
+        <span>家庭負担（予定）</span>
+        <span>364万円 / 544万円</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill fill-family" style="width: 66.9%;"></div>
+      </div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-label">
+        <span>クラウドファンディング（進行中）</span>
+        <span>35万円 / 100万円</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill fill-crowd" style="width: 35%;"></div>
+      </div>
+    </div>
+    <div class="progress-row">
+      <div class="progress-label">
+        <span>企業スポンサーシップ（募集中）</span>
+        <span>─ / 80万円</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill fill-sponsor" style="width: 0%;"></div>
+      </div>
+    </div>
+    <div class="stacked-bar-wrap">
+      <div class="stacked-bar-label">全体進捗</div>
+      <div class="stacked-bar">
+        <div class="stacked-segment fill-family" style="width: 66.9%;">家庭 67%</div>
+        <div class="stacked-segment fill-crowd" style="width: 6.4%;">CF</div>
+        <div class="stacked-segment" style="width: 26.7%; background: rgba(255,255,255,0.1);">残り</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message -->
+  <div class="message-box">
+    <h4>資金計画の考え方</h4>
+    <p>
+      全体必要資金544万円のうち、外部から調達できなかった分は各家庭で負担する予定です。小中学生の家庭にとって1人あたり68万円は決して軽い金額ではなく、ご支援いただいた分だけ家庭の負担が軽減されます。スポンサープランは目安としてご用意したものですので、金額やご支援の形は御社のご方針に合わせて柔軟に対応させていただきます。
+    </p>
+  </div>
+
+  <div class="page-footer">
+    <span>POM PUPPYS bright ── 補足資料</span>
+    <span>1 / 1</span>
+  </div>
+</div>
+
+</body>
+</html>
