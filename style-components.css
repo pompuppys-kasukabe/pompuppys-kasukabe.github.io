@@ -992,6 +992,14 @@
   object-fit: contain;
 }
 
+/* ゴールドスポンサー（先頭）を大きく表示 */
+.sponsorsGrid > :first-child .sponsorCard {
+  padding: 24px;
+}
+.sponsorsGrid > :first-child .sponsorCard img {
+  max-height: 120px;
+}
+
 .sponsorName {
   font-weight: 700;
   color: var(--navy);
