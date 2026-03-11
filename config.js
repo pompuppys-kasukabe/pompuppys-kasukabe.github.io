@@ -275,6 +275,7 @@ window.PUPPYS_CONFIG = {
     title: "Sponsors",
     note: "掲載は活動支援への謝意として行っています（原則1年更新・審査あり）",
     items: [
+      { name: "レジデンシャル不動産", logo: "./assets/sponsors/residential.png", url: "https://e-resi.jp/" },
       { name: "大成ホールディングス株式会社", logo: "./assets/sponsors/taisei.png", url: "https://taisei-hd.com/" },
       { name: "こだまホーム", logo: "./assets/sponsors/コダマホームロゴマークPNG.png", url: "https://kodamahome.com" }
     ]
