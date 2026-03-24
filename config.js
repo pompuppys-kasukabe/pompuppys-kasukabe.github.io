@@ -109,8 +109,8 @@ window.PUPPYS_CONFIG = {
       date: "2026-03-19",
       tag: "MEDIA",
       title: "スポンサーのレジデンシャル不動産にチームをご紹介いただきました",
-      body: "株式会社レジデンシャル不動産の公式サイトにて、POM PUPPYS brightをご紹介いただきました。",
-      url: "https://e-resi.jp/news/2026/03/9163/"
+      body: "株式会社レジデンシャル不動産の公式サイトにてPOM PUPPYS brightをご紹介いただきました。私たちからもスポンサーのご紹介をさせていただきます。",
+      url: "./sponsor-residential.html"
     },
     {
       date: "2026-03-19",
