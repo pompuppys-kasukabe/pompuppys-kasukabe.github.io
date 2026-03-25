@@ -298,7 +298,8 @@ window.PUPPYS_CONFIG = {
     items: [
       { name: "レジデンシャル不動産", logo: "./assets/sponsors/residential.png", url: "https://e-resi.jp/" },
       { name: "大成ホールディングス株式会社", logo: "./assets/sponsors/taisei.png", url: "https://taisei-hd.com/" },
-      { name: "こだまホーム", logo: "./assets/sponsors/コダマホームロゴマークPNG.png", url: "https://kodamahome.com" }
+      { name: "こだまホーム", logo: "./assets/sponsors/コダマホームロゴマークPNG.png", url: "https://kodamahome.com" },
+      { name: "安達歯科クリニック", logo: "./assets/sponsors/adachi.png", url: "https://www.adachi-dental-office.com/" }
     ]
   },
 
