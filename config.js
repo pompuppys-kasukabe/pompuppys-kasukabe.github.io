@@ -325,6 +325,18 @@ window.PUPPYS_CONFIG = {
         logo: "./campfire/東武朝日ロゴ.png",
         url: "",
         date: "2026年1月"
+      },
+      {
+        name: "スタイルアリーナ",
+        logo: "./assets/media/stlye-arena.png",
+        url: "https://www.style-arena.jp/trend/404",
+        date: "2026年3月"
+      },
+      {
+        name: "J:COM",
+        logo: "./assets/media/jcom.png",
+        url: "https://www2.myjcom.jp/special/dolocal/",
+        date: "2026年3月"
       }
     ]
   },
