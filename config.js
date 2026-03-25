@@ -113,6 +113,13 @@ window.PUPPYS_CONFIG = {
       url: "./sponsor-residential.html"
     },
     {
+      date: "2026-03-01",
+      tag: "MEDIA",
+      title: "スタイルアリーナに掲載されました",
+      body: "ファッション・カルチャー情報サイト「スタイルアリーナ」にPOM PUPPYS brightが掲載されました。",
+      url: "https://www.style-arena.jp/trend/404"
+    },
+    {
       date: "2026-03-19",
       tag: "INFO",
       title: "クラファン40%・40人突破！ありがとうございます",
