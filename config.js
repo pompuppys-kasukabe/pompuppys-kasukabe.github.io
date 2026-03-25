@@ -106,6 +106,13 @@ window.PUPPYS_CONFIG = {
   // ===== ニュース =====
   news: [
     {
+      date: "2026-03-21",
+      tag: "INFO",
+      title: "春日部市スポーツ賞を受賞しました",
+      body: "JAMfest JAPAN全国1位・世界大会出場の実績が評価され、春日部市スポーツ賞を受賞しました。",
+      url: "./news-sports-award.html"
+    },
+    {
       date: "2026-03-19",
       tag: "MEDIA",
       title: "スポンサーのレジデンシャル不動産にチームをご紹介いただきました",
