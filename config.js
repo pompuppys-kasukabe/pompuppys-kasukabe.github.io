@@ -106,6 +106,13 @@ window.PUPPYS_CONFIG = {
   // ===== ニュース =====
   news: [
     {
+      date: "2026-04-01",
+      tag: "INFO",
+      title: "クラウドファンディング終了！46名の皆様ありがとうございました",
+      body: "3月31日をもちましてCAMPFIREでのクラウドファンディングが終了しました。46名の皆様から543,000円のご支援をいただきました。温かい応援に心より感謝申し上げます。いただいたご支援は渡航費用に大切に充当いたします。",
+      url: "./project-world-challenge.html"
+    },
+    {
       date: "2026-03-21",
       tag: "INFO",
       title: "春日部市スポーツ賞を受賞しました",
@@ -425,9 +432,9 @@ window.PUPPYS_CONFIG = {
     crowdfundingUrl: "https://camp-fire.jp/projects/920355/view",
 
     goalYen: 1000000,
-    raisedYen: 467000,
+    raisedYen: 543000,
     endDate: "2026-03-31",
-    updatedAt: "2026-03-19",
+    updatedAt: "2026-03-31",
 
     heroVideo: {
       enabled: false,
