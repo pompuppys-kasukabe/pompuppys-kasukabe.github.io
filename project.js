@@ -597,114 +597,32 @@ function generateSeed(messages){
   return seed;
 }
 
-// "GO! BRIGHT!!"のドット絵パターンを定義（50x20グリッド）
+// "GO BRIGHT"のドット絵パターンを定義（20x15グリッド = 300セル）
+// 上段: "GO" (行1-6), 下段: "BRIGHT" (行8-13)
 function getTextPattern(){
   var pattern = new Set();
-
-  // 上段: "GO!" (行1-8)
-  // G (列5-12, 行1-8)
-  for(var r = 1; r <= 8; r++){
-    for(var c = 6; c <= 12; c++){
-      if(r === 1 || r === 8) pattern.add(r * 50 + c); // 上下
-      else if(c === 6) pattern.add(r * 50 + c); // 左
-      else if(r >= 5 && c === 12) pattern.add(r * 50 + c); // 右下
-      else if(r === 5 && c >= 9) pattern.add(r * 50 + c); // 中央横線
+  var grid = [
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], // Row 0
+    [0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0], // Row 1  GO top
+    [0,0,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0], // Row 2
+    [0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0], // Row 3
+    [0,0,0,0,1,0,1,1,1,0,1,0,0,0,1,0,0,0,0,0], // Row 4
+    [0,0,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0], // Row 5
+    [0,0,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0], // Row 6  GO bottom
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], // Row 7  gap
+    [0,1,1,0,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,0], // Row 8  BRIGHT top
+    [0,1,0,1,1,0,1,0,1,0,1,0,0,1,0,1,0,1,0,0], // Row 9
+    [0,1,1,0,1,1,0,0,1,0,1,0,0,1,1,1,0,1,0,0], // Row 10
+    [0,1,0,1,1,1,0,0,1,0,1,0,1,1,0,1,0,1,0,0], // Row 11
+    [0,1,0,1,1,0,1,0,1,0,1,0,1,1,0,1,0,1,0,0], // Row 12
+    [0,1,1,0,1,0,1,1,1,1,0,1,1,1,0,1,0,1,0,0], // Row 13 BRIGHT bottom
+    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]  // Row 14
+  ];
+  for(var r = 0; r < grid.length; r++){
+    for(var c = 0; c < grid[r].length; c++){
+      if(grid[r][c]) pattern.add(r * 20 + c);
     }
   }
-
-  // O (列16-22, 行1-8)
-  for(var r = 1; r <= 8; r++){
-    for(var c = 16; c <= 22; c++){
-      if(r === 1 || r === 8) pattern.add(r * 50 + c); // 上下
-      else if(c === 16 || c === 22) pattern.add(r * 50 + c); // 左右
-    }
-  }
-
-  // ! (列27-28, 行1-8)
-  for(var r = 1; r <= 6; r++){
-    pattern.add(r * 50 + 27);
-    pattern.add(r * 50 + 28);
-  }
-  pattern.add(8 * 50 + 27);
-  pattern.add(8 * 50 + 28);
-
-  // 下段: "BRIGHT!!" (行11-18)
-  // B (列2-7, 行11-18)
-  for(var r = 11; r <= 18; r++){
-    pattern.add(r * 50 + 2); // 左
-    if(r === 11 || r === 14 || r === 18) {
-      for(var c = 2; c <= 6; c++) pattern.add(r * 50 + c);
-    }
-    if(r === 12 || r === 13) pattern.add(r * 50 + 7);
-    if(r === 15 || r === 16 || r === 17) pattern.add(r * 50 + 7);
-  }
-
-  // R (列9-14, 行11-18)
-  for(var r = 11; r <= 18; r++){
-    pattern.add(r * 50 + 9); // 左
-    if(r === 11) {
-      for(var c = 9; c <= 13; c++) pattern.add(r * 50 + c);
-    }
-    if(r === 12 || r === 13) pattern.add(r * 50 + 14);
-    if(r === 14) {
-      for(var c = 9; c <= 13; c++) pattern.add(r * 50 + c);
-    }
-    if(r >= 15) pattern.add(r * 50 + (11 + (r - 14)));
-  }
-
-  // I (列16-18, 行11-18)
-  for(var r = 11; r <= 18; r++){
-    if(r === 11 || r === 18) {
-      for(var c = 16; c <= 18; c++) pattern.add(r * 50 + c);
-    } else {
-      pattern.add(r * 50 + 17);
-    }
-  }
-
-  // G (列20-26, 行11-18)
-  for(var r = 11; r <= 18; r++){
-    for(var c = 20; c <= 26; c++){
-      if(r === 11 || r === 18) pattern.add(r * 50 + c);
-      else if(c === 20) pattern.add(r * 50 + c);
-      else if(r >= 14 && c === 26) pattern.add(r * 50 + c);
-      else if(r === 14 && c >= 23) pattern.add(r * 50 + c);
-    }
-  }
-
-  // H (列28-33, 行11-18)
-  for(var r = 11; r <= 18; r++){
-    pattern.add(r * 50 + 28);
-    pattern.add(r * 50 + 33);
-    if(r === 14) {
-      for(var c = 28; c <= 33; c++) pattern.add(r * 50 + c);
-    }
-  }
-
-  // T (列35-39, 行11-18)
-  for(var r = 11; r <= 18; r++){
-    if(r === 11) {
-      for(var c = 35; c <= 39; c++) pattern.add(r * 50 + c);
-    } else {
-      pattern.add(r * 50 + 37);
-    }
-  }
-
-  // ! (列41-42, 行11-18)
-  for(var r = 11; r <= 16; r++){
-    pattern.add(r * 50 + 41);
-    pattern.add(r * 50 + 42);
-  }
-  pattern.add(18 * 50 + 41);
-  pattern.add(18 * 50 + 42);
-
-  // ! (列44-45, 行11-18)
-  for(var r = 11; r <= 16; r++){
-    pattern.add(r * 50 + 44);
-    pattern.add(r * 50 + 45);
-  }
-  pattern.add(18 * 50 + 44);
-  pattern.add(18 * 50 + 45);
-
   return pattern;
 }
 
@@ -746,7 +664,7 @@ async function renderMosaicArt(){
   var textPattern = getTextPattern();
   console.log("Text pattern cells:", textPattern.size);
 
-  var totalCells = 1000;
+  var totalCells = 300;
   var seed = 20260112; // 固定値
 
   // メッセージIDをハッシュ化してセル位置を決定
@@ -775,7 +693,7 @@ async function renderMosaicArt(){
 
   console.log("Messages placed with hash-based positioning:", filledCells.size);
 
-  // 1,000セルを生成
+  // 300セルを生成
   for(var i = 0; i < totalCells; i++){
     var cell = document.createElement("div");
     cell.className = "mosaic-cell";
