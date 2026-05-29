@@ -106,6 +106,13 @@ window.PUPPYS_CONFIG = {
   // ===== ニュース =====
   news: [
     {
+      date: "2026-05-XX",
+      tag: "RESULT",
+      title: "The Dance Summit 2026 ファイナル進出・世界8位",
+      body: "応援いただいた皆さまのおかげでファイナルの舞台に立ち、世界8位を獲得しました。心より感謝申し上げます。",
+      url: "#result"
+    },
+    {
       date: "2026-04-01",
       tag: "INFO",
       title: "クラウドファンディング終了！46名の皆様ありがとうございました",
@@ -298,7 +305,7 @@ window.PUPPYS_CONFIG = {
       { year: "2020", text: "　　大会への挑戦を本格化" },
       { year: "2025.11", text: "　JAMfest JAPAN vol.23 で1位獲得" },
       { year: "2026.3", text: "　USA Nationals 出場" },
-      { year: "2026.5", text: "　The Dance Summit へ挑戦予定", highlight: true }
+      { year: "2026.5", text: "　The Dance Summit ファイナル進出・<strong>世界8位</strong>", highlight: true }
     ],
 
     summitNote: "The Dance Summit は、米国Varsity社が主催する世界最高峰のチアダンス・ダンスの世界選手権大会です。"
