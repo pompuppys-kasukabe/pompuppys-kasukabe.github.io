@@ -2018,3 +2018,19 @@ document.addEventListener("DOMContentLoaded", function() {
     updateChallengeProgress();
   }
 });
+
+
+// ===== UYS告知バー: 閉じる状態を保持 =====
+document.addEventListener("DOMContentLoaded", function () {
+  var bar = document.getElementById("uysBar");
+  var closeBtn = document.getElementById("uysBarClose");
+  if (!bar || !closeBtn) return;
+  if (localStorage.getItem("uysBarClosed") === "1") {
+    bar.hidden = true;
+    return;
+  }
+  closeBtn.addEventListener("click", function () {
+    bar.hidden = true;
+    localStorage.setItem("uysBarClosed", "1");
+  });
+});
