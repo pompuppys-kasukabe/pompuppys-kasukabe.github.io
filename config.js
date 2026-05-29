@@ -484,8 +484,8 @@ window.PUPPYS_CONFIG = {
 
     copy: {
       heroKicker: "Road to the World - Special Project",
-      heroHeadline: "子どもたち全員が、同じ舞台に立てるように。",
-      heroLead: "POM PUPPYS bright は世界最高峰の舞台、米国「The Dance Summit 2026」へ出場します。円安と物価高で渡航費が高騰する中、挑戦をプロジェクトとして記録しながら、世界への一歩を進めます。",
+      heroHeadline: "子どもたち全員で、世界の舞台に立ちました。",
+      heroLead: "POM PUPPYS bright は世界最高峰の舞台、米国「The Dance Summit 2026」に出場し、ファイナル進出・世界8位という結果を残しました。このページは、挑戦の記録です。温かいご支援、本当にありがとうございました。",
 
       sections: {
         whyTitle: "なぜ支援が必要か",
