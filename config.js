@@ -256,10 +256,10 @@ window.PUPPYS_CONFIG = {
   // ===== コピー =====
   copy: {
     hero: {
-      kicker: "Saitama - Kasukabe",
-      headline: "笑顔で踊る、世界へ挑む。",
-      lead: "悔しさを転機に、「楽しむ」を取り戻した私たち。",
-      sub: "埼玉・春日部で活動するチアダンスチーム「POM PUPPYS bright」。JAMfest JAPAN 2025 で1位を獲得し、世界最高峰の舞台、米国「The Dance Summit 2026」への切符を掴みました。"
+      kicker: "The Dance Summit 2026 - Final Report",
+      headline: "世界8位、ありがとう。",
+      lead: "たくさんの方に支えられて、ファイナルの舞台に立てました。",
+      sub: "そして POM PUPPYS は、UYS Showcase へと生まれ変わります。"
     },
 
     facts: [
