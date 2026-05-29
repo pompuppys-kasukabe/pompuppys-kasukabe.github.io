@@ -1926,7 +1926,6 @@ async function initSite() {
   // 新機能の初期化
   initCountdown();
   renderMediaFeatures();
-  initActivityCalendar();
   initFAQ();
 
   // 非同期処理（Swiper対応版）- 各処理を独立してエラーハンドリング
