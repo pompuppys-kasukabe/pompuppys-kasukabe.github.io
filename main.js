@@ -1929,7 +1929,6 @@ async function initSite() {
   try { await renderHeroMedia(); } catch (e) { console.error("renderHeroMedia failed:", e); }
   try { await renderMembers(); } catch (e) { console.error("renderMembers failed:", e); }
   try { await renderPhotos(); } catch (e) { console.error("renderPhotos failed:", e); }
-  try { await renderInstagramFeed(); } catch (e) { console.error("renderInstagramFeed failed:", e); }
 
   setupLightbox();
   setupScrollAnimations();
