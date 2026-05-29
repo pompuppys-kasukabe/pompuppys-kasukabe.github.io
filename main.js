@@ -1090,19 +1090,6 @@ function wireLinks() {
     mediaLink.href = mediaUrl;
   }
 
-  var sponsorLink = document.getElementById("sponsorPageLink");
-  if (sponsorLink) {
-    var sponsorUrl = (cfg.pages && cfg.pages.sponsor) || "./sponsor.html";
-    sponsorLink.href = sponsorUrl;
-  }
-
-  var contactLink = document.getElementById("contactMailLink");
-  if (contactLink && cfg.pressEmail) {
-    var subject = encodeURIComponent("【お問い合わせ】POM PUPPYS bright");
-    var body = encodeURIComponent("お問い合わせ内容をご記入ください。\n\n");
-    contactLink.href = "mailto:" + cfg.pressEmail + "?subject=" + subject + "&body=" + body;
-  }
-
   // CAMPFIRE お気に入り登録ボタン
   var campfireBtn = document.getElementById("campfireFavoriteBtn");
   if (campfireBtn && cfg.project && cfg.project.crowdfundingUrl) {
