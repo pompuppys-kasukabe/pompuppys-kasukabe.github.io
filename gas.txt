@@ -114,12 +114,12 @@ function doGet(e) {
       const result = syncInstagramImageFileIds();
       return jsonResponse({ success: true, data: result, message: "Instagramキャッシュ更新完了" });
 
-} else if (action === "getMessagesWithCount") {
-  return jsonResponse(getMessagesWithCount());
+    } else if (action === "getMessagesWithCount") {
+      return jsonResponse(getMessagesWithCount());
 
     } else {
       return jsonResponse({ error: "Unknown action" });
-      
+
     }
   } catch (err) {
     console.error(err);
@@ -157,12 +157,7 @@ function getActivityData() {
       'Content-Type': 'application/json'
     },
     payload: JSON.stringify({
-      filter: {
-        property: 'Published',
-        checkbox: {
-          equals: true
-        }
-      },
+      // フィルターなし：Notionに追加された全ての予定を表示
       sorts: [
         {
           property: 'date',
@@ -291,101 +286,113 @@ function buildPhotosData() {
 }
 
 // ============================================
-// 応援メッセージ取得（キャッシュ対応・高速版）
+// 応援メッセージ取得（キャッシュ対応・ページネーション対応版）
 // ============================================
 
 function getMessages() {
   const CONFIG = getConfig();
-  
+
   // キャッシュをチェック（5分間有効）
   const cache = CacheService.getScriptCache();
   const cachedData = cache.get("messages_cache");
-  
+
   if (cachedData) {
     console.log("メッセージ: キャッシュから取得");
     return JSON.parse(cachedData);
   }
-  
+
   console.log("メッセージ: Notion APIから取得");
 
   try {
-    const url = `https://api.notion.com/v1/databases/${CONFIG.MESSAGES_DB_ID}/query`;
+    const allMessages = [];
+    let hasMore = true;
+    let startCursor = undefined;
 
-    const payload = {
-      "filter": {
-        "property": "承認済み",
-        "checkbox": {
-          "equals": true
+    // ページネーションで全件取得
+    while (hasMore) {
+      const url = `https://api.notion.com/v1/databases/${CONFIG.MESSAGES_DB_ID}/query`;
+
+      const payload = {
+        "filter": {
+          "property": "承認済み",
+          "checkbox": {
+            "equals": true
+          }
+        },
+        "sorts": [
+          {
+            "timestamp": "created_time",
+            "direction": "descending"
+          }
+        ],
+        "page_size": 100
+      };
+
+      if (startCursor) {
+        payload.start_cursor = startCursor;
+      }
+
+      const options = {
+        "method": "post",
+        "headers": {
+          "Authorization": `Bearer ${CONFIG.NOTION_TOKEN}`,
+          "Notion-Version": "2022-06-28",
+          "Content-Type": "application/json"
+        },
+        "payload": JSON.stringify(payload),
+        "muteHttpExceptions": true
+      };
+
+      const response = UrlFetchApp.fetch(url, options);
+      const data = JSON.parse(response.getContentText());
+
+      if (!data.results) {
+        Logger.log("Error: " + response.getContentText());
+        break;
+      }
+
+      data.results.forEach(page => {
+        const props = page.properties;
+        const createdTime = page.created_time || "";
+        const dateOnly = createdTime ? createdTime.split('T')[0] : "";
+
+        // カテゴリ取得（セレクトプロパティ）
+        let category = "一般";
+        if (props["category"] && props["category"].select) {
+          category = props["category"].select.name;
+        } else if (props["カテゴリ"] && props["カテゴリ"].select) {
+          category = props["カテゴリ"].select.name;
         }
-      },
-      "sorts": [
-        {
-          "timestamp": "created_time",
-          "direction": "descending"
+
+        // ピックアップ取得（チェックボックス）
+        let pickup = false;
+        if (props["pickup"]) {
+          pickup = props["pickup"].checkbox || false;
+        } else if (props["ピックアップ"]) {
+          pickup = props["ピックアップ"].checkbox || false;
         }
-      ]
-    };
 
-    const options = {
-      "method": "post",
-      "headers": {
-        "Authorization": `Bearer ${CONFIG.NOTION_TOKEN}`,
-        "Notion-Version": "2022-06-28",
-        "Content-Type": "application/json"
-      },
-      "payload": JSON.stringify(payload),
-      "muteHttpExceptions": true
-    };
+        allMessages.push({
+          date: dateOnly,
+          name: props["名前"] && props["名前"].rich_text[0] ? props["名前"].rich_text[0].plain_text : "匿名",
+          message: props["メッセージ"] && props["メッセージ"].rich_text[0] ? props["メッセージ"].rich_text[0].plain_text : "",
+          category: category,
+          pickup: pickup,
+          approved: props["承認済み"] ? props["承認済み"].checkbox : false
+        });
+      });
 
-    const response = UrlFetchApp.fetch(url, options);
-    const data = JSON.parse(response.getContentText());
+      hasMore = data.has_more;
+      startCursor = data.next_cursor;
 
-    if (!data.results) {
-      Logger.log("Error: " + response.getContentText());
-      return { messages: [] };
+      console.log("取得済み: " + allMessages.length + "件, 続きあり: " + hasMore);
     }
 
-    const messages = data.results.map(page => {
-      const props = page.properties;
+    const result = { messages: allMessages };
 
-      const createdTime = page.created_time || "";
-      const dateOnly = createdTime ? createdTime.split('T')[0] : "";
-
-      // カテゴリ取得（セレクトプロパティ）
-      let category = "一般";
-      if (props["category"] && props["category"].select) {
-        category = props["category"].select.name;
-      } else if (props["カテゴリ"] && props["カテゴリ"].select) {
-        category = props["カテゴリ"].select.name;
-      }
-
-      // ピックアップ取得（チェックボックス）
-      let pickup = false;
-      if (props["pickup"]) {
-        pickup = props["pickup"].checkbox || false;
-        Logger.log("Pickup found: " + pickup + " for message: " + (props["名前"]?.rich_text?.[0]?.plain_text || "匿名"));
-      } else if (props["ピックアップ"]) {
-        pickup = props["ピックアップ"].checkbox || false;
-        Logger.log("ピックアップ found: " + pickup);
-      } else {
-        Logger.log("No pickup field found for: " + (props["名前"]?.rich_text?.[0]?.plain_text || "匿名"));
-      }
-
-      return {
-        date: dateOnly,
-        name: props["名前"] && props["名前"].rich_text[0] ? props["名前"].rich_text[0].plain_text : "匿名",
-        message: props["メッセージ"] && props["メッセージ"].rich_text[0] ? props["メッセージ"].rich_text[0].plain_text : "",
-        category: category,
-        pickup: pickup,
-        approved: props["承認済み"] ? props["承認済み"].checkbox : false
-      };
-    });
-
-    const result = { messages: messages };
-    
     // キャッシュに保存（300秒 = 5分間）
     cache.put("messages_cache", JSON.stringify(result), 300);
-    
+
     return result;
 
   } catch (e) {
@@ -699,7 +706,7 @@ function syncInstagramImageFileIds() {
     for (let i = 1; i <= 6; i++) {
       const fileName = `insta${i}.png`;
       const files = folder.getFilesByName(fileName);
-      
+
       if (files.hasNext()) {
         fileIds[`insta${i}`] = files.next().getId();
         console.log(`Found: ${fileName}`);
@@ -736,7 +743,7 @@ function getInstagramFeedFromNotion() {
   try {
     // キャッシュからファイルIDを取得（高速）
     let imageFileIds = getInstagramFileIdCache();
-    
+
     // キャッシュが空なら同期（初回のみ）
     if (Object.keys(imageFileIds).length === 0) {
       console.log("キャッシュが空のため同期を実行");
@@ -852,85 +859,100 @@ function testSyncInstagramImageFileIds() {
   const result = syncInstagramImageFileIds();
   console.log("同期結果:", JSON.stringify(result, null, 2));
 }
+
 // ============================================
-// 応援メッセージ（千羽鶴ページ用・カウント付き）
+// 応援メッセージ（千羽鶴ページ用・カウント付き・ページネーション対応）
 // ============================================
 
 function getMessagesWithCount() {
   const CONFIG = getConfig();
-  
+
   // キャッシュをチェック（5分間有効）
   const cache = CacheService.getScriptCache();
   const cachedData = cache.get("messages_with_count_cache");
-  
+
   if (cachedData) {
     console.log("メッセージ（カウント付き）: キャッシュから取得");
     return JSON.parse(cachedData);
   }
-  
+
   console.log("メッセージ（カウント付き）: Notion APIから取得");
 
   try {
-    const url = `https://api.notion.com/v1/databases/${CONFIG.MESSAGES_DB_ID}/query`;
-
-    const payload = {
-      "filter": {
-        "property": "承認済み",
-        "checkbox": {
-          "equals": true
-        }
-      },
-      "sorts": [
-        {
-          "timestamp": "created_time",
-          "direction": "descending"
-        }
-      ],
-      "page_size": 100
-    };
-
-    const options = {
-      "method": "post",
-      "headers": {
-        "Authorization": `Bearer ${CONFIG.NOTION_TOKEN}`,
-        "Notion-Version": "2022-06-28",
-        "Content-Type": "application/json"
-      },
-      "payload": JSON.stringify(payload),
-      "muteHttpExceptions": true
-    };
-
-    const response = UrlFetchApp.fetch(url, options);
-    const data = JSON.parse(response.getContentText());
-
-    if (!data.results) {
-      return { success: false, messages: [], count: 0, pickupMessages: [] };
-    }
-
     const allMessages = [];
     const pickupMessages = [];
+    let hasMore = true;
+    let startCursor = undefined;
 
-    data.results.forEach((page, index) => {
-      const props = page.properties;
-      const createdTime = page.created_time || "";
-      const dateOnly = createdTime ? createdTime.split('T')[0] : "";
+    // ページネーションで全件取得
+    while (hasMore) {
+      const url = `https://api.notion.com/v1/databases/${CONFIG.MESSAGES_DB_ID}/query`;
 
-      const message = {
-        id: page.id,
-        index: index,
-        date: dateOnly,
-        name: props["名前"]?.rich_text?.[0]?.plain_text || "匿名",
-        message: props["メッセージ"]?.rich_text?.[0]?.plain_text || "",
-        pickup: props["pickup"]?.checkbox || false,
-        category: props["category"]?.select?.name || "一般"
+      const payload = {
+        "filter": {
+          "property": "承認済み",
+          "checkbox": {
+            "equals": true
+          }
+        },
+        "sorts": [
+          {
+            "timestamp": "created_time",
+            "direction": "descending"
+          }
+        ],
+        "page_size": 100
       };
 
-      allMessages.push(message);
-
-      if (message.pickup) {
-        pickupMessages.push(message);
+      if (startCursor) {
+        payload.start_cursor = startCursor;
       }
-    });
+
+      const options = {
+        "method": "post",
+        "headers": {
+          "Authorization": `Bearer ${CONFIG.NOTION_TOKEN}`,
+          "Notion-Version": "2022-06-28",
+          "Content-Type": "application/json"
+        },
+        "payload": JSON.stringify(payload),
+        "muteHttpExceptions": true
+      };
+
+      const response = UrlFetchApp.fetch(url, options);
+      const data = JSON.parse(response.getContentText());
+
+      if (!data.results) {
+        break;
+      }
+
+      data.results.forEach((page) => {
+        const props = page.properties;
+        const createdTime = page.created_time || "";
+        const dateOnly = createdTime ? createdTime.split('T')[0] : "";
+
+        const message = {
+          id: page.id,
+          index: allMessages.length,
+          date: dateOnly,
+          name: props["名前"]?.rich_text?.[0]?.plain_text || "匿名",
+          message: props["メッセージ"]?.rich_text?.[0]?.plain_text || "",
+          pickup: props["pickup"]?.checkbox || false,
+          category: props["category"]?.select?.name || "一般"
+        };
+
+        allMessages.push(message);
+
+        if (message.pickup) {
+          pickupMessages.push(message);
+        }
+      });
+
+      hasMore = data.has_more;
+      startCursor = data.next_cursor;
+
+      console.log("取得済み: " + allMessages.length + "件, 続きあり: " + hasMore);
+    }
 
     const result = {
       success: true,
@@ -958,6 +980,14 @@ function clearMessagesWithCountCache() {
   cache.remove("messages_with_count_cache");
   console.log("千羽鶴キャッシュをクリアしました");
 }
+
+// 両方のキャッシュをクリア（新しいメッセージ承認後に実行）
+function clearAllMessagesCache() {
+  clearMessagesCache();
+  clearMessagesWithCountCache();
+  console.log("全てのメッセージキャッシュをクリアしました");
+}
+
 function testGetMessagesWithCount() {
   var result = getMessagesWithCount();
   Logger.log("総数: " + result.count + " / 目標: " + result.goal);
@@ -965,4 +995,3 @@ function testGetMessagesWithCount() {
   Logger.log("ピックアップ: " + result.pickupMessages.length + "件");
   Logger.log(JSON.stringify(result, null, 2));
 }
-

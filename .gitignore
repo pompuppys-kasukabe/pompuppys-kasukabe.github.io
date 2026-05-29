@@ -1,1 +1,6 @@
 _backup/
+.superpowers/
+
+# macOS
+.DS_Store
+Icon?
