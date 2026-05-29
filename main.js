@@ -1915,16 +1915,13 @@ async function initSite() {
   renderNews({ limit: newsLimit, showAllButton: newsLimit > 0 });
   wireLinks();
   wireWebShare();
-  renderRoadProgress();
   renderSponsors();
   renderSupporters();
   renderMedia();
   renderMascot();
   setupHamburgerMenu();
-  setupMessageForm();
 
   // 新機能の初期化
-  initCountdown();
   renderMediaFeatures();
   initFAQ();
 
@@ -1933,7 +1930,6 @@ async function initSite() {
   try { await renderMembers(); } catch (e) { console.error("renderMembers failed:", e); }
   try { await renderPhotos(); } catch (e) { console.error("renderPhotos failed:", e); }
   try { await renderInstagramFeed(); } catch (e) { console.error("renderInstagramFeed failed:", e); }
-  try { await renderMessagesPreview(); } catch (e) { console.error("renderMessagesPreview failed:", e); }
 
   setupLightbox();
   setupScrollAnimations();

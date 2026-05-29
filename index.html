@@ -382,145 +382,38 @@
       </div>
     </div>
   </section>
-
-  <!-- ========== Road to the World ========== -->
+  <!-- ========== Road to the World（アーカイブ） ========== -->
   <section id="road" class="roadSection">
     <div class="container roadSection__inner">
       <div class="roadSection__header">
-        <span class="roadSection__kicker">Special Project</span>
+        <span class="roadSection__kicker">Project Archive</span>
         <h2 class="roadSection__title">Road to the World</h2>
-        <p class="roadSection__lead">世界最高峰の舞台、米国「The Dance Summit 2026」への挑戦</p>
-
-        <!-- カウントダウンタイマー -->
-        <div id="countdownTimer" class="countdownTimer" style="display: none;">
-          <div class="countdown__title" id="countdownTitle">The Dance Summit 2026まで</div>
-          <div class="countdown__display">
-            <div class="countdown__unit">
-              <span class="countdown__value" id="countdownDays">-</span>
-              <span class="countdown__label">日</span>
-            </div>
-            <div class="countdown__unit">
-              <span class="countdown__value" id="countdownHours">-</span>
-              <span class="countdown__label">時間</span>
-            </div>
-            <div class="countdown__unit">
-              <span class="countdown__value" id="countdownMinutes">-</span>
-              <span class="countdown__label">分</span>
-            </div>
-            <div class="countdown__unit">
-              <span class="countdown__value" id="countdownSeconds">-</span>
-              <span class="countdown__label">秒</span>
-            </div>
-          </div>
-        </div>
+        <p class="roadSection__lead">世界最高峰の舞台、米国「The Dance Summit 2026」への挑戦の記録</p>
       </div>
 
-      <div class="roadSection__grid">
-        <!-- 上：クラファン（メイン） -->
+      <div class="roadSection__grid roadSection__grid--single">
         <div class="roadCard">
-          <!-- メインビジュアル -->
           <div style="margin-bottom: 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
             <img src="./assets/photos/award_flag.jpg" alt="表彰後、フラッグを掲げるPOM PUPPYS bright" style="width: 100%; height: auto; display: block;">
           </div>
 
-          <h3 class="roadCard__title" style="margin-bottom: 8px; font-size: 1.4rem; line-height: 1.4;">クラウドファンディング</h3>
-          <p style="color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 16px;">2026年3月31日に終了しました</p>
-          <div class="progressBar">
-            <div id="roadProgressBar" class="progressBar__fill" style="width: 0%"></div>
-          </div>
-          <div class="progressBar__labels">
-            <span class="progressBar__current" id="roadRaised">0円</span>
-            <span class="progressBar__goal">目標: <span id="roadGoal">1,000,000円</span></span>
-          </div>
-
-          <!-- クラファン終了 -->
           <div style="margin-bottom: 20px; padding: 16px; background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05)); border-radius: 12px; border: 2px solid rgba(212,175,55,0.3);">
             <p style="margin: 0 0 8px 0; font-size: 1rem; color: #fff; font-weight: 700;">
-              <i class="fas fa-check-circle" style="margin-right: 6px; color: #d4af37;"></i>クラウドファンディング終了
+              <i class="fas fa-check-circle" style="margin-right: 6px; color: #d4af37;"></i>クラウドファンディング 完走報告
             </p>
-            <p style="margin: 0; font-size: 0.9rem; color: rgba(255,255,255,0.9); line-height: 1.6;">
-              46名の皆様から543,000円のご支援をいただきました。<br>
-              <strong style="color: #d4af37;">温かいご支援、ありがとうございました。</strong>
-            </p>
-          </div>
-
-          <!-- 使い道（特設ページと整合性を取った内容） -->
-          <div style="margin: 20px 0; padding: 18px; background: rgba(107,63,160,0.05); border-radius: 12px; border-left: 4px solid #d4af37;">
-            <p style="font-weight: 700; margin: 0 0 14px 0; color: #d4af37; font-size: 1rem;">ご支援の使い道</p>
-            <ul style="margin: 0; padding-left: 20px; font-size: 0.95rem; color: #fff; line-height: 1.9;">
-              <li>渡航パッケージ費用（8名分：選手7名+コーチ1名）</li>
-              <li>別途必要経費（燃油サーチャージ等、ESTA、海外旅行保険）</li>
-              <li>不足分・現地移動費等</li>
-            </ul>
-            <p style="margin: 14px 0 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.7); line-height: 1.6;">
-              <i class="fas fa-info-circle" style="margin-right: 4px;"></i>
-              いただいたご支援は渡航費用に大切に充当いたします
+            <p style="margin: 0; font-size: 0.95rem; color: rgba(255,255,255,0.9); line-height: 1.7;">
+              46名の皆様から <strong style="color:#d4af37;">543,000円</strong> のご支援をいただきました。<br>
+              いただいたご支援は、選手たちの渡航費用に大切に充当いたしました。<br>
+              <strong style="color: #d4af37;">温かいご支援、本当にありがとうございました。</strong>
             </p>
           </div>
 
-          <!-- スポンサー募集 -->
-          <div style="margin-bottom: 16px; padding: 18px; background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,168,75,0.05)); border-radius: 12px; text-align: center; border: 2px solid rgba(212,175,55,0.3);">
-            <p style="margin: 0 0 6px 0; font-size: 1rem; color: #fff; font-weight: 600;">企業・団体スポンサーの皆様にも感謝いたします</p>
-            <a href="./project-world-challenge.html" style="margin: 0; font-size: 0.9rem; color: #d4af37; font-weight: 700;">プロジェクト詳細を見る</a>
-          </div>
-
-          <p class="roadCard__note">応援いただいた皆様、ありがとうございます</p>
-        </div>
-
-        <!-- 下：#BrightWings1000 -->
-        <div class="roadCard">
-          <!-- メインビジュアル -->
-          <div style="margin-bottom: 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
-            <img src="./assets/1000.jpg" alt="1000の想いを翼に乗せて世界に羽ばたきます" style="width: 100%; height: auto; display: block;">
-          </div>
-
-          <!-- メインコピー -->
-          <h3 class="roadCard__title" style="margin-bottom: 8px; font-size: 1.4rem; line-height: 1.4;">
-            あなたの言葉が、彼女たちの翼になる
-          </h3>
-
-          <!-- サブコピー -->
-          <p style="color: #d4af37; font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; line-height: 1.5;">
-            1,000の想いと共に、世界へ。
-          </p>
-
-          <!-- 説明文 -->
-          <p style="color: rgba(255,255,255,0.85); font-size: 0.9rem; line-height: 1.6; margin-bottom: 16px;">
-            #BrightWings1000 は、応援メッセージで彼女たちを世界の舞台へ送り出すプロジェクトです。いただいた全てのメッセージを横断幕に刻み、世界大会で共に戦います。
-          </p>
-
-          <!-- 進捗カウンター -->
-          <div style="background: rgba(212,175,55,0.08); padding: 16px; border-radius: 12px; text-align: center; margin-bottom: 16px; border: 1px solid rgba(212,175,55,0.2);">
-            <div style="display: flex; align-items: baseline; justify-content: center; gap: 6px; margin-bottom: 8px;">
-              <span id="messageCount" style="font-size: 2.5rem; font-weight: 900; color: #d4af37;">0</span>
-              <span style="font-size: 1.2rem; color: rgba(255,255,255,0.8);">/</span>
-              <span style="font-size: 1.2rem; font-weight: 700; color: #fff;">1,000</span>
-              <span style="font-size: 1rem; margin-left: 4px; color: rgba(255,255,255,0.9);">件</span>
-            </div>
-            <div style="height: 8px; background: #e0e0e0; border-radius: 999px; overflow: hidden;">
-              <div id="progressBarFill" style="height: 100%; background: linear-gradient(90deg, #d4af37, #f4cf67); border-radius: 999px; transition: width 1s ease; width: 0%;"></div>
-            </div>
-          </div>
-
-          <!-- 直近のメッセージ -->
-          <div id="roadMessagesPreview" class="messagesPreview" style="margin-bottom: 16px;"></div>
-
-          <!-- CTA -->
-          <div style="text-align: center;">
-            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-              <button id="sendMessageBtn" class="btn btn-primary" data-tally-open="Y50Z5v" data-tally-emoji-text="👋" data-tally-emoji-animation="wave">
-                応援メッセージを送る
-              </button>
-              <a href="./project-world-challenge.html#messages" class="btn btn-secondary">
-                メッセージ一覧を見る
-              </a>
-            </div>
-          </div>
+          <p class="roadCard__note">#BrightWings1000 でいただいた応援メッセージは、横断幕に刻んで世界大会の舞台へ届けました。</p>
         </div>
       </div>
 
       <div class="roadSection__cta">
-        <a id="roadProjectLink" href="./project-world-challenge.html" class="btn btn-gold btn-outlined">特設ページを見る</a>
+        <a href="./project-world-challenge.html" class="btn btn-gold btn-outlined">特設ページ（記録）を見る</a>
       </div>
     </div>
   </section>
