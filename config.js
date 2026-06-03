@@ -234,13 +234,16 @@ window.PUPPYS_CONFIG = {
 
 
     gallery: [
-      { title: "JAMfest JAPAN 2025 優勝", src: "./assets/photos/award_flag.jpg", alt: "表彰式でフラッグを掲げるチーム", size: "half" },
-      { title: "チーム集合写真", src: "./assets/photos/team_01.jpg", alt: "チーム全員での集合写真", size: "half" },
-      { title: "練習風景", src: "./assets/photos/practice_01.jpg", alt: "練習中の様子", size: "third" },
-      { title: "演技中", src: "./assets/photos/performance_01.jpg", alt: "大会での演技", size: "third" },
-      { title: "大会会場にて", src: "./assets/photos/jam.jpg", alt: "大会会場での一枚", size: "third" },
-      { title: "オフショット", src: "./assets/photos/offshot_01.jpg", alt: "練習後のオフショット", size: "half" },
-      { title: "みんなで記念撮影", src: "./assets/photos/offshot_02.jpg", alt: "みんなで記念撮影", size: "half" }
+      { title: "", src: "./assets/photos/summit/world_01.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_02.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_03.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_04.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_05.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_06.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_07.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_08.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_09.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_10.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" }
     ],
 
     members: [
