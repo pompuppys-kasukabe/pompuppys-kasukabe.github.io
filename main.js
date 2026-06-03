@@ -459,15 +459,17 @@ async function renderPhotos() {
 }
 
 async function loadPhotosContent(grid, thumbsContainer, section) {
-  var photos = await fetchPhotos();
-  var gallery = (photos.gallery || []).slice().sort(function(a, b) {
-    return (a.slot || 0) - (b.slot || 0);
-  });
+  // 記念ページではローカル設定(config.siteImages.gallery)の写真を優先表示する
+  var cfg = getConfig();
+  var imgs = cfg.siteImages || {};
+  var gallery = (imgs.gallery || []).slice();
 
+  // config側が空の場合のみリモートAPIにフォールバック
   if (gallery.length === 0) {
-    var cfg = getConfig();
-    var imgs = cfg.siteImages || {};
-    gallery = imgs.gallery || [];
+    var photos = await fetchPhotos();
+    gallery = (photos.gallery || []).slice().sort(function(a, b) {
+      return (a.slot || 0) - (b.slot || 0);
+    });
   }
 
   if (gallery.length === 0) {
