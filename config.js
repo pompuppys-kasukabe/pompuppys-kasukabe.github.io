@@ -236,7 +236,9 @@ window.PUPPYS_CONFIG = {
       { title: "", src: "./assets/photos/summit/world_07.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
       { title: "", src: "./assets/photos/summit/world_08.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
       { title: "", src: "./assets/photos/summit/world_09.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
-      { title: "", src: "./assets/photos/summit/world_10.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" }
+      { title: "", src: "./assets/photos/summit/world_10.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_11.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" },
+      { title: "", src: "./assets/photos/summit/world_12.jpg", alt: "The Dance Summit 2026 世界大会 - POM PUPPYS bright", size: "half" }
     ],
 
     members: [
