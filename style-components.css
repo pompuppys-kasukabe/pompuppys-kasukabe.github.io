@@ -2255,6 +2255,10 @@ Copy.footer a {
 .photosSwiper .swiper-slide {
   border-radius: 16px;
   overflow: hidden;
+  background: #16213e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .photosSwiper .photoCard {
@@ -2263,18 +2267,24 @@ Copy.footer a {
   margin: 0;
   border-radius: 16px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .photosSwiper .photoCard:hover {
   transform: none;
 }
 
+/* 縦横どちらの写真も切り抜かず全体表示（自動調整） */
 .photosSwiper .photoImg {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 70vh;
   height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
 }
 
 .photosSwiper .photoCap {
